@@ -41,18 +41,14 @@ public class LauncherAppState {
             throw new IllegalStateException("LauncherAppState inited before app context set.");
         }
 
-
+        mIconCache = new IconCache(sContext);
     }
 
     public IconCache getIconCache() {
         return mIconCache;
     }
 
-//    public IconCache getIconCache() {
-//        return mIconCache;
-//    }
-//
-//    public void setIconCache(IconCache iconCache) {
-//        mIconCache = iconCache;
-//    }
+    public void setIconCache(IconCache iconCache) {
+        mIconCache = iconCache;
+    }
 }

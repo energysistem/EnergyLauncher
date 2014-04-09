@@ -69,6 +69,8 @@ public class AppLoader extends AsyncTaskLoader<List<AppInfo>> {
             apps = new ArrayList<ResolveInfo>();
         }
 
+        Log.e(TAG, "Cantidad de apps cargadas " + apps.size());
+
         // Create corresponding array of entries and load their labels.
         List<AppInfo> entries = new ArrayList<AppInfo>(apps.size());
         for (int i = 0; i < apps.size(); i++) {
@@ -105,6 +107,8 @@ public class AppLoader extends AsyncTaskLoader<List<AppInfo>> {
             // it will see here that the Loader has been reset and discard any
             // resources associated with the new data as necessary.
             if (apps != null) {
+                Log.i(TAG, "Cantidad de apps cargadas" + apps.size());
+
                 releaseResources(apps);
                 return;
             }
@@ -113,8 +117,6 @@ public class AppLoader extends AsyncTaskLoader<List<AppInfo>> {
         // Hold a reference to the old data so it doesn't get garbage collected.
         // We must protect it until the new data has been delivered.
         List<AppInfo> oldApps = mApps;
-
-
 
         mApps = apps;
 

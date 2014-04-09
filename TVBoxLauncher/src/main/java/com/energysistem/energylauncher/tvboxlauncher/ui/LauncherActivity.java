@@ -1,5 +1,6 @@
 package com.energysistem.energylauncher.tvboxlauncher.ui;
 
+import com.energysistem.energylauncher.tvboxlauncher.LauncherAppState;
 import com.energysistem.energylauncher.tvboxlauncher.R;
 import com.energysistem.energylauncher.tvboxlauncher.util.SystemUiHider;
 
@@ -10,6 +11,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 
 
 /**
@@ -18,7 +20,7 @@ import android.view.View;
  *
  * @see SystemUiHider
  */
-public class LauncherActivity extends Activity {
+public class LauncherActivity extends Activity implements AppListFragment.Callbacks{
     /**
      * Whether or not the system UI should be auto-hidden after
      * {@link #AUTO_HIDE_DELAY_MILLIS} milliseconds.
@@ -47,13 +49,29 @@ public class LauncherActivity extends Activity {
      */
     private SystemUiHider mSystemUiHider;
 
+    ViewGroup mContainer;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        LauncherAppState.setApplicationContext(getApplicationContext());
+
+        mContainer = (ViewGroup) findViewById(R.id.frameLayoutMain);
+
+        if (savedInstanceState == null) {
+            getFragmentManager().beginTransaction()
+                    .add(R.id.frameLayoutMain, new AppListFragment())
+                    .commit();
+        }
 
     }
 
 
+    @Override
+    public void onExpandButtonClick() {
+        //Expandir o contraer lo que sea------------------------------------------------------------------
+    }
 }
