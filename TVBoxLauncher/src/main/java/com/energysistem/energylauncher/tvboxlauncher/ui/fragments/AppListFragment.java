@@ -1,4 +1,4 @@
-package com.energysistem.energylauncher.tvboxlauncher.ui;
+package com.energysistem.energylauncher.tvboxlauncher.ui.fragments;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -24,6 +24,7 @@ import com.energysistem.energylauncher.tvboxlauncher.LauncherAppState;
 import com.energysistem.energylauncher.tvboxlauncher.Loader.AppLoader;
 import com.energysistem.energylauncher.tvboxlauncher.R;
 import com.energysistem.energylauncher.tvboxlauncher.modelo.AppInfo;
+import com.energysistem.energylauncher.tvboxlauncher.ui.LauncherActivity;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -42,17 +43,13 @@ public class AppListFragment extends Fragment implements LoaderManager.LoaderCal
     private AppAdapter mAdapter;
     private LinearLayout mFavorites;
 
-    interface Callbacks {
+    public interface Callbacks {
         void onExpandButtonClick();
     }
 
     private static Callbacks sDummyCallbacks = new Callbacks() {
         @Override public void onExpandButtonClick() {}
     };
-
-
-
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

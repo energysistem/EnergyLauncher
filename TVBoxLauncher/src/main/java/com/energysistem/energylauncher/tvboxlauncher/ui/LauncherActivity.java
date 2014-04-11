@@ -2,18 +2,15 @@ package com.energysistem.energylauncher.tvboxlauncher.ui;
 
 import com.energysistem.energylauncher.tvboxlauncher.LauncherAppState;
 import com.energysistem.energylauncher.tvboxlauncher.R;
+import com.energysistem.energylauncher.tvboxlauncher.ui.fragments.AppListFragment;
+import com.energysistem.energylauncher.tvboxlauncher.ui.fragments.DesktopFragment;
 import com.energysistem.energylauncher.tvboxlauncher.util.SystemUiHider;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 /**
@@ -22,7 +19,7 @@ import android.widget.FrameLayout;
  *
  * @see SystemUiHider
  */
-public class LauncherActivity extends Activity implements AppListFragment.Callbacks{
+public class LauncherActivity extends Activity implements AppListFragment.Callbacks {
 
     /**
      * Whether or not the system UI should be auto-hidden after
@@ -82,6 +79,10 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
         LauncherAppState.setApplicationContext(getApplicationContext());
 
         if (savedInstanceState == null) {
+            getFragmentManager().beginTransaction()
+                    .add(R.id.content_frame, new DesktopFragment())
+                    .commit();
+
             getFragmentManager().beginTransaction()
                     .add(R.id.rigth_drawer, new AppListFragment())
                     .commit();
