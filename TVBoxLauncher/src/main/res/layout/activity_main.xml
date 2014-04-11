@@ -1,20 +1,32 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<android.support.v4.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#ff262626"
-    tools:context="com.energysistem.energylauncher.tvboxlauncher.ui.LauncherActivity">
+    android:layout_height="match_parent" >
 
-<ImageView
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/background"
-    />
-
+    <!-- Contenido Principal -->
     <FrameLayout
+        android:id="@+id/content_frame"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/frameLayoutMain">
-        </FrameLayout>
+        android:background="@drawable/background" >
+    </FrameLayout>
 
-</RelativeLayout>
+    <!-- Menú Lateral Izquierdo -->
+    <FrameLayout
+        android:layout_width="400dp"
+        android:id="@+id/left_drawer"
+        android:layout_gravity="start"
+        android:background="#F21F0A"
+        android:layout_height="match_parent" />
+
+    <!-- Menú Lateral Derecho -->
+    <FrameLayout
+        android:layout_width="400dp"
+        android:id="@+id/rigth_drawer"
+        android:layout_gravity="end"
+        android:background="#ff2481f2"
+        android:layout_height="match_parent" />
+
+</android.support.v4.widget.DrawerLayout>
+

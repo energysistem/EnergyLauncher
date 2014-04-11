@@ -9,10 +9,12 @@ import android.app.Activity;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.widget.DrawerLayout;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-
+import android.widget.FrameLayout;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -21,6 +23,7 @@ import android.view.ViewGroup;
  * @see SystemUiHider
  */
 public class LauncherActivity extends Activity implements AppListFragment.Callbacks{
+
     /**
      * Whether or not the system UI should be auto-hidden after
      * {@link #AUTO_HIDE_DELAY_MILLIS} milliseconds.
@@ -49,24 +52,40 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
      */
     private SystemUiHider mSystemUiHider;
 
-    ViewGroup mContainer;
-
+    private DrawerLayout drawerLayout;
+    private FrameLayout drawerList;
+    private ActionBarDrawerToggle drawerToggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+        drawerToggle = new ActionBarDrawerToggle(this,
+                drawerLayout,
+                R.drawable.ic_navigation_drawer,
+                R.string.drawer_open,
+                R.string.drawer_close) {
+
+            public void onDrawerClosed(View view) {
+
+            }
+
+            public void onDrawerOpened(View drawerView) {
+
+            }
+        };
+
+        drawerLayout.setDrawerListener(drawerToggle);
 
         LauncherAppState.setApplicationContext(getApplicationContext());
 
-        mContainer = (ViewGroup) findViewById(R.id.frameLayoutMain);
-
         if (savedInstanceState == null) {
             getFragmentManager().beginTransaction()
-                    .add(R.id.frameLayoutMain, new AppListFragment())
+                    .add(R.id.rigth_drawer, new AppListFragment())
                     .commit();
         }
-
     }
 
     @Override
