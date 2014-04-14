@@ -1,22 +1,31 @@
 package com.energysistem.energylauncher.tvboxlauncher.ui.fragments;
 
 import android.app.Fragment;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.TextView;
 
 import com.energysistem.energylauncher.tvboxlauncher.R;
+import com.energysistem.energylauncher.tvboxlauncher.modelo.AppInfo;
+import com.energysistem.energylauncher.tvboxlauncher.modelo.ShortcutInfo;
+import com.energysistem.energylauncher.tvboxlauncher.modelo.WebPageInfo;
+import com.energysistem.energylauncher.tvboxlauncher.ui.adapters.ShortcutAdapter;
+import com.energysistem.energylauncher.tvboxlauncher.ui.views.Shortcut;
+
+import java.net.MalformedURLException;
 
 /**
  * Created by vgt on 11/04/2014.
  */
-public class DesktopFragment extends Fragment {
+public class DesktopFragment extends Fragment implements AdapterView.OnItemClickListener{
 
     private GridView mAppsGrid;
+    private ShortcutAdapter gridAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -24,12 +33,19 @@ public class DesktopFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_launcher, container, false);
 
         mAppsGrid = (GridView) view.findViewById(R.id.app_grid);
+        gridAdapter = new ShortcutAdapter(getActivity());
+        mAppsGrid.setAdapter(gridAdapter);
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1);
-        mAppsGrid.setAdapter(adapter);
+        for(int i = 0; i < 10; i++) {
+            try {
+                WebPageInfo webPageInfo = new WebPageInfo("http://www.google.es");
+                gridAdapter.addItem(webPageInfo);
+            } catch (MalformedURLException e) {
+                Log.d("DesktopFragment", "Invalid Url");
+            }
+        }
 
-        for(int i = 0; i < 10; i++)
-            adapter.add("Prueba "+i);
+        mAppsGrid.setOnItemClickListener(this);
 
         return view;
     }
@@ -41,5 +57,20 @@ public class DesktopFragment extends Fragment {
         if (savedInstanceState == null) {
             //getLoaderManager().restartLoader(0, null, this);
         }
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+        ShortcutInfo shortcut = (ShortcutInfo) gridAdapter.getItem(i);
+        startActivity(shortcut.getIntent());
+    }
+
+    public void addShortcut(ShortcutInfo shortcutInfo) {
+        gridAdapter.addItem(shortcutInfo);
+        gridAdapter.notifyDataSetChanged();
+    }
+
+    public void getShortcuts() {
+
     }
 }

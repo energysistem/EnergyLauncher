@@ -1,27 +1,18 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    tools:context="com.ryanharter.atv.launcher.ui.LauncherActivity$PlaceholderFragment">
 
-    <LinearLayout
-            android:id="@+id/favorite_bar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:orientation="horizontal"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp">
-
-    </LinearLayout>
-
-    <GridView
-            android:id="@+id/app_grid"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/favorite_bar"
-            android:layout_margin="8dp"
-            android:layout_marginTop="16dp"
-            android:numColumns="5"
-            android:gravity="center_horizontal"
-            android:verticalSpacing="16dp"/>
+    <ListView
+        android:orientation="vertical"
+        android:id="@+id/app_grid"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:layout_marginTop="16dp"
+        android:gravity="center_horizontal"
+        android:verticalSpacing="16dp"/>
 
 </RelativeLayout>

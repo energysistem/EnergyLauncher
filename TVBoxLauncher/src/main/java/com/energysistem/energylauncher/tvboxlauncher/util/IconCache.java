@@ -153,7 +153,7 @@ public class IconCache {
     public void getTitleAndIcon(AppInfo application, ResolveInfo info,
             HashMap<Object, CharSequence> labelCache) {
         synchronized (mCache) {
-            CacheEntry entry = cacheLocked(application.componentName, info, labelCache);
+            CacheEntry entry = cacheLocked(application.getComponentName(), info, labelCache);
 
             application.title = entry.title;
             application.iconBitmap = entry.icon;

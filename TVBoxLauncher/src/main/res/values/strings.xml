@@ -9,4 +9,7 @@
     <string name="drawer_open">Open</string>
     <string name="drawer_close">Close</string>
 
+    <!--Shortcut-->
+    <string name="default_example_string">Hola</string>
+
 </resources>

@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.graphics.Bitmap;
 import android.util.Log;
 
 import com.energysistem.energylauncher.tvboxlauncher.util.IconCache;
@@ -17,33 +16,25 @@ import java.util.HashMap;
  *
  * Clase para representar una app en el launcher
  */
-public class AppInfo {
+public class AppInfo extends ShortcutInfo {
 
     private static final String TAG = "EnergyLauncher.AppInfo";
 
     static final int DOWNLOADED_FLAG = 1;
     static final int UPDATED_SYSTEM_APP_FLAG = 2;
 
+    private String packageName;
+    private ComponentName componentName;
 
-    public ComponentName componentName;
+    public Boolean checked = false;
 
-    //The intent used to start the application.
-    public Intent intent;
-
-    public String title;
-    public Bitmap iconBitmap;
-
-    public long firstInstallTime;
-    int flags = 0;
-
+    private long firstInstallTime;
+    private int flags = 0;
 
     public AppInfo(PackageManager pm, ResolveInfo info, IconCache iconCache,
                    HashMap<Object, CharSequence> labelCache) {
-        final String packageName = info.activityInfo.applicationInfo.packageName;
-
+        this.packageName = info.activityInfo.applicationInfo.packageName;
         this.componentName = new ComponentName(packageName, info.activityInfo.name);
-        this.setActivity(componentName,
-                Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
 
         try {
             PackageInfo pi = pm.getPackageInfo(packageName, 0);
@@ -54,19 +45,6 @@ public class AppInfo {
         }
 
         iconCache.getTitleAndIcon(this, info, labelCache);
-    }
-
-    /**
-     * Creates the application intent based on a component name and various launch flags.
-     *
-     * @param className   the class name of the component representing the intent
-     * @param launchFlags the launch flags
-     */
-    final void setActivity(ComponentName className, int launchFlags) {
-        intent = new Intent(Intent.ACTION_MAIN);
-        intent.addCategory(Intent.CATEGORY_LAUNCHER);
-        intent.setComponent(className);
-        intent.setFlags(launchFlags);
     }
 
     public static int initFlags(PackageInfo pi) {
@@ -86,4 +64,16 @@ public class AppInfo {
         return pi.firstInstallTime;
     }
 
+    @Override
+    public Intent getIntent() {
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_LAUNCHER);
+        intent.setComponent(componentName);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+        return intent;
+    }
+
+    public ComponentName getComponentName() {
+        return componentName;
+    }
 }

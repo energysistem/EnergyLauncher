@@ -18,6 +18,7 @@ import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.energysistem.energylauncher.tvboxlauncher.LauncherAppState;
@@ -25,6 +26,7 @@ import com.energysistem.energylauncher.tvboxlauncher.Loader.AppLoader;
 import com.energysistem.energylauncher.tvboxlauncher.R;
 import com.energysistem.energylauncher.tvboxlauncher.modelo.AppInfo;
 import com.energysistem.energylauncher.tvboxlauncher.ui.LauncherActivity;
+import com.energysistem.energylauncher.tvboxlauncher.ui.adapters.AppAdapter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -37,8 +39,10 @@ public class AppListFragment extends Fragment implements LoaderManager.LoaderCal
 
     static List<String> favorites = Arrays.asList("Play Movies & TV", "Netflix", "Plex", "YouTube", "Chrome");
 
-    private GridView mAppsGrid;
+    private ListView mAppsGrid;
     private Callbacks mCallbacks = sDummyCallbacks;
+
+    private List<AppInfo> mAppInfos;
 
     private AppAdapter mAdapter;
     private LinearLayout mFavorites;
@@ -64,16 +68,16 @@ public class AppListFragment extends Fragment implements LoaderManager.LoaderCal
 //            }
 //        });
 
-        mAppsGrid = (GridView) v.findViewById(R.id.app_grid);
+        mAppsGrid = (ListView) v.findViewById(R.id.app_grid);
         mAppsGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 final AppInfo info = mAdapter.getItem(i);
-                startActivity(info.intent);
+                startActivity(info.getIntent());
             }
         });
 
-        mFavorites = (LinearLayout) v.findViewById(R.id.favorite_bar);
+        //mFavorites = (LinearLayout) v.findViewById(R.id.favorite_bar);
 
         return v;
     }
@@ -110,11 +114,11 @@ public class AppListFragment extends Fragment implements LoaderManager.LoaderCal
 
     @Override
     public void onLoadFinished(Loader<List<AppInfo>> listLoader, List<AppInfo> appInfos) {
-
         //Take out the favorites
         //appInfos = extractFavorites(appInfos);
 
-        mAdapter = new AppAdapter(getActivity(), appInfos);
+        mAppInfos = appInfos;
+        mAdapter = new AppAdapter(getActivity(), appInfos, false);
         mAppsGrid.setAdapter(mAdapter);
     }
 
@@ -147,7 +151,7 @@ public class AppListFragment extends Fragment implements LoaderManager.LoaderCal
             image.setImageDrawable(new BitmapDrawable(getResources(), info.iconBitmap));
             title.setText(info.title);
 
-            final Intent appIntent = info.intent;
+            final Intent appIntent = info.getIntent();
             v.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -161,44 +165,14 @@ public class AppListFragment extends Fragment implements LoaderManager.LoaderCal
         return infos;
     }
 
-    public class AppAdapter extends ArrayAdapter<AppInfo> {
 
-        private LayoutInflater mLayoutInflater;
-        private Resources mResources;
-
-        public AppAdapter(Context context, List<AppInfo> objects) {
-            super(context, 0, objects);
-            mLayoutInflater = LayoutInflater.from(context);
-            mResources = context.getResources();
+    public List<AppInfo> getAppsInfos(){
+        if (mAppInfos != null){
+            return mAppInfos;
         }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            View v = convertView;
-            ViewHolder holder;
-            if (v == null) {
-                v = mLayoutInflater.inflate(R.layout.row_app, parent, false);
-                holder = new ViewHolder();
-
-                holder.image = (ImageView) v.findViewById(R.id.image_app);
-                holder.title = (TextView) v.findViewById(R.id.title_app);
-
-                v.setTag(holder);
-            } else {
-                holder = (ViewHolder) v.getTag();
-            }
-
-            final AppInfo info = getItem(position);
-
-            holder.image.setImageDrawable(new BitmapDrawable(mResources, info.iconBitmap));
-            holder.title.setText(info.title);
-
-            return v;
-        }
-
-        class ViewHolder {
-            ImageView image;
-            TextView title;
+        else
+        {
+            return new ArrayList<AppInfo>(0);
         }
     }
 

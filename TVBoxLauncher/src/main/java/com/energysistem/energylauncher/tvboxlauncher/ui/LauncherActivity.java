@@ -2,8 +2,11 @@ package com.energysistem.energylauncher.tvboxlauncher.ui;
 
 import com.energysistem.energylauncher.tvboxlauncher.LauncherAppState;
 import com.energysistem.energylauncher.tvboxlauncher.R;
+import com.energysistem.energylauncher.tvboxlauncher.modelo.AppInfo;
+import com.energysistem.energylauncher.tvboxlauncher.modelo.ShortcutInfo;
 import com.energysistem.energylauncher.tvboxlauncher.ui.fragments.AppListFragment;
 import com.energysistem.energylauncher.tvboxlauncher.ui.fragments.DesktopFragment;
+import com.energysistem.energylauncher.tvboxlauncher.ui.fragments.SelectedAppsListFragment;
 import com.energysistem.energylauncher.tvboxlauncher.util.SystemUiHider;
 
 import android.app.Activity;
@@ -12,6 +15,9 @@ import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
+
+import java.util.List;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -49,18 +55,24 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
      */
     private SystemUiHider mSystemUiHider;
 
-    private DrawerLayout drawerLayout;
-    private FrameLayout drawerList;
+    private AppListFragment appListFragment;
+    private SelectedAppsListFragment selectedAppsListFragment;
+    private DesktopFragment desktopFragment;
+
+    private DrawerLayout desktopLayout;
+    private FrameLayout appLayout;
+    private FrameLayout optionLayout;
+
     private ActionBarDrawerToggle drawerToggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        desktopLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
         drawerToggle = new ActionBarDrawerToggle(this,
-                drawerLayout,
+                desktopLayout,
                 R.drawable.ic_navigation_drawer,
                 R.string.drawer_open,
                 R.string.drawer_close) {
@@ -74,7 +86,7 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
             }
         };
 
-        drawerLayout.setDrawerListener(drawerToggle);
+        desktopLayout.setDrawerListener(drawerToggle);
 
         LauncherAppState.setApplicationContext(getApplicationContext());
 
@@ -83,14 +95,51 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
                     .add(R.id.content_frame, new DesktopFragment())
                     .commit();
 
+            //Drawer derecho
+            appListFragment = new AppListFragment();
             getFragmentManager().beginTransaction()
-                    .add(R.id.rigth_drawer, new AppListFragment())
+                    .add(R.id.rigth_drawer, appListFragment)
                     .commit();
+
         }
     }
 
+
+    public void cargaFragmentSelectAppListIzquierdo() {
+        selectedAppsListFragment = new SelectedAppsListFragment();
+        getFragmentManager().beginTransaction()
+                .add(R.id.left_drawer, selectedAppsListFragment)
+                .commit();
+    }
+
+
+    public void addShortcut(ShortcutInfo shortcutInfo) {
+        desktopFragment.addShortcut(shortcutInfo);
+    }
+
+
     @Override
     public void onExpandButtonClick() {
-        //Expandir o contraer lo que sea------------------------------------------------------------------
+
+    }
+
+
+
+    public List<AppInfo> getAppList(){
+        return  appListFragment.getAppsInfos();
+    }
+
+
+
+    public FrameLayout getAppLayout() {
+        return appLayout;
+    }
+
+    public FrameLayout getOptionLayout() {
+        return optionLayout;
+    }
+
+    public DrawerLayout getDesktopLayout() {
+        return desktopLayout;
     }
 }
