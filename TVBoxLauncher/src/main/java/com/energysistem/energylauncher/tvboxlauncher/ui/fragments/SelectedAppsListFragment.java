@@ -38,12 +38,15 @@ public class SelectedAppsListFragment extends Fragment {
 //        });
 
         mAppsList = (ListView) v.findViewById(R.id.app_grid);
+
+
         mAppsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 final AppInfo info = mAdapter.getItem(i);
 //              startActivity(info.getIntent());
-                ((LauncherActivity) getActivity()).addShortcut(info);
+
+                ((LauncherActivity)getActivity()).addShortcut(info);
             }
         });
 
@@ -55,7 +58,7 @@ public class SelectedAppsListFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        mAdapter = new AppAdapter(getActivity(), ((LauncherActivity) getActivity()).getAppList(), true);
+        mAdapter = new AppAdapter(getActivity(), ((LauncherActivity) getActivity()).getAppList(), false);
         mAppsList.setAdapter(mAdapter);
 
     }

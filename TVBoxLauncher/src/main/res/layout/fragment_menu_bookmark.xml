@@ -1,0 +1,47 @@
+<LinearLayout
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/black_grey"
+    android:padding="10dp"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Name"
+        android:textColor="#ffffff"
+        android:textSize="22dp"
+        android:id="@+id/menuBookmarkLblName" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#ffffff"
+        android:textSize="22dp"
+        android:id="@+id/menuBookmarkTxtName" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Uri:"
+        android:textColor="#ffffff"
+        android:textSize="22dp"
+        android:id="@+id/menuBookmarklblUri" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="http://"
+        android:textColor="#ffffff"
+        android:textSize="22dp"
+        android:id="@+id/menuBookmarkTxtUri" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Save"
+        android:textSize="22dp"
+        android:id="@+id/menuBookmarkBtn"
+        android:layout_gravity="right" />
+</LinearLayout>

@@ -6,6 +6,7 @@ import com.energysistem.energylauncher.tvboxlauncher.modelo.AppInfo;
 import com.energysistem.energylauncher.tvboxlauncher.modelo.ShortcutInfo;
 import com.energysistem.energylauncher.tvboxlauncher.ui.fragments.AppListFragment;
 import com.energysistem.energylauncher.tvboxlauncher.ui.fragments.DesktopFragment;
+import com.energysistem.energylauncher.tvboxlauncher.ui.fragments.MenuListFragmernt;
 import com.energysistem.energylauncher.tvboxlauncher.ui.fragments.SelectedAppsListFragment;
 import com.energysistem.energylauncher.tvboxlauncher.util.SystemUiHider;
 
@@ -78,7 +79,8 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
                 R.string.drawer_close) {
 
             public void onDrawerClosed(View view) {
-
+                getFragmentManager().beginTransaction()
+                        .replace(R.id.left_drawer, new MenuListFragmernt()).commit();
             }
 
             public void onDrawerOpened(View drawerView) {
@@ -88,11 +90,13 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
 
         desktopLayout.setDrawerListener(drawerToggle);
 
+
         LauncherAppState.setApplicationContext(getApplicationContext());
 
         if (savedInstanceState == null) {
+            desktopFragment = new DesktopFragment();
             getFragmentManager().beginTransaction()
-                    .add(R.id.content_frame, new DesktopFragment())
+                    .add(R.id.content_frame, desktopFragment)
                     .commit();
 
             //Drawer derecho
@@ -100,6 +104,10 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
             getFragmentManager().beginTransaction()
                     .add(R.id.rigth_drawer, appListFragment)
                     .commit();
+
+            //Drawer Izquierdo
+            getFragmentManager().beginTransaction()
+                    .add(R.id.left_drawer, new MenuListFragmernt()).commit();
 
         }
     }
