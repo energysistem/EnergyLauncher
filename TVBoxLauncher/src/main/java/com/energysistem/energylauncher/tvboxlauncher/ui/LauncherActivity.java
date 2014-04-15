@@ -15,6 +15,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -116,17 +117,12 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
         }
     }
 
-
     public void cargaFragmentSelectAppListIzquierdo() {
         selectedAppsListFragment = new SelectedAppsListFragment();
         getFragmentManager().beginTransaction()
                 .add(R.id.left_drawer, selectedAppsListFragment)
                 .commit();
     }
-
-
-
-
 
 
     public void addShortcut(ShortcutInfo shortcutInfo) {
@@ -140,6 +136,9 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
         }
     }
 
+    public void removeShortcut(ShortcutInfo shortcutInfo) {
+        desktopFragment.removeShortcut(shortcutInfo);
+    }
 
 
     @Override
@@ -147,13 +146,22 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
 
     }
 
-
-
     public List<AppInfo> getAppList(){
         return  appListFragment.getAppsInfos();
     }
 
+    @Override
+    public void onBackPressed() {
+        return;
+    }
 
+    public void toggleDrawer(int gravity) {
+        if(desktopLayout.isDrawerOpen(gravity)) {
+            desktopLayout.closeDrawer(gravity);
+        } else {
+            desktopLayout.openDrawer(gravity);
+        }
+    }
 
     public FrameLayout getAppLayout() {
         return appLayout;

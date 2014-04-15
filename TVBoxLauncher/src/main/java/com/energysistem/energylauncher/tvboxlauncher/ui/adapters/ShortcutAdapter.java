@@ -49,6 +49,10 @@ public class ShortcutAdapter extends BaseAdapter {
         data.add(i);
     }
 
+    public void removeItem(ShortcutInfo i) {
+        data.remove(i);
+    }
+
     @Override
     public long getItemId(int i) {
         return 0;
