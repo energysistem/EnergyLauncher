@@ -121,6 +121,7 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
     }
 
 
+
     public void addShortcut(ShortcutInfo shortcutInfo) {
         desktopFragment.addShortcut(shortcutInfo);
     }
