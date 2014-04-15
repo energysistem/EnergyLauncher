@@ -126,6 +126,7 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
     }
 
 
+
     @Override
     public void onExpandButtonClick() {
 
