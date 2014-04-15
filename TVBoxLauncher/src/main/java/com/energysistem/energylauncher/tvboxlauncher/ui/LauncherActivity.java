@@ -3,6 +3,7 @@ package com.energysistem.energylauncher.tvboxlauncher.ui;
 import com.energysistem.energylauncher.tvboxlauncher.LauncherAppState;
 import com.energysistem.energylauncher.tvboxlauncher.R;
 import com.energysistem.energylauncher.tvboxlauncher.modelo.AppInfo;
+import com.energysistem.energylauncher.tvboxlauncher.modelo.SaveLoadAppsPreferences;
 import com.energysistem.energylauncher.tvboxlauncher.modelo.ShortcutInfo;
 import com.energysistem.energylauncher.tvboxlauncher.ui.fragments.AppListFragment;
 import com.energysistem.energylauncher.tvboxlauncher.ui.fragments.DesktopFragment;
@@ -56,6 +57,8 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
      */
     private SystemUiHider mSystemUiHider;
 
+    SaveLoadAppsPreferences listaAppsPreferences;
+
     private AppListFragment appListFragment;
     private SelectedAppsListFragment selectedAppsListFragment;
     private DesktopFragment desktopFragment;
@@ -69,6 +72,7 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        listaAppsPreferences = new SaveLoadAppsPreferences(this);
         setContentView(R.layout.activity_main);
         desktopLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
@@ -122,8 +126,18 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
 
 
 
+
+
+
     public void addShortcut(ShortcutInfo shortcutInfo) {
-        desktopFragment.addShortcut(shortcutInfo);
+        if ( shortcutInfo instanceof  AppInfo){
+            if (listaAppsPreferences.addAppInfo((AppInfo) shortcutInfo)){
+                desktopFragment.addShortcut(shortcutInfo);
+            }
+            else{
+                //Ya esta añadido
+            }
+        }
     }
 
 

@@ -31,6 +31,10 @@ public class AppInfo extends ShortcutInfo {
     private long firstInstallTime;
     private int flags = 0;
 
+    public String getPackageName(){
+        return packageName;
+    }
+
     public AppInfo(PackageManager pm, ResolveInfo info, IconCache iconCache,
                    HashMap<Object, CharSequence> labelCache) {
         this.packageName = info.activityInfo.applicationInfo.packageName;
