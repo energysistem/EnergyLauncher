@@ -2,14 +2,17 @@ package com.energysistem.energylauncher.tvboxlauncher.ui.fragments;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.ImageButton;
 
 import com.energysistem.energylauncher.tvboxlauncher.R;
 import com.energysistem.energylauncher.tvboxlauncher.modelo.ShortcutInfo;
+import com.energysistem.energylauncher.tvboxlauncher.ui.LauncherActivity;
 import com.energysistem.energylauncher.tvboxlauncher.ui.adapters.ShortcutAdapter;
 
 /**
@@ -19,6 +22,8 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
 
     private GridView mAppsGrid;
     private ShortcutAdapter gridAdapter;
+    private ImageButton settingsButton;
+    private ImageButton appButton;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -28,8 +33,23 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
         mAppsGrid = (GridView) view.findViewById(R.id.app_grid);
         gridAdapter = new ShortcutAdapter(getActivity());
         mAppsGrid.setAdapter(gridAdapter);
-
         mAppsGrid.setOnItemClickListener(this);
+
+        settingsButton = (ImageButton) view.findViewById(R.id.settingsButton);
+        settingsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((LauncherActivity)getActivity()).toggleDrawer(Gravity.LEFT);
+            }
+        });
+
+        appButton = (ImageButton) view.findViewById(R.id.appButton);
+        appButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((LauncherActivity)getActivity()).toggleDrawer(Gravity.RIGHT);
+            }
+        });
 
         return view;
     }
@@ -51,6 +71,11 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
 
     public void addShortcut(ShortcutInfo shortcutInfo) {
         gridAdapter.addItem(shortcutInfo);
+        gridAdapter.notifyDataSetChanged();
+    }
+
+    public void removeShortcut(ShortcutInfo shortcutInfo) {
+        gridAdapter.removeItem(shortcutInfo);
         gridAdapter.notifyDataSetChanged();
     }
 
