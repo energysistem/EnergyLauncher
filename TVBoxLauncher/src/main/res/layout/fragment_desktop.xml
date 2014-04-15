@@ -6,7 +6,7 @@
     <RelativeLayout
         android:orientation="horizontal"
         android:layout_width="fill_parent"
-        android:layout_height="20dip">
+        android:layout_height="wrap_content">
 
 
         <ImageButton
@@ -16,6 +16,13 @@
             android:id="@+id/settingsButton"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/clock"
+            android:layout_centerInParent="true"
+            android:textSize="40sp"/>
 
         <ImageButton
             android:layout_width="wrap_content"
