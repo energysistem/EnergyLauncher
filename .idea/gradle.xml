@@ -7,8 +7,8 @@
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="modules">
           <set>
-            <option value="C:\Users\emg\Documents\GitHub\EnergyLauncher" />
-            <option value="C:\Users\emg\Documents\GitHub\EnergyLauncher\TVBoxLauncher" />
+            <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/TVBoxLauncher" />
           </set>
         </option>
       </GradleProjectSettings>
