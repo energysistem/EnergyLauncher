@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.view.LayoutInflater;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.energysistem.energylauncher.tvboxlauncher.modelo.ShortcutInfo;
@@ -61,7 +61,7 @@ public class ShortcutAdapter extends BaseAdapter {
 
         view = inflater.inflate(R.layout.cell_shortcut, null);
 
-        RelativeLayout container = (RelativeLayout) view.findViewById(R.id.container);
+        LinearLayout container = (LinearLayout) view.findViewById(R.id.container);
         ImageView icon = (ImageView) view.findViewById(R.id.icon);
         TextView title = (TextView) view.findViewById(R.id.title);
 

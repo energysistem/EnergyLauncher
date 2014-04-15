@@ -2,7 +2,6 @@ package com.energysistem.energylauncher.tvboxlauncher.ui.fragments;
 
 import android.annotation.TargetApi;
 import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -38,7 +37,7 @@ public class MenuListFragmernt extends Fragment {
         mMenuList.setOnItemClickListener(new DrawerItemClickListener());
 
 
-        BasicITAdapter adapter = new BasicITAdapter(view.getContext(), R.layout.cell_menu, drawerItem);
+        BasicITAdapter adapter = new BasicITAdapter(view.getContext(), R.layout.row_menu, drawerItem);
         mMenuList.setAdapter(adapter);
 
 
