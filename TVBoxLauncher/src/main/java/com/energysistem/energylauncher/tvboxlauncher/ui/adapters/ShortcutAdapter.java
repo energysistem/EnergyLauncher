@@ -1,6 +1,7 @@
 package com.energysistem.energylauncher.tvboxlauncher.ui.adapters;
 
 import android.content.Context;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -18,7 +19,7 @@ import java.util.List;
 /**
  * Created by Vicente on 12/04/2014.
  */
-public class ShortcutAdapter extends BaseAdapter {
+public class ShortcutAdapter extends BaseAdapter  {
 
     List<ShortcutInfo> data;
     Context context;
@@ -59,9 +60,10 @@ public class ShortcutAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int i, View view, ViewGroup viewGroup) {
+    public View getView(int i, View convertView, ViewGroup viewGroup) {
 
-        ShortcutInfo shortcut = data.get(i);
+        View view;
+        final ShortcutInfo shortcut = data.get(i);
 
         view = inflater.inflate(R.layout.cell_shortcut, null);
 
@@ -69,10 +71,17 @@ public class ShortcutAdapter extends BaseAdapter {
         ImageView icon = (ImageView) view.findViewById(R.id.icon);
         TextView title = (TextView) view.findViewById(R.id.title);
 
-        container.setBackgroundColor(shortcut.getBackgroundColor());
+        //container.setBackgroundColor(shortcut.getBackgroundColor());
         icon.setImageBitmap(shortcut.iconBitmap);
         title.setText(shortcut.title);
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                context.startActivity(shortcut.getIntent());
+            }
+        });
 
         return view;
     }
+
 }

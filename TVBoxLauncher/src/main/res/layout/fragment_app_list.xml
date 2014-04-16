@@ -6,6 +6,11 @@
     tools:context="com.ryanharter.atv.launcher.ui.LauncherActivity$PlaceholderFragment">
 
     <ListView
+        android:drawSelectorOnTop="true"
+        android:nextFocusLeft="@+id/app_grid"
+        android:nextFocusRight="@+id/app_grid"
+        android:nextFocusUp="@+id/app_grid"
+        android:nextFocusDown="@+id/app_grid"
         android:orientation="vertical"
         android:id="@+id/app_grid"
         android:layout_width="wrap_content"

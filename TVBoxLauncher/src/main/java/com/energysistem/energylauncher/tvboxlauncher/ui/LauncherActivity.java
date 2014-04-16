@@ -11,13 +11,19 @@ import com.energysistem.energylauncher.tvboxlauncher.ui.fragments.SelectedAppsLi
 import com.energysistem.energylauncher.tvboxlauncher.util.SystemUiHider;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -72,6 +78,8 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         desktopLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        appLayout = (FrameLayout) findViewById(R.id.right_drawer);
+        optionLayout = (FrameLayout) findViewById(R.id.left_drawer);
 
         drawerToggle = new ActionBarDrawerToggle(this,
                 desktopLayout,
@@ -82,10 +90,15 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
             public void onDrawerClosed(View view) {
                 getFragmentManager().beginTransaction()
                         .replace(R.id.left_drawer, new MenuListFragmernt()).commit();
+                desktopFragment.getAppButton().requestFocus();
             }
 
             public void onDrawerOpened(View drawerView) {
+                try {
+                    ((ViewGroup)drawerView).getChildAt(0).requestFocus();
+                } catch (NullPointerException e) {
 
+                }
             }
         };
 
@@ -103,7 +116,7 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
             //Drawer derecho
             appListFragment = new AppListFragment();
             getFragmentManager().beginTransaction()
-                    .add(R.id.rigth_drawer, appListFragment)
+                    .add(R.id.right_drawer, appListFragment)
                     .commit();
 
             //Drawer Izquierdo
@@ -139,14 +152,40 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
 
     @Override
     public void onBackPressed() {
-        return;
+        desktopLayout.closeDrawers();
     }
 
-    public void toggleDrawer(int gravity) {
-        if(desktopLayout.isDrawerOpen(gravity)) {
-            desktopLayout.closeDrawer(gravity);
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        Log.d("Key Pressed", KeyEvent.keyCodeToString(keyCode));
+        switch (keyCode) {
+            case KeyEvent.KEYCODE_CAPTIONS:
+                toggleDrawer(appLayout);
+                return true;
+            case KeyEvent.KEYCODE_SETTINGS:
+                toggleDrawer(optionLayout);
+                return true;
+            case KeyEvent.KEYCODE_TV:
+                Intent i;
+                PackageManager manager = getPackageManager();
+                try {
+                    i = manager.getLaunchIntentForPackage("com.amlogic.DTVPlayer");
+                    i.addCategory(Intent.CATEGORY_LAUNCHER);
+                    startActivity(i);
+                } catch (NullPointerException e) {
+                    Log.d("Key Shortcut","App not foumd");
+                }
+                return true;
+        }
+        return super.onKeyUp(keyCode, event);
+    }
+
+    public void toggleDrawer(FrameLayout drawerLaayout) {
+        if(desktopLayout.isDrawerOpen(drawerLaayout)) {
+            desktopLayout.closeDrawers();
         } else {
-            desktopLayout.openDrawer(gravity);
+            desktopLayout.closeDrawers();
+            desktopLayout.openDrawer(drawerLaayout);
         }
     }
 

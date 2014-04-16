@@ -19,6 +19,7 @@ import com.energysistem.energylauncher.tvboxlauncher.modelo.ShortcutInfo;
 import com.energysistem.energylauncher.tvboxlauncher.modelo.WebPageInfo;
 import com.energysistem.energylauncher.tvboxlauncher.ui.LauncherActivity;
 import com.energysistem.energylauncher.tvboxlauncher.ui.adapters.ShortcutAdapter;
+import com.energysistem.energylauncher.tvboxlauncher.ui.views.ExpandableHeightGridView;
 import com.energysistem.energylauncher.tvboxlauncher.util.Clock;
 
 import java.io.IOException;
@@ -30,12 +31,12 @@ import java.sql.Date;
 /**
  * Created by vgt on 11/04/2014.
  */
-public class DesktopFragment extends Fragment implements AdapterView.OnItemClickListener{
+public class DesktopFragment extends Fragment{
 
-    private GridView mAppsGrid;
+    private ExpandableHeightGridView mAppsGrid;
     private ShortcutAdapter gridAdapter;
-    private ImageButton settingsButton;
     private ImageButton appButton;
+
     TextView clockTextView;
 
     @Override
@@ -43,24 +44,16 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_desktop, container, false);
 
-        mAppsGrid = (GridView) view.findViewById(R.id.app_grid);
+        mAppsGrid = (ExpandableHeightGridView) view.findViewById(R.id.app_grid);
         gridAdapter = new ShortcutAdapter(getActivity());
         mAppsGrid.setAdapter(gridAdapter);
-        mAppsGrid.setOnItemClickListener(this);
-
-        settingsButton = (ImageButton) view.findViewById(R.id.settingsButton);
-        settingsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ((LauncherActivity)getActivity()).toggleDrawer(Gravity.LEFT);
-            }
-        });
+        //mAppsGrid.setExpanded(true);
 
         appButton = (ImageButton) view.findViewById(R.id.appButton);
         appButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((LauncherActivity)getActivity()).toggleDrawer(Gravity.RIGHT);
+                ((LauncherActivity)getActivity()).toggleDrawer(((LauncherActivity)getActivity()).getAppLayout());
             }
         });
 
@@ -94,11 +87,11 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
         }
     }
 
-    @Override
-    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-        ShortcutInfo shortcut = (ShortcutInfo) gridAdapter.getItem(i);
-        startActivity(shortcut.getIntent());
-    }
+//    @Override
+//    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+//        ShortcutInfo shortcut = (ShortcutInfo) gridAdapter.getItem(i);
+//        startActivity(shortcut.getIntent());
+//    }
 
     public void addShortcut(final ShortcutInfo shortcutInfo) {
         if(shortcutInfo instanceof WebPageInfo) {
@@ -129,5 +122,9 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
 
     public void getShortcuts() {
 
+    }
+
+    public ImageButton getAppButton() {
+        return appButton;
     }
 }

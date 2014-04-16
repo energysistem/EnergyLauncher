@@ -1,10 +1,12 @@
 package com.energysistem.energylauncher.tvboxlauncher.ui.fragments;
 
 import android.app.Fragment;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -37,8 +39,13 @@ public class MenuBookMarkFragment  extends Fragment {
                         e.printStackTrace();
                         //TODO
                     }
+
+                    InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(
+                            Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(txtName.getWindowToken(), 0);
                 }
             });
+
 
 
         return view;

@@ -8,15 +8,6 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content">
 
-
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:drawable="@drawable/settings"
-            android:id="@+id/settingsButton"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true" />
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -25,24 +16,29 @@
             android:textSize="40sp"/>
 
         <ImageButton
+            android:focusableInTouchMode="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/appButton"
             android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true" />
+            android:layout_alignParentTop="true" >
+            <requestFocus/>
+        </ImageButton>
 
     </RelativeLayout >
 
-    <GridView
+    <view
+        class="com.energysistem.energylauncher.tvboxlauncher.ui.views.ExpandableHeightGridView"
         android:id="@+id/app_grid"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="wrap_content"
         android:layout_margin="30dp"
         android:numColumns="5"
         android:horizontalSpacing="16dp"
         android:verticalSpacing="16dp"
         android:padding="16dp"
         android:gravity="center_horizontal"/>
+
 
 </LinearLayout>
 
