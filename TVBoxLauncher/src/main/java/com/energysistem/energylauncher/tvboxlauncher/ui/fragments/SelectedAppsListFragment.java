@@ -58,7 +58,7 @@ public class SelectedAppsListFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        mAdapter = new AppAdapter(getActivity(), ((LauncherActivity) getActivity()).getAppList(), false);
+        mAdapter = new AppAdapter(getActivity(), ((LauncherActivity) getActivity()).getAppList());
         mAppsList.setAdapter(mAdapter);
 
     }

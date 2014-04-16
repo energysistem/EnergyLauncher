@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
 
-    <LinearLayout
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
+        android:layout_height="70dp"
+    android:orientation="horizontal"
+    android:paddingEnd="20dp"
+    android:gravity="center_vertical|center_horizontal">
 
 
         <ImageView
@@ -18,21 +16,27 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
 
-            android:src="@drawable/default_app_icon" />
+            android:src="@drawable/default_app_icon"
+            android:layout_gravity="left" />
 
-        <TextView
+    <TextView
             android:id="@+id/title_app"
-            android:text="algo sdf,mb sdkf sdklfh dslkjdsfh kjsdh sdfksdf"
+            android:text="algo sdf,mb sdkf s"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="fill_parent"
             android:gravity="center_vertical"
             android:layout_weight="1" />
 
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/checkBoxApp"
-            android:layout_gravity="center_vertical|right|top" />
-    </LinearLayout>
+    <FrameLayout
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_gravity="right"
+        android:background="@color/black_grey"
+        android:id="@+id/frame_checkbox"
+        />
 
-</RelativeLayout>
+
+
+</LinearLayout>
+
+

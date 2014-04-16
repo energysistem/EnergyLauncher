@@ -61,7 +61,7 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
     SaveLoadAppsPreferences listaAppsPreferences;
 
     private AppListFragment appListFragment;
-    private SelectedAppsListFragment selectedAppsListFragment;
+    //private SelectedAppsListFragment selectedAppsListFragment;
     private DesktopFragment desktopFragment;
 
     private DrawerLayout desktopLayout;
@@ -117,12 +117,12 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
         }
     }
 
-    public void cargaFragmentSelectAppListIzquierdo() {
-        selectedAppsListFragment = new SelectedAppsListFragment();
-        getFragmentManager().beginTransaction()
-                .add(R.id.left_drawer, selectedAppsListFragment)
-                .commit();
-    }
+//    public void cargaFragmentSelectAppListIzquierdo() {
+//        selectedAppsListFragment = new SelectedAppsListFragment();
+//        getFragmentManager().beginTransaction()
+//                .add(R.id.left_drawer, selectedAppsListFragment)
+//                .commit();
+//    }
 
 
     public void addShortcut(ShortcutInfo shortcutInfo) {
@@ -131,7 +131,7 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
                 desktopFragment.addShortcut(shortcutInfo);
             }
             else{
-                //Ya esta añadido
+                desktopFragment.removeShortcut(shortcutInfo);
             }
         }
     }
