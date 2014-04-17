@@ -12,32 +12,34 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/clock"
+            android:textColor="@android:color/white"
             android:layout_centerInParent="true"
             android:textSize="40sp"/>
 
         <ImageButton
-            android:focusableInTouchMode="true"
+            android:focusable="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginRight="60dp"
             android:id="@+id/appButton"
             android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true" >
+            android:layout_centerVertical="true" >
             <requestFocus/>
         </ImageButton>
 
     </RelativeLayout >
 
-    <view
-        class="com.energysistem.energylauncher.tvboxlauncher.ui.views.ExpandableHeightGridView"
+    <GridView
         android:id="@+id/app_grid"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="30dp"
+        android:layout_height="fill_parent"
         android:numColumns="5"
         android:horizontalSpacing="16dp"
         android:verticalSpacing="16dp"
         android:padding="16dp"
-        android:gravity="center_horizontal"/>
+        android:stretchMode="columnWidth"
+        android:gravity="center_horizontal"
+        android:paddingBottom="0dp" />
 
 
 </LinearLayout>

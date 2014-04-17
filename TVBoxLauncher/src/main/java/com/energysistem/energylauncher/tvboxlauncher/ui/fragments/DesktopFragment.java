@@ -5,7 +5,6 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.text.format.Time;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,21 +18,19 @@ import com.energysistem.energylauncher.tvboxlauncher.modelo.ShortcutInfo;
 import com.energysistem.energylauncher.tvboxlauncher.modelo.WebPageInfo;
 import com.energysistem.energylauncher.tvboxlauncher.ui.LauncherActivity;
 import com.energysistem.energylauncher.tvboxlauncher.ui.adapters.ShortcutAdapter;
-import com.energysistem.energylauncher.tvboxlauncher.ui.views.ExpandableHeightGridView;
 import com.energysistem.energylauncher.tvboxlauncher.util.Clock;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.sql.Date;
 
 /**
  * Created by vgt on 11/04/2014.
  */
-public class DesktopFragment extends Fragment{
+public class DesktopFragment extends Fragment implements AdapterView.OnItemClickListener{
 
-    private ExpandableHeightGridView mAppsGrid;
+    private GridView mAppsGrid;
     private ShortcutAdapter gridAdapter;
     private ImageButton appButton;
 
@@ -44,10 +41,10 @@ public class DesktopFragment extends Fragment{
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_desktop, container, false);
 
-        mAppsGrid = (ExpandableHeightGridView) view.findViewById(R.id.app_grid);
+        mAppsGrid = (GridView) view.findViewById(R.id.app_grid);
         gridAdapter = new ShortcutAdapter(getActivity());
         mAppsGrid.setAdapter(gridAdapter);
-        //mAppsGrid.setExpanded(true);
+        mAppsGrid.setOnItemClickListener(this);
 
         appButton = (ImageButton) view.findViewById(R.id.appButton);
         appButton.setOnClickListener(new View.OnClickListener() {
@@ -56,6 +53,7 @@ public class DesktopFragment extends Fragment{
                 ((LauncherActivity)getActivity()).toggleDrawer(((LauncherActivity)getActivity()).getAppLayout());
             }
         });
+        appButton.requestFocus();
 
         Time time = new Time();
         time.setToNow();
@@ -87,11 +85,11 @@ public class DesktopFragment extends Fragment{
         }
     }
 
-//    @Override
-//    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-//        ShortcutInfo shortcut = (ShortcutInfo) gridAdapter.getItem(i);
-//        startActivity(shortcut.getIntent());
-//    }
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+        ShortcutInfo shortcut = (ShortcutInfo) gridAdapter.getItem(i);
+        startActivity(shortcut.getIntent());
+    }
 
     public void addShortcut(final ShortcutInfo shortcutInfo) {
         if(shortcutInfo instanceof WebPageInfo) {

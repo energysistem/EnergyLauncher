@@ -104,7 +104,6 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
 
         desktopLayout.setDrawerListener(drawerToggle);
 
-
         LauncherAppState.setApplicationContext(getApplicationContext());
 
         if (savedInstanceState == null) {

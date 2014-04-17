@@ -71,15 +71,8 @@ public class ShortcutAdapter extends BaseAdapter  {
         ImageView icon = (ImageView) view.findViewById(R.id.icon);
         TextView title = (TextView) view.findViewById(R.id.title);
 
-        //container.setBackgroundColor(shortcut.getBackgroundColor());
         icon.setImageBitmap(shortcut.iconBitmap);
         title.setText(shortcut.title);
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                context.startActivity(shortcut.getIntent());
-            }
-        });
 
         return view;
     }
