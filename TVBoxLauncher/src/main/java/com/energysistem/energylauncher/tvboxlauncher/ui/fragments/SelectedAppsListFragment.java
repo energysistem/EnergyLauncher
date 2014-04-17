@@ -29,13 +29,6 @@ public class SelectedAppsListFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_app_list, container, false);
 
-//        mAllAppsButton = (ImageButton) v.findViewById(R.id.expand_button);
-//        mAllAppsButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                mCallbacks.onExpandButtonClick();
-//            }
-//        });
 
         mAppsList = (ListView) v.findViewById(R.id.app_grid);
 

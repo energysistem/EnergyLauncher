@@ -38,7 +38,7 @@ public class MenuListFragmernt extends Fragment {
 
 
         BasicITAdapter adapter = new BasicITAdapter(view.getContext(), R.layout.row_menu, drawerItem);
-        mMenuList.setAdapter(adapter);
+        //mMenuList.setAdapter(adapter);
 
 
         return view;

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by emg on 15/04/2014.
@@ -26,8 +27,19 @@ public class SaveLoadAppsPreferences {
     }
 
 
+    public void ActualizaListaApps(List<AppInfo> listaApps) {
+        ArrayList<String> listAppsString = new ArrayList<String>(listaApps.size());
+        for (int i = 0; i < listaApps.size(); i++) {
+            if (listaApps.get(i).checked)
+                listAppsString.add(listaApps.get(i).getComponentName().toString());
+        }
+        removeArray();
+        addArray(listAppsString);
+    }
+
+
     public boolean addAppInfo(AppInfo app) {
-        String nombre = app.getPackageName();
+        String nombre = app.getComponentName().toString();
 
         if (ListaApps.contains(nombre)) {
             //Ya está metida
@@ -40,13 +52,13 @@ public class SaveLoadAppsPreferences {
     }
 
     public boolean removeAppInfo(AppInfo app) {
-        String nombre = app.getPackageName();
+        String nombre = app.getComponentName().toString();
 
         if (ListaApps.contains(nombre)) {
             //Pasando de gestionar los indices de la lista de las preferencias
 
             //Está la app. Borramos la lista y la volvemos a crear.
-            removeArray(ListaApps);
+            removeArray();
             //La qutamos de la lista global
             ListaApps.remove(nombre);
             //Volvemos a alamacenar la lista
@@ -60,7 +72,7 @@ public class SaveLoadAppsPreferences {
     public ArrayList<String> loadStringList() {
         ArrayList<String> listaStrings = new ArrayList<String>();
 
-        int size = mSharedPrefs.getInt("PREFS_LIST_SIZE", 0);
+        int size = mSharedPrefs.getInt(PREFS_LIST_SIZE, 0);
 
         for (int i = 0; i < size; i++) {
             String appS = mSharedPrefs.getString("list_" + i, "");
@@ -82,9 +94,10 @@ public class SaveLoadAppsPreferences {
     }
 
 
-    private void removeArray(ArrayList<String> list) {
+    private void removeArray() {
         SharedPreferences.Editor editor = mSharedPrefs.edit();
-        int size = list.size();
+
+        int size = mSharedPrefs.getInt(PREFS_LIST_SIZE, 0);
 
         for (int i = 0; i < size; i++) {
             editor.remove("list_" + i);

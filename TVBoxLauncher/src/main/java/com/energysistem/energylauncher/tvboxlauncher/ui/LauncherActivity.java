@@ -8,18 +8,16 @@ import com.energysistem.energylauncher.tvboxlauncher.modelo.ShortcutInfo;
 import com.energysistem.energylauncher.tvboxlauncher.ui.fragments.AppListFragment;
 import com.energysistem.energylauncher.tvboxlauncher.ui.fragments.DesktopFragment;
 import com.energysistem.energylauncher.tvboxlauncher.ui.fragments.MenuListFragmernt;
-import com.energysistem.energylauncher.tvboxlauncher.ui.fragments.SelectedAppsListFragment;
 import com.energysistem.energylauncher.tvboxlauncher.util.SystemUiHider;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.ImageButton;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -58,7 +56,7 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
      */
     private SystemUiHider mSystemUiHider;
 
-    SaveLoadAppsPreferences listaAppsPreferences;
+    SaveLoadAppsPreferences preferencesListadoApps;
 
     private AppListFragment appListFragment;
     //private SelectedAppsListFragment selectedAppsListFragment;
@@ -73,7 +71,7 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        listaAppsPreferences = new SaveLoadAppsPreferences(this);
+        preferencesListadoApps = new SaveLoadAppsPreferences(this);
         setContentView(R.layout.activity_main);
         desktopLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
@@ -125,19 +123,30 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
 //    }
 
 
+    /*
+    **************************************************************
+    Manejar las preferencias
+    **************************************************************
+    */
+
     public void addShortcut(ShortcutInfo shortcutInfo) {
         if ( shortcutInfo instanceof  AppInfo){
-            if (listaAppsPreferences.addAppInfo((AppInfo) shortcutInfo)){
                 desktopFragment.addShortcut(shortcutInfo);
-            }
-            else{
-                desktopFragment.removeShortcut(shortcutInfo);
-            }
+                preferencesListadoApps.addAppInfo((AppInfo) shortcutInfo);
         }
     }
 
     public void removeShortcut(ShortcutInfo shortcutInfo) {
         desktopFragment.removeShortcut(shortcutInfo);
+        preferencesListadoApps.removeAppInfo((AppInfo) shortcutInfo);
+    }
+
+    public ArrayList<String> getAppsNamePreferences(){
+        return preferencesListadoApps.loadStringList();
+    }
+
+    public void actualizaArrayAppsPreferencias(List<AppInfo> listaApps){
+        preferencesListadoApps.ActualizaListaApps(listaApps);
     }
 
 
