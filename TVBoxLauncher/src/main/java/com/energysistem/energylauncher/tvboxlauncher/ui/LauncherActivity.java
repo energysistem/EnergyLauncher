@@ -3,6 +3,7 @@ package com.energysistem.energylauncher.tvboxlauncher.ui;
 import com.energysistem.energylauncher.tvboxlauncher.LauncherAppState;
 import com.energysistem.energylauncher.tvboxlauncher.R;
 import com.energysistem.energylauncher.tvboxlauncher.modelo.AppInfo;
+import com.energysistem.energylauncher.tvboxlauncher.modelo.SaveLoadAppsPreferences;
 import com.energysistem.energylauncher.tvboxlauncher.modelo.ShortcutInfo;
 import com.energysistem.energylauncher.tvboxlauncher.ui.fragments.AppListFragment;
 import com.energysistem.energylauncher.tvboxlauncher.ui.fragments.DesktopFragment;
@@ -25,6 +26,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -62,7 +64,7 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
      * The instance of the {@link SystemUiHider} for this activity.
      */
     private SystemUiHider mSystemUiHider;
-
+    SaveLoadAppsPreferences preferencesListadoApps;
     private AppListFragment appListFragment;
     private SelectedAppsListFragment selectedAppsListFragment;
     private DesktopFragment desktopFragment;
@@ -80,6 +82,8 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
         desktopLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         appLayout = (FrameLayout) findViewById(R.id.right_drawer);
         optionLayout = (FrameLayout) findViewById(R.id.left_drawer);
+
+        preferencesListadoApps = new SaveLoadAppsPreferences(this);
 
         drawerToggle = new ActionBarDrawerToggle(this,
                 desktopLayout,
@@ -124,21 +128,32 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
 
         }
     }
-
-    public void cargaFragmentSelectAppListIzquierdo() {
-        selectedAppsListFragment = new SelectedAppsListFragment();
-        getFragmentManager().beginTransaction()
-                .add(R.id.left_drawer, selectedAppsListFragment)
-                .commit();
-    }
+ /*
+    **************************************************************
+    Manejar las preferencias
+    **************************************************************
+    */
 
     public void addShortcut(ShortcutInfo shortcutInfo) {
-        desktopFragment.addShortcut(shortcutInfo);
+        if ( shortcutInfo instanceof  AppInfo){
+            desktopFragment.addShortcut(shortcutInfo);
+            preferencesListadoApps.addAppInfo((AppInfo) shortcutInfo);
+        }
     }
 
     public void removeShortcut(ShortcutInfo shortcutInfo) {
         desktopFragment.removeShortcut(shortcutInfo);
+        preferencesListadoApps.removeAppInfo((AppInfo) shortcutInfo);
     }
+
+    public ArrayList<String> getAppsNamePreferences(){
+        return preferencesListadoApps.loadStringList();
+    }
+
+    public void actualizaArrayAppsPreferencias(List<AppInfo> listaApps){
+        preferencesListadoApps.ActualizaListaApps(listaApps);
+    }
+
 
     @Override
     public void onExpandButtonClick() {

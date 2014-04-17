@@ -1,23 +1,87 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="16dp"
-    tools:context="com.ryanharter.atv.launcher.ui.LauncherActivity$PlaceholderFragment">
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
 
-    <ListView
-        android:drawSelectorOnTop="true"
-        android:nextFocusLeft="@+id/app_grid"
-        android:nextFocusRight="@+id/app_grid"
-        android:nextFocusUp="@+id/app_grid"
-        android:nextFocusDown="@+id/app_grid"
-        android:orientation="vertical"
-        android:id="@+id/app_grid"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:layout_marginTop="16dp"
-        android:gravity="center_horizontal"
-        android:verticalSpacing="16dp"/>
 
-</RelativeLayout>
+
+    <TabHost
+        android:id="@+id/tabHost"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_x="0dp"
+        android:layout_y="0dp" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+
+            <TabWidget
+                android:id="@android:id/tabs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+            </TabWidget>
+
+            <FrameLayout
+                android:id="@android:id/tabcontent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
+
+                <LinearLayout
+                    android:id="@+id/tab1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:contentDescription="HOME" >
+
+                    <ListView
+                        android:orientation="vertical"
+                        android:id="@+id/app_grid"
+                        android:layout_width="wrap_content"
+                        android:layout_height="fill_parent"
+                        android:layout_marginTop="16dp"
+                        android:gravity="center_horizontal"
+                        android:verticalSpacing="16dp"
+                        android:layout_weight="1" />
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/tab2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:contentDescription="HOME" >
+
+                    <TextView
+                        android:id="@+id/textView2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="1dp"
+                        android:visibility="gone"
+                        android:text="TAB 2"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/tab3"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:contentDescription="HOME" >
+
+                    <TextView
+                        android:id="@+id/textView3"
+                        android:layout_width="204dp"
+                        android:layout_height="match_parent"
+                        android:paddingLeft="10dp"
+                        android:text="TAB 3"/>
+
+                </LinearLayout>
+
+            </FrameLayout>
+        </LinearLayout>
+    </TabHost>
+
+</LinearLayout>

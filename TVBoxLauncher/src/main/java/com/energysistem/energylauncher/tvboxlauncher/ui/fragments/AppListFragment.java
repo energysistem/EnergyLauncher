@@ -7,44 +7,56 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.Loader;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
+import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TabHost;
 import android.widget.TextView;
 
 import com.energysistem.energylauncher.tvboxlauncher.LauncherAppState;
 import com.energysistem.energylauncher.tvboxlauncher.Loader.AppLoader;
 import com.energysistem.energylauncher.tvboxlauncher.R;
 import com.energysistem.energylauncher.tvboxlauncher.modelo.AppInfo;
+import com.energysistem.energylauncher.tvboxlauncher.modelo.BasicImgText;
 import com.energysistem.energylauncher.tvboxlauncher.ui.LauncherActivity;
 import com.energysistem.energylauncher.tvboxlauncher.ui.adapters.AppAdapter;
+import com.energysistem.energylauncher.tvboxlauncher.ui.adapters.AppCheckBoxAdapter;
+import com.energysistem.energylauncher.tvboxlauncher.ui.adapters.BasicITAdapter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.EventListener;
 import java.util.List;
 
 /**
  * Created by emg on 09/04/2014.
  */
-public class AppListFragment extends Fragment implements LoaderManager.LoaderCallbacks<List<AppInfo>> {
+public class AppListFragment extends Fragment implements LoaderManager.LoaderCallbacks<List<AppInfo>>, AdapterView.OnItemClickListener {
 
     static List<String> favorites = Arrays.asList("Play Movies & TV", "Netflix", "Plex", "YouTube", "Chrome");
 
-    private ListView mAppsGrid;
+    private ListView mAppsInfoListView;
+    TabHost tabHost;
+
     private Callbacks mCallbacks = sDummyCallbacks;
 
-    private List<AppInfo> mAppInfos;
+    private List<AppInfo> mAppInfosList;
 
-    private AppAdapter mAdapter;
+    private ListView mMenuList;
+    private AppAdapter mAppAdapter;
     private LinearLayout mFavorites;
 
     public interface Callbacks {
@@ -60,6 +72,9 @@ public class AppListFragment extends Fragment implements LoaderManager.LoaderCal
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_app_list, container, false);
 
+
+
+
 //        mAllAppsButton = (ImageButton) v.findViewById(R.id.expand_button);
 //        mAllAppsButton.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -67,20 +82,60 @@ public class AppListFragment extends Fragment implements LoaderManager.LoaderCal
 //                mCallbacks.onExpandButtonClick();
 //            }
 //        });
+//        mAppsChecboxListView = (ListView) v.findViewById(R.id.app_checkboxes);
+//        mAppsGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int pos, long l) {
+//
+//                CheckBox cb = (CheckBox) view.findViewById(R.id.checkBoxApp);
+//                TextView tv = (TextView) view.findViewById(R.id.title_app);
+//
+//
+//                final AppInfo info = mAdapter.getItem(pos);
+//                startActivity(info.getIntent());
+//            }
+//        });
 
-        mAppsGrid = (ListView) v.findViewById(R.id.app_grid);
-        mAppsGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                final AppInfo info = mAdapter.getItem(i);
-                startActivity(info.getIntent());
-            }
-        });
+        mAppsInfoListView = (ListView) v.findViewById(R.id.app_grid);
+        mAppsInfoListView.setOnItemClickListener(this);
 
-        //mFavorites = (LinearLayout) v.findViewById(R.id.favorite_bar);
+        tabHost=(TabHost)v.findViewById(R.id.tabHost);
+        tabHost.setup();
+
+        TabHost.TabSpec spec1=tabHost.newTabSpec("APPS");
+        spec1.setContent(R.id.tab1);
+        spec1.setIndicator("APPS");
+
+
+        TabHost.TabSpec spec2=tabHost.newTabSpec("BOOKMARKS");
+        spec2.setIndicator("BOOKMARKS");
+        spec2.setContent(R.id.tab2);
+
+        getFragmentManager().beginTransaction().replace(R.id.tab2, new MenuBookMarkFragment()).commit();
+
+
+        TabHost.TabSpec spec3=tabHost.newTabSpec("TAB 3");
+        spec3.setContent(R.id.tab3);
+        spec3.setIndicator("TAB 3");
+        tabHost.addTab(spec1);
+        tabHost.addTab(spec2);
+        tabHost.addTab(spec3);
 
         return v;
     }
+
+
+
+
+    @Override
+    public void onItemClick(AdapterView adapter, View v, int position, long arg3) {
+        // TODO Auto-generated method stub
+        final AppInfo info = mAppAdapter.getItem(position);
+        startActivity(info.getIntent());
+
+    }
+
+
 
 
     @Override
@@ -117,14 +172,57 @@ public class AppListFragment extends Fragment implements LoaderManager.LoaderCal
         //Take out the favorites
         //appInfos = extractFavorites(appInfos);
 
-        mAppInfos = appInfos;
-        mAdapter = new AppAdapter(getActivity(), appInfos, false);
-        mAppsGrid.setAdapter(mAdapter);
+        mAppInfosList = appInfos;
+        mAppAdapter = new AppAdapter(getActivity(), appInfos);
+        mAppsInfoListView.setAdapter(mAppAdapter);
+
+        //Creamos el listener para el checkbox de dentro del item
+        mAppAdapter.setOnCheckBoxClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FrameLayout f =(FrameLayout) v.findViewById(R.id.frame_checkbox);
+                Log.i("Onclicklistener", "OncheckboxClickListener posicion: " + v.getId());
+                //La posicion está en el id del view
+                AppInfo info = mAppInfosList.get(v.getId());
+
+                if (info.checked) {
+
+                    assert (getActivity()) != null;
+                    ((LauncherActivity) getActivity()).addShortcut(info);
+                }
+                else
+                {
+                    assert (getActivity()) != null;
+                    ((LauncherActivity) getActivity()).removeShortcut(info);
+                }
+            }
+        });
+
+        //Recorremos la lista de aplicaciones en preferencias y añadimos.
+        assert (getActivity()) != null;
+        ArrayList<String> listaApps = ((LauncherActivity)getActivity()).getAppsNamePreferences();
+
+        for (int i = 0; i< listaApps.size(); i++) {
+            String nombreApp = listaApps.get(i);
+            for (int j = 0; j < mAppInfosList.size(); j++) {
+                if (nombreApp.equalsIgnoreCase(mAppInfosList.get(j).getComponentName().toString())){
+                    assert (getActivity()) != null;
+                    ((LauncherActivity)getActivity()).addShortcut(mAppInfosList.get(j));
+                    mAppInfosList.get(j).checked = true;
+                }
+            }
+        }
+
+        assert (getActivity()) != null;
+        ((LauncherActivity)getActivity()).actualizaArrayAppsPreferencias(mAppInfosList);
+
+
+
     }
 
     @Override
     public void onLoaderReset(Loader<List<AppInfo>> listLoader) {
-        mAppsGrid.setAdapter(null);
+        mAppsInfoListView.setAdapter(null);
     }
 
     private List<AppInfo> extractFavorites(List<AppInfo> infos) {
@@ -167,8 +265,8 @@ public class AppListFragment extends Fragment implements LoaderManager.LoaderCal
 
 
     public List<AppInfo> getAppsInfos(){
-        if (mAppInfos != null){
-            return mAppInfos;
+        if (mAppInfosList != null){
+            return mAppInfosList;
         }
         else
         {

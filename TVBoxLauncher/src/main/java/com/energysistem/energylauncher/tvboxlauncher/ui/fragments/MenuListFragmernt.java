@@ -38,7 +38,7 @@ public class MenuListFragmernt extends Fragment {
 
 
         BasicITAdapter adapter = new BasicITAdapter(view.getContext(), R.layout.row_menu, drawerItem);
-        mMenuList.setAdapter(adapter);
+        //mMenuList.setAdapter(adapter);
 
 
         return view;
@@ -68,7 +68,7 @@ public class MenuListFragmernt extends Fragment {
 
             switch (position) {
                 case 0:
-                    getFragmentManager().beginTransaction().replace(R.id.left_drawer, new SelectedAppsListFragment()).commit();
+                    //getFragmentManager().beginTransaction().replace(R.id.left_drawer, new SelectedAppsListFragment()).commit();
                     break;
                 case 1:
                     //getFragmentManager().beginTransaction().replace(R.id.left_drawer, new MenuBookMarkFragment())
