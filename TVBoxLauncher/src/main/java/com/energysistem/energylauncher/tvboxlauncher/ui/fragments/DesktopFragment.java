@@ -79,6 +79,7 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
         if (savedInstanceState == null) {
             //getLoaderManager().restartLoader(0, null, this);
         }
