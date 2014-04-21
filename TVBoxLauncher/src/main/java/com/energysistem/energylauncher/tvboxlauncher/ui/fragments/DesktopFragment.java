@@ -125,4 +125,8 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
     public ImageButton getAppButton() {
         return appButton;
     }
+
+    public void FocusAppListButton(){
+        appButton.requestFocus();
+    }
 }

@@ -14,6 +14,9 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.energysistem.energylauncher.tvboxlauncher.R;
@@ -30,6 +33,7 @@ public class AppAdapter extends ArrayAdapter<AppInfo> {
     private LayoutInflater mLayoutInflater;
     private Resources mResources;
     private View.OnClickListener onCkeckBoxClickListener;
+    private boolean checkBoxSelected;
 
 
     public AppAdapter(Context context, List<AppInfo> objects) {
@@ -60,11 +64,14 @@ public class AppAdapter extends ArrayAdapter<AppInfo> {
 
         holder.image.setImageDrawable(new BitmapDrawable(mResources, info.iconBitmap));
         holder.title.setText(info.title);
+        holder.frameLayout.setBackgroundColor(getFrameCheckBoxView(info.checked, false));
 
-        if (info.checked)
-            holder.frameLayout.setBackgroundColor(Color.RED);
-        else
-            holder.frameLayout.setBackgroundColor(Color.BLACK);
+
+        /*if (checkBoxSelected) {
+            if (position == selectedItem) {
+                holder.frameLayout.setBackgroundColor(Color.GREEN);
+            }
+        }*/
 
         holder.frameLayout.setOnClickListener(this.onCkeckBoxClickListener);
 
@@ -74,24 +81,62 @@ public class AppAdapter extends ArrayAdapter<AppInfo> {
                 Log.i("onclickListener", "framelayout " + position);
                 info.checked = !info.checked;
 
-                if (info.checked)
-                    v.setBackgroundColor(Color.RED);
-                else
-                    v.setBackgroundColor(Color.BLACK);
+               v.setBackgroundColor(getFrameCheckBoxView(info.checked, false));
 
                 v.setId(position);
                 onCkeckBoxClickListener.onClick(v);
             }
         });
+
         return view;
     }
 
 
+    public int getFrameCheckBoxView(boolean checked, boolean selected){
+        if (selected) {
+            return Color.GREEN;
+        }
+        if (checked)
+             return Color.RED;
+        else
+            return Color.BLACK;
+    }
+
+
+
+    private int lastSelectedItem = 0;
+    private int selectedItem = 0;
+    public void setSelectedItem(int position) {
+        if (selectedItem != position) {
+            lastSelectedItem = selectedItem;
+            selectedItem = position;
+        }
+    }
+
+    public int getLastSelectedItem(){
+        return lastSelectedItem;
+    }
+
+    public int getSelectedItem(){
+        return selectedItem;
+    }
+
+
+    public void setSelectedCheckBox(boolean valor){
+        Log.i("onclickListener", "Seleccionados checkBoxes");
+        checkBoxSelected = valor;
+    }
+
+    public boolean getModeCheckBoxSelection(){
+        return checkBoxSelected;
+    }
 
 
     public void setOnCheckBoxClickListener(final View.OnClickListener onClickListener) {
         this.onCkeckBoxClickListener = onClickListener;
     }
+
+
 
 
     class ViewHolder {

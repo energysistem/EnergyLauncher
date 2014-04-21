@@ -27,6 +27,7 @@ import java.util.List;
 
 public class LauncherActivity extends Activity implements AppListFragment.Callbacks {
 
+    private static final String TAG = "LauncherActivity";
     SaveLoadAppsPreferences preferencesListadoApps;
     private AppListFragment appListFragment;
     private DesktopFragment desktopFragment;
@@ -90,9 +91,6 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
                     .add(R.id.left_drawer, new MenuListFragmernt()).commit();
 
         }
-
-
-
     }
     /*
     **************************************************************
@@ -138,6 +136,33 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
     }
 
     @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        Log.d("Key Pressed", KeyEvent.keyCodeToString(keyCode));
+        switch (keyCode) {
+            case KeyEvent.KEYCODE_DPAD_RIGHT:
+                if (appLayout.isShown()) {
+                    appListFragment.onKeyRight();
+                }
+                break;
+
+            case KeyEvent.KEYCODE_DPAD_LEFT:
+                if (appLayout.isShown()) {
+                    if (appListFragment.onKeyLeft()) {
+                        //true si estabamos en el seleccionable checkBox, ya se maneja en el fragment
+                        return true;
+                    } else {
+                        desktopFragment.FocusAppListButton();
+                        toggleDrawer(appLayout);
+                    }
+                }
+                return true;
+
+
+        }
+        return super.onKeyUp(keyCode, event);
+    }
+
+    @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
         Log.d("Key Pressed", KeyEvent.keyCodeToString(keyCode));
         switch (keyCode) {
@@ -158,16 +183,31 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
                     Log.d("Key Shortcut","App not foumd");
                 }
                 return true;
+            case KeyEvent.KEYCODE_DPAD_DOWN:
+                if (appLayout.isShown()) {
+                    appListFragment.onKeyUpDown();
+                }
+            case KeyEvent.KEYCODE_DPAD_UP:
+                if (appLayout.isShown()) {
+                    appListFragment.onKeyUpDown();
+                }
         }
-        return super.onKeyUp(keyCode, event);
+        if (!appLayout.isShown()) {
+            return super.onKeyUp(keyCode, event);
+        }
+        else {
+            return true;
+        }
     }
 
-    public void toggleDrawer(FrameLayout drawerLaayout) {
-        if(desktopLayout.isDrawerOpen(drawerLaayout)) {
+
+
+    public void toggleDrawer(FrameLayout drawerLayout) {
+        if(desktopLayout.isDrawerOpen(drawerLayout)) {
             desktopLayout.closeDrawers();
         } else {
             desktopLayout.closeDrawers();
-            desktopLayout.openDrawer(drawerLaayout);
+            desktopLayout.openDrawer(drawerLayout);
         }
     }
 

@@ -17,39 +17,62 @@ public class SaveLoadAppsPreferences {
     private static final String PREFS_LIST_APPS = "SelectedDesktopApps";
     private static final String PREFS_LIST_SIZE = "ListSize";
 
-    private ArrayList<String> ListaApps;
+    private ArrayList<String> ListaAppsString;
     private SharedPreferences mSharedPrefs;
 
 
     public SaveLoadAppsPreferences(Context context) {
         this.mContext = context;
         mSharedPrefs = context.getSharedPreferences(PREFS_LIST_APPS, 0);
-        ListaApps = loadStringList();
+        ListaAppsString = loadStringList();
 
     }
 
 
-    public void ActualizaListaApps(List<AppInfo> listaApps) {
-        ArrayList<String> listAppsString = new ArrayList<String>(listaApps.size());
-        for (int i = 0; i < listaApps.size(); i++) {
-            AppInfo appTemp = listaApps.get(i);
-            if (listaApps.get(i).checked)
-                listAppsString.add(getNombreApp(appTemp));
+    public void ActualizaListaApps(List<AppInfo> listaAppInfos) {
+        ArrayList<String> listAppsString = new ArrayList<String>();
+
+        //Bucles para comprobar si ya están metidas las apps en preferencias y conservar el orden de introduccion
+        for (int i = 0; i < ListaAppsString.size(); i++) {
+            String nombreApp = ListaAppsString.get(i);
+            for (int j = 0; j < listaAppInfos.size(); j++) {
+                AppInfo appTemp = listaAppInfos.get(j);
+                if (ComparaNombreAppInfo(appTemp, nombreApp) && appTemp.checked){
+                    //Miramos si ya está metida en la lista
+                    if (!listAppsString.contains(nombreApp)) {
+                        listAppsString.add(nombreApp);
+                    }
+                    break;
+                }
+            }
         }
+
+        //Bucles para introducir las nuevas apps
+        for (int i = 0; i < listaAppInfos.size(); i++) {
+            AppInfo appTemp = listaAppInfos.get(i);
+            if (appTemp.checked) {
+                String nombreAppinfo = getNombreApp(appTemp);
+                if (!listAppsString.contains(nombreAppinfo)){
+                    listAppsString.add(nombreAppinfo);
+                }
+            }
+        }
+
         removeArray();
         addArray(listAppsString);
+
     }
 
 
     public boolean addAppInfo(AppInfo app) {
         String nombre = getNombreApp(app);
 
-        if (ListaApps.contains(nombre)) {
+        if (ListaAppsString.contains(nombre)) {
             //Ya está metida
             return false;
         } else {
             Log.v(TAG, "Añadida a las preferencias la app: "  + getNombreApp(app));
-            ListaApps.add(nombre);
+            ListaAppsString.add(nombre);
             insertItemEnd(nombre);
             return true;
         }
@@ -58,16 +81,16 @@ public class SaveLoadAppsPreferences {
     public boolean removeAppInfo(AppInfo app) {
         String nombre = getNombreApp(app);
 
-        if (ListaApps.contains(nombre)) {
+        if (ListaAppsString.contains(nombre)) {
             //Pasando de gestionar los indices de la lista de las preferencias
 
             //Está la app. Borramos la lista entera y la volvemos a crear.
             removeArray();
 
             //La qutamos de la lista global
-            ListaApps.remove(nombre);
+            ListaAppsString.remove(nombre);
             //Volvemos a alamacenar la lista
-            addArray(ListaApps);
+            addArray(ListaAppsString);
             return true;
         }
         return false;
@@ -83,8 +106,7 @@ public class SaveLoadAppsPreferences {
         int size = mSharedPrefs.getInt(PREFS_LIST_SIZE, 0);
 
         for (int i = 0; i < size; i++) {
-            //Se guarda a partir del 1 por tanto i+1
-            String appS = mSharedPrefs.getString("list_" + (i + 1), "");
+            String appS = mSharedPrefs.getString("list_" + i, "");
             listaStrings.add(appS);
         }
         return listaStrings;
@@ -95,8 +117,10 @@ public class SaveLoadAppsPreferences {
         SharedPreferences.Editor editor = mSharedPrefs.edit();
 
         int size = mSharedPrefs.getInt(PREFS_LIST_SIZE, 0);
+        //El ultimo indice es el tamaño nuevo menos 1
+        editor.putString("list_" + (size), appName);
+
         size = size+1;
-        editor.putString("list_" + size, appName);
         editor.putInt(PREFS_LIST_SIZE, size);
 
         editor.commit();
