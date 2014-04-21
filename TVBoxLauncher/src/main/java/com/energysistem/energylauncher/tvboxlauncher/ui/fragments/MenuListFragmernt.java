@@ -68,7 +68,7 @@ public class MenuListFragmernt extends Fragment {
 
             switch (position) {
                 case 0:
-                    //getFragmentManager().beginTransaction().replace(R.id.left_drawer, new SelectedAppsListFragment()).commit();
+
                     break;
                 case 1:
                     //getFragmentManager().beginTransaction().replace(R.id.left_drawer, new MenuBookMarkFragment())

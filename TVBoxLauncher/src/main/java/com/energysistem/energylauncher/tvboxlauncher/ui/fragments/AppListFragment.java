@@ -31,6 +31,7 @@ import com.energysistem.energylauncher.tvboxlauncher.Loader.AppLoader;
 import com.energysistem.energylauncher.tvboxlauncher.R;
 import com.energysistem.energylauncher.tvboxlauncher.modelo.AppInfo;
 import com.energysistem.energylauncher.tvboxlauncher.modelo.BasicImgText;
+import com.energysistem.energylauncher.tvboxlauncher.modelo.SaveLoadAppsPreferences;
 import com.energysistem.energylauncher.tvboxlauncher.ui.LauncherActivity;
 import com.energysistem.energylauncher.tvboxlauncher.ui.adapters.AppAdapter;
 import com.energysistem.energylauncher.tvboxlauncher.ui.adapters.AppCheckBoxAdapter;
@@ -205,10 +206,12 @@ public class AppListFragment extends Fragment implements LoaderManager.LoaderCal
         for (int i = 0; i< listaApps.size(); i++) {
             String nombreApp = listaApps.get(i);
             for (int j = 0; j < mAppInfosList.size(); j++) {
-                if (nombreApp.equalsIgnoreCase(mAppInfosList.get(j).getComponentName().toString())){
+                AppInfo appInfoTemp =  mAppInfosList.get(j);
+                if (SaveLoadAppsPreferences.ComparaNombreAppInfo(appInfoTemp, nombreApp)){
                     assert (getActivity()) != null;
-                    ((LauncherActivity)getActivity()).addShortcut(mAppInfosList.get(j));
-                    mAppInfosList.get(j).checked = true;
+                    ((LauncherActivity)getActivity()).addShortcut(appInfoTemp);
+                    appInfoTemp.checked = true;
+                    break;
                 }
             }
         }
