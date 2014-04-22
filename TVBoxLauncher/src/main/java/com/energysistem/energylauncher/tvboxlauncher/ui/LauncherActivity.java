@@ -1,10 +1,14 @@
 package com.energysistem.energylauncher.tvboxlauncher.ui;
 
 import android.app.Activity;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -19,13 +23,15 @@ import com.energysistem.energylauncher.tvboxlauncher.modelo.SaveLoadAppsPreferen
 import com.energysistem.energylauncher.tvboxlauncher.modelo.ShortcutInfo;
 import com.energysistem.energylauncher.tvboxlauncher.ui.fragments.AppListFragment;
 import com.energysistem.energylauncher.tvboxlauncher.ui.fragments.DesktopFragment;
-import com.energysistem.energylauncher.tvboxlauncher.ui.fragments.MenuListFragmernt;
+import com.energysistem.energylauncher.tvboxlauncher.ui.fragments.MenuListFragment;
+import com.energysistem.energylauncher.tvboxlauncher.ui.fragments.NotificationsFragment;
+import com.energysistem.energylauncher.tvboxlauncher.ui.fragments.OptionsFragment;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class LauncherActivity extends Activity implements AppListFragment.Callbacks {
+public class LauncherActivity extends FragmentActivity implements AppListFragment.Callbacks {
 
     private static final String TAG = "LauncherActivity";
     SaveLoadAppsPreferences preferencesListadoApps;
@@ -57,7 +63,7 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
 
             public void onDrawerClosed(View view) {
                 getFragmentManager().beginTransaction()
-                        .replace(R.id.left_drawer, new MenuListFragmernt()).commit();
+                        .replace(R.id.left_drawer, new MenuListFragment()).commit();
                 desktopFragment.getAppButton().requestFocus();
             }
 
@@ -88,7 +94,7 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
 
             //Drawer Izquierdo
             getFragmentManager().beginTransaction()
-                    .add(R.id.left_drawer, new MenuListFragmernt()).commit();
+                    .add(R.id.left_drawer, new NotificationsFragment()).commit();
 
         }
     }
@@ -119,6 +125,18 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
     }
 
 
+    /**
+     * Fragments
+     */
+    public void ShowOptionsLauncherMenu(){
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        MenuListFragment wvf =  new MenuListFragment();
+
+        ft.replace(R.id.tab3, wvf);
+        ft.commit();
+    }
+
+
 
 
     @Override
@@ -132,6 +150,15 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
 
     @Override
     public void onBackPressed() {
+        FragmentManager fm = getFragmentManager();
+        if (fm.getBackStackEntryCount() > 0) {
+            Log.i("MainActivity", "popping backstack");
+            fm.popBackStack();
+        } else {
+            Log.i("MainActivity", "nothing on backstack, calling super");
+            super.onBackPressed();
+        }
+
         desktopLayout.closeDrawers();
     }
 
