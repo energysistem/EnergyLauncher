@@ -12,4 +12,12 @@
     <!--Shortcut-->
     <string name="default_example_string">Hola</string>
 
+    <string name="tab1">APPS</string>
+    <string name="tab2">BOOKMARKS</string>
+    <string name="tab3">SETTINGS</string>
+    <string name="system_settings">"System Settings"</string>
+    <string name="launcher_settings">"Launcher Settings"</string>
+    <string name="wallpaper">"Change Wallpaper"</string>
+    <string name="back">"Back"</string>
+
 </resources>

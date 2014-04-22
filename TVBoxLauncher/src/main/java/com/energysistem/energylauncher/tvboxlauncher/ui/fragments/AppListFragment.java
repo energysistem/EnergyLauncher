@@ -64,29 +64,6 @@ public class AppListFragment extends Fragment implements LoaderManager.LoaderCal
         View v = inflater.inflate(R.layout.fragment_app_list, container, false);
 
 
-
-
-//        mAllAppsButton = (ImageButton) v.findViewById(R.id.expand_button);
-//        mAllAppsButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                mCallbacks.onExpandButtonClick();
-//            }
-//        });
-//        mAppsChecboxListView = (ListView) v.findViewById(R.id.app_checkboxes);
-//        mAppsGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int pos, long l) {
-//
-//                CheckBox cb = (CheckBox) view.findViewById(R.id.checkBoxApp);
-//                TextView tv = (TextView) view.findViewById(R.id.title_app);
-//
-//
-//                final AppInfo info = mAdapter.getItem(pos);
-//                startActivity(info.getIntent());
-//            }
-//        });
-
         mAppsInfoListView = (ListView) v.findViewById(R.id.app_grid);
         mAppsInfoListView.setOnItemClickListener(this);
 
@@ -94,27 +71,28 @@ public class AppListFragment extends Fragment implements LoaderManager.LoaderCal
         mTabHost=(TabHost)v.findViewById(R.id.tabHost);
         mTabHost.setup();
 
+        // Tab 1
         TabHost.TabSpec spec1=mTabHost.newTabSpec("APPS");
         spec1.setContent(R.id.tab1);
-        spec1.setIndicator("APPS");
+        spec1.setIndicator(getResources().getText(R.string.tab1));
 
-
+        //Tab 2
         TabHost.TabSpec spec2=mTabHost.newTabSpec("BOOKMARKS");
-        spec2.setIndicator("BOOKMARKS");
         spec2.setContent(R.id.tab2);
-
+        spec2.setIndicator(getResources().getText(R.string.tab2));
         getFragmentManager().beginTransaction().replace(R.id.tab2, new MenuBookMarkFragment()).commit();
 
-
-        TabHost.TabSpec spec3=mTabHost.newTabSpec("TAB 3");
+        //Tab 3
+        TabHost.TabSpec spec3=mTabHost.newTabSpec("SETTINGS");
         spec3.setContent(R.id.tab3);
-        spec3.setIndicator("TAB 3");
+        spec3.setIndicator(getResources().getText(R.string.tab3));
+        getFragmentManager().beginTransaction().replace(R.id.tab3, new MenuListFragment()).commit();
+
         mTabHost.addTab(spec1);
         mTabHost.addTab(spec2);
         mTabHost.addTab(spec3);
 
         return v;
-
     }
 
 
@@ -309,9 +287,8 @@ public class AppListFragment extends Fragment implements LoaderManager.LoaderCal
 
 
     public boolean onKeyRight(){
-        Log.d(TAG, "Recibido: ON_KEY_RIGHT" );
         if (mAppsInfoListView.hasFocus()){
-            Log.d(TAG, "Estamos en app_grid" );
+            Log.d(TAG, "Activamos modo checkbox" );
             mAppAdapter.setSelectedCheckBox(true);
             mAppAdapter.setSelectedItem(mAppsInfoListView.getSelectedItemPosition());
             updateView();
@@ -321,8 +298,6 @@ public class AppListFragment extends Fragment implements LoaderManager.LoaderCal
     }
 
     public boolean onKeyUpDown(){
-        Log.d(TAG, "Recibido: ON_KEY_DOWN" );
-
         if (mAppsInfoListView.hasFocus()) {
             mAppAdapter.setSelectedItem(mAppsInfoListView.getSelectedItemPosition());
             updateView();
@@ -333,7 +308,6 @@ public class AppListFragment extends Fragment implements LoaderManager.LoaderCal
     }
 
     public boolean onKeyLeft() {
-        Log.d(TAG, "Recibido: ON_KEY_LEFT");
         if (mAppsInfoListView.hasFocus()) {
             Log.d(TAG, "Estamos en app_grid");
             if (mAppAdapter.getModeCheckBoxSelection()) {
@@ -361,6 +335,7 @@ public class AppListFragment extends Fragment implements LoaderManager.LoaderCal
         }
         return false;
     }
+
     /**
      * Funcion para actualizar el checkBox del ListItem en caso que esté el modo selección
      */
