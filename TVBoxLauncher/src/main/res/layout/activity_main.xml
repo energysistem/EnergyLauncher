@@ -10,7 +10,7 @@
         android:id="@+id/content_frame"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#ffa7f147" >
+         >
     </FrameLayout>
 
     <!-- Menú Lateral Izquierdo -->
@@ -19,7 +19,7 @@
         android:layout_width="400dp"
         android:id="@+id/left_drawer"
         android:layout_gravity="start"
-        android:background="#F21F0A"
+        android:background="@color/black_grey"
         android:layout_height="match_parent" />
 
     <!-- Menú Lateral Derecho -->
@@ -28,7 +28,7 @@
         android:layout_width="400dp"
         android:id="@+id/right_drawer"
         android:layout_gravity="end"
-        android:background="#ff2481f2"
+        android:background="@color/black_grey"
         android:layout_height="match_parent" />
 
 </android.support.v4.widget.DrawerLayout>

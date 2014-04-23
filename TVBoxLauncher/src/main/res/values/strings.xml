@@ -19,5 +19,8 @@
     <string name="launcher_settings">"Launcher Settings"</string>
     <string name="wallpaper">"Change Wallpaper"</string>
     <string name="back">"Back"</string>
+    <string name="busca_imagen">"Selecciona foto"</string>
+    <string name="cancel">"Cancelar"</string>
+    <string name="guarda_button">"Guardar</string>
 
 </resources>

@@ -11,15 +11,41 @@
         android:layout_height="fill_parent"
         android:id="@+id/imageViewFullSized"
         android:layout_gravity="center_horizontal"
-        android:src="@drawable/wallpaper" />
+         />
 
-    <Button
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Pick Photo"
-        android:id="@+id/button"
-        android:layout_gravity="center|bottom"
-        android:layout_marginBottom="10dp"
-        android:layout_margin="10dp" />
+        android:layout_gravity="bottom"
+        android:gravity="center">
+
+        <Button
+            android:layout_width="190dp"
+            android:layout_height="wrap_content"
+            android:text="@string/guarda_button"
+            android:id="@+id/guarda_foto"
+            android:layout_gravity="center"
+            android:layout_marginBottom="10dp"
+            android:layout_margin="10dp" />
+
+        <Button
+            android:layout_width="190dp"
+            android:layout_height="wrap_content"
+            android:text="@string/busca_imagen"
+            android:id="@+id/busca_photo_button"
+            android:layout_gravity="center"
+            android:layout_marginBottom="10dp"
+            android:layout_margin="10dp" />
+
+        <Button
+            android:layout_width="190dp"
+            android:layout_height="wrap_content"
+            android:text="@string/cancel"
+            android:id="@+id/cancel_button"
+            android:layout_gravity="center"
+            android:layout_marginBottom="10dp"
+            android:layout_margin="10dp" />
+    </LinearLayout>
 
 </FrameLayout>

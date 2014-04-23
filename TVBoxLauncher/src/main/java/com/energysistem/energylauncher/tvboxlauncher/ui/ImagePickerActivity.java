@@ -5,6 +5,7 @@ package com.energysistem.energylauncher.tvboxlauncher.ui;
  */
 
 import android.app.Activity;
+import android.app.WallpaperManager;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -19,6 +20,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import com.energysistem.energylauncher.tvboxlauncher.R;
+
+import java.io.IOException;
 
 /**
  * Example of loading an image into an image view using the image picker.
@@ -36,6 +39,10 @@ public class ImagePickerActivity extends Activity implements Button.OnClickListe
 
     // Reference to picker button.
     private Button mPickPhotoButton;
+    private Button mCancelButton;
+    private Button mGuardarButton;
+
+    private Bitmap selectedBitmapTemp;
 
     /**
      * Default empty constructor.
@@ -88,30 +95,61 @@ public class ImagePickerActivity extends Activity implements Button.OnClickListe
 
 
         // Set the image view
-        mSelectedImage = (ImageView)findViewById(R.id.imageViewFullSized);
-        mPickPhotoButton = (Button)findViewById(R.id.button);
+        mSelectedImage = (ImageView) findViewById(R.id.imageViewFullSized);
+        mPickPhotoButton = (Button) findViewById(R.id.busca_photo_button);
+        mGuardarButton = (Button) findViewById(R.id.guarda_foto);
+        mCancelButton = (Button) findViewById(R.id.cancel_button);
+
 
         // Set OnItemClickListener so we can be notified on button clicks
         mPickPhotoButton.setOnClickListener(this);
+        mGuardarButton.setOnClickListener(this);
+        mCancelButton.setOnClickListener(this);
 
-
+        mGuardarButton.setVisibility(View.INVISIBLE);
     }
 
     @Override
     public void onClick(View view) {
-        Intent i = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        startActivityForResult(i, IMAGE_PICKER_SELECT);
+        int idView = view.getId();
+
+        switch (idView){
+            case R.id.busca_photo_button:
+                Intent i = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(i, IMAGE_PICKER_SELECT);
+                break;
+            case R.id.guarda_foto:
+                finish();
+                WallpaperManager wp = WallpaperManager.getInstance(this);
+                try {
+                    wp.setBitmap(selectedBitmapTemp);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                break;
+            case R.id.cancel_button:
+                finish();
+                break;
+        }
     }
+
 
     /**
      * Photo Selection result
      */
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == IMAGE_PICKER_SELECT  && resultCode == Activity.RESULT_OK) {
-            Bitmap bitmap = getBitmapFromCameraData(data, this);
-            mSelectedImage.setImageBitmap(bitmap);
+
+            setFullImageFromFilePath(getBitmapPath(data, this));
+
+//            Bitmap bitmap = getBitmapFromCameraData(data, this);
+//            mSelectedImage.setImageBitmap(bitmap);
+
+            mGuardarButton.setVisibility(View.VISIBLE);
         }
     }
+
 
     /**
      * Scale the photo down and fit it to our image views.
@@ -139,8 +177,8 @@ public class ImagePickerActivity extends Activity implements Button.OnClickListe
         bmOptions.inSampleSize = scaleFactor;
         bmOptions.inPurgeable = true;
 
-        Bitmap bitmap = BitmapFactory.decodeFile(imagePath, bmOptions);
-        mSelectedImage.setImageBitmap(bitmap);
+        selectedBitmapTemp = BitmapFactory.decodeFile(imagePath, bmOptions);
+        mSelectedImage.setImageBitmap(selectedBitmapTemp);
     }
 
     /**
@@ -151,14 +189,17 @@ public class ImagePickerActivity extends Activity implements Button.OnClickListe
      * @return
      */
     public static Bitmap getBitmapFromCameraData(Intent data, Context context){
+        String picturePath = getBitmapPath(data, context);
+        return BitmapFactory.decodeFile(picturePath);
+    }
+
+    public static String getBitmapPath(Intent data, Context context){
         Uri selectedImage = data.getData();
         String[] filePathColumn = { MediaStore.Images.Media.DATA };
         Cursor cursor = context.getContentResolver().query(selectedImage,filePathColumn, null, null, null);
         cursor.moveToFirst();
         int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-        String picturePath = cursor.getString(columnIndex);
-        cursor.close();
-        return BitmapFactory.decodeFile(picturePath);
+        return cursor.getString(columnIndex);
     }
 }
 
