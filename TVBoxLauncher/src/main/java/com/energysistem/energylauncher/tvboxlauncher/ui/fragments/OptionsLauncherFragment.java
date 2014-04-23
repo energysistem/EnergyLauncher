@@ -3,20 +3,15 @@ package com.energysistem.energylauncher.tvboxlauncher.ui.fragments;
 import android.annotation.TargetApi;
 
 import android.app.Fragment;
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.Settings;
 
 
-import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.energysistem.energylauncher.tvboxlauncher.R;
 import com.energysistem.energylauncher.tvboxlauncher.modelo.BasicImgText;
@@ -26,7 +21,7 @@ import com.energysistem.energylauncher.tvboxlauncher.ui.adapters.BasicITAdapter;
 /**
  * Created by emg on 22/04/2014.
  */
-public class OptionsFragment extends Fragment {
+public class OptionsLauncherFragment extends Fragment {
 
     private ListView mMenuList;
 
@@ -92,10 +87,11 @@ public class OptionsFragment extends Fragment {
 
             switch (position) {
                 case 0:
-                    Toast.makeText(getActivity(), "Sacamos explorer", 2);
+                    ((LauncherActivity)getActivity()).ShowPickWallpaperFragment();
+
                     break;
                 case 1:
-                    ((LauncherActivity)getActivity()).ShowOptionsLauncherMenu();
+                    ((LauncherActivity)getActivity()).onBackPressed();
                     break;
                 default:
                     break;

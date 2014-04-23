@@ -1,13 +1,11 @@
 package com.energysistem.energylauncher.tvboxlauncher.ui;
 
-import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
@@ -25,7 +23,7 @@ import com.energysistem.energylauncher.tvboxlauncher.ui.fragments.AppListFragmen
 import com.energysistem.energylauncher.tvboxlauncher.ui.fragments.DesktopFragment;
 import com.energysistem.energylauncher.tvboxlauncher.ui.fragments.MenuListFragment;
 import com.energysistem.energylauncher.tvboxlauncher.ui.fragments.NotificationsFragment;
-import com.energysistem.energylauncher.tvboxlauncher.ui.fragments.OptionsFragment;
+import com.energysistem.energylauncher.tvboxlauncher.ui.fragments.OptionsLauncherFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +39,8 @@ public class LauncherActivity extends FragmentActivity implements AppListFragmen
     private DrawerLayout desktopLayout;
     private FrameLayout appLayout;
     private FrameLayout optionLayout;
+
+    public final static String EXTRA_MESSAGE = "com.energysistem.energylauncher.MESSAGE";
 
     private ActionBarDrawerToggle drawerToggle;
 
@@ -128,15 +128,30 @@ public class LauncherActivity extends FragmentActivity implements AppListFragmen
     /**
      * Fragments
      */
-    public void ShowOptionsLauncherMenu(){
+    public void ShowOptionsLauncherMenuFragment(){
         FragmentTransaction ft = getFragmentManager().beginTransaction();
-        MenuListFragment wvf =  new MenuListFragment();
+        OptionsLauncherFragment wvf =  new OptionsLauncherFragment();
 
         ft.replace(R.id.tab3, wvf);
+        ft.addToBackStack("optionsLauncher");
         ft.commit();
     }
 
+    public void ShowPickWallpaperFragment(){
+//        FragmentTransaction ft = getFragmentManager().beginTransaction();
+//        ImagePickerActivity wvf =  new ImagePickerActivity();
+//
+//        ft.replace(R.id.content_frame, wvf);
+//        ft.addToBackStack("imagePicker");
+//        toggleDrawer(appLayout);
+//        ft.commit();
 
+        String message = "";
+
+        Intent intent = new Intent(this, ImagePickerActivity.class);
+        intent.putExtra(EXTRA_MESSAGE, message);
+        startActivity(intent);
+    }
 
 
     @Override
@@ -154,9 +169,10 @@ public class LauncherActivity extends FragmentActivity implements AppListFragmen
         if (fm.getBackStackEntryCount() > 0) {
             Log.i("MainActivity", "popping backstack");
             fm.popBackStack();
+            return;
         } else {
             Log.i("MainActivity", "nothing on backstack, calling super");
-            super.onBackPressed();
+            //super.onBackPressed();
         }
 
         desktopLayout.closeDrawers();
@@ -164,7 +180,7 @@ public class LauncherActivity extends FragmentActivity implements AppListFragmen
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        Log.d("Key Pressed", KeyEvent.keyCodeToString(keyCode));
+        Log.d("onKeyDown Pressed", KeyEvent.keyCodeToString(keyCode));
         switch (keyCode) {
             case KeyEvent.KEYCODE_DPAD_RIGHT:
                 if (appLayout.isShown()) {
@@ -183,15 +199,13 @@ public class LauncherActivity extends FragmentActivity implements AppListFragmen
                     }
                 }
                 return true;
-
-
         }
         return super.onKeyUp(keyCode, event);
     }
 
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
-        Log.d("Key Pressed", KeyEvent.keyCodeToString(keyCode));
+        Log.d("onKeyUp Pressed", KeyEvent.keyCodeToString(keyCode));
         switch (keyCode) {
             case KeyEvent.KEYCODE_CAPTIONS:
                 toggleDrawer(appLayout);
@@ -214,17 +228,20 @@ public class LauncherActivity extends FragmentActivity implements AppListFragmen
                 if (appLayout.isShown()) {
                     appListFragment.onKeyUpDown();
                 }
+                return true;
             case KeyEvent.KEYCODE_DPAD_UP:
                 if (appLayout.isShown()) {
                     appListFragment.onKeyUpDown();
                 }
+                return true;
+            case KeyEvent.KEYCODE_BACK:
+                Log.d("Presed","KEYCODE_BACK");
+                onBackPressed();
+                return true;
         }
-        if (!appLayout.isShown()) {
             return super.onKeyUp(keyCode, event);
-        }
-        else {
-            return true;
-        }
+            //return true;
+
     }
 
 
