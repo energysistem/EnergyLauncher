@@ -76,4 +76,8 @@ public class AppInfo extends ShortcutInfo {
     public ComponentName getComponentName() {
         return componentName;
     }
+
+    public String getPackageName(){
+        return packageName;
+    }
 }

@@ -93,13 +93,11 @@ public class ImagePickerActivity extends Activity implements Button.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_photo_picker);
 
-
         // Set the image view
         mSelectedImage = (ImageView) findViewById(R.id.imageViewFullSized);
         mPickPhotoButton = (Button) findViewById(R.id.busca_photo_button);
         mGuardarButton = (Button) findViewById(R.id.guarda_foto);
         mCancelButton = (Button) findViewById(R.id.cancel_button);
-
 
         // Set OnItemClickListener so we can be notified on button clicks
         mPickPhotoButton.setOnClickListener(this);

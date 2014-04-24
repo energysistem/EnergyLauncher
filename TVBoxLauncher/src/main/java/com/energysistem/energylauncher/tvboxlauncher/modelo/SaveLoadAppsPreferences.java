@@ -155,7 +155,8 @@ public class SaveLoadAppsPreferences {
 
     private static String getNombreApp(AppInfo app){
         //return  app.title;
-        return app.getComponentName().toString() + app.title;
+        //return app.getComponentName().toString() + app.title;
+        return app.getPackageName();
     }
 
 
