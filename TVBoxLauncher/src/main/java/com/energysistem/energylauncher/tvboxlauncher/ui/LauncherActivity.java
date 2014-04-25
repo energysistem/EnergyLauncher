@@ -148,9 +148,12 @@ public class LauncherActivity extends FragmentActivity implements AppListFragmen
 
         String message = "";
 
-        Intent intent = new Intent(this, ImagePickerActivity.class);
-        intent.putExtra(EXTRA_MESSAGE, message);
-        startActivity(intent);
+        Intent intent = new Intent(Intent.ACTION_SET_WALLPAPER);
+        startActivity(Intent.createChooser(intent, "Select Wallpaper"));
+
+//        Intent intent = new Intent(this, ImagePickerActivity.class);
+//        intent.putExtra(EXTRA_MESSAGE, message);
+//        startActivity(intent);
     }
 
 
