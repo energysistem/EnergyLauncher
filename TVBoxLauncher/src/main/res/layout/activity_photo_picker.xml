@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/grey">
+
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/imageViewFullSized"
+        android:layout_gravity="center_horizontal"
+         />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:gravity="center">
+
+        <Button
+            android:layout_width="190dp"
+            android:layout_height="wrap_content"
+            android:text="@string/guarda_button"
+            android:id="@+id/guarda_foto"
+            android:layout_gravity="center"
+            android:layout_marginBottom="10dp"
+            android:layout_margin="10dp" />
+
+        <Button
+            android:layout_width="190dp"
+            android:layout_height="wrap_content"
+            android:text="@string/busca_imagen"
+            android:id="@+id/busca_photo_button"
+            android:layout_gravity="center"
+            android:layout_marginBottom="10dp"
+            android:layout_margin="10dp" />
+
+        <Button
+            android:layout_width="190dp"
+            android:layout_height="wrap_content"
+            android:text="@string/cancel"
+            android:id="@+id/cancel_button"
+            android:layout_gravity="center"
+            android:layout_marginBottom="10dp"
+            android:layout_margin="10dp" />
+    </LinearLayout>
+
+</FrameLayout>

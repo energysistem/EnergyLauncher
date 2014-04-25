@@ -78,8 +78,14 @@ public class AppLoader extends AsyncTaskLoader<List<AppInfo>> {
             entries.add(entry);
         }
 
-        // Sort the list.
-        Collections.sort(entries, ALPHA_COMPARATOR);
+        //Remove own app
+        for (int i = 0; i < entries.size(); i++) {
+            if (entries.get(i).getPackageName().equals(getContext().getPackageName())) {
+                entries.remove(i);
+            }
+        }
+
+        RemoveOwnLauncherApp();
 
         return entries;
     }
@@ -140,6 +146,13 @@ public class AppLoader extends AsyncTaskLoader<List<AppInfo>> {
     /** (3) Implement the Loader�s state-dependent behavior **/
     /*********************************************************/
 
+
+    private void RemoveOwnLauncherApp(){
+
+
+
+    }
+
     @Override
     protected void onStartLoading() {
         if (DEBUG) Log.i(TAG, "+++ onStartLoading() called! +++");
@@ -171,6 +184,8 @@ public class AppLoader extends AsyncTaskLoader<List<AppInfo>> {
             if (DEBUG) Log.i(TAG, "+++ The current data is data is null... so force load! +++");
             forceLoad();
         }
+
+
     }
 
     @Override

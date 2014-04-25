@@ -70,9 +70,9 @@ public class MenuListFragment extends Fragment {
             switch (position) {
                 case 0:
                     assert ((LauncherActivity) getActivity()) != null;
-                    ((LauncherActivity) getActivity()).ShowOptionsLauncherMenu();
-                    optionsLauncherFragment = new OptionsFragment();
-                    getFragmentManager().beginTransaction().replace(R.id.tab3, optionsLauncherFragment).commit();
+                    ((LauncherActivity) getActivity()).ShowOptionsLauncherMenuFragment();
+//                    optionsLauncherFragment = new OptionsLauncherFragment();
+//                    getFragmentManager().beginTransaction().replace(R.id.tab3, optionsLauncherFragment).commit();
                     break;
                 case 1:
                     startActivity(new Intent(Settings.ACTION_SETTINGS));
