@@ -32,6 +32,8 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
 
     private GridView mAppsGrid;
     private ShortcutAdapter gridAdapter;
+    private GridView mWebShortCutGrid;
+    private ShortcutAdapter gridWebShortcutAdapter;
     private ImageButton appButton;
 
     TextView clockTextView;
@@ -42,9 +44,16 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
         View view = inflater.inflate(R.layout.fragment_desktop, container, false);
 
         mAppsGrid = (GridView) view.findViewById(R.id.app_grid);
+        mWebShortCutGrid = (GridView) view.findViewById(R.id.webcut_grid);
+
         gridAdapter = new ShortcutAdapter(getActivity());
+        gridWebShortcutAdapter = new ShortcutAdapter(getActivity());
+
         mAppsGrid.setAdapter(gridAdapter);
         mAppsGrid.setOnItemClickListener(this);
+
+        mWebShortCutGrid.setAdapter(gridWebShortcutAdapter);
+        mWebShortCutGrid.setOnItemClickListener(this);
 
         appButton = (ImageButton) view.findViewById(R.id.appButton);
         appButton.setOnClickListener(new View.OnClickListener() {
@@ -101,16 +110,23 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
                         connection.setDoInput(true);
                         connection.connect();
                         InputStream input = connection.getInputStream();
-                        shortcutInfo.iconBitmap = BitmapFactory.decodeStream(input);
+                        shortcutInfo.setBitmap(BitmapFactory.decodeStream(input));
+                        
                     } catch (IOException e) {
-                        shortcutInfo.iconBitmap = null;
+                        shortcutInfo.setBitmap(null);
                     }
                 }
             });
             thread.start();
+
+            gridWebShortcutAdapter.addItem(shortcutInfo);
+            gridWebShortcutAdapter.notifyDataSetChanged();
         }
-        gridAdapter.addItem(shortcutInfo);
-        gridAdapter.notifyDataSetChanged();
+        else {
+            gridAdapter.addItem(shortcutInfo);
+            gridAdapter.notifyDataSetChanged();
+        }
+
     }
 
     public void removeShortcut(ShortcutInfo shortcutInfo) {
@@ -118,9 +134,11 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
         gridAdapter.notifyDataSetChanged();
     }
 
-    public void getShortcuts() {
-
+    public void removeShortcut(int webShortcutPos) {
+        gridWebShortcutAdapter.removeItemPos(webShortcutPos);
+        gridWebShortcutAdapter.notifyDataSetChanged();
     }
+
 
     public ImageButton getAppButton() {
         return appButton;
@@ -129,4 +147,6 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
     public void FocusAppListButton(){
         appButton.requestFocus();
     }
+
+
 }

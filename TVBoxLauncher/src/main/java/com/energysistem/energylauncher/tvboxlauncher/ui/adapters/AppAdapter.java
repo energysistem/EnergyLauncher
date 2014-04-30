@@ -62,8 +62,8 @@ public class AppAdapter extends ArrayAdapter<AppInfo> {
 
         final AppInfo info = getItem(position);
 
-        holder.image.setImageDrawable(new BitmapDrawable(mResources, info.iconBitmap));
-        holder.title.setText(info.title);
+        holder.image.setImageDrawable(new BitmapDrawable(mResources, info.getBitmap()));
+        holder.title.setText(info.getTitle());
         holder.frameLayout.setBackgroundColor(getFrameCheckBoxView(info.checked, false));
 
 
@@ -81,7 +81,7 @@ public class AppAdapter extends ArrayAdapter<AppInfo> {
                 Log.i("onclickListener", "framelayout " + position);
                 info.checked = !info.checked;
 
-               v.setBackgroundColor(getFrameCheckBoxView(info.checked, false));
+                v.setBackgroundColor(getFrameCheckBoxView(info.checked, false));
 
                 v.setId(position);
                 onCkeckBoxClickListener.onClick(v);

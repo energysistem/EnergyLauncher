@@ -13,17 +13,38 @@ import com.energysistem.energylauncher.tvboxlauncher.ui.views.Shortcut;
 public abstract class ShortcutInfo {
 
     //The intent used to start the application.
-    public String title;
-    public Bitmap iconBitmap;
+    private String title;
+    private Bitmap iconBitmap;
+
+    public String getTitle(){
+        return title;
+    }
+    public void setTitle(String tit){
+        title = tit;
+    }
+
+    public Bitmap getBitmap(){
+        return iconBitmap;
+    }
+    public void setBitmap(Bitmap bitmap){
+        iconBitmap = bitmap;
+    }
 
     public ShortcutInfo() {
         this.title = "Holaaaa";
         this.iconBitmap = null;
     }
 
+
+
     public abstract Intent getIntent();
 
     public int getBackgroundColor() {
         return Color.RED;
     }
+
+
+
+
+
 }

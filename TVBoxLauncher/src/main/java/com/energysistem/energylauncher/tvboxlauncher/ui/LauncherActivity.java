@@ -19,6 +19,7 @@ import com.energysistem.energylauncher.tvboxlauncher.R;
 import com.energysistem.energylauncher.tvboxlauncher.modelo.AppInfo;
 import com.energysistem.energylauncher.tvboxlauncher.modelo.SaveLoadAppsPreferences;
 import com.energysistem.energylauncher.tvboxlauncher.modelo.ShortcutInfo;
+import com.energysistem.energylauncher.tvboxlauncher.modelo.WebPageInfo;
 import com.energysistem.energylauncher.tvboxlauncher.ui.fragments.AppListFragment;
 import com.energysistem.energylauncher.tvboxlauncher.ui.fragments.DesktopFragment;
 import com.energysistem.energylauncher.tvboxlauncher.ui.fragments.MenuListFragment;
@@ -62,8 +63,8 @@ public class LauncherActivity extends FragmentActivity implements AppListFragmen
                 R.string.drawer_close) {
 
             public void onDrawerClosed(View view) {
-                getFragmentManager().beginTransaction()
-                        .replace(R.id.left_drawer, new MenuListFragment()).commit();
+//                getFragmentManager().beginTransaction()
+//                        .replace(R.id.left_drawer, new MenuListFragment()).commit();
                 desktopFragment.getAppButton().requestFocus();
             }
 
@@ -97,32 +98,71 @@ public class LauncherActivity extends FragmentActivity implements AppListFragmen
                     .add(R.id.left_drawer, new NotificationsFragment()).commit();
 
         }
+
     }
+
+
+
     /*
     **************************************************************
-    Manejar las preferencias
+    Gestionar las apps añadidas/quitadas
     **************************************************************
     */
-
-    public void addShortcut(ShortcutInfo shortcutInfo) {
+    public void addShortcutApp(ShortcutInfo shortcutInfo) {
         if ( shortcutInfo instanceof  AppInfo){
             desktopFragment.addShortcut(shortcutInfo);
             preferencesListadoApps.addAppInfo((AppInfo) shortcutInfo);
         }
+        else if (shortcutInfo instanceof WebPageInfo){
+            desktopFragment.addShortcut(shortcutInfo);
+            preferencesListadoApps.addWebPageInfo((WebPageInfo)shortcutInfo);
+        }
     }
 
-    public void removeShortcut(ShortcutInfo shortcutInfo) {
+    public void removeShortcutApp(ShortcutInfo shortcutInfo) {
         desktopFragment.removeShortcut(shortcutInfo);
         preferencesListadoApps.removeAppInfo((AppInfo) shortcutInfo);
     }
 
     public ArrayList<String> getAppsNamePreferences(){
-        return preferencesListadoApps.loadStringList();
+        return preferencesListadoApps.getListaAppsString();
     }
 
     public void actualizaArrayAppsPreferencias(List<AppInfo> listaApps){
         preferencesListadoApps.ActualizaListaApps(listaApps);
     }
+
+
+
+    /*
+    **************************************************************
+    Gestionar los accesos directos a paginas web añadidos/quitados
+    **************************************************************
+    */
+    public ArrayList<WebPageInfo> cargaShortcutsEnDesktop(){
+        ArrayList<WebPageInfo> lista = new ArrayList<WebPageInfo>();
+
+        ArrayList<SaveLoadAppsPreferences.WebPageItem> listaWebShortCuts = preferencesListadoApps.getListaWebs();
+        for (int i = 0; i < listaWebShortCuts.size(); i++) {
+            SaveLoadAppsPreferences.WebPageItem item = listaWebShortCuts.get(i);
+            WebPageInfo webInfo = new WebPageInfo(item.getUri(), item.getTitle());
+            desktopFragment.addShortcut(webInfo);
+            lista.add(webInfo);
+        }
+        return lista;
+    }
+
+
+    public void removeShortcut(int webShortcutPos){
+        desktopFragment.removeShortcut(webShortcutPos);
+        preferencesListadoApps.removeWebPageInfo(webShortcutPos);
+    }
+
+
+
+
+
+
 
 
     /**

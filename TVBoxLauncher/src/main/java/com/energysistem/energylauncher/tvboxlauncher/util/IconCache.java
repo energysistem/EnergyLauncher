@@ -155,8 +155,8 @@ public class IconCache {
         synchronized (mCache) {
             CacheEntry entry = cacheLocked(application.getComponentName(), info, labelCache);
 
-            application.title = entry.title;
-            application.iconBitmap = entry.icon;
+            application.setTitle(entry.title);
+            application.setBitmap(entry.icon);
         }
     }
 
