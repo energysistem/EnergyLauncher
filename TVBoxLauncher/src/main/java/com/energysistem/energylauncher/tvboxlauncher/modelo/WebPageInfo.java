@@ -24,7 +24,7 @@ import java.net.URL;
  */
 public class WebPageInfo extends ShortcutInfo {
 
-    Uri pageUrl;
+    private Uri pageUrl;
 
     public WebPageInfo(Uri pageUrl) {
         this.pageUrl = pageUrl;
@@ -32,6 +32,11 @@ public class WebPageInfo extends ShortcutInfo {
 
     public WebPageInfo(String pageUrl) throws MalformedURLException {
         this(Uri.parse(pageUrl));
+    }
+
+    public WebPageInfo(String uri, String tit){
+        pageUrl = Uri.parse(uri);
+        setTitle(tit);
     }
 
     @Override
@@ -44,4 +49,10 @@ public class WebPageInfo extends ShortcutInfo {
     public Uri getPageUrl() {
         return pageUrl;
     }
+
+
+
+
+
+
 }

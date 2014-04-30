@@ -69,7 +69,7 @@ public class AppLoader extends AsyncTaskLoader<List<AppInfo>> {
             apps = new ArrayList<ResolveInfo>();
         }
 
-        Log.e(TAG, "Cantidad de apps cargadas " + apps.size());
+        //Log.e(TAG, "Cantidad de apps cargadas " + apps.size());
 
         // Create corresponding array of entries and load their labels.
         List<AppInfo> entries = new ArrayList<AppInfo>(apps.size());
@@ -78,14 +78,16 @@ public class AppLoader extends AsyncTaskLoader<List<AppInfo>> {
             entries.add(entry);
         }
 
+        if (DEBUG) Log.i(TAG, "+++ Cantidad de apps: " + entries.size() + " +++ ");
         //Remove own app
         for (int i = 0; i < entries.size(); i++) {
             if (entries.get(i).getPackageName().equals(getContext().getPackageName())) {
                 entries.remove(i);
+                if (DEBUG) Log.i(TAG, "+++ Removed own app! +++ ");
+                if (DEBUG) Log.i(TAG, "+++ Cantidad de apps: " + entries.size() + " +++ ");
             }
         }
 
-        RemoveOwnLauncherApp();
 
         return entries;
     }
@@ -113,7 +115,7 @@ public class AppLoader extends AsyncTaskLoader<List<AppInfo>> {
             // it will see here that the Loader has been reset and discard any
             // resources associated with the new data as necessary.
             if (apps != null) {
-                Log.i(TAG, "Cantidad de apps cargadas" + apps.size());
+                Log.i(TAG, " +++ deliverResult Cantidad de apps cargadas" + apps.size() + " +++ ");
 
                 releaseResources(apps);
                 return;
@@ -277,7 +279,7 @@ public class AppLoader extends AsyncTaskLoader<List<AppInfo>> {
 
         @Override
         public int compare(AppInfo object1, AppInfo object2) {
-            return sCollator.compare(object1.title, object2.title);
+            return sCollator.compare(object1.getTitle(), object2.getTitle());
         }
     };
 }

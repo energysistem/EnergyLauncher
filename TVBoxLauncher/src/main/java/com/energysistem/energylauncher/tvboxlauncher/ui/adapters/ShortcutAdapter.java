@@ -54,6 +54,10 @@ public class ShortcutAdapter extends BaseAdapter  {
         data.remove(i);
     }
 
+    public void removeItemPos(int i){
+        data.remove(i);
+    }
+
     @Override
     public long getItemId(int i) {
         return 0;
@@ -71,8 +75,8 @@ public class ShortcutAdapter extends BaseAdapter  {
         ImageView icon = (ImageView) view.findViewById(R.id.icon);
         TextView title = (TextView) view.findViewById(R.id.title);
 
-        icon.setImageBitmap(shortcut.iconBitmap);
-        title.setText(shortcut.title);
+        icon.setImageBitmap(shortcut.getBitmap());
+        title.setText(shortcut.getTitle());
 
         return view;
     }

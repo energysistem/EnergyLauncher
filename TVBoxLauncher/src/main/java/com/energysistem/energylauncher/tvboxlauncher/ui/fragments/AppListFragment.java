@@ -107,11 +107,11 @@ public class AppListFragment extends Fragment implements LoaderManager.LoaderCal
         if (mAppAdapter.getModeCheckBoxSelection()) {
             if (info.checked) {
                 assert (getActivity()) != null;
-                ((LauncherActivity) getActivity()).removeShortcut(info);
+                ((LauncherActivity) getActivity()).removeShortcutApp(info);
                 info.checked = false;
             } else {
                 assert (getActivity()) != null;
-                ((LauncherActivity) getActivity()).addShortcut(info);
+                ((LauncherActivity) getActivity()).addShortcutApp(info);
                 info.checked = true;
             }
         } else {
@@ -197,12 +197,12 @@ public class AppListFragment extends Fragment implements LoaderManager.LoaderCal
                 if (info.checked) {
 
                     assert (getActivity()) != null;
-                    ((LauncherActivity) getActivity()).addShortcut(info);
+                    ((LauncherActivity) getActivity()).addShortcutApp(info);
                 }
                 else
                 {
                     assert (getActivity()) != null;
-                    ((LauncherActivity) getActivity()).removeShortcut(info);
+                    ((LauncherActivity) getActivity()).removeShortcutApp(info);
                 }
             }
         });
@@ -217,7 +217,7 @@ public class AppListFragment extends Fragment implements LoaderManager.LoaderCal
                 AppInfo appInfoTemp =  mAppInfosList.get(j);
                 if (SaveLoadAppsPreferences.ComparaNombreAppInfo(appInfoTemp, nombreApp)){
                     assert (getActivity()) != null;
-                    ((LauncherActivity)getActivity()).addShortcut(appInfoTemp);
+                    ((LauncherActivity)getActivity()).addShortcutApp(appInfoTemp);
                     appInfoTemp.checked = true;
                     break;
                 }
@@ -240,7 +240,7 @@ public class AppListFragment extends Fragment implements LoaderManager.LoaderCal
         List<AppInfo> favs = new ArrayList<AppInfo>(favorites.size());
         for (String name : favorites) {
             for (AppInfo info : infos) {
-                if (name.equals(info.title)) {
+                if (name.equals(info.getTitle())) {
                     favs.add(info);
                     infos.remove(info);
                     break;
@@ -257,8 +257,8 @@ public class AppListFragment extends Fragment implements LoaderManager.LoaderCal
 
             ImageView image = (ImageView) v.findViewById(R.id.image);
             TextView title = (TextView) v.findViewById(R.id.title);
-            image.setImageDrawable(new BitmapDrawable(getResources(), info.iconBitmap));
-            title.setText(info.title);
+            image.setImageDrawable(new BitmapDrawable(getResources(), info.getBitmap()));
+            title.setText(info.getTitle());
 
             final Intent appIntent = info.getIntent();
             v.setOnClickListener(new View.OnClickListener() {
