@@ -31,27 +31,12 @@ public class OptionsLauncherFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_menu_list, container, false);
 
         mMenuList = (ListView) view.findViewById(R.id.menu_list);
-        BasicImgText[] drawerItem = new BasicImgText[2];
+        BasicImgText[] drawerItem = new BasicImgText[3];
         drawerItem[0] = new BasicImgText(R.drawable.ic_launcher, getResources().getString(R.string.wallpaper));
-        drawerItem[1] = new BasicImgText(R.drawable.ic_launcher, getResources().getString(R.string.back));
+        drawerItem[1] = new BasicImgText(R.drawable.ic_launcher, getResources().getString(R.string.reordena_button));
+        drawerItem[2] = new BasicImgText(R.drawable.ic_launcher, getResources().getString(R.string.back));
 
         mMenuList.setOnItemClickListener(new DrawerItemClickListener());
-        //{
-           /* @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                switch (position) {
-                    case 0:
-                        Toast.makeText(getActivity(), "Sacamos explorer", 2);
-                        break;
-                    case 1:
-                        CloseFragment();
-                        break;
-                    default:
-                        break;
-                }
-            }
-        });*/
-
 
         BasicITAdapter adapter = new BasicITAdapter(view.getContext(), R.layout.row_menu, drawerItem);
         mMenuList.setAdapter(adapter);
@@ -88,12 +73,12 @@ public class OptionsLauncherFragment extends Fragment {
             switch (position) {
                 case 0:
                     ((LauncherActivity)getActivity()).ShowPickWallpaperFragment();
-
                     break;
                 case 1:
-                    ((LauncherActivity)getActivity()).onBackPressed();
+                    ((LauncherActivity)getActivity()).ShowReOrdenaDesktopApps();
                     break;
                 default:
+                    ((LauncherActivity)getActivity()).onBackPressed();
                     break;
             }
         }

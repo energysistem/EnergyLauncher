@@ -22,5 +22,6 @@
     <string name="busca_imagen">"Selecciona foto"</string>
     <string name="cancel">"Cancelar"</string>
     <string name="guarda_button">"Guardar</string>
+    <string name="reordena_button">"Move app icons</string>
 
 </resources>
