@@ -46,9 +46,16 @@ public class AppArrangeFragment extends Fragment  {
 
         CreaListaFiltradaOrdenada();
 
-        StableArrayAdapter adapter = new StableArrayAdapter(getActivity().getApplicationContext(),
+        StableArrayAdapter adapter = new StableArrayAdapter(view.getContext(),
                 R.layout.row_app_draggable, mAppsInfoFiltradaOrdenada);
         DynamicDraggingListView listView = (DynamicDraggingListView) view.findViewById(R.id.draggable_listview);
+
+
+
+        listView.setCheeseList(mAppsInfoFiltradaOrdenada);
+        listView.setAdapter(adapter);
+        listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+
 
         return view;
     }
