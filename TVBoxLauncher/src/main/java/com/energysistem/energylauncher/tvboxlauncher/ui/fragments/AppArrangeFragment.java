@@ -44,6 +44,7 @@ public class AppArrangeFragment extends Fragment  {
         mListaAppsPreferenciasStrings = ((LauncherActivity)getActivity()).getAppsNamePreferences();
         mAppInfosList = ((LauncherActivity)getActivity()).getAppList();
 
+        //prueba
         CreaListaFiltradaOrdenada();
 
         StableArrayAdapter adapter = new StableArrayAdapter(view.getContext(),
