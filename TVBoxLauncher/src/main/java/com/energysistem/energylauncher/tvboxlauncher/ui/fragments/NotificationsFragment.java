@@ -44,7 +44,10 @@ public class NotificationsFragment extends Fragment {
 
         adapter = new NotificationAdapter(view.getContext(),R.layout.row_notification, NotificationItem.drawerItem);
         mDrawerList.setAdapter(adapter);
+
+
         return view;
+
     }
 
     private void ClearNotify(){
@@ -63,6 +66,8 @@ public class NotificationsFragment extends Fragment {
         i.putExtra("command","list");
         getActivity().sendBroadcast(i);
     }
+
+
     class NotificationReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {

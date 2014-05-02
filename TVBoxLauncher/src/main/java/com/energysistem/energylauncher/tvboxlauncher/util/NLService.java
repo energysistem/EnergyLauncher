@@ -1,13 +1,17 @@
 package com.energysistem.energylauncher.tvboxlauncher.util;
 
+import android.annotation.TargetApi;
 import android.app.Notification;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Build;
 import android.service.notification.NotificationListenerService;
 import android.service.notification.StatusBarNotification;
 import android.util.Log;
+
+import com.energysistem.energylauncher.tvboxlauncher.modelo.NotificationItem;
 
 
 /**  NLService
@@ -33,6 +37,7 @@ public class NLService extends NotificationListenerService {
         super.onDestroy();
         unregisterReceiver(nlservicereciver);
     }
+
 
     @Override
     public void onNotificationPosted(StatusBarNotification sbn) {
