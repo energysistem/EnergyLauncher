@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +23,7 @@ import java.util.ArrayList;
  * Created by emg on 22/04/2014.
  */
 
-public class NotificationsFragment extends Fragment {
+public class NotificationsFragment extends Fragment  {
 
     private ListView mDrawerList;
     private NotificationAdapter adapter;
@@ -36,6 +37,7 @@ public class NotificationsFragment extends Fragment {
         IntentFilter filter = new IntentFilter();
         filter.addAction("com.energysistem.energylauncher.tvboxlauncher.util.NOTIFICATION_LISTENER_EXAMPLE");
 
+        getActivity().registerReceiver(nReceiver, filter);
 
         //Lista
         mDrawerList = (ListView) view.findViewById(R.id.listViewNotif);
@@ -68,6 +70,7 @@ public class NotificationsFragment extends Fragment {
     }
 
 
+
     class NotificationReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -77,7 +80,6 @@ public class NotificationsFragment extends Fragment {
             String text = intent.getStringExtra("notification_event_Text");
             NotificationItem.drawerItem.add(new NotificationItem(icon,title,text));
             adapter.notifyDataSetChanged();
-
         }
     }
 

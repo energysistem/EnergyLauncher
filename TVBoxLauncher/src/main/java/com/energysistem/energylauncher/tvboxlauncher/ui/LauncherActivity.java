@@ -20,6 +20,7 @@ import com.energysistem.energylauncher.tvboxlauncher.modelo.AppInfo;
 import com.energysistem.energylauncher.tvboxlauncher.modelo.SaveLoadAppsPreferences;
 import com.energysistem.energylauncher.tvboxlauncher.modelo.ShortcutInfo;
 import com.energysistem.energylauncher.tvboxlauncher.modelo.WebPageInfo;
+import com.energysistem.energylauncher.tvboxlauncher.ui.fragments.AppArrangeFragment;
 import com.energysistem.energylauncher.tvboxlauncher.ui.fragments.AppListFragment;
 import com.energysistem.energylauncher.tvboxlauncher.ui.fragments.DesktopFragment;
 import com.energysistem.energylauncher.tvboxlauncher.ui.fragments.MenuListFragment;
@@ -182,7 +183,7 @@ public class LauncherActivity extends FragmentActivity implements AppListFragmen
         FragmentTransaction ft = getFragmentManager().beginTransaction();
 
         //TODO
-        NotificationsFragment wvf =  new NotificationsFragment();
+        AppArrangeFragment wvf =  new AppArrangeFragment();
 
         ft.replace(R.id.tab3, wvf);
         ft.addToBackStack("reordenaFragment");
