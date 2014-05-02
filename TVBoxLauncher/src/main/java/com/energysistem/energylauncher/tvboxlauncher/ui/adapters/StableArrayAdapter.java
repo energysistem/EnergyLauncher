@@ -16,14 +16,23 @@
 
 package com.energysistem.energylauncher.tvboxlauncher.ui.adapters;
 
+import android.app.Activity;
+import android.app.Fragment;
+import android.app.Notification;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.media.Image;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.energysistem.energylauncher.tvboxlauncher.R;
+import com.energysistem.energylauncher.tvboxlauncher.modelo.BasicImgText;
 import com.energysistem.energylauncher.tvboxlauncher.modelo.DraggableItemApp;
 
 import java.util.HashMap;
@@ -33,22 +42,42 @@ public class StableArrayAdapter extends ArrayAdapter<DraggableItemApp> {
 
     final int INVALID_ID = -1;
 
-    HashMap<String, Integer> mIdMap = new HashMap<String, Integer>();
+    List<DraggableItemApp>mListaApps;
+    int layoutResourceId;
+    Context mContext;
 
-    public StableArrayAdapter(Context context, int textViewResourceId, List<DraggableItemApp> objects) {
-        super(context, textViewResourceId, objects);
-        for (int i = 0; i < objects.size(); ++i) {
-            mIdMap.put(objects.get(i).getNombre(), i);
-        }
+    public StableArrayAdapter(Context context, int viewResourceId, List<DraggableItemApp> objects) {
+        super(context,viewResourceId,objects);
+        mListaApps = objects;
+        layoutResourceId = viewResourceId;
+        mContext = context;
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+
+        View listItem = convertView;
+
+        LayoutInflater inflater = ((Activity) mContext).getLayoutInflater();
+        listItem = inflater.inflate(layoutResourceId, parent, false);
+
+        ImageView imageViewIcon = (ImageView) listItem.findViewById(R.id.imageDraggableIcon);
+        TextView textViewName = (TextView) listItem.findViewById(R.id.textAppDraggable);
+
+        DraggableItemApp item = mListaApps.get(position);
+
+        imageViewIcon.setImageBitmap(item.getIcono());
+        textViewName.setText(item.getNombre());
+
+        return listItem;
     }
 
     @Override
     public long getItemId(int position) {
-        if (position < 0 || position >= mIdMap.size()) {
+        if (position < 0 || position >= mListaApps.size()) {
             return INVALID_ID;
         }
-        String item = getItem(position).getNombre();
-        return mIdMap.get(item);
+        return mListaApps.get(position).getPos();
     }
 
     @Override

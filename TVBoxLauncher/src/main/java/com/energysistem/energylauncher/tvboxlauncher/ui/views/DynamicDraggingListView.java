@@ -38,9 +38,11 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 
+import com.energysistem.energylauncher.tvboxlauncher.modelo.DraggableItemApp;
 import com.energysistem.energylauncher.tvboxlauncher.ui.adapters.StableArrayAdapter;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The dynamic listview is an extension of listview that supports cell dragging
@@ -69,7 +71,7 @@ public class DynamicDraggingListView extends ListView {
     private final int MOVE_DURATION = 150;
     private final int LINE_THICKNESS = 15;
 
-    public ArrayList<String> mCheeseList;
+    public List<DraggableItemApp> mListaApps;
 
     private int mLastEventY = -1;
 
@@ -334,7 +336,7 @@ public class DynamicDraggingListView extends ListView {
                 return;
             }
 
-            swapElements(mCheeseList, originalItem, getPositionForView(switchView));
+            swapElements(mListaApps, originalItem, getPositionForView(switchView));
 
             ((BaseAdapter) getAdapter()).notifyDataSetChanged();
 
@@ -372,7 +374,7 @@ public class DynamicDraggingListView extends ListView {
         }
     }
 
-    private void swapElements(ArrayList arrayList, int indexOne, int indexTwo) {
+    private void swapElements(List arrayList, int indexOne, int indexTwo) {
         Object temp = arrayList.get(indexOne);
         arrayList.set(indexOne, arrayList.get(indexTwo));
         arrayList.set(indexTwo, temp);
@@ -502,8 +504,8 @@ public class DynamicDraggingListView extends ListView {
         return false;
     }
 
-    public void setCheeseList(ArrayList<String> cheeseList) {
-        mCheeseList = cheeseList;
+    public void setCheeseList(List<DraggableItemApp> listaApps) {
+        mListaApps = listaApps;
     }
 
     /**
