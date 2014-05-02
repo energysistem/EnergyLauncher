@@ -36,7 +36,6 @@ public class NotificationsFragment extends Fragment {
         IntentFilter filter = new IntentFilter();
         filter.addAction("com.energysistem.energylauncher.tvboxlauncher.util.NOTIFICATION_LISTENER_EXAMPLE");
 
-        return view;
 
         //Lista
         mDrawerList = (ListView) view.findViewById(R.id.listViewNotif);
@@ -45,23 +44,24 @@ public class NotificationsFragment extends Fragment {
 
         adapter = new NotificationAdapter(view.getContext(),R.layout.row_notification, NotificationItem.drawerItem);
         mDrawerList.setAdapter(adapter);
+        return view;
     }
 
     private void ClearNotify(){
 
         Intent i = new Intent("com.energy.pruebanorificacion.app.NOTIFICATION_LISTENER_SERVICE_EXAMPLE");
         i.putExtra("command","clearall");
-        sendBroadcast(i);
+        getActivity().sendBroadcast(i);
 
         Intent i2 = new Intent("com.energy.pruebanorificacion.app.NOTIFICATION_LISTENER_SERVICE_EXAMPLE");
         i2.putExtra("command","list");
-        sendBroadcast(i2);
+        getActivity().sendBroadcast(i2);
     }
 
     private void ListNotify(){
         Intent i = new Intent("com.energy.pruebanorificacion.app.NOTIFICATION_LISTENER_SERVICE_EXAMPLE");
         i.putExtra("command","list");
-        sendBroadcast(i);
+        getActivity().sendBroadcast(i);
     }
     class NotificationReceiver extends BroadcastReceiver {
         @Override
