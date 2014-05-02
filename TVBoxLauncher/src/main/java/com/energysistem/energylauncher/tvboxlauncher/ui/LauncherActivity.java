@@ -177,6 +177,18 @@ public class LauncherActivity extends FragmentActivity implements AppListFragmen
         ft.commit();
     }
 
+    public void ShowReOrdenaDesktopApps(){
+
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+
+        //TODO
+        NotificationsFragment wvf =  new NotificationsFragment();
+
+        ft.replace(R.id.tab3, wvf);
+        ft.addToBackStack("reordenaFragment");
+        ft.commit();
+    }
+
     public void ShowPickWallpaperFragment(){
 //        FragmentTransaction ft = getFragmentManager().beginTransaction();
 //        ImagePickerActivity wvf =  new ImagePickerActivity();
