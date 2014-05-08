@@ -28,8 +28,12 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
+import android.inputmethodservice.KeyboardView;
+import android.os.SystemClock;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -65,11 +69,31 @@ import java.util.List;
  * When the hover cell is either above or below the bounds of the listview, this
  * listview also scrolls on its own so as to reveal additional content.
  */
+
+
+
 public class DynamicDraggingListView extends ListView {
 
+    public interface OnListChangeListener {
+        void onListChanged(View v, boolean cambiado);
+    }
+
+    private OnListChangeListener changeListListener;
+
+    public void setOnListChangeListener(OnListChangeListener l) {
+        changeListListener = l;
+    }
+
+
     private final int SMOOTH_SCROLL_AMOUNT_AT_EDGE = 15;
-    private final int MOVE_DURATION = 150;
+    private final int MOVE_DURATION = 170;
     private final int LINE_THICKNESS = 15;
+
+
+    private enum mDireccionMotionEvent {
+        UP,
+        DOWN
+    }
 
     public List<DraggableItemApp> mListaApps;
 
@@ -79,6 +103,9 @@ public class DynamicDraggingListView extends ListView {
     private int mDownX = -1;
 
     private int mTotalOffset = 0;
+
+    private boolean mListOrderHasChanged = false;
+    public boolean getOrdenListaAppsModificada(){return mListOrderHasChanged;}
 
     private boolean mCellIsMobile = false;
     private boolean mIsMobileScrolling = false;
@@ -115,16 +142,174 @@ public class DynamicDraggingListView extends ListView {
     }
 
     public void init(Context context) {
-        setOnItemLongClickListener(mOnItemLongClickListener);
+      setOnItemLongClickListener(mOnItemLongClickListener);
+        setOnItemClickListener(mOnItemClickListener);
         setOnScrollListener(mScrollListener);
         DisplayMetrics metrics = context.getResources().getDisplayMetrics();
         mSmoothScrollAmountAtEdge = (int)(SMOOTH_SCROLL_AMOUNT_AT_EDGE / metrics.density);
+        setOnKeyListener(mOnKeyListener);
     }
 
     /**
-     * Listens for long clicks on any items in the listview. When a cell has
-     * been selected, the hover cell is created and set up.
+     * Listen al teclado
+     *
      */
+    private OnKeyListener mOnKeyListener = new OnKeyListener() {
+        @Override
+        public boolean onKey(View v, int keyCode, KeyEvent event) {
+            Log.i("Tecla pulsada ", v.getId() + " " + event.toString());
+
+            if (event.getAction() == KeyEvent.ACTION_DOWN) {
+                switch (event.getKeyCode()) {
+                    case KeyEvent.KEYCODE_DPAD_UP:
+                        if (mCellIsMobile) {
+                            //Estamos moviendo la cell
+                          LanzaMotionEvent(mDireccionMotionEvent.UP, MotionEvent.ACTION_MOVE );
+                            return true;
+                        }
+                        break;
+                    case KeyEvent.KEYCODE_DPAD_DOWN:
+                        if (mCellIsMobile) {
+                            LanzaMotionEvent(mDireccionMotionEvent.DOWN,  MotionEvent.ACTION_MOVE);
+                            return true;
+                        }
+                        break;
+                }
+            }
+            return false;
+        }
+    };
+
+
+    /**
+     * Lanza el motion event para simular un movimiento del cell arriba o abajo     *
+     */
+
+    private void LanzaMotionEvent(mDireccionMotionEvent direcc,  int movimiento) {
+        int desplazamientoDeMas = 1;
+        float y2 = 0.0f;
+        float x;
+        long downTime;
+        long eventTime;
+        View nextView = null;
+
+        //Pillamos la view del siguiente/anterior item
+        if (movimiento == MotionEvent.ACTION_MOVE) {
+            switch (direcc) {
+                case UP:
+                    if (mAboveItemId != -1) {
+                        nextView = getViewForID(mAboveItemId);
+                        y2 = nextView.getY() -desplazamientoDeMas;
+                    } else {
+                        return;
+                    }
+                    break;
+                case DOWN:
+                    if (mBelowItemId != -1) {
+                        nextView = getViewForID(mBelowItemId);
+                        y2 = nextView.getY() +desplazamientoDeMas;
+                    } else {
+                        return;
+                    }
+                    break;
+            }
+            x = nextView.getX();
+            downTime = SystemClock.uptimeMillis();
+            int metaState = 0;
+
+            eventTime = downTime + (1000);
+            MotionEvent motionEvent = MotionEvent.obtain(
+                    downTime,
+                    eventTime,
+                    MotionEvent.ACTION_MOVE,
+                    x,
+                    y2,
+                    metaState
+            );
+            // Dispatch touch event to view
+            this.dispatchTouchEvent(motionEvent);
+            Log.i("LanzaMotioEvent", "Movido el puntero a : x:" + x + " y:" + y2);
+
+
+        } else if (movimiento == MotionEvent.ACTION_DOWN) {
+            nextView = getViewForID(mMobileItemId);
+            y2 = nextView.getY();
+            x = nextView.getX();
+            downTime = SystemClock.uptimeMillis();
+            eventTime = SystemClock.uptimeMillis() + 100;
+
+            Log.i("LanzaMotioEvent", "Movido el puntero a : x:" + x + " y:" + y2);
+            int metaState = 0;
+            MotionEvent motionEvent = MotionEvent.obtain(
+                    downTime,
+                    eventTime,
+                    MotionEvent.ACTION_DOWN,
+                    x,
+                    y2,
+                    metaState
+            );
+            // Dispatch touch event to view
+            this.dispatchTouchEvent(motionEvent);
+        }
+        else if (movimiento == MotionEvent.ACTION_UP){
+            downTime = SystemClock.uptimeMillis();
+            eventTime = SystemClock.uptimeMillis() + 100;
+
+            Log.i("LanzaMotioEvent", "Levantado el puntero de: x:" + mDownX + " y:" + mDownY);
+            int metaState = 0;
+            MotionEvent motionEvent = MotionEvent.obtain(
+                    downTime,
+                    eventTime,
+                    MotionEvent.ACTION_UP,
+                    mDownX,
+                    mDownY,
+                    metaState
+            );
+            // Dispatch touch event to view
+            this.dispatchTouchEvent(motionEvent);
+        }
+
+
+    }
+
+    private OnItemClickListener mOnItemClickListener = new OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int pos, long id) {
+            if (mCellIsMobile) {
+                LanzaMotionEvent(mDireccionMotionEvent.DOWN, MotionEvent.ACTION_UP);
+
+            } else {
+                mTotalOffset = 0;
+
+                int position = pointToPosition(mDownX, mDownY);
+                int itemNum = position - getFirstVisiblePosition();
+
+                position = itemNum = pos;
+
+
+
+                View selectedView = getChildAt(itemNum);
+                mMobileItemId = getAdapter().getItemId(position);
+                mHoverCell = getAndAddHoverView(selectedView);
+                selectedView.setVisibility(INVISIBLE);
+
+
+                LanzaMotionEvent(mDireccionMotionEvent.DOWN, MotionEvent.ACTION_DOWN);
+
+                mCellIsMobile = true;
+
+                updateNeighborViewsForID(mMobileItemId);
+
+
+            }
+        }
+    };
+
+
+//    *
+//     * Listens for long clicks on any items in the listview. When a cell has
+//     * been selected, the hover cell is created and set up.
+
     private OnItemLongClickListener mOnItemLongClickListener =
             new OnItemLongClickListener() {
                 public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int pos, long id) {
@@ -133,10 +318,16 @@ public class DynamicDraggingListView extends ListView {
                     int position = pointToPosition(mDownX, mDownY);
                     int itemNum = position - getFirstVisiblePosition();
 
+//                    if (position == -1){
+                    position = itemNum = pos;
+//                    }
+
                     View selectedView = getChildAt(itemNum);
                     mMobileItemId = getAdapter().getItemId(position);
                     mHoverCell = getAndAddHoverView(selectedView);
                     selectedView.setVisibility(INVISIBLE);
+
+                    LanzaMotionEvent(mDireccionMotionEvent.DOWN, MotionEvent.ACTION_DOWN );
 
                     mCellIsMobile = true;
 
@@ -145,6 +336,14 @@ public class DynamicDraggingListView extends ListView {
                     return true;
                 }
             };
+
+
+    @Override
+    public void setOnScrollListener(OnScrollListener l) {
+
+        Log.d("********************tralari***************", "ddfdfdsff");
+        super.setOnScrollListener(l);
+    }
 
     /**
      * Creates the hover cell with the appropriate bitmap and of appropriate
@@ -378,6 +577,12 @@ public class DynamicDraggingListView extends ListView {
         Object temp = arrayList.get(indexOne);
         arrayList.set(indexOne, arrayList.get(indexTwo));
         arrayList.set(indexTwo, temp);
+
+        if (!mListOrderHasChanged){
+            mListOrderHasChanged = true;
+            if (changeListListener != null)
+                changeListListener.onListChanged(this, mListOrderHasChanged);
+        }
     }
 
 
@@ -483,7 +688,7 @@ public class DynamicDraggingListView extends ListView {
      * or below the bounds of the listview. If so, the listview does an appropriate
      * upward or downward smooth scroll so as to reveal new items.
      */
-    public boolean handleMobileCellScroll(Rect r) {
+    private boolean handleMobileCellScroll(Rect r) {
         int offset = computeVerticalScrollOffset();
         int height = getHeight();
         int extent = computeVerticalScrollExtent();
@@ -504,7 +709,12 @@ public class DynamicDraggingListView extends ListView {
         return false;
     }
 
-    public void setCheeseList(List<DraggableItemApp> listaApps) {
+
+    public void setListaReseteada(){
+        mListOrderHasChanged = false;
+    }
+
+    public void setAppsList(List<DraggableItemApp> listaApps) {
         mListaApps = listaApps;
     }
 

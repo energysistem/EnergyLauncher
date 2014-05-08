@@ -64,7 +64,14 @@ public class AppAdapter extends ArrayAdapter<AppInfo> {
 
         holder.image.setImageDrawable(new BitmapDrawable(mResources, info.getBitmap()));
         holder.title.setText(info.getTitle());
-        holder.frameLayout.setBackgroundColor(getFrameCheckBoxView(info.checked, false));
+
+        if (checkBoxSelected)
+            holder.frameLayout.setVisibility(View.VISIBLE);
+        else
+            holder.frameLayout.setVisibility(View.INVISIBLE);
+
+
+        holder.frameLayout.setBackgroundColor(getFrameCheckBoxView(info.checked));
 
 
         /*if (checkBoxSelected) {
@@ -80,9 +87,7 @@ public class AppAdapter extends ArrayAdapter<AppInfo> {
             public void onClick(View v) {
                 Log.i("onclickListener", "framelayout " + position);
                 info.checked = !info.checked;
-
-                v.setBackgroundColor(getFrameCheckBoxView(info.checked, false));
-
+                v.setBackgroundColor(getFrameCheckBoxView(info.checked));
                 v.setId(position);
                 onCkeckBoxClickListener.onClick(v);
             }
@@ -92,14 +97,14 @@ public class AppAdapter extends ArrayAdapter<AppInfo> {
     }
 
 
-    public int getFrameCheckBoxView(boolean checked, boolean selected){
-        if (selected) {
-            return Color.GREEN;
-        }
+
+
+    public int getFrameCheckBoxView(boolean checked){
+
         if (checked)
-             return Color.RED;
+             return getContext().getResources().getColor(R.color.blue);
         else
-            return Color.BLACK;
+            return getContext().getResources().getColor(R.color.black_overlay);
     }
 
 
@@ -122,9 +127,10 @@ public class AppAdapter extends ArrayAdapter<AppInfo> {
     }
 
 
-    public void setSelectedCheckBox(boolean valor){
-        Log.i("onclickListener", "Seleccionados checkBoxes");
+    public void setSelectedCheckBoxMode(boolean valor){
+        Log.d("onclickListener", "Seleccionados checkBoxes");
         checkBoxSelected = valor;
+
     }
 
     public boolean getModeCheckBoxSelection(){

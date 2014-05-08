@@ -54,6 +54,11 @@ public class ShortcutAdapter extends BaseAdapter  {
         data.remove(i);
     }
 
+    public void clearItems(){
+        data.clear();
+    }
+
+
     public void removeItemPos(int i){
         data.remove(i);
     }

@@ -7,16 +7,21 @@ import android.graphics.Bitmap;
  */
 public class DraggableItemApp {
 
-        int pos;
-        String nombre;
-        Bitmap icono;
+    int pos;
+    String packageName;
+
+
+    String title;
+    Bitmap icono;
 
     public void setPos(int pos) {
         this.pos = pos;
     }
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+
+    public void setPackageName(String packageName) {
+        this.packageName = packageName;
     }
+
     public void setIcono(Bitmap icono) {
         this.icono = icono;
     }
@@ -24,17 +29,24 @@ public class DraggableItemApp {
     public int getPos() {
         return pos;
     }
-    public String getNombre() {
-        return nombre;
+
+    public String getPackageName() {
+        return packageName;
     }
+
     public Bitmap getIcono() {
         return icono;
     }
 
+    public String getTitle() {
+        return title;
+    }
 
-    public DraggableItemApp(int pos, String nombre, Bitmap icono) {
+
+    public DraggableItemApp(int pos, String titlee, String packageName, Bitmap icono) {
         this.pos = pos;
-        this.nombre = nombre;
+        this.title = titlee;
+        this.packageName = packageName;
         this.icono = icono;
     }
 }

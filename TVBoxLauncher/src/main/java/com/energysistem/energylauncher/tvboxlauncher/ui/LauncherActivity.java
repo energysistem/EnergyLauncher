@@ -17,13 +17,13 @@ import android.widget.FrameLayout;
 import com.energysistem.energylauncher.tvboxlauncher.LauncherAppState;
 import com.energysistem.energylauncher.tvboxlauncher.R;
 import com.energysistem.energylauncher.tvboxlauncher.modelo.AppInfo;
+import com.energysistem.energylauncher.tvboxlauncher.modelo.DraggableItemApp;
 import com.energysistem.energylauncher.tvboxlauncher.modelo.SaveLoadAppsPreferences;
 import com.energysistem.energylauncher.tvboxlauncher.modelo.ShortcutInfo;
 import com.energysistem.energylauncher.tvboxlauncher.modelo.WebPageInfo;
 import com.energysistem.energylauncher.tvboxlauncher.ui.fragments.AppArrangeFragment;
 import com.energysistem.energylauncher.tvboxlauncher.ui.fragments.AppListFragment;
 import com.energysistem.energylauncher.tvboxlauncher.ui.fragments.DesktopFragment;
-import com.energysistem.energylauncher.tvboxlauncher.ui.fragments.MenuListFragment;
 import com.energysistem.energylauncher.tvboxlauncher.ui.fragments.NotificationsFragment;
 import com.energysistem.energylauncher.tvboxlauncher.ui.fragments.OptionsLauncherFragment;
 
@@ -35,8 +35,11 @@ public class LauncherActivity extends FragmentActivity implements AppListFragmen
 
     private static final String TAG = "LauncherActivity";
     SaveLoadAppsPreferences preferencesListadoApps;
-    private AppListFragment appListFragment;
-    private DesktopFragment desktopFragment;
+    private AppListFragment mAppListFragment;
+    private DesktopFragment mDesktopFragment;
+    private NotificationsFragment mNotificationFragent;
+    private OptionsLauncherFragment mOptionsLauncherFragment;
+    private AppArrangeFragment mAppArrangeFragment;
 
     private DrawerLayout desktopLayout;
     private FrameLayout appLayout;
@@ -66,7 +69,7 @@ public class LauncherActivity extends FragmentActivity implements AppListFragmen
             public void onDrawerClosed(View view) {
 //                getFragmentManager().beginTransaction()
 //                        .replace(R.id.left_drawer, new MenuListFragment()).commit();
-                desktopFragment.getAppButton().requestFocus();
+                mDesktopFragment.getAppButton().requestFocus();
             }
 
             public void onDrawerOpened(View drawerView) {
@@ -83,21 +86,22 @@ public class LauncherActivity extends FragmentActivity implements AppListFragmen
         LauncherAppState.setApplicationContext(getApplicationContext());
 
         if (savedInstanceState == null) {
-            desktopFragment = new DesktopFragment();
+            mDesktopFragment = new DesktopFragment();
             getFragmentManager().beginTransaction()
-                    .add(R.id.content_frame, desktopFragment)
+                    .add(R.id.content_frame, mDesktopFragment)
                     .commit();
 
             //Drawer derecho
-            appListFragment = new AppListFragment();
+            mAppListFragment = new AppListFragment();
             getFragmentManager().beginTransaction()
-                    .add(R.id.right_drawer, appListFragment)
+                    .add(R.id.right_drawer, mAppListFragment)
                     .commit();
 
             //Drawer Izquierdo
+            mNotificationFragent = new NotificationsFragment() ;
             getFragmentManager().beginTransaction()
-                    .add(R.id.left_drawer, new NotificationsFragment()).commit();
-
+                    .add(R.id.left_drawer, mNotificationFragent)
+                    .commit();
         }
 
     }
@@ -111,28 +115,38 @@ public class LauncherActivity extends FragmentActivity implements AppListFragmen
     */
     public void addShortcutApp(ShortcutInfo shortcutInfo) {
         if ( shortcutInfo instanceof  AppInfo){
-            desktopFragment.addShortcut(shortcutInfo);
+            mDesktopFragment.addShortcut(shortcutInfo);
             preferencesListadoApps.addAppInfo((AppInfo) shortcutInfo);
+            resetArrangeAppsFragment();
         }
         else if (shortcutInfo instanceof WebPageInfo){
-            desktopFragment.addShortcut(shortcutInfo);
+            mDesktopFragment.addShortcut(shortcutInfo);
             preferencesListadoApps.addWebPageInfo((WebPageInfo)shortcutInfo);
         }
     }
 
     public void removeShortcutApp(ShortcutInfo shortcutInfo) {
-        desktopFragment.removeShortcut(shortcutInfo);
+        mDesktopFragment.removeShortcut(shortcutInfo);
         preferencesListadoApps.removeAppInfo((AppInfo) shortcutInfo);
+        resetArrangeAppsFragment();
     }
 
     public ArrayList<String> getAppsNamePreferences(){
         return preferencesListadoApps.getListaAppsString();
     }
 
-    public void actualizaArrayAppsPreferencias(List<AppInfo> listaApps){
-        preferencesListadoApps.ActualizaListaApps(listaApps);
+    public void actualizaArrayAppsPreferencias(){
+        preferencesListadoApps.ActualizaListaApps(mAppListFragment.getAppsInfos());
     }
 
+    public void actualizaOrdenApps(List<DraggableItemApp> listaDraggables){
+        preferencesListadoApps.ActualizaOrdenListaApps(listaDraggables);
+        mAppListFragment.cargaListaApps();
+    }
+
+    public void clearShortcutsApp(){
+        mDesktopFragment.clearShortcutsApps();
+    }
 
 
     /*
@@ -147,7 +161,7 @@ public class LauncherActivity extends FragmentActivity implements AppListFragmen
         for (int i = 0; i < listaWebShortCuts.size(); i++) {
             SaveLoadAppsPreferences.WebPageItem item = listaWebShortCuts.get(i);
             WebPageInfo webInfo = new WebPageInfo(item.getUri(), item.getTitle());
-            desktopFragment.addShortcut(webInfo);
+            mDesktopFragment.addShortcut(webInfo);
             lista.add(webInfo);
         }
         return lista;
@@ -155,7 +169,7 @@ public class LauncherActivity extends FragmentActivity implements AppListFragmen
 
 
     public void removeShortcut(int webShortcutPos){
-        desktopFragment.removeShortcut(webShortcutPos);
+        mDesktopFragment.removeShortcut(webShortcutPos);
         preferencesListadoApps.removeWebPageInfo(webShortcutPos);
     }
 
@@ -171,22 +185,20 @@ public class LauncherActivity extends FragmentActivity implements AppListFragmen
      */
     public void ShowOptionsLauncherMenuFragment(){
         FragmentTransaction ft = getFragmentManager().beginTransaction();
-        OptionsLauncherFragment wvf =  new OptionsLauncherFragment();
+        mOptionsLauncherFragment =  new OptionsLauncherFragment();
 
-        ft.replace(R.id.tab3, wvf);
-        ft.addToBackStack("optionsLauncher");
+        ft.replace(R.id.tab3, mOptionsLauncherFragment);
+        ft.addToBackStack("OptionsLauncherFragment");
         ft.commit();
     }
 
-    public void ShowReOrdenaDesktopApps(){
+    public void ShowReordenaDesktopAppsFragment(){
 
         FragmentTransaction ft = getFragmentManager().beginTransaction();
+        mAppArrangeFragment =  new AppArrangeFragment();
 
-        //TODO
-        AppArrangeFragment wvf =  new AppArrangeFragment();
-
-        ft.replace(R.id.tab3, wvf);
-        ft.addToBackStack("reordenaFragment");
+        ft.replace(R.id.tab3, mAppArrangeFragment);
+        ft.addToBackStack("AppArrangeFragment");
         ft.commit();
     }
 
@@ -216,7 +228,7 @@ public class LauncherActivity extends FragmentActivity implements AppListFragmen
     }
 
     public List<AppInfo> getAppList(){
-        return  appListFragment.getAppsInfos();
+        return  mAppListFragment.getAppsInfos();
     }
 
     @Override
@@ -240,17 +252,17 @@ public class LauncherActivity extends FragmentActivity implements AppListFragmen
         switch (keyCode) {
             case KeyEvent.KEYCODE_DPAD_RIGHT:
                 if (appLayout.isShown()) {
-                    appListFragment.onKeyRight();
+                    mAppListFragment.onKeyRight();
                 }
                 break;
 
             case KeyEvent.KEYCODE_DPAD_LEFT:
                 if (appLayout.isShown()) {
-                    if (appListFragment.onKeyLeft()) {
+                    if (mAppListFragment.onKeyLeft()) {
                         //true si estabamos en el seleccionable checkBox, ya se maneja en el fragment
                         return true;
                     } else {
-                        desktopFragment.FocusAppListButton();
+                        mDesktopFragment.FocusAppListButton();
                         toggleDrawer(appLayout);
                     }
                 }
@@ -280,14 +292,15 @@ public class LauncherActivity extends FragmentActivity implements AppListFragmen
                     Log.d("Key Shortcut","App not foumd");
                 }
                 return true;
+
             case KeyEvent.KEYCODE_DPAD_DOWN:
                 if (appLayout.isShown()) {
-                    appListFragment.onKeyUpDown();
+                    mAppListFragment.onKeyUpDown();
                 }
                 return true;
             case KeyEvent.KEYCODE_DPAD_UP:
                 if (appLayout.isShown()) {
-                    appListFragment.onKeyUpDown();
+                    mAppListFragment.onKeyUpDown();
                 }
                 return true;
             case KeyEvent.KEYCODE_BACK:
@@ -302,8 +315,17 @@ public class LauncherActivity extends FragmentActivity implements AppListFragmen
 
 
 
+    public void resetArrangeAppsFragment(){
+        if (mAppArrangeFragment != null){
+            mAppArrangeFragment.resetFragment();
+        }
+    }
+
     public void toggleDrawer(FrameLayout drawerLayout) {
         if(desktopLayout.isDrawerOpen(drawerLayout)) {
+            if (mAppArrangeFragment != null) {
+                mAppArrangeFragment.resetFragment();
+            }
             desktopLayout.closeDrawers();
         } else {
             desktopLayout.closeDrawers();

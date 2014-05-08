@@ -40,15 +40,16 @@ public class AppListFragment extends Fragment implements LoaderManager.LoaderCal
     static List<String> favorites = Arrays.asList("Play Movies & TV", "Netflix", "Plex", "YouTube", "Chrome");
 
     private ListView mAppsInfoListView;
-    TabHost mTabHost;
+    private TabHost mTabHost;
 
-    private Callbacks mCallbacks = sDummyCallbacks;
+    private MenuBookMarkFragment mMenuBookMarkFragment;
+    private MenuListFragment mMenuListViewFragment;
+
 
     private List<AppInfo> mAppInfosList;
-
-    private ListView mMenuList;
     private AppAdapter mAppAdapter;
     private LinearLayout mFavorites;
+    private Callbacks mCallbacks = sDummyCallbacks;
 
     public interface Callbacks {
         void onExpandButtonClick();
@@ -63,39 +64,61 @@ public class AppListFragment extends Fragment implements LoaderManager.LoaderCal
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_app_list, container, false);
 
-
         mAppsInfoListView = (ListView) v.findViewById(R.id.app_grid);
         mAppsInfoListView.setOnItemClickListener(this);
 
-
-        mTabHost=(TabHost)v.findViewById(R.id.tabHost);
+        mTabHost = (TabHost) v.findViewById(R.id.tabHost);
         mTabHost.setup();
 
-        // Tab 1
-        TabHost.TabSpec spec1=mTabHost.newTabSpec("APPS");
+        // *******Tab 1*******
+        TabHost.TabSpec spec1 = mTabHost.newTabSpec("APPS");
         spec1.setContent(R.id.tab1);
         spec1.setIndicator(getResources().getText(R.string.tab1));
 
-        //Tab 2
-        TabHost.TabSpec spec2=mTabHost.newTabSpec("BOOKMARKS");
+        //********Tab 2*******
+        TabHost.TabSpec spec2 = mTabHost.newTabSpec("BOOKMARKS");
         spec2.setContent(R.id.tab2);
         spec2.setIndicator(getResources().getText(R.string.tab2));
-        getFragmentManager().beginTransaction().replace(R.id.tab2, new MenuBookMarkFragment()).commit();
 
-        //Tab 3
-        TabHost.TabSpec spec3=mTabHost.newTabSpec("SETTINGS");
+        mMenuBookMarkFragment = new MenuBookMarkFragment();
+        getFragmentManager().beginTransaction().replace(R.id.tab2,
+                mMenuBookMarkFragment)
+                .commit();
+
+        //********Tab 3*******
+        TabHost.TabSpec spec3 = mTabHost.newTabSpec("SETTINGS");
         spec3.setContent(R.id.tab3);
         spec3.setIndicator(getResources().getText(R.string.tab3));
-        getFragmentManager().beginTransaction().replace(R.id.tab3, new MenuListFragment()).commit();
 
+        mMenuListViewFragment = new MenuListFragment();
+        getFragmentManager().beginTransaction().replace(R.id.tab3,
+                mMenuListViewFragment)
+                .commit();
+
+        //añadimos los tabs
         mTabHost.addTab(spec1);
         mTabHost.addTab(spec2);
         mTabHost.addTab(spec3);
+
+        mTabHost.setOnTabChangedListener(tabChangeListener);
 
         return v;
     }
 
 
+    TabHost.OnTabChangeListener tabChangeListener =new TabHost.OnTabChangeListener() {
+        @Override
+        public void onTabChanged(String tabId) {
+            if (mTabHost.getCurrentTab() != 2){
+                //No esta seleccionado el tercer tab, reseteamos lo que toque
+                ((LauncherActivity)getActivity()).resetArrangeAppsFragment();
+            }
+
+            if (mTabHost.getCurrentTab() != 0){
+                desactivaModoCheckBox();
+            }
+        }
+    };
 
 
 
@@ -114,8 +137,8 @@ public class AppListFragment extends Fragment implements LoaderManager.LoaderCal
                 ((LauncherActivity) getActivity()).addShortcutApp(info);
                 info.checked = true;
             }
+            mAppAdapter.notifyDataSetChanged();
         } else {
-
             startActivity(info.getIntent());
         }
     }
@@ -195,7 +218,6 @@ public class AppListFragment extends Fragment implements LoaderManager.LoaderCal
                 AppInfo info = mAppInfosList.get(v.getId());
 
                 if (info.checked) {
-
                     assert (getActivity()) != null;
                     ((LauncherActivity) getActivity()).addShortcutApp(info);
                 }
@@ -206,6 +228,18 @@ public class AppListFragment extends Fragment implements LoaderManager.LoaderCal
                 }
             }
         });
+
+        cargaListaApps();
+
+        assert (getActivity()) != null;
+        ((LauncherActivity)getActivity()).actualizaArrayAppsPreferencias();
+    }
+
+
+    public void cargaListaApps() {
+
+        //Limpiamos los shortcuts primero
+        ((LauncherActivity)getActivity()).clearShortcutsApp();
 
         //Recorremos la lista de aplicaciones en preferencias y añadimos.
         assert (getActivity()) != null;
@@ -223,13 +257,8 @@ public class AppListFragment extends Fragment implements LoaderManager.LoaderCal
                 }
             }
         }
-
-        assert (getActivity()) != null;
-        ((LauncherActivity)getActivity()).actualizaArrayAppsPreferencias(mAppInfosList);
-
-
-
     }
+
 
     @Override
     public void onLoaderReset(Loader<List<AppInfo>> listLoader) {
@@ -285,22 +314,35 @@ public class AppListFragment extends Fragment implements LoaderManager.LoaderCal
     }
 
 
-
     public boolean onKeyRight(){
-        if (mAppsInfoListView.hasFocus()){
-            Log.d(TAG, "Activamos modo checkbox" );
-            mAppAdapter.setSelectedCheckBox(true);
-            mAppAdapter.setSelectedItem(mAppsInfoListView.getSelectedItemPosition());
-            updateView();
-            //mAppAdapter.notifyDataSetChanged();
-        }
+        activaModoCheckBox();
         return false;
     }
+
+    private void activaModoCheckBox(){
+        if (mAppsInfoListView.hasFocus()){
+            Log.d(TAG, "Activamos modo checkbox" );
+            mAppAdapter.setSelectedCheckBoxMode(true);
+            mAppAdapter.setSelectedItem(mAppsInfoListView.getSelectedItemPosition());
+           // updateView();
+            mAppAdapter.notifyDataSetChanged();
+        }
+    }
+
+    private void desactivaModoCheckBox() {
+        if (mAppAdapter.getModeCheckBoxSelection()) {
+            mAppAdapter.setSelectedCheckBoxMode(false);
+            mAppAdapter.setSelectedItem(mAppsInfoListView.getSelectedItemPosition());
+           // updateView();
+            mAppAdapter.notifyDataSetChanged();
+        }
+    }
+
 
     public boolean onKeyUpDown(){
         if (mAppsInfoListView.hasFocus()) {
             mAppAdapter.setSelectedItem(mAppsInfoListView.getSelectedItemPosition());
-            updateView();
+            //updateView();
             return true;
         }
         //mAppAdapter.notifyDataSetChanged();
@@ -311,10 +353,7 @@ public class AppListFragment extends Fragment implements LoaderManager.LoaderCal
         if (mAppsInfoListView.hasFocus()) {
             Log.d(TAG, "Estamos en app_grid");
             if (mAppAdapter.getModeCheckBoxSelection()) {
-                mAppAdapter.setSelectedCheckBox(false);
-                mAppAdapter.setSelectedItem(mAppsInfoListView.getSelectedItemPosition());
-                updateView();
-                //mAppAdapter.notifyDataSetChanged();
+                desactivaModoCheckBox();
                 return true;
             } else {
                 return false;
@@ -325,10 +364,7 @@ public class AppListFragment extends Fragment implements LoaderManager.LoaderCal
                 return true;
             } else {
                 if (mAppAdapter.getModeCheckBoxSelection()) {
-                    mAppAdapter.setSelectedCheckBox(false);
-                    mAppAdapter.setSelectedItem(mAppsInfoListView.getSelectedItemPosition());
-                    updateView();
-                    //mAppAdapter.notifyDataSetChanged();
+                   desactivaModoCheckBox();
                 }
                 return false;
             }
@@ -347,13 +383,13 @@ public class AppListFragment extends Fragment implements LoaderManager.LoaderCal
         //Colocamos el listItem anterior como estaba
         View viewOld = mAppsInfoListView.getChildAt(mAppAdapter.getLastSelectedItem()- mAppsInfoListView.getFirstVisiblePosition());
         FrameLayout frameOld = (FrameLayout) viewOld.findViewById(R.id.frame_checkbox);
-        frameOld.setBackgroundColor(mAppAdapter.getFrameCheckBoxView(mAppInfosList.get(mAppAdapter.getLastSelectedItem()).checked, false));
+        frameOld.setBackgroundColor(mAppAdapter.getFrameCheckBoxView(mAppInfosList.get(mAppAdapter.getLastSelectedItem()).checked));
 
         //En caso que dejemos el modo seleccion colocamos el check como estaba
         if (!mAppAdapter.getModeCheckBoxSelection()){
             View v = mAppsInfoListView.getChildAt(mAppsInfoListView.getSelectedItemPosition() - mAppsInfoListView.getFirstVisiblePosition());
             FrameLayout frame = (FrameLayout) v.findViewById(R.id.frame_checkbox);
-            frame.setBackgroundColor(mAppAdapter.getFrameCheckBoxView(mAppInfosList.get(mAppAdapter.getSelectedItem()).checked, false));
+            frame.setBackgroundColor(mAppAdapter.getFrameCheckBoxView(mAppInfosList.get(mAppAdapter.getSelectedItem()).checked));
             return;
         }
 
@@ -364,10 +400,8 @@ public class AppListFragment extends Fragment implements LoaderManager.LoaderCal
             return;
 
         FrameLayout frame = (FrameLayout) v.findViewById(R.id.frame_checkbox);
-        frame.setBackgroundColor(mAppAdapter.getFrameCheckBoxView(false, true));
+        frame.setBackgroundColor(mAppAdapter.getFrameCheckBoxView(false));
     }
-
-
 
 
 }

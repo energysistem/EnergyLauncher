@@ -7,11 +7,22 @@
     tools:context=".ListViewAnimations" >
 
 
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Aplicar cambios"
+        android:id="@+id/btnGuardaCambios"
+        android:enabled="false"
+        android:clickable="false"
+        android:focusable="false"
+        android:focusableInTouchMode="false" />
+
     <com.energysistem.energylauncher.tvboxlauncher.ui.views.DynamicDraggingListView
         android:id="@+id/draggable_listview"
         android:background="#0000"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btnGuardaCambios" />
 
 
 

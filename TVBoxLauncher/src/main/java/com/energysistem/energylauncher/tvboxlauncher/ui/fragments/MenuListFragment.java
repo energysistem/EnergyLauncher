@@ -54,6 +54,11 @@ public class MenuListFragment extends Fragment {
         }
     }
 
+    /**
+     * funcion para resetear lo que correcponda cuando ocultamos el fragment
+     */
+
+
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
 
         @Override
