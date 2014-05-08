@@ -17,25 +17,17 @@
 package com.energysistem.energylauncher.tvboxlauncher.ui.adapters;
 
 import android.app.Activity;
-import android.app.Fragment;
-import android.app.Notification;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.energysistem.energylauncher.tvboxlauncher.R;
-import com.energysistem.energylauncher.tvboxlauncher.modelo.BasicImgText;
 import com.energysistem.energylauncher.tvboxlauncher.modelo.DraggableItemApp;
 
-import java.util.HashMap;
 import java.util.List;
 
 public class StableArrayAdapter extends ArrayAdapter<DraggableItemApp> {
@@ -67,7 +59,7 @@ public class StableArrayAdapter extends ArrayAdapter<DraggableItemApp> {
         DraggableItemApp item = mListaApps.get(position);
 
         imageViewIcon.setImageBitmap(item.getIcono());
-        textViewName.setText(item.getNombre());
+        textViewName.setText(item.getTitle());
 
         return listItem;
     }

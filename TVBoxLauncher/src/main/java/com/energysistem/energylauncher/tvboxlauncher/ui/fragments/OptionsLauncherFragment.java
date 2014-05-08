@@ -75,7 +75,7 @@ public class OptionsLauncherFragment extends Fragment {
                     ((LauncherActivity)getActivity()).ShowPickWallpaperFragment();
                     break;
                 case 1:
-                    ((LauncherActivity)getActivity()).ShowReOrdenaDesktopApps();
+                    ((LauncherActivity)getActivity()).ShowReordenaDesktopAppsFragment();
                     break;
                 default:
                     ((LauncherActivity)getActivity()).onBackPressed();

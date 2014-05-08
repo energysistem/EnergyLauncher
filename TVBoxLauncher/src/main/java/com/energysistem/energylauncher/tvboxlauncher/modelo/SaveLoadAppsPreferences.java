@@ -76,6 +76,21 @@ public class SaveLoadAppsPreferences {
         guardaArrayApps(listAppsString);
     }
 
+    public void ActualizaOrdenListaApps(List<DraggableItemApp> listaDraggables) {
+        //Borramos Array y creamos de nuevo.
+        ArrayList<String> listAppsString = new ArrayList<String>();
+
+        for (int i = 0; i < listaDraggables.size(); i++) {
+            String nombreAppinfo = listaDraggables.get(i).getPackageName();
+            if (!listAppsString.contains(nombreAppinfo)) {
+                listAppsString.add(nombreAppinfo);
+            }
+        }
+
+        removeAppsArray();
+        guardaArrayApps(listAppsString);
+    }
+
     public boolean addAppInfo(AppInfo app) {
         String nombre = getNombreApp(app);
 
@@ -251,6 +266,8 @@ public class SaveLoadAppsPreferences {
     private String getStringWebPagePreferencias(WebPageItem item) {
         return item.getTitle() + "," + item.getUri();
     }
+
+
 
 
     public class WebPageItem {

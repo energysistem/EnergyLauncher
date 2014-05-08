@@ -139,6 +139,12 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
         gridWebShortcutAdapter.notifyDataSetChanged();
     }
 
+    public void clearShortcutsApps(){
+        if (gridAdapter != null){
+            gridAdapter.clearItems();
+            gridAdapter.notifyDataSetChanged();
+        }
+    }
 
     public ImageButton getAppButton() {
         return appButton;
