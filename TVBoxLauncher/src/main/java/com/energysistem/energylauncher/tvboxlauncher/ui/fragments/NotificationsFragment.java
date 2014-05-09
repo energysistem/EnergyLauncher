@@ -14,7 +14,6 @@ import android.widget.ListView;
 import com.energysistem.energylauncher.tvboxlauncher.R;
 import com.energysistem.energylauncher.tvboxlauncher.modelo.NotificationItem;
 import com.energysistem.energylauncher.tvboxlauncher.ui.adapters.NotificationAdapter;
-import com.energysistem.energylauncher.tvboxlauncher.modelo.NotificationItem;
 
 import java.util.ArrayList;
 
@@ -34,31 +33,39 @@ public class NotificationsFragment extends Fragment {
         super.onCreate(savedInstanceState);
         nReceiver = new NotificationReceiver();
         IntentFilter filter = new IntentFilter();
-        filter.addAction("com.energysistem.energylauncher.tvboxlauncher.util.NOTIFICATION_LISTENER_EXAMPLE");
-
+        filter.addAction("com.energysistem.energylauncher.tvboxlauncher.ui.fragments.NOTIFICATION_LISTENER_EXAMPLE");
+        getActivity().registerReceiver(nReceiver,filter);
 
         //Lista
         mDrawerList = (ListView) view.findViewById(R.id.listViewNotif);
         NotificationItem.drawerItem = new ArrayList<NotificationItem>();
 
+        /*for(int i = 1; i<11;i++){
+
+            String title = "Prueba " + i;
+            String text = "Estoy haciendo una prueba "+i;
+            NotificationItem.drawerItem.add(new NotificationItem(0, title, text));
+        }*/
 
         adapter = new NotificationAdapter(view.getContext(),R.layout.row_notification, NotificationItem.drawerItem);
         mDrawerList.setAdapter(adapter);
+        listNotify();
+
         return view;
     }
 
-    private void ClearNotify(){
+    private void clearNotify(){
 
         Intent i = new Intent("com.energy.pruebanorificacion.app.NOTIFICATION_LISTENER_SERVICE_EXAMPLE");
-        i.putExtra("command","clearall");
+        i.putExtra("command", "clearall");
         getActivity().sendBroadcast(i);
 
         Intent i2 = new Intent("com.energy.pruebanorificacion.app.NOTIFICATION_LISTENER_SERVICE_EXAMPLE");
-        i2.putExtra("command","list");
+        i2.putExtra("command", "list");
         getActivity().sendBroadcast(i2);
     }
 
-    private void ListNotify(){
+    private void listNotify(){
         Intent i = new Intent("com.energy.pruebanorificacion.app.NOTIFICATION_LISTENER_SERVICE_EXAMPLE");
         i.putExtra("command","list");
         getActivity().sendBroadcast(i);
@@ -70,7 +77,10 @@ public class NotificationsFragment extends Fragment {
             int icon = intent.getIntExtra("notification_event_Icon", 0);
             String title = intent.getStringExtra("notification_event_Title");
             String text = intent.getStringExtra("notification_event_Text");
-            NotificationItem.drawerItem.add(new NotificationItem(icon,title,text));
+            String info =intent.getStringExtra("notification_event_Text");
+            int smallIcon = intent.getIntExtra("notification_event_Icon", 0);
+            String date =intent.getStringExtra("notification_event_Text");
+            NotificationItem.drawerItem.add(new NotificationItem(icon,title,text,info,smallIcon,date));
             adapter.notifyDataSetChanged();
 
         }

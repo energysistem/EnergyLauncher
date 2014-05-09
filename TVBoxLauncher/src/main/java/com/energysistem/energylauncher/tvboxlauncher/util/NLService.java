@@ -1,19 +1,24 @@
 package com.energysistem.energylauncher.tvboxlauncher.util;
 
+import android.annotation.TargetApi;
 import android.app.Notification;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Build;
 import android.service.notification.NotificationListenerService;
 import android.service.notification.StatusBarNotification;
 import android.util.Log;
+
+import com.energysistem.energylauncher.tvboxlauncher.modelo.NotificationItem;
 
 
 /**  NLService
  * Created by mfc on 22/04/14.
  */
 
+@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
 public class NLService extends NotificationListenerService {
 
     private String TAG = this.getClass().getSimpleName();
@@ -24,7 +29,7 @@ public class NLService extends NotificationListenerService {
         super.onCreate();
         nlservicereciver = new NLServiceReceiver();
         IntentFilter filter = new IntentFilter();
-        filter.addAction("com.energy.pruebanorificacion.app.NOTIFICATION_LISTENER_SERVICE_EXAMPLE");
+        filter.addAction("com.energysistem.energylauncher.tvboxlauncher.NOTIFICATION_LISTENER_SERVICE_EXAMPLE");
         registerReceiver(nlservicereciver,filter);
     }
 
@@ -34,11 +39,12 @@ public class NLService extends NotificationListenerService {
         unregisterReceiver(nlservicereciver);
     }
 
+    @TargetApi(Build.VERSION_CODES.KITKAT)
     @Override
     public void onNotificationPosted(StatusBarNotification sbn) {
         Log.i(TAG,"**********  onNotificationPosted");
         Log.i(TAG,"ID :" + sbn.getId() + "t" + sbn.getNotification().tickerText + "t" + sbn.getPackageName());
-        Intent i = new  Intent("com.energy.pruebanorificacion.app.NOTIFICATION_LISTENER_EXAMPLE");
+        Intent i = new  Intent("com.energysistem.energylauncher.tvboxlauncher.NOTIFICATION_LISTENER_EXAMPLE");
 
         //Al recibir una notifiación la tratamos
         i.putExtra("notification_event_Icon",sbn.getNotification().extras.getInt(Notification.EXTRA_SMALL_ICON));
@@ -48,6 +54,7 @@ public class NLService extends NotificationListenerService {
 
     }
 
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
     @Override
     public void onNotificationRemoved(StatusBarNotification sbn) {
         Log.i(TAG,"********** onNOtificationRemoved");
@@ -57,6 +64,7 @@ public class NLService extends NotificationListenerService {
 
     class NLServiceReceiver extends BroadcastReceiver{
 
+        @TargetApi(Build.VERSION_CODES.KITKAT)
         @Override
         public void onReceive(Context context, Intent intent) {
             if(intent.getStringExtra("command").equals("clearall")){
@@ -68,10 +76,13 @@ public class NLService extends NotificationListenerService {
 
                 //Tratamos todas las notificaciones de la statusBar
                 for (StatusBarNotification sbn : NLService.this.getActiveNotifications()) {
-                    Intent i = new  Intent("com.energy.pruebanorificacion.app.NOTIFICATION_LISTENER_EXAMPLE");
+                    Intent i = new  Intent("com.energysistem.energylauncher.tvboxlauncher.NOTIFICATION_LISTENER_EXAMPLE");
                     i.putExtra("notification_event_Icon",sbn.getNotification().extras.getInt(Notification.EXTRA_SMALL_ICON));
                     i.putExtra("notification_event_Title",sbn.getNotification().extras.getCharSequence(Notification.EXTRA_TITLE));
                     i.putExtra("notification_event_Text",sbn.getNotification().extras.getCharSequence(Notification.EXTRA_TEXT));
+                    i.putExtra("notification_event_Info",sbn.getNotification().extras.getCharSequence(Notification.EXTRA_INFO_TEXT));
+                    i.putExtra("notification_event_SmallIcon",sbn.getNotification().extras.getInt(Notification.EXTRA_SMALL_ICON));
+                    i.putExtra("notification_event_Date",sbn.getNotification().extras.getCharSequence(Notification.EXTRA_SHOW_WHEN));
                     sendBroadcast(i);}
 
             }
