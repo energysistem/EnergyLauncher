@@ -164,7 +164,7 @@ public class DynamicDraggingListView extends ListView {
                     case KeyEvent.KEYCODE_DPAD_UP:
                         if (mCellIsMobile) {
                             //Estamos moviendo la cell
-                          LanzaMotionEvent(mDireccionMotionEvent.UP, MotionEvent.ACTION_MOVE );
+                            LanzaMotionEvent(mDireccionMotionEvent.UP, MotionEvent.ACTION_MOVE);
                             return true;
                         }
                         break;
@@ -276,31 +276,26 @@ public class DynamicDraggingListView extends ListView {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int pos, long id) {
             if (mCellIsMobile) {
+
                 LanzaMotionEvent(mDireccionMotionEvent.DOWN, MotionEvent.ACTION_UP);
-
             } else {
-                mTotalOffset = 0;
-
-                int position = pointToPosition(mDownX, mDownY);
+                int position = pos;
+                //int position = pointToPosition(mDownX, mDownY);
                 int itemNum = position - getFirstVisiblePosition();
 
-                position = itemNum = pos;
-
-
+                //position = itemNum = pos;
 
                 View selectedView = getChildAt(itemNum);
+                //View selectedView = getSelectedView();
                 mMobileItemId = getAdapter().getItemId(position);
                 mHoverCell = getAndAddHoverView(selectedView);
                 selectedView.setVisibility(INVISIBLE);
-
 
                 LanzaMotionEvent(mDireccionMotionEvent.DOWN, MotionEvent.ACTION_DOWN);
 
                 mCellIsMobile = true;
 
                 updateNeighborViewsForID(mMobileItemId);
-
-
             }
         }
     };
@@ -313,25 +308,25 @@ public class DynamicDraggingListView extends ListView {
     private OnItemLongClickListener mOnItemLongClickListener =
             new OnItemLongClickListener() {
                 public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int pos, long id) {
-                    mTotalOffset = 0;
-
-                    int position = pointToPosition(mDownX, mDownY);
-                    int itemNum = position - getFirstVisiblePosition();
-
-//                    if (position == -1){
-                    position = itemNum = pos;
-//                    }
-
-                    View selectedView = getChildAt(itemNum);
-                    mMobileItemId = getAdapter().getItemId(position);
-                    mHoverCell = getAndAddHoverView(selectedView);
-                    selectedView.setVisibility(INVISIBLE);
-
-                    LanzaMotionEvent(mDireccionMotionEvent.DOWN, MotionEvent.ACTION_DOWN );
-
-                    mCellIsMobile = true;
-
-                    updateNeighborViewsForID(mMobileItemId);
+//                    mTotalOffset = 0;
+//
+//                    int position = pointToPosition(mDownX, mDownY);
+//                    int itemNum = position - getFirstVisiblePosition();
+//
+////                    if (position == -1){
+//                    position = itemNum = pos;
+////                    }
+//
+//                    View selectedView = getChildAt(itemNum);
+//                    mMobileItemId = getAdapter().getItemId(position);
+//                    mHoverCell = getAndAddHoverView(selectedView);
+//                    selectedView.setVisibility(INVISIBLE);
+//
+//                    LanzaMotionEvent(mDireccionMotionEvent.DOWN, MotionEvent.ACTION_DOWN );
+//
+//                    mCellIsMobile = true;
+//
+//                    updateNeighborViewsForID(mMobileItemId);
 
                     return true;
                 }
@@ -735,26 +730,28 @@ public class DynamicDraggingListView extends ListView {
 
         public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount,
                              int totalItemCount) {
-            mCurrentFirstVisibleItem = firstVisibleItem;
-            mCurrentVisibleItemCount = visibleItemCount;
-
-            mPreviousFirstVisibleItem = (mPreviousFirstVisibleItem == -1) ? mCurrentFirstVisibleItem
-                    : mPreviousFirstVisibleItem;
-            mPreviousVisibleItemCount = (mPreviousVisibleItemCount == -1) ? mCurrentVisibleItemCount
-                    : mPreviousVisibleItemCount;
-
-            checkAndHandleFirstVisibleCellChange();
-            checkAndHandleLastVisibleCellChange();
-
-            mPreviousFirstVisibleItem = mCurrentFirstVisibleItem;
-            mPreviousVisibleItemCount = mCurrentVisibleItemCount;
+//            mCurrentFirstVisibleItem = firstVisibleItem;
+//            mCurrentVisibleItemCount = visibleItemCount;
+//
+//            mPreviousFirstVisibleItem = (mPreviousFirstVisibleItem == -1) ? mCurrentFirstVisibleItem
+//                    : mPreviousFirstVisibleItem;
+//            mPreviousVisibleItemCount = (mPreviousVisibleItemCount == -1) ? mCurrentVisibleItemCount
+//                    : mPreviousVisibleItemCount;
+//
+//            checkAndHandleFirstVisibleCellChange();
+//            checkAndHandleLastVisibleCellChange();
+//
+//            checkAndHandleTouchPosition();
+//
+//            mPreviousFirstVisibleItem = mCurrentFirstVisibleItem;
+//            mPreviousVisibleItemCount = mCurrentVisibleItemCount;
         }
 
         @Override
         public void onScrollStateChanged(AbsListView view, int scrollState) {
-            mCurrentScrollState = scrollState;
-            mScrollState = scrollState;
-            isScrollCompleted();
+//            mCurrentScrollState = scrollState;
+//            mScrollState = scrollState;
+//            isScrollCompleted();
         }
 
         /**
@@ -782,9 +779,21 @@ public class DynamicDraggingListView extends ListView {
         public void checkAndHandleFirstVisibleCellChange() {
             if (mCurrentFirstVisibleItem != mPreviousFirstVisibleItem) {
                 if (mCellIsMobile && mMobileItemId != INVALID_ID) {
+
+                    Log.e("checkAndHandleFirstVisibleCellChange", "Cambia el primer visible de arriba");
+
                     updateNeighborViewsForID(mMobileItemId);
                     handleCellSwitch();
                 }
+            }
+        }
+
+        /**
+         * Cambia la posicion del puntero cuando hay un scroll
+         */
+        private void checkAndHandleTouchPosition() {
+            if (mCellIsMobile) {
+                LanzaMotionEvent(mDireccionMotionEvent.DOWN, MotionEvent.ACTION_DOWN);
             }
         }
 
@@ -797,10 +806,17 @@ public class DynamicDraggingListView extends ListView {
             int previousLastVisibleItem = mPreviousFirstVisibleItem + mPreviousVisibleItemCount;
             if (currentLastVisibleItem != previousLastVisibleItem) {
                 if (mCellIsMobile && mMobileItemId != INVALID_ID) {
+
+                    Log.e("checkAndHandleFirstVisibleCellChange", "Cambia el primer visible de abajo");
+
                     updateNeighborViewsForID(mMobileItemId);
                     handleCellSwitch();
                 }
             }
         }
     };
+
+
+
+
 }
