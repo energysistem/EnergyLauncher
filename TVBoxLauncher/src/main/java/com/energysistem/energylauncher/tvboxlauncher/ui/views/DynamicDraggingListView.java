@@ -185,6 +185,29 @@ public class DynamicDraggingListView extends ListView {
      * Lanza el motion event para simular un movimiento del cell arriba o abajo     *
      */
 
+    private void lanzaMotionEventMoveToView(long idView){
+        View nextView = getViewForID(idView);
+
+        float x = nextView.getX();
+        float y = nextView.getY();
+
+        long downTime = SystemClock.uptimeMillis();
+        int metaState = 0;
+
+        long eventTime = downTime + (1000);
+        MotionEvent motionEvent = MotionEvent.obtain(
+                downTime,
+                eventTime,
+                MotionEvent.ACTION_MOVE,
+                x,
+                y,
+                metaState
+        );
+        // Dispatch touch event to view
+        this.dispatchTouchEvent(motionEvent);
+    }
+
+
     private void LanzaMotionEvent(mDireccionMotionEvent direcc,  int movimiento) {
         int desplazamientoDeMas = 1;
         float y2 = 0.0f;
@@ -741,7 +764,7 @@ public class DynamicDraggingListView extends ListView {
 //            checkAndHandleFirstVisibleCellChange();
 //            checkAndHandleLastVisibleCellChange();
 //
-//            checkAndHandleTouchPosition();
+            checkAndHandleTouchPosition();
 //
 //            mPreviousFirstVisibleItem = mCurrentFirstVisibleItem;
 //            mPreviousVisibleItemCount = mCurrentVisibleItemCount;
@@ -793,7 +816,9 @@ public class DynamicDraggingListView extends ListView {
          */
         private void checkAndHandleTouchPosition() {
             if (mCellIsMobile) {
-                LanzaMotionEvent(mDireccionMotionEvent.DOWN, MotionEvent.ACTION_DOWN);
+
+
+                lanzaMotionEventMoveToView(mActivePointerId );
             }
         }
 
