@@ -26,7 +26,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 /**
- * Created by vgt on 11/04/2014.
+ * Created by Vicente Giner Tendero on 11/04/2014.
  */
 public class DesktopFragment extends Fragment implements AdapterView.OnItemClickListener{
 
@@ -88,10 +88,6 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-        if (savedInstanceState == null) {
-            //getLoaderManager().restartLoader(0, null, this);
-        }
     }
 
     @Override
