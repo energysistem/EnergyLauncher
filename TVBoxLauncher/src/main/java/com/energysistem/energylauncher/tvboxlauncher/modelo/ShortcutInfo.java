@@ -5,10 +5,8 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 
-import com.energysistem.energylauncher.tvboxlauncher.ui.views.Shortcut;
-
 /**
- * Created by vgt on 12/04/2014.
+ * Created by Vicente Giner Tendero on 12/04/2014.
  */
 public abstract class ShortcutInfo {
 
@@ -31,11 +29,9 @@ public abstract class ShortcutInfo {
     }
 
     public ShortcutInfo() {
-        this.title = "Holaaaa";
+        this.title = "";
         this.iconBitmap = null;
     }
-
-
 
     public abstract Intent getIntent();
 
