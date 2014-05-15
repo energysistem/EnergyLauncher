@@ -40,16 +40,22 @@ public class NotificationAdapter extends ArrayAdapter<NotificationItem> {
         LayoutInflater inflater = ((Activity) mContext).getLayoutInflater();
         NotificationItem = inflater.inflate(layoutResourceId, parent, false);
 
-        ImageView imageViewIcon = (ImageView) NotificationItem.findViewById(R.id.listImage);
+        ImageView iconViewIcon = (ImageView) NotificationItem.findViewById(R.id.listIcon);
+        TextView titleViewName = (TextView) NotificationItem.findViewById(R.id.listTitle);
         TextView textViewName = (TextView) NotificationItem.findViewById(R.id.listText);
-        TextView subtextViewName = (TextView) NotificationItem.findViewById(R.id.listSubText);
+        ImageView smallIconViewIcon = (ImageView) NotificationItem.findViewById(R.id.listSmallIcon);
+        TextView infoViewName = (TextView) NotificationItem.findViewById(R.id.listInfo);
+        TextView dateViewName = (TextView) NotificationItem.findViewById(R.id.listDate);
 
         NotificationItem folder = data.get(position);
 
 
-        imageViewIcon.setImageResource(folder.icon);
+        iconViewIcon.setImageResource(folder.icon);
+        titleViewName.setText(folder.title);
         textViewName.setText(folder.text);
-        subtextViewName.setText(folder.subText);
+        smallIconViewIcon.setImageResource(folder.smallIcon);
+        infoViewName.setText(folder.info);
+        dateViewName.setText(folder.date);
 
         return NotificationItem;
     }
