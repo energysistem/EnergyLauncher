@@ -1,7 +1,13 @@
 package com.energysistem.energylauncher.tvboxlauncher.ui.fragments;
 
 import android.app.Fragment;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.BitmapFactory;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import java.text.DateFormat;
 import android.text.format.Time;
@@ -11,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.energysistem.energylauncher.tvboxlauncher.R;
@@ -39,6 +46,9 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
     private TextView timeTextView;
     private TextView dateTextView;
     private Locale currentLocale;
+    private ConnectivityManager connManager;
+    private ImageView wifiIcon;
+    private ImageView ethernetIcon;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -79,11 +89,13 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
 
             @Override
             public void OnMinuteTick(Time currentTime) {
-                timeTextView.setText(android.text.format.DateFormat.getTimeFormat(getActivity().getApplicationContext()).format(currentTime.toMillis(true)).toString());
-                dateTextView.setText(android.text.format.DateFormat.getDateFormat(getActivity().getApplicationContext()).format(currentTime.toMillis(true)).toString());
+                updateClockWidget(currentTime);
             }
         });
 
+        wifiIcon = (ImageView) view.findViewById(R.id.wifi_icon);
+        ethernetIcon = (ImageView) view.findViewById(R.id.ethernet_icon);
+        connManager = (ConnectivityManager) getActivity().getSystemService(getActivity().getBaseContext().CONNECTIVITY_SERVICE);
         return view;
     }
 
@@ -97,8 +109,24 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
         super.onResume();
         Time time = new Time();
         time.setToNow();
-        timeTextView.setText(android.text.format.DateFormat.getTimeFormat(getActivity().getApplicationContext()).format(time.toMillis(true)).toString());
-        dateTextView.setText(android.text.format.DateFormat.getDateFormat(getActivity().getApplicationContext()).format(time.toMillis(true)).toString());
+        updateClockWidget(time);
+        updateConnectivityIcons();
+
+        IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        BroadcastReceiver connectivityReceiver = new BroadcastReceiver(){
+
+            @Override
+            public void onReceive(Context arg0, Intent arg1) {
+                updateConnectivityIcons();
+            }
+        };
+        getActivity().registerReceiver(connectivityReceiver, intentFilter);
+    }
+
+
+    @Override
+    public void onPause() {
+        super.onPause();
     }
 
     @Override
@@ -161,5 +189,29 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
         appButton.requestFocus();
     }
 
+    private void updateClockWidget(Time dateTime) {
+        if(timeTextView != null) {
+            timeTextView.setText(android.text.format.DateFormat.getTimeFormat(getActivity().getApplicationContext()).format(dateTime.toMillis(true)).toString());
+        }
 
+        if(dateTextView != null) {
+            dateTextView.setText(android.text.format.DateFormat.getDateFormat(getActivity().getApplicationContext()).format(dateTime.toMillis(true)).toString());
+        }
+    }
+
+    public void updateConnectivityIcons() {
+        NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+        if (mWifi != null && mWifi.isConnected()) {
+            wifiIcon.setVisibility(View.VISIBLE);
+        } else {
+            wifiIcon.setVisibility(View.INVISIBLE);
+        }
+
+        NetworkInfo mEtertnet = connManager.getNetworkInfo(ConnectivityManager.TYPE_ETHERNET);
+        if (mEtertnet != null && mEtertnet.isConnected()) {
+            ethernetIcon.setVisibility(View.VISIBLE);
+        } else {
+            ethernetIcon.setVisibility(View.INVISIBLE);
+        }
+    }
 }

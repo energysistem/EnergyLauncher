@@ -25,12 +25,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:contentDescription="Wifi"
+            android:id="@+id/wifi_icon"
             android:src="@android:drawable/stat_notify_sync"/>
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:contentDescription="Ethernet"
+            android:id="@+id/ethernet_icon"
             android:src="@android:drawable/stat_notify_error"/>
 
         </LinearLayout>
