@@ -3,7 +3,7 @@ package com.energysistem.energylauncher.tvboxlauncher.ui.fragments;
 import android.app.Fragment;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.text.format.DateFormat;
+import java.text.DateFormat;
 import android.text.format.Time;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Locale;
 
 /**
  * Created by Vicente Giner Tendero on 11/04/2014.
@@ -35,8 +36,9 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
     private GridView mWebShortCutGrid;
     private ShortcutAdapter gridWebShortcutAdapter;
     private ImageButton appButton;
-
-    TextView clockTextView;
+    private TextView timeTextView;
+    private TextView dateTextView;
+    private Locale currentLocale;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -64,10 +66,9 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
         });
         appButton.requestFocus();
 
-        Time time = new Time();
-        time.setToNow();
-        clockTextView = (TextView) view.findViewById(R.id.clock);
-        clockTextView.setText(DateFormat.format("kk:mm", time.toMillis(true)).toString());
+        currentLocale = getResources().getConfiguration().locale;
+        timeTextView = (TextView) view.findViewById(R.id.clock);
+        dateTextView = (TextView) view.findViewById(R.id.date);
         Clock clock = new Clock(getActivity());
         clock.AddClockTickListner(new Clock.OnClockTickListner() {
 
@@ -78,7 +79,8 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
 
             @Override
             public void OnMinuteTick(Time currentTime) {
-                clockTextView.setText(DateFormat.format("kk:mm", currentTime.toMillis(true)).toString());
+                timeTextView.setText(android.text.format.DateFormat.getTimeFormat(getActivity().getApplicationContext()).format(currentTime.toMillis(true)).toString());
+                dateTextView.setText(android.text.format.DateFormat.getDateFormat(getActivity().getApplicationContext()).format(currentTime.toMillis(true)).toString());
             }
         });
 
@@ -88,6 +90,15 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Time time = new Time();
+        time.setToNow();
+        timeTextView.setText(android.text.format.DateFormat.getTimeFormat(getActivity().getApplicationContext()).format(time.toMillis(true)).toString());
+        dateTextView.setText(android.text.format.DateFormat.getDateFormat(getActivity().getApplicationContext()).format(time.toMillis(true)).toString());
     }
 
     @Override
