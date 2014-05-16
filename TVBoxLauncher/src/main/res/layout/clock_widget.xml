@@ -26,7 +26,7 @@
             android:layout_height="wrap_content"
             android:contentDescription="Wifi"
             android:id="@+id/wifi_icon"
-            android:src="@android:drawable/stat_notify_sync"/>
+            android:src="@drawable/stat_sys_tether_wifi_0"/>
 
         <ImageView
             android:layout_width="wrap_content"
