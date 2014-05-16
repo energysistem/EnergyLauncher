@@ -8,8 +8,8 @@ import android.content.IntentFilter;
 import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
-import java.text.DateFormat;
 import android.text.format.Time;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +26,7 @@ import com.energysistem.energylauncher.tvboxlauncher.modelo.WebPageInfo;
 import com.energysistem.energylauncher.tvboxlauncher.ui.LauncherActivity;
 import com.energysistem.energylauncher.tvboxlauncher.ui.adapters.ShortcutAdapter;
 import com.energysistem.energylauncher.tvboxlauncher.util.Clock;
+import com.energysistem.energylauncher.tvboxlauncher.util.ConnectionIndicator;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -46,9 +47,9 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
     private TextView timeTextView;
     private TextView dateTextView;
     private Locale currentLocale;
-    private ConnectivityManager connManager;
     private ImageView wifiIcon;
     private ImageView ethernetIcon;
+    private ConnectionIndicator connectionIndicator;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -95,7 +96,7 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
 
         wifiIcon = (ImageView) view.findViewById(R.id.wifi_icon);
         ethernetIcon = (ImageView) view.findViewById(R.id.ethernet_icon);
-        connManager = (ConnectivityManager) getActivity().getSystemService(getActivity().getBaseContext().CONNECTIVITY_SERVICE);
+        connectionIndicator = new ConnectionIndicator(getActivity(), wifiIcon, ethernetIcon);
         return view;
     }
 
@@ -110,14 +111,16 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
         Time time = new Time();
         time.setToNow();
         updateClockWidget(time);
-        updateConnectivityIcons();
+        connectionIndicator.update();
 
-        IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+        intentFilter.addAction(WifiManager.RSSI_CHANGED_ACTION);
         BroadcastReceiver connectivityReceiver = new BroadcastReceiver(){
 
             @Override
             public void onReceive(Context arg0, Intent arg1) {
-                updateConnectivityIcons();
+                connectionIndicator.update();
             }
         };
         getActivity().registerReceiver(connectivityReceiver, intentFilter);
@@ -196,22 +199,6 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
 
         if(dateTextView != null) {
             dateTextView.setText(android.text.format.DateFormat.getDateFormat(getActivity().getApplicationContext()).format(dateTime.toMillis(true)).toString());
-        }
-    }
-
-    public void updateConnectivityIcons() {
-        NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-        if (mWifi != null && mWifi.isConnected()) {
-            wifiIcon.setVisibility(View.VISIBLE);
-        } else {
-            wifiIcon.setVisibility(View.INVISIBLE);
-        }
-
-        NetworkInfo mEtertnet = connManager.getNetworkInfo(ConnectivityManager.TYPE_ETHERNET);
-        if (mEtertnet != null && mEtertnet.isConnected()) {
-            ethernetIcon.setVisibility(View.VISIBLE);
-        } else {
-            ethernetIcon.setVisibility(View.INVISIBLE);
         }
     }
 }
