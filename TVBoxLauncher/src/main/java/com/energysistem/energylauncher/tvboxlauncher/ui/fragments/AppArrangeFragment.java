@@ -24,13 +24,13 @@ import java.util.List;
  * Created by emg on 02/05/2014.
  */
 
-public class AppArrangeFragment extends Fragment  {
+public class AppArrangeFragment extends Fragment {
 
 
     private List<AppInfo> mAppInfosList;
     private List<DraggableItemApp> mListAppsDragablesOrdenada;
     private DynamicDraggingListView mListView;
-       private Button mBtnGuardar;
+    private Button mBtnGuardar;
     private StableArrayAdapter mAdapter;
 
     @Override
@@ -39,7 +39,7 @@ public class AppArrangeFragment extends Fragment  {
         final View view = inflater.inflate(R.layout.fragment_app_arrange_list, container, false);
 
 
-        mAppInfosList = ((LauncherActivity)getActivity()).getAppList();
+        mAppInfosList = ((LauncherActivity) getActivity()).getAppList();
 
 
         CreaListaFiltradaOrdenada();
@@ -57,7 +57,7 @@ public class AppArrangeFragment extends Fragment  {
         mListView.setOnListChangeListener(new DynamicDraggingListView.OnListChangeListener() {
             @Override
             public void onListChanged(View v, boolean cambiado) {
-                if (cambiado){
+                if (cambiado) {
                     mBtnGuardar.setEnabled(true);
                     mBtnGuardar.setFocusable(true);
                     mBtnGuardar.setFocusableInTouchMode(true);
@@ -78,7 +78,9 @@ public class AppArrangeFragment extends Fragment  {
     }
 
 
-
+    public void setFocus() {
+        mListView.requestFocus();
+    }
 
 
     private void CreaListaFiltradaOrdenada() {
@@ -95,15 +97,22 @@ public class AppArrangeFragment extends Fragment  {
         }
 
 
-        for (int i = 0; i < ((LauncherActivity)getActivity()).getAppsNamePreferences().size(); i++) {
+        ArrayList<String> listaApps;
+        try {
+            listaApps = ((LauncherActivity) getActivity()).getAppsNamePreferences();
+        } catch (NullPointerException e) {
+            listaApps = new ArrayList<String>();
+        }
+
+        for (int i = 0; i < listaApps.size(); i++) {
             for (int j = 0; j < mAppInfosList.size(); j++) {
                 if (SaveLoadAppsPreferences.ComparaNombreAppInfo(mAppInfosList.get(j),
-                        ((LauncherActivity)getActivity()).getAppsNamePreferences().get(i))) {
+                        ((LauncherActivity) getActivity()).getAppsNamePreferences().get(i))) {
                     //Creamos el item que contendrá la pos, el nombre y el icono y lo añadimos a la lista
                     DraggableItemApp item = new DraggableItemApp(
                             mListAppsDragablesOrdenada.size(),
                             mAppInfosList.get(j).getTitle(),
-                            ((LauncherActivity)getActivity()).getAppsNamePreferences().get(i),
+                            ((LauncherActivity) getActivity()).getAppsNamePreferences().get(i),
                             mAppInfosList.get(j).getBitmap());
                     mListAppsDragablesOrdenada.add(item);
                 }
@@ -121,9 +130,8 @@ public class AppArrangeFragment extends Fragment  {
     }
 
 
-
-    public void resetFragment(){
-        if (mListView != null ){
+    public void resetFragment() {
+        if (mListView != null) {
             CreaListaFiltradaOrdenada();
             mListView.setAppsList(mListAppsDragablesOrdenada);
             mListView.setListaReseteada();

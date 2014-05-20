@@ -8,6 +8,7 @@ import android.content.Loader;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -99,6 +100,7 @@ public class AppListFragment extends Fragment implements LoaderManager.LoaderCal
         mTabHost.addTab(spec1);
         mTabHost.addTab(spec2);
         mTabHost.addTab(spec3);
+
 
         mTabHost.setOnTabChangedListener(tabChangeListener);
 
@@ -321,7 +323,7 @@ public class AppListFragment extends Fragment implements LoaderManager.LoaderCal
 
     private void activaModoCheckBox(){
         if (mAppsInfoListView.hasFocus()){
-            Log.d(TAG, "Activamos modo checkbox" );
+            Log.d(TAG, "Activamos modo checkbox");
             mAppAdapter.setSelectedCheckBoxMode(true);
             mAppAdapter.setSelectedItem(mAppsInfoListView.getSelectedItemPosition());
            // updateView();
@@ -339,13 +341,25 @@ public class AppListFragment extends Fragment implements LoaderManager.LoaderCal
     }
 
 
-    public boolean onKeyUpDown(){
+    public boolean onKeyUpDown( int event){
         if (mAppsInfoListView.hasFocus()) {
-            mAppAdapter.setSelectedItem(mAppsInfoListView.getSelectedItemPosition());
+            //mAppAdapter.setSelectedItem(mAppsInfoListView.getSelectedItemPosition());
             //updateView();
             return true;
+        }else if( event == (int)KeyEvent.KEYCODE_DPAD_DOWN){
+            if ((mTabHost.getCurrentTab() == 0)){
+                Log.d(TAG, "tabhost0 seleccionado");
+                mAppsInfoListView.requestFocus();
+            }
+            else if ((mTabHost.getCurrentTab() == 1)){
+                Log.d(TAG, "tabhost1 seleccionado");
+                mMenuBookMarkFragment.setFocus();
+            }
+            else if ((mTabHost.getCurrentTab() == 2)){
+                Log.d(TAG, "tabhost2 seleccionado");
+                mMenuListViewFragment.setFocus();
+            }
         }
-        //mAppAdapter.notifyDataSetChanged();
         return false;
     }
 

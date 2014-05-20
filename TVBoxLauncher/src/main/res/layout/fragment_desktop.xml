@@ -6,7 +6,8 @@
     <RelativeLayout
         android:orientation="horizontal"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:focusable="false">
 
         <include
             android:layout_width="wrap_content"
@@ -15,13 +16,14 @@
             layout="@layout/clock_widget" />
 
         <ImageButton
-            android:focusable="true"
+            android:focusable="false"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="60dp"
             android:id="@+id/appButton"
             android:layout_alignParentRight="true"
-            android:layout_centerVertical="true" >
+            android:layout_centerVertical="true"
+            android:focusableInTouchMode="false">
 
             <requestFocus/>
 
@@ -29,28 +31,38 @@
 
     </RelativeLayout >
 
-    <GridView
-        android:id="@+id/app_grid"
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:numColumns="5"
-        android:horizontalSpacing="16dp"
-        android:verticalSpacing="16dp"
-        android:padding="16dp"
-        android:stretchMode="columnWidth"
-        android:gravity="center_horizontal"
-        android:paddingBottom="0dp" />
-    <GridView
-        android:id="@+id/webcut_grid"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:numColumns="5"
-        android:horizontalSpacing="16dp"
-        android:verticalSpacing="16dp"
-        android:padding="16dp"
-        android:stretchMode="columnWidth"
-        android:gravity="center_horizontal"
-        android:paddingBottom="0dp" />
+        android:layout_height="fill_parent">
+
+        <GridView
+            android:id="@+id/app_grid"
+            android:layout_width="fill_parent"
+            android:layout_height="400dp"
+            android:numColumns="5"
+            android:horizontalSpacing="16dp"
+            android:verticalSpacing="16dp"
+            android:padding="16dp"
+            android:fadingEdge="vertical"
+            android:fadingEdgeLength="20dp"
+            android:stretchMode="columnWidth"
+            android:gravity="center_horizontal"
+            android:paddingBottom="0dp" />
+
+        <GridView
+            android:id="@+id/webcut_grid"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:numColumns="5"
+            android:horizontalSpacing="16dp"
+            android:verticalSpacing="16dp"
+            android:padding="16dp"
+            android:stretchMode="columnWidth"
+            android:gravity="center_horizontal"
+            android:paddingBottom="0dp" />
+
+    </LinearLayout>
 
 
 </LinearLayout>

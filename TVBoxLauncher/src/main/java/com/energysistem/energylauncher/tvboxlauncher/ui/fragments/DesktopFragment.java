@@ -10,10 +10,13 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.format.Time;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageButton;
@@ -37,7 +40,7 @@ import java.util.Locale;
 /**
  * Created by Vicente Giner Tendero on 11/04/2014.
  */
-public class DesktopFragment extends Fragment implements AdapterView.OnItemClickListener{
+public class DesktopFragment extends Fragment implements AdapterView.OnItemClickListener {
 
     private GridView mAppsGrid;
     private ShortcutAdapter gridAdapter;
@@ -72,7 +75,7 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
         appButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((LauncherActivity)getActivity()).toggleDrawer(((LauncherActivity)getActivity()).getAppLayout());
+                ((LauncherActivity) getActivity()).toggleDrawer(((LauncherActivity) getActivity()).getAppLayout());
             }
         });
         appButton.requestFocus();
@@ -116,7 +119,7 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
         intentFilter.addAction(WifiManager.RSSI_CHANGED_ACTION);
-        BroadcastReceiver connectivityReceiver = new BroadcastReceiver(){
+        BroadcastReceiver connectivityReceiver = new BroadcastReceiver() {
 
             @Override
             public void onReceive(Context arg0, Intent arg1) {
@@ -138,18 +141,23 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
         startActivity(shortcut.getIntent());
     }
 
+
+    /*
+    Maneja accesos directos añadidos/quitados
+     */
+
     public void addShortcut(final ShortcutInfo shortcutInfo) {
-        if(shortcutInfo instanceof WebPageInfo) {
+        if (shortcutInfo instanceof WebPageInfo) {
             Thread thread = new Thread(new Runnable() {
                 public void run() {
                     try {
-                        URL url = new URL(((WebPageInfo) shortcutInfo).getPageUrl().toString()+"/favicon.ico");
+                        URL url = new URL(((WebPageInfo) shortcutInfo).getPageUrl().toString() + "/favicon.ico");
                         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                         connection.setDoInput(true);
                         connection.connect();
                         InputStream input = connection.getInputStream();
                         shortcutInfo.setBitmap(BitmapFactory.decodeStream(input));
-                        
+
                     } catch (IOException e) {
                         shortcutInfo.setBitmap(null);
                     }
@@ -159,8 +167,7 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
 
             gridWebShortcutAdapter.addItem(shortcutInfo);
             gridWebShortcutAdapter.notifyDataSetChanged();
-        }
-        else {
+        } else {
             gridAdapter.addItem(shortcutInfo);
             gridAdapter.notifyDataSetChanged();
         }
@@ -170,6 +177,25 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
     public void removeShortcut(ShortcutInfo shortcutInfo) {
         gridAdapter.removeItem(shortcutInfo);
         gridAdapter.notifyDataSetChanged();
+
+
+//
+//        final ShortcutInfo shortc = shortcutInfo;
+//        View tile = mAppsGrid.getSelectedView();
+//
+//        final Animation animation = AnimationUtils.loadAnimation(tile.getContext(), R.anim.splashfadeout);
+//        tile.startAnimation(animation);
+//        Handler handle = new Handler();
+//        handle.postDelayed(new Runnable() {
+//
+//            @Override
+//            public void run() {
+//                // TODO Auto-generated method stub
+//                gridAdapter.removeItem(shortc);
+//                gridAdapter.notifyDataSetChanged();
+//                animation.cancel();
+//            }
+//        }, 1000);
     }
 
     public void removeShortcut(int webShortcutPos) {
@@ -177,27 +203,32 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
         gridWebShortcutAdapter.notifyDataSetChanged();
     }
 
-    public void clearShortcutsApps(){
-        if (gridAdapter != null){
+    public void clearShortcutsApps() {
+        if (gridAdapter != null) {
             gridAdapter.clearItems();
             gridAdapter.notifyDataSetChanged();
         }
     }
 
+
     public ImageButton getAppButton() {
         return appButton;
     }
 
-    public void FocusAppListButton(){
+    public void FocusAppListButton() {
         appButton.requestFocus();
     }
 
+
+    /*
+    Wichet reloj
+     */
     private void updateClockWidget(Time dateTime) {
-        if(timeTextView != null) {
+        if (timeTextView != null) {
             timeTextView.setText(android.text.format.DateFormat.getTimeFormat(getActivity().getApplicationContext()).format(dateTime.toMillis(true)).toString());
         }
 
-        if(dateTextView != null) {
+        if (dateTextView != null) {
             dateTextView.setText(android.text.format.DateFormat.getDateFormat(getActivity().getApplicationContext()).format(dateTime.toMillis(true)).toString());
         }
     }

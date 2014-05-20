@@ -51,8 +51,8 @@ public class NLService extends NotificationListenerService {
         i.putExtra("notification_event_Title",sbn.getNotification().extras.getCharSequence(Notification.EXTRA_TITLE));
         i.putExtra("notification_event_Text",sbn.getNotification().extras.getCharSequence(Notification.EXTRA_TEXT));
         sendBroadcast(i);
-
     }
+
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
     @Override

@@ -28,22 +28,26 @@ public class MenuBookMarkFragment  extends Fragment {
 
     WebShortcutAdapter mAdapter;
     ArrayList<WebPageInfo> mListWebPage;
-
+    TextView mTxtName;
+    TextView mTxtUri;
+    ListView mlistViewWebshorts;
+    Button mBtnSave;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_menu_bookmark, container, false);
-        final TextView txtName = (TextView) view.findViewById(R.id.menuBookmarkTxtName);
-        final TextView txtUri = (TextView) view.findViewById(R.id.menuBookmarkTxtUri);
+        mTxtName = (TextView) view.findViewById(R.id.menuBookmarkTxtName);
+        mTxtUri = (TextView) view.findViewById(R.id.menuBookmarkTxtUri);
         //Button btnSave = (Button) view.findViewById(R.id.menuBookmarkBtn);
-        Button btnSave = (Button) view.findViewById(R.id.menuBookmarkBtn);
-        ListView listViewWebshorts = (ListView) view.findViewById(R.id.listViewLinks);
-        btnSave.setOnClickListener(new View.OnClickListener() {
+        mBtnSave = (Button) view.findViewById(R.id.menuBookmarkBtn);
+        mlistViewWebshorts = (ListView) view.findViewById(R.id.listViewLinks);
+
+        mBtnSave.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 WebPageInfo info = null;
                 try {
-                    info = new WebPageInfo(txtUri.getText().toString());
-                    info.setTitle(txtName.getText().toString());
+                    info = new WebPageInfo(mTxtUri.getText().toString());
+                    info.setTitle(mTxtName.getText().toString());
                     ((LauncherActivity) getActivity()).addShortcutApp(info);
                     mListWebPage.add(info);
                     mAdapter.notifyDataSetChanged();
@@ -54,17 +58,18 @@ public class MenuBookMarkFragment  extends Fragment {
 
                 InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(
                         Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(txtName.getWindowToken(), 0);
+                imm.hideSoftInputFromWindow(mTxtName.getWindowToken(), 0);
             }
         });
+
 
         mListWebPage = ((LauncherActivity) getActivity()).cargaShortcutsEnDesktop();
 
         mAdapter = new WebShortcutAdapter(getActivity(), R.id.listViewLinks, mListWebPage);
 
-        listViewWebshorts.setAdapter(mAdapter);
+        mlistViewWebshorts.setAdapter(mAdapter);
 
-        listViewWebshorts.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        mlistViewWebshorts.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 ((LauncherActivity) getActivity()).removeShortcut(position);
@@ -73,11 +78,17 @@ public class MenuBookMarkFragment  extends Fragment {
             }
         });
 
+        mTxtName.requestFocus();
         return view;
     }
 
 
-
+    public void setFocus() {
+        if (mTxtUri.hasFocus() || mlistViewWebshorts.hasFocus() || mBtnSave.hasFocus()) {
+            return;
+        }
+        mTxtName.requestFocus();
+    }
 
 
     @Override

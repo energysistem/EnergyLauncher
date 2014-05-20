@@ -45,6 +45,16 @@ public class MenuListFragment extends Fragment {
         return view;
     }
 
+
+    public void setFocus() {
+        if (isVisible()){
+            mMenuList.requestFocus();
+        }
+        else{
+            ((LauncherActivity) getActivity()).setFocusFragmentDerecha();
+        }
+    }
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);

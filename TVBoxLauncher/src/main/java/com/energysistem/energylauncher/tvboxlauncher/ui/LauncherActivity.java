@@ -110,6 +110,7 @@ public class LauncherActivity extends FragmentActivity implements AppListFragmen
 
     }
 
+
     /*
     **************************************************************
     Gestionar las apps añadidas/quitadas
@@ -178,12 +179,8 @@ public class LauncherActivity extends FragmentActivity implements AppListFragmen
 
 
 
-
-
-
-
-    /**
-     * Fragments
+    /*
+     * Gestionar los fucking Fragments
      */
     public void ShowOptionsLauncherMenuFragment(){
         FragmentTransaction ft = getFragmentManager().beginTransaction();
@@ -222,6 +219,15 @@ public class LauncherActivity extends FragmentActivity implements AppListFragmen
 //        intent.putExtra(EXTRA_MESSAGE, message);
 //        startActivity(intent);
     }
+
+    public void setFocusFragmentDerecha() {
+        if (mOptionsLauncherFragment.isVisible()) {
+            mOptionsLauncherFragment.setFocus();
+        } else if (mAppArrangeFragment.isVisible()) {
+            mAppArrangeFragment.setFocus();
+        }
+    }
+
 
 
     @Override
@@ -297,12 +303,12 @@ public class LauncherActivity extends FragmentActivity implements AppListFragmen
 
             case KeyEvent.KEYCODE_DPAD_DOWN:
                 if (appLayout.isShown()) {
-                    mAppListFragment.onKeyUpDown();
+                    mAppListFragment.onKeyUpDown(KeyEvent.KEYCODE_DPAD_DOWN);
                 }
                 return true;
             case KeyEvent.KEYCODE_DPAD_UP:
                 if (appLayout.isShown()) {
-                    mAppListFragment.onKeyUpDown();
+                    mAppListFragment.onKeyUpDown(KeyEvent.KEYCODE_DPAD_UP);
                 }
                 return true;
             case KeyEvent.KEYCODE_BACK:

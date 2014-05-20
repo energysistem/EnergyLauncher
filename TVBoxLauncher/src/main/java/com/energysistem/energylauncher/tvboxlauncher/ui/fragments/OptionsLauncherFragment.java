@@ -48,6 +48,10 @@ public class OptionsLauncherFragment extends Fragment {
 
 
 
+    public void setFocus() {
+        mMenuList.requestFocus();
+    }
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
