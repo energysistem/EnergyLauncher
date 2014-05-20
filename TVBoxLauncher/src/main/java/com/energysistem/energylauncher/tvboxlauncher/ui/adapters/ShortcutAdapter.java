@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.view.LayoutInflater;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -71,19 +72,30 @@ public class ShortcutAdapter extends BaseAdapter  {
     @Override
     public View getView(int i, View convertView, ViewGroup viewGroup) {
 
-        View view;
+        View view = convertView;
         final ShortcutInfo shortcut = data.get(i);
+        final ViewHolder holder;
+        if (view == null) {
+            view = inflater.inflate(R.layout.cell_shortcut, null);
+            holder = new ViewHolder();
 
-        view = inflater.inflate(R.layout.cell_shortcut, null);
+            holder.icon = (ImageView) view.findViewById(R.id.icon);
+            holder.title = (TextView) view.findViewById(R.id.title);
 
-        LinearLayout container = (LinearLayout) view.findViewById(R.id.container);
-        ImageView icon = (ImageView) view.findViewById(R.id.icon);
-        TextView title = (TextView) view.findViewById(R.id.title);
+            view.setTag(holder);
+        } else {
+            holder = (ViewHolder) view.getTag();
+        }
 
-        icon.setImageBitmap(shortcut.getBitmap());
-        title.setText(shortcut.getTitle());
+        holder.icon.setImageBitmap(shortcut.getBitmap());
+        holder.title.setText(shortcut.getTitle());
 
         return view;
+    }
+
+    class ViewHolder {
+        ImageView icon;
+        TextView title;
     }
 
 }

@@ -97,8 +97,6 @@ public class AppAdapter extends ArrayAdapter<AppInfo> {
     }
 
 
-
-
     public int getFrameCheckBoxView(boolean checked){
 
         if (checked)
