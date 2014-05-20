@@ -5,9 +5,7 @@
     android:padding="10dp"
     android:paddingBottom="5dp"
     android:orientation="vertical"
-    android:background="@drawable/grid_selector"
-    android:descendantFocusability="afterDescendants"
-    android:focusable="false" >
+    android:background="@drawable/grid_selector">
 
     <ImageView
         android:layout_width="70dp"
