@@ -7,16 +7,12 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.format.Time;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageButton;
@@ -141,11 +137,9 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
         startActivity(shortcut.getIntent());
     }
 
-
     /*
     Maneja accesos directos añadidos/quitados
      */
-
     public void addShortcut(final ShortcutInfo shortcutInfo) {
         if (shortcutInfo instanceof WebPageInfo) {
             Thread thread = new Thread(new Runnable() {
@@ -177,7 +171,6 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
     public void removeShortcut(ShortcutInfo shortcutInfo) {
         gridAdapter.removeItem(shortcutInfo);
         gridAdapter.notifyDataSetChanged();
-
 
 //
 //        final ShortcutInfo shortc = shortcutInfo;
@@ -232,4 +225,5 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
             dateTextView.setText(android.text.format.DateFormat.getDateFormat(getActivity().getApplicationContext()).format(dateTime.toMillis(true)).toString());
         }
     }
+
 }
