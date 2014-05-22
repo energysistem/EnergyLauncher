@@ -47,6 +47,15 @@ public class ShortcutAdapter extends BaseAdapter  {
         return data.get(i);
     }
 
+    public int getItemPosition(ShortcutInfo shortcutInfo) {
+        for(int i = 0; i < data.size(); i++) {
+            if(data.get(i) == shortcutInfo) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
     public void addItem(ShortcutInfo i) {
         data.add(i);
     }

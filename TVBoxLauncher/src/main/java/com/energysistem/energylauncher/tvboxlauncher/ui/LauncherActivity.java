@@ -62,6 +62,7 @@ public class LauncherActivity extends FragmentActivity implements AppListFragmen
         appLayout = (FrameLayout) findViewById(R.id.right_drawer);
         optionLayout = (FrameLayout) findViewById(R.id.left_drawer);
 
+
         preferencesListadoApps = new SaveLoadAppsPreferences(this);
 
         drawerToggle = new ActionBarDrawerToggle(this,
