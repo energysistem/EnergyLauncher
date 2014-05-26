@@ -1,19 +1,23 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/container"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/cell_shortcut_container"
     android:layout_width="fill_parent"
-    android:layout_height="100dp"
+
     android:padding="10dp"
     android:paddingBottom="5dp"
     android:orientation="vertical"
-    android:background="@drawable/grid_selector">
+    android:background="@drawable/grid_selector"
+android:minHeight="@dimen/altura_desktop_icon"
+    android:layout_height="@dimen/altura_desktop_icon">
 
     <ImageView
         android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:layout_marginBottom="5dp"
+        android:layout_height="wrap_content"
         android:id="@+id/icon"
         android:layout_gravity="center"
-        android:focusable="false"/>
+        android:focusable="false"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true"
+        android:paddingTop="15dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -22,8 +26,10 @@
         android:text="New Text"
         android:textSize="16sp"
         android:id="@+id/title"
+        android:layout_alignParentBottom="true"
         android:layout_gravity="left|bottom"
         android:focusable="false"
-        android:textColor="@android:color/white"/>
+        android:textColor="@color/grey"
+/>
 
-</LinearLayout>
+</RelativeLayout>

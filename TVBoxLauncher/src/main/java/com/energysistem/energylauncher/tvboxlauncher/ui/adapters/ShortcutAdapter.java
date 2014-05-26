@@ -102,6 +102,10 @@ public class ShortcutAdapter extends BaseAdapter  {
         return view;
     }
 
+
+
+
+
     class ViewHolder {
         ImageView icon;
         TextView title;
