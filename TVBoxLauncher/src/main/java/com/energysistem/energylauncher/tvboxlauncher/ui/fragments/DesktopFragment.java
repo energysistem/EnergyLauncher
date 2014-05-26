@@ -6,17 +6,24 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.BitmapFactory;
+import android.graphics.Rect;
+import android.graphics.drawable.LayerDrawable;
 import android.net.ConnectivityManager;
 import android.net.wifi.WifiManager;
+import android.nfc.Tag;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.format.Time;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ListAdapter;
 import android.widget.TextView;
 
 import com.energysistem.energylauncher.tvboxlauncher.R;
@@ -50,19 +57,30 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
     private ImageView ethernetIcon;
     private ConnectionIndicator connectionIndicator;
 
+    //Propiedades elementos gridview para el scroll
+    int mGridViewHeight = 0;
+    int mDesktopIconHeight;
+    int mColumnsDesktop;
+    int mMarginDesktopIcons;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_desktop, container, false);
 
-        mAppsGrid = (GridView) view.findViewById(R.id.app_grid);
-        mWebShortCutGrid = (GridView) view.findViewById(R.id.webcut_grid);
-
+        //GridApp desktopo icons
         gridAdapter = new ShortcutAdapter(getActivity());
-        gridWebShortcutAdapter = new ShortcutAdapter(getActivity());
-
+        mAppsGrid = (GridView) view.findViewById(R.id.app_grid);
         mAppsGrid.setAdapter(gridAdapter);
         mAppsGrid.setOnItemClickListener(this);
+        mAppsGrid.setOnItemSelectedListener(itemSelected);
+
+        mMarginDesktopIcons = (int)getResources().getDimension(R.dimen.desktop_grid_margins);
+        mDesktopIconHeight = (int)getResources().getDimension(R.dimen.altura_desktop_icon);
+        mColumnsDesktop = getResources().getInteger(R.integer.num_columns_desktop);
+
+        mWebShortCutGrid = (GridView) view.findViewById(R.id.webcut_grid);
+        gridWebShortcutAdapter = new ShortcutAdapter(getActivity());
 
         mWebShortCutGrid.setAdapter(gridWebShortcutAdapter);
         mWebShortCutGrid.setOnItemClickListener(this);
@@ -74,7 +92,9 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
                 ((LauncherActivity) getActivity()).toggleDrawer(((LauncherActivity) getActivity()).getAppLayout());
             }
         });
-        appButton.requestFocus();
+
+
+        mAppsGrid.requestFocus();
 
         currentLocale = getResources().getConfiguration().locale;
         timeTextView = (TextView) view.findViewById(R.id.clock);
@@ -98,6 +118,45 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
         connectionIndicator = new ConnectionIndicator(getActivity(), wifiIcon, ethernetIcon);
         return view;
     }
+
+
+
+
+    AdapterView.OnItemSelectedListener itemSelected = new AdapterView.OnItemSelectedListener() {
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            if (mGridViewHeight == 0) {
+                mGridViewHeight = mAppsGrid.getHeight();
+            }
+
+
+
+            //Log.d("OnItemSelected", "Alto gridview:" + mGridViewHeight + " Altoicon:" + mDesktopIconHeight + " Fila: " + fila );
+            Log.d("OnItemSelected","s" + view.getY());
+
+            scrolleaGridView(position, view);
+        }
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
+
+        }
+    };
+
+    private void scrolleaGridView(int posicion, View v){
+        float posView = v.getY();
+
+        if (posView < (mDesktopIconHeight + mMarginDesktopIcons)){
+            mAppsGrid.smoothScrollBy(-mDesktopIconHeight, 500);
+        }
+
+        if (posView > (mGridViewHeight - mDesktopIconHeight *2)){
+            mAppsGrid.smoothScrollBy(mDesktopIconHeight, 500);
+        }
+
+        //Log.d("OnItemSelected", "Alto gridview:" + mGridViewHeight + " Altoicon:" + mDesktopIconHeight + " Fila: " + fila );
+
+    }
+
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -161,11 +220,45 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
 
             gridWebShortcutAdapter.addItem(shortcutInfo);
             gridWebShortcutAdapter.notifyDataSetChanged();
+
         } else {
             gridAdapter.addItem(shortcutInfo);
             gridAdapter.notifyDataSetChanged();
-        }
 
+//            if (altoPanelAccesoDirecto == 0){
+//                View childView = gridAdapter.getView(0, null, mAppsGrid);
+//                childView.measure(
+//                        View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
+//                        View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
+//                );
+//                //int[] anchoAlto = getItemHeightofGridView(mAppsGrid);
+//                anchoPanelAccesoDirecto = childView.getWidth();
+//                altoPanelAccesoDirecto = childView.getHeight();
+//
+//
+//            }
+        }
+    }
+
+    public static int[] getItemHeightofGridView(GridView gridView) {
+
+        ListAdapter mAdapter = gridView.getAdapter();
+
+        int listviewElementsheight = 0;
+        // for listview total item height
+        // items = mAdapter.getCount();
+
+        View childView = mAdapter.getView(0, null, gridView);
+        childView.measure(
+                View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.EXACTLY),
+                View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.EXACTLY)
+        );
+
+        int[] anchoAlto = new int[2];
+        anchoAlto[0] = childView.getMeasuredWidth();
+        anchoAlto[1] = childView.getMeasuredHeight();
+
+        return anchoAlto;
     }
 
     public void removeShortcut(ShortcutInfo shortcutInfo) {

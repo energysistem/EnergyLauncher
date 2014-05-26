@@ -1,5 +1,6 @@
 package com.energysistem.energylauncher.tvboxlauncher.ui;
 
+import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.BroadcastReceiver;
@@ -9,8 +10,8 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
+
 import android.support.v4.app.ActionBarDrawerToggle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -35,7 +36,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class LauncherActivity extends FragmentActivity implements AppListFragment.Callbacks {
+public class LauncherActivity extends Activity implements AppListFragment.Callbacks {
 
     private static final String TAG = "LauncherActivity";
     SaveLoadAppsPreferences preferencesListadoApps;
@@ -300,6 +301,9 @@ public class LauncherActivity extends FragmentActivity implements AppListFragmen
                 } catch (NullPointerException e) {
                     Log.d("Key Shortcut","App not foumd");
                 }
+                return true;
+            case KeyEvent.KEYCODE_MEDIA_RECORD:
+
                 return true;
 
             case KeyEvent.KEYCODE_DPAD_DOWN:
