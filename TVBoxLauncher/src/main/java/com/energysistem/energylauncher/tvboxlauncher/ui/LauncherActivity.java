@@ -3,12 +3,8 @@ package com.energysistem.energylauncher.tvboxlauncher.ui;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.pm.PackageManager;
-import android.net.ConnectivityManager;
 import android.os.Bundle;
 
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -48,7 +44,7 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
 
     private DrawerLayout desktopLayout;
     private FrameLayout appLayout;
-    private FrameLayout optionLayout;
+    private FrameLayout notificationLayout;
 
     public final static String EXTRA_MESSAGE = "com.energysistem.energylauncher.MESSAGE";
 
@@ -61,7 +57,7 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
         setContentView(R.layout.activity_main);
         desktopLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         appLayout = (FrameLayout) findViewById(R.id.right_drawer);
-        optionLayout = (FrameLayout) findViewById(R.id.left_drawer);
+        notificationLayout = (FrameLayout) findViewById(R.id.left_drawer);
 
 
         preferencesListadoApps = new SaveLoadAppsPreferences(this);
@@ -114,10 +110,10 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
 
 
     /*
-    **************************************************************
-    Gestionar las apps añadidas/quitadas
-    **************************************************************
-    */
+        **************************************************************
+        Gestionar las apps añadidas/quitadas
+        **************************************************************
+        */
     public void addShortcutApp(ShortcutInfo shortcutInfo) {
         if ( shortcutInfo instanceof  AppInfo){
             mDesktopFragment.addShortcut(shortcutInfo);
@@ -179,6 +175,9 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
     }
 
 
+    public void focusAppGrid(){
+        mDesktopFragment.focusAppGrid();
+    }
 
 
     /*
@@ -263,6 +262,11 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
             case KeyEvent.KEYCODE_DPAD_RIGHT:
                 if (appLayout.isShown()) {
                     mAppListFragment.onKeyRight();
+                } else if (notificationLayout.isShown()) {
+                    //mOptionsLauncherFragment.onKeyRightAndLeft();
+                    toggleDrawer(notificationLayout);
+                } else if (desktopLayout.isShown()) {
+                    mDesktopFragment.onKeyRightAndLeft(KeyEvent.KEYCODE_DPAD_RIGHT);
                 }
                 break;
 
@@ -272,9 +276,13 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
                         //true si estabamos en el seleccionable checkBox, ya se maneja en el fragment
                         return true;
                     } else {
-                        mDesktopFragment.FocusAppListButton();
+                        //mDesktopFragment.FocusAppListButton();
                         toggleDrawer(appLayout);
                     }
+                } else if (notificationLayout.isShown()) {
+
+                } else if (desktopLayout.isShown()) {
+                    mDesktopFragment.onKeyRightAndLeft(KeyEvent.KEYCODE_DPAD_LEFT);
                 }
                 return true;
         }
@@ -289,7 +297,7 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
                 toggleDrawer(appLayout);
                 return true;
             case KeyEvent.KEYCODE_SETTINGS:
-                toggleDrawer(optionLayout);
+                toggleDrawer(notificationLayout);
                 return true;
             case KeyEvent.KEYCODE_TV:
                 Intent i;
@@ -309,11 +317,15 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
             case KeyEvent.KEYCODE_DPAD_DOWN:
                 if (appLayout.isShown()) {
                     mAppListFragment.onKeyUpDown(KeyEvent.KEYCODE_DPAD_DOWN);
+                }else if (notificationLayout.isShown()){
+                    mNotificationFragent.onKeyUpAndDown(KeyEvent.KEYCODE_DPAD_DOWN);
                 }
                 return true;
             case KeyEvent.KEYCODE_DPAD_UP:
                 if (appLayout.isShown()) {
                     mAppListFragment.onKeyUpDown(KeyEvent.KEYCODE_DPAD_UP);
+                }else if (notificationLayout.isShown()) {
+                    mNotificationFragent.onKeyUpAndDown(KeyEvent.KEYCODE_DPAD_UP);
                 }
                 return true;
             case KeyEvent.KEYCODE_BACK:
@@ -323,7 +335,6 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
         }
             return super.onKeyUp(keyCode, event);
             //return true;
-
     }
 
 
@@ -335,14 +346,21 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
     }
 
     public void toggleDrawer(FrameLayout drawerLayout) {
-        if(desktopLayout.isDrawerOpen(drawerLayout)) {
+        if (desktopLayout.isDrawerOpen(drawerLayout)) {
             if (mAppArrangeFragment != null) {
                 mAppArrangeFragment.resetFragment();
             }
             desktopLayout.closeDrawers();
+            mDesktopFragment.focusAppGrid();
         } else {
             desktopLayout.closeDrawers();
             desktopLayout.openDrawer(drawerLayout);
+            if (drawerLayout.getLayerType() == appLayout.getLayerType()){
+                mAppListFragment.setFocus();
+            }else{
+                mNotificationFragent.setFocus();
+            }
+            drawerLayout.requestFocus();
         }
     }
 
@@ -350,8 +368,8 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
         return appLayout;
     }
 
-    public FrameLayout getOptionLayout() {
-        return optionLayout;
+    public FrameLayout getNotificationLayout() {
+        return notificationLayout;
     }
 
     public DrawerLayout getDesktopLayout() {

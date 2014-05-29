@@ -94,4 +94,17 @@ public class NotificationsFragment extends Fragment {
             //getLoaderManager().restartLoader(0, null, this);
         }
     }
+
+    public void onKeyRightAndLeft(int key) {
+
+    }
+
+    public void onKeyUpAndDown(int key) {
+
+    }
+
+    public void setFocus() {
+        mDrawerList.requestFocus();
+    }
+
 }

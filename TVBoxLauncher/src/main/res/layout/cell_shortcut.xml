@@ -5,8 +5,8 @@
     android:padding="10dp"
     android:paddingBottom="5dp"
     android:orientation="vertical"
-    android:background="@drawable/grid_selector"
-android:minHeight="@dimen/altura_desktop_icon"
+    android:background="@color/desktop_icon_background"
+    android:minHeight="@dimen/altura_desktop_icon"
     android:layout_height="@dimen/altura_desktop_icon">
 
     <ImageView

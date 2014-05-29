@@ -16,14 +16,17 @@
             layout="@layout/clock_widget" />
 
         <ImageButton
-            android:focusable="false"
+
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="60dp"
             android:id="@+id/appButton"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:focusableInTouchMode="false">
+            android:focusableInTouchMode="false"
+            android:focusable="false"
+            android:visibility="gone"
+            >
 
             <requestFocus/>
 

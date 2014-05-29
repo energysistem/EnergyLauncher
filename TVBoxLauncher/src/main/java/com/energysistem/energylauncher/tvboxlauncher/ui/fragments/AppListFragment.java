@@ -35,7 +35,7 @@ import java.util.List;
 /**
  * Created by emg on 09/04/2014.
  */
-public class AppListFragment extends Fragment implements LoaderManager.LoaderCallbacks<List<AppInfo>>, AdapterView.OnItemClickListener {
+public class AppListFragment extends Fragment implements LoaderManager.LoaderCallbacks<List<AppInfo>>, AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
 
     private static final String TAG = "AppListFragment";
     static List<String> favorites = Arrays.asList("Play Movies & TV", "Netflix", "Plex", "YouTube", "Chrome");
@@ -52,6 +52,8 @@ public class AppListFragment extends Fragment implements LoaderManager.LoaderCal
     private LinearLayout mFavorites;
     private Callbacks mCallbacks = sDummyCallbacks;
 
+
+
     public interface Callbacks {
         void onExpandButtonClick();
     }
@@ -67,6 +69,7 @@ public class AppListFragment extends Fragment implements LoaderManager.LoaderCal
 
         mAppsInfoListView = (ListView) v.findViewById(R.id.app_grid);
         mAppsInfoListView.setOnItemClickListener(this);
+        mAppsInfoListView.setOnItemLongClickListener(this);
 
         mTabHost = (TabHost) v.findViewById(R.id.tabHost);
         mTabHost.setup();
@@ -100,7 +103,6 @@ public class AppListFragment extends Fragment implements LoaderManager.LoaderCal
         mTabHost.addTab(spec1);
         mTabHost.addTab(spec2);
         mTabHost.addTab(spec3);
-
 
         mTabHost.setOnTabChangedListener(tabChangeListener);
 
@@ -143,6 +145,23 @@ public class AppListFragment extends Fragment implements LoaderManager.LoaderCal
         } else {
             startActivity(info.getIntent());
         }
+    }
+
+
+    @Override
+    public boolean onItemLongClick(AdapterView parent, View view, int position, long id) {
+        final AppInfo info = mAppAdapter.getItem(position);
+        if (info.checked) {
+            assert (getActivity()) != null;
+            ((LauncherActivity) getActivity()).removeShortcutApp(info);
+            info.checked = false;
+        } else {
+            assert (getActivity()) != null;
+            ((LauncherActivity) getActivity()).addShortcutApp(info);
+            info.checked = true;
+        }
+        mAppAdapter.notifyDataSetChanged();
+        return true;
     }
 
 
@@ -259,6 +278,7 @@ public class AppListFragment extends Fragment implements LoaderManager.LoaderCal
                 }
             }
         }
+        ((LauncherActivity)getActivity()).focusAppGrid();
     }
 
 
@@ -340,6 +360,9 @@ public class AppListFragment extends Fragment implements LoaderManager.LoaderCal
         }
     }
 
+    public void setFocus(){
+        mAppsInfoListView.requestFocus();
+    }
 
     public boolean onKeyUpDown( int event){
         if (mAppsInfoListView.hasFocus()) {

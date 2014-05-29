@@ -1,29 +1,25 @@
 package com.energysistem.energylauncher.tvboxlauncher.ui.fragments;
 
+import android.animation.ArgbEvaluator;
+import android.animation.ObjectAnimator;
 import android.app.Fragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.BitmapFactory;
-import android.graphics.Rect;
-import android.graphics.drawable.LayerDrawable;
 import android.net.ConnectivityManager;
 import android.net.wifi.WifiManager;
-import android.nfc.Tag;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.format.Time;
-import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
 import android.widget.TextView;
 
 import com.energysistem.energylauncher.tvboxlauncher.R;
@@ -57,6 +53,7 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
     private ImageView ethernetIcon;
     private ConnectionIndicator connectionIndicator;
 
+
     //Propiedades elementos gridview para el scroll
     int mGridViewHeight = 0;
     int mDesktopIconHeight;
@@ -75,6 +72,8 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
         mAppsGrid.setOnItemClickListener(this);
         mAppsGrid.setOnItemSelectedListener(itemSelected);
 
+        mAppsGrid.setOnFocusChangeListener(onAppgridSelecctionchange);
+
         mMarginDesktopIcons = (int)getResources().getDimension(R.dimen.desktop_grid_margins);
         mDesktopIconHeight = (int)getResources().getDimension(R.dimen.altura_desktop_icon);
         mColumnsDesktop = getResources().getInteger(R.integer.num_columns_desktop);
@@ -92,9 +91,6 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
                 ((LauncherActivity) getActivity()).toggleDrawer(((LauncherActivity) getActivity()).getAppLayout());
             }
         });
-
-
-        mAppsGrid.requestFocus();
 
         currentLocale = getResources().getConfiguration().locale;
         timeTextView = (TextView) view.findViewById(R.id.clock);
@@ -122,6 +118,31 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
 
 
 
+    View.OnFocusChangeListener onAppgridSelecctionchange = new View.OnFocusChangeListener() {
+        @Override
+        public void onFocusChange(View v, boolean hasFocus) {
+            if (hasFocus){
+                //recuperamosFoco = true;
+//                if (vistaAnterior != null && (vistaAnterior.isSelected()))
+//                    seleccionarView(vistaAnterior);
+//                seleccionarView(mAppsGrid.getSelectedView());
+//                mAppsGrid.requestFocusFromTouch();
+//                mAppsGrid.setSelection(1);
+//                mAppsGrid.setItemChecked(1,true);
+
+                seleccionarView(vistaAnterior);
+            }
+            else {
+                deseleccionarView(vistaAnterior);
+            }
+        }
+    };
+
+
+
+
+    private View vistaAnterior;
+    private boolean recuperamosFoco;
     AdapterView.OnItemSelectedListener itemSelected = new AdapterView.OnItemSelectedListener() {
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -129,10 +150,15 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
                 mGridViewHeight = mAppsGrid.getHeight();
             }
 
+//            if (recuperamosFoco){
+//                recuperamosFoco = false;
+//
+//            }else if(vistaAnterior !=null && (mAppsGrid.hasFocus())) {
 
-
-            //Log.d("OnItemSelected", "Alto gridview:" + mGridViewHeight + " Altoicon:" + mDesktopIconHeight + " Fila: " + fila );
-            Log.d("OnItemSelected","s" + view.getY());
+                deseleccionarView(vistaAnterior);
+//            }
+            vistaAnterior =view;
+            seleccionarView(view);
 
             scrolleaGridView(position, view);
         }
@@ -142,19 +168,47 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
         }
     };
 
+
+
+    private void deseleccionarView(View vista)
+    {
+        if(vista!=null) {
+            final ObjectAnimator backgroundColorAnimator = ObjectAnimator.ofObject(vista,
+                    "backgroundColor",
+                    new ArgbEvaluator(),
+                    getResources().getColor(R.color.desktop_icon_background_selected),
+                    getResources().getColor(R.color.desktop_icon_background));
+            backgroundColorAnimator.setDuration(500);
+            backgroundColorAnimator.start();
+        }
+    }
+
+
+    private void seleccionarView(View vista)
+    {
+        if(vista!=null)
+        {
+            final ObjectAnimator backgroundColorAnimator = ObjectAnimator.ofObject(vista,
+                    "backgroundColor",
+                    new ArgbEvaluator(),
+                    getResources().getColor(R.color.desktop_icon_background),
+                    getResources().getColor(R.color.desktop_icon_background_selected));
+            backgroundColorAnimator.setDuration(500);
+            backgroundColorAnimator.start();
+        }
+    }
+
+
     private void scrolleaGridView(int posicion, View v){
         float posView = v.getY();
 
-        if (posView < (mDesktopIconHeight + mMarginDesktopIcons)){
+        if (posView < (mDesktopIconHeight)){
             mAppsGrid.smoothScrollBy(-mDesktopIconHeight, 500);
         }
 
-        if (posView > (mGridViewHeight - mDesktopIconHeight *2)){
+        if (posView > (mGridViewHeight - (mDesktopIconHeight*1.5))){
             mAppsGrid.smoothScrollBy(mDesktopIconHeight, 500);
         }
-
-        //Log.d("OnItemSelected", "Alto gridview:" + mGridViewHeight + " Altoicon:" + mDesktopIconHeight + " Fila: " + fila );
-
     }
 
 
@@ -234,32 +288,11 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
 //                //int[] anchoAlto = getItemHeightofGridView(mAppsGrid);
 //                anchoPanelAccesoDirecto = childView.getWidth();
 //                altoPanelAccesoDirecto = childView.getHeight();
-//
-//
 //            }
         }
     }
 
-    public static int[] getItemHeightofGridView(GridView gridView) {
 
-        ListAdapter mAdapter = gridView.getAdapter();
-
-        int listviewElementsheight = 0;
-        // for listview total item height
-        // items = mAdapter.getCount();
-
-        View childView = mAdapter.getView(0, null, gridView);
-        childView.measure(
-                View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.EXACTLY),
-                View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.EXACTLY)
-        );
-
-        int[] anchoAlto = new int[2];
-        anchoAlto[0] = childView.getMeasuredWidth();
-        anchoAlto[1] = childView.getMeasuredHeight();
-
-        return anchoAlto;
-    }
 
     public void removeShortcut(ShortcutInfo shortcutInfo) {
         gridAdapter.removeItem(shortcutInfo);
@@ -304,6 +337,35 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
     public void FocusAppListButton() {
         appButton.requestFocus();
     }
+
+
+    public void focusAppGrid() {
+        mAppsGrid.requestFocus();
+        View v = mAppsGrid.getSelectedView();
+        if (v != null) v.requestFocus();
+    }
+
+    public boolean onKeyRightAndLeft( int key){
+        int itemSelected = mAppsGrid.getSelectedItemPosition();
+        int columns = mAppsGrid.getNumColumns();
+
+        switch (key){
+            case KeyEvent.KEYCODE_DPAD_RIGHT:
+                if (((itemSelected + 1 ) % columns) == 0){
+                    ((LauncherActivity) getActivity()).toggleDrawer(((LauncherActivity) getActivity()).getAppLayout());
+                }
+                break;
+            case KeyEvent.KEYCODE_DPAD_LEFT:
+                if (((itemSelected) % columns) == 0){
+                    ((LauncherActivity) getActivity()).toggleDrawer(((LauncherActivity) getActivity()).getNotificationLayout());
+                }
+                break;
+        }
+
+
+        return false;
+    }
+
 
 
     /*
