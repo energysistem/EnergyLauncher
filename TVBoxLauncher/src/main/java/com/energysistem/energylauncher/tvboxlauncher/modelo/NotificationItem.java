@@ -14,7 +14,7 @@ public class NotificationItem {
     public PendingIntent intent;
     public static List<NotificationItem> drawerItem;
 
-    // Constructor.
+    // Constructor
     public NotificationItem(int icon, String title, String text, PendingIntent intent) {
         this.icon = icon;
         this.title = title;

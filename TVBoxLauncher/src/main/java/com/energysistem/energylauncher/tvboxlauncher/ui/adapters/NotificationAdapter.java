@@ -20,7 +20,6 @@ import java.util.List;
  */
 
 public class NotificationAdapter extends ArrayAdapter<NotificationItem> {
-
     Context mContext;
     int layoutResourceId;
     List<NotificationItem> data = null;

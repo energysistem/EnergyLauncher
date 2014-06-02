@@ -49,7 +49,6 @@ public class NotificationsFragment extends Fragment implements AdapterView.OnIte
         mDrawerList.setAdapter(adapter);
         mDrawerList.setOnItemClickListener(this);
 
-
         listNotify();
         return view;
     }

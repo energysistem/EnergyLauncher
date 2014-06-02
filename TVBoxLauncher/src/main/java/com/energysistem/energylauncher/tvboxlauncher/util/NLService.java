@@ -77,7 +77,6 @@ public class NLService extends NotificationListenerService {
 
 
     class NLServiceReceiver extends BroadcastReceiver{
-
         @TargetApi(Build.VERSION_CODES.KITKAT)
         @Override
         public void onReceive(Context context, Intent intent) {
