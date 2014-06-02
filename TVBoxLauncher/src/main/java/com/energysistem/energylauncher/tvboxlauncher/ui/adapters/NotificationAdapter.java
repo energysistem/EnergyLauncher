@@ -48,5 +48,4 @@ public class NotificationAdapter extends ArrayAdapter<NotificationItem> {
 
         return convertView;
     }
-
 }

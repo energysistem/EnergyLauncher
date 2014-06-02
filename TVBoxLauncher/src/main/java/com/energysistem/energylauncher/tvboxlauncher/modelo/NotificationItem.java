@@ -12,6 +12,7 @@ public class NotificationItem {
     public String title;;
     public String text;
     public PendingIntent intent;
+
     public static List<NotificationItem> drawerItem;
 
     // Constructor
