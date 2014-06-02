@@ -31,7 +31,8 @@
             android:textSize="@dimen/abc_action_bar_title_text_size"
             android:paddingRight="10dp"
             android:text="Folder name here."
-            android:textColor="#ffffff" />
+            android:textColor="#ffffff"
+            android:singleLine="true" />
 
         <TextView
             android:id="@+id/listText"
@@ -40,54 +41,8 @@
             android:textSize="@dimen/abc_action_bar_subtitle_text_size"
             android:paddingRight="10dp"
             android:text="Folder name here."
-            android:textColor="#ffffff" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="60dp"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_gravity="center_vertical"
-        android:gravity="center_vertical|right">
-
-        <TextView
-            android:id="@+id/listDate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/abc_action_bar_subtitle_text_size"
-            android:paddingRight="10dp"
             android:textColor="#ffffff"
-            android:text="13:15" />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_gravity="center_vertical"
-            android:gravity="center_vertical">
-
-            <TextView
-                android:id="@+id/listInfo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/abc_action_bar_subtitle_text_size"
-                android:paddingRight="10dp"
-                android:text="3"
-                android:textColor="#ffffff" />
-
-
-            <ImageView
-                android:id="@+id/listSmallIcon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:src="@drawable/browser"
-                android:layout_gravity="center_vertical" />
-
-        </LinearLayout>
+            android:singleLine="true" />
 
     </LinearLayout>
-
 </LinearLayout>
