@@ -1,5 +1,7 @@
 package com.energysistem.energylauncher.tvboxlauncher.modelo;
 
+import android.app.PendingIntent;
+
 import java.util.List;
 
 /**
@@ -9,20 +11,16 @@ public class NotificationItem {
     public int icon;
     public String title;;
     public String text;
-    public String info;
-    public int smallIcon;
-    public String date;
+    public PendingIntent intent;
+
     public static List<NotificationItem> drawerItem;
 
-    // Constructor.
-    public NotificationItem(int icon, String title, String text, String info, int smallIcon, String date) {
-
+    // Constructor
+    public NotificationItem(int icon, String title, String text, PendingIntent intent) {
         this.icon = icon;
         this.title = title;
         this.text = text;
-        this.info = info;
-        this.smallIcon = smallIcon;
-        this.date = date;
+        this.intent = intent;
     }
 
     public int getIcon() {
@@ -49,27 +47,4 @@ public class NotificationItem {
         this.text = text;
     }
 
-    public String getInfo() {
-        return info;
-    }
-
-    public void setInfo(String info) {
-        this.info = info;
-    }
-
-    public int getSmallIcon() {
-        return smallIcon;
-    }
-
-    public void setSmallIcon(int smallIcon) {
-        this.smallIcon = smallIcon;
-    }
-
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
-    }
 }

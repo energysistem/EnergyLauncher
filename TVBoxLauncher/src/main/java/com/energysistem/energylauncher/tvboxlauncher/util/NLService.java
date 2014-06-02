@@ -2,6 +2,7 @@ package com.energysistem.energylauncher.tvboxlauncher.util;
 
 import android.annotation.TargetApi;
 import android.app.Notification;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -10,6 +11,7 @@ import android.os.Build;
 import android.service.notification.NotificationListenerService;
 import android.service.notification.StatusBarNotification;
 import android.util.Log;
+
 
 import com.energysistem.energylauncher.tvboxlauncher.modelo.NotificationItem;
 
@@ -20,8 +22,6 @@ import com.energysistem.energylauncher.tvboxlauncher.modelo.NotificationItem;
 
 @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
 public class NLService extends NotificationListenerService {
-
-    private String TAG = this.getClass().getSimpleName();
     private NLServiceReceiver nlservicereciver;
 
     @Override
@@ -42,25 +42,39 @@ public class NLService extends NotificationListenerService {
     @TargetApi(Build.VERSION_CODES.KITKAT)
     @Override
     public void onNotificationPosted(StatusBarNotification sbn) {
-        Log.i(TAG,"**********  onNotificationPosted");
-        Log.i(TAG,"ID :" + sbn.getId() + "t" + sbn.getNotification().tickerText + "t" + sbn.getPackageName());
-        Intent i = new  Intent("com.energysistem.energylauncher.tvboxlauncher.NOTIFICATION_LISTENER_EXAMPLE");
-
-        //Al recibir una notifiación la tratamos
-        i.putExtra("notification_event_Icon",sbn.getNotification().extras.getInt(Notification.EXTRA_SMALL_ICON));
-        i.putExtra("notification_event_Title",sbn.getNotification().extras.getCharSequence(Notification.EXTRA_TITLE));
-        i.putExtra("notification_event_Text",sbn.getNotification().extras.getCharSequence(Notification.EXTRA_TEXT));
-        sendBroadcast(i);
+        updateNotif();
     }
 
+    @TargetApi(Build.VERSION_CODES.KITKAT)
+    private void postNotification(StatusBarNotification sbn){
+        int icon = sbn.getNotification().extras.getInt(Notification.EXTRA_SMALL_ICON);
+        String title = (String) sbn.getNotification().extras.getCharSequence(Notification.EXTRA_TITLE);
+        String text = (String) sbn.getNotification().extras.getCharSequence(Notification.EXTRA_TEXT);
+        PendingIntent intent = sbn.getNotification().contentIntent;
+
+        NotificationItem.drawerItem.add(new NotificationItem(icon, title, text, intent));
+
+    }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
     @Override
     public void onNotificationRemoved(StatusBarNotification sbn) {
-        Log.i(TAG,"********** onNOtificationRemoved");
-        Log.i(TAG,"ID :" + sbn.getId() + "t" + sbn.getNotification().tickerText +"t" + sbn.getPackageName());
-
+        updateNotif();
     }
+
+    private void updateNotif(){
+        //limpiamos el ArrayList de las notificaciones
+        NotificationItem.drawerItem.clear();
+
+        //Tratamos todas las notificaciones de la statusBar
+        for (StatusBarNotification sbn : NLService.this.getActiveNotifications())
+            postNotification(sbn);
+
+        Intent i = new  Intent("com.energysistem.energylauncher.tvboxlauncher.ui.fragments.NOTIFICATION_LISTENER_EXAMPLE");
+        i.putExtra("notification_event_app","New");
+        sendBroadcast(i);
+    }
+
 
     class NLServiceReceiver extends BroadcastReceiver{
 
@@ -71,20 +85,7 @@ public class NLService extends NotificationListenerService {
                 NLService.this.cancelAllNotifications();
             }
             else if(intent.getStringExtra("command").equals("list")){
-                //limpiamos el ArrayList de las notificaciones
-                NotificationItem.drawerItem.clear();
-
-                //Tratamos todas las notificaciones de la statusBar
-                for (StatusBarNotification sbn : NLService.this.getActiveNotifications()) {
-                    Intent i = new  Intent("com.energysistem.energylauncher.tvboxlauncher.NOTIFICATION_LISTENER_EXAMPLE");
-                    i.putExtra("notification_event_Icon",sbn.getNotification().extras.getInt(Notification.EXTRA_SMALL_ICON));
-                    i.putExtra("notification_event_Title",sbn.getNotification().extras.getCharSequence(Notification.EXTRA_TITLE));
-                    i.putExtra("notification_event_Text",sbn.getNotification().extras.getCharSequence(Notification.EXTRA_TEXT));
-                    i.putExtra("notification_event_Info",sbn.getNotification().extras.getCharSequence(Notification.EXTRA_INFO_TEXT));
-                    i.putExtra("notification_event_SmallIcon",sbn.getNotification().extras.getInt(Notification.EXTRA_SMALL_ICON));
-                    i.putExtra("notification_event_Date",sbn.getNotification().extras.getCharSequence(Notification.EXTRA_SHOW_WHEN));
-                    sendBroadcast(i);}
-
+                NLService.this.updateNotif();
             }
 
         }
