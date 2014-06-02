@@ -78,6 +78,8 @@ public class MenuBookMarkFragment  extends Fragment {
             }
         });
 
+        Log.e("MenuBookMarkFragment", "----------------OnCreatedView---------");
+
         mTxtName.requestFocus();
         return view;
     }

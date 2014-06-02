@@ -45,7 +45,8 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
     private ShortcutAdapter gridAdapter;
     private GridView mWebShortCutGrid;
     private ShortcutAdapter gridWebShortcutAdapter;
-    private ImageButton appButton;
+    private ImageView appButton;
+    private ImageView notificationButton;
     private TextView timeTextView;
     private TextView dateTextView;
     private Locale currentLocale;
@@ -84,11 +85,19 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
         mWebShortCutGrid.setAdapter(gridWebShortcutAdapter);
         mWebShortCutGrid.setOnItemClickListener(this);
 
-        appButton = (ImageButton) view.findViewById(R.id.appButton);
+        appButton = (ImageView) view.findViewById(R.id.icon_drawer);
         appButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 ((LauncherActivity) getActivity()).toggleDrawer(((LauncherActivity) getActivity()).getAppLayout());
+            }
+        });
+
+        notificationButton = (ImageView) view.findViewById(R.id.icon_notification);
+        notificationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((LauncherActivity) getActivity()).toggleDrawer(((LauncherActivity) getActivity()).getNotificationLayout());
             }
         });
 
@@ -330,9 +339,9 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
     }
 
 
-    public ImageButton getAppButton() {
-        return appButton;
-    }
+//    public ImageView getAppButton() {
+//        return appButton;
+//    }
 
     public void FocusAppListButton() {
         appButton.requestFocus();

@@ -16,7 +16,7 @@
         <activity
             android:theme="@android:style/Theme.Holo.Wallpaper.NoTitleBar"
             android:name=".ui.LauncherActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:configChanges="mcc|mnc|locale|touchscreen|navigation|screenLayout|screenLayout|uiMode|keyboard|keyboardHidden|orientation|screenSize|smallestScreenSize"
             android:label="@string/app_name"
             android:launchMode="singleTask"
             android:clearTaskOnLaunch="true"

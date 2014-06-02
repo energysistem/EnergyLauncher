@@ -42,6 +42,11 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
     private OptionsLauncherFragment mOptionsLauncherFragment;
     private AppArrangeFragment mAppArrangeFragment;
 
+    private final String TAGFFRAGMENTLISTAPPS = "FListaApps";
+    private final String TAGFFRAGMENTNOTIFICATIONS = "FNotifications";
+    private final String TAGFFRAGMENTDESKTOP = "FDEsktop";
+
+
     private DrawerLayout desktopLayout;
     private FrameLayout appLayout;
     private FrameLayout notificationLayout;
@@ -54,6 +59,33 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+        Log.e("-------------ONCREATED", "------------------");
+
+        if (savedInstanceState == null) {
+            mDesktopFragment = new DesktopFragment();
+            getFragmentManager().beginTransaction()
+                    .add(R.id.content_frame, mDesktopFragment, TAGFFRAGMENTDESKTOP)
+                    .commit();
+
+            //Drawer derecho
+            mAppListFragment = new AppListFragment();
+            getFragmentManager().beginTransaction()
+                    .add(R.id.right_drawer, mAppListFragment, TAGFFRAGMENTLISTAPPS)
+                    .commit();
+
+            //Drawer Izquierdo
+            mNotificationFragent = new NotificationsFragment() ;
+            getFragmentManager().beginTransaction()
+                    .add(R.id.left_drawer, mNotificationFragent, TAGFFRAGMENTNOTIFICATIONS)
+                    .commit();
+        } else {
+            Log.e("-------------ONCREATED", "recuperamos los fragments");
+            mDesktopFragment = (DesktopFragment) getFragmentManager().findFragmentByTag(TAGFFRAGMENTDESKTOP);
+            mAppListFragment = (AppListFragment) getFragmentManager().findFragmentByTag(TAGFFRAGMENTLISTAPPS);
+            mNotificationFragent = (NotificationsFragment) getFragmentManager().findFragmentByTag(TAGFFRAGMENTNOTIFICATIONS);
+            return;
+        }
+
         setContentView(R.layout.activity_main);
         desktopLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         appLayout = (FrameLayout) findViewById(R.id.right_drawer);
@@ -71,7 +103,7 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
             public void onDrawerClosed(View view) {
 //                getFragmentManager().beginTransaction()
 //                        .replace(R.id.left_drawer, new MenuListFragment()).commit();
-                mDesktopFragment.getAppButton().requestFocus();
+                //mDesktopFragment.getAppButton().requestFocus();
             }
 
             public void onDrawerOpened(View drawerView) {
@@ -82,38 +114,28 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
                 }
             }
         };
-
         desktopLayout.setDrawerListener(drawerToggle);
-
         LauncherAppState.setApplicationContext(getApplicationContext());
-
-        if (savedInstanceState == null) {
-            mDesktopFragment = new DesktopFragment();
-            getFragmentManager().beginTransaction()
-                    .add(R.id.content_frame, mDesktopFragment)
-                    .commit();
-
-            //Drawer derecho
-            mAppListFragment = new AppListFragment();
-            getFragmentManager().beginTransaction()
-                    .add(R.id.right_drawer, mAppListFragment)
-                    .commit();
-
-            //Drawer Izquierdo
-            mNotificationFragent = new NotificationsFragment() ;
-            getFragmentManager().beginTransaction()
-                    .add(R.id.left_drawer, mNotificationFragent)
-                    .commit();
-        }
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.e("-------------ONRESUME", "------------------");
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+         Log.e("-------------ONSTART", "------------------");
+    }
 
     /*
-        **************************************************************
-        Gestionar las apps añadidas/quitadas
-        **************************************************************
-        */
+                **************************************************************
+                Gestionar las apps añadidas/quitadas
+                **************************************************************
+                */
     public void addShortcutApp(ShortcutInfo shortcutInfo) {
         if ( shortcutInfo instanceof  AppInfo){
             mDesktopFragment.addShortcut(shortcutInfo);
