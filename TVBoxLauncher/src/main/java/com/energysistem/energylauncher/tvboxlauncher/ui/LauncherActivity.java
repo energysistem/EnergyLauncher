@@ -63,6 +63,7 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
 
     public final static String EXTRA_MESSAGE = "com.energysistem.energylauncher.MESSAGE";
 
+
     private ActionBarDrawerToggle drawerToggle;
 
 
