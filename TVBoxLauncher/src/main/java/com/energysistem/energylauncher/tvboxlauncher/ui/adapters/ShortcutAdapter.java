@@ -35,6 +35,7 @@ public class ShortcutAdapter extends BaseAdapter  {
     public ShortcutAdapter(Context context, List<ShortcutInfo> data) {
         this.data = data;
         this.context = context;
+        this.inflater = LayoutInflater.from(context);
     }
 
     @Override
@@ -103,6 +104,11 @@ public class ShortcutAdapter extends BaseAdapter  {
     }
 
 
+    public List<ShortcutInfo> getListInfo(){
+           return this.data;
+       }
+
+    public void setListInfo(List<ShortcutInfo> listaN){ data=listaN;}
 
 
 

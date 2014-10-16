@@ -14,17 +14,19 @@ public abstract class ShortcutInfo {
     private String title;
     private Bitmap iconBitmap;
 
-    public String getTitle(){
+    public String getTitle() {
         return title;
     }
-    public void setTitle(String tit){
+
+    public void setTitle(String tit) {
         title = tit;
     }
 
-    public Bitmap getBitmap(){
+    public Bitmap getBitmap() {
         return iconBitmap;
     }
-    public void setBitmap(Bitmap bitmap){
+
+    public void setBitmap(Bitmap bitmap) {
         iconBitmap = bitmap;
     }
 
@@ -40,7 +42,5 @@ public abstract class ShortcutInfo {
     }
 
 
-
-
-
 }
+

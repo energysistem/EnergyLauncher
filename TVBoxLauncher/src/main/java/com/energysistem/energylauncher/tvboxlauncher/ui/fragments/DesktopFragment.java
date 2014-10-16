@@ -12,6 +12,7 @@ import android.net.ConnectivityManager;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.text.format.Time;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,6 +28,7 @@ import com.energysistem.energylauncher.tvboxlauncher.modelo.ShortcutInfo;
 import com.energysistem.energylauncher.tvboxlauncher.modelo.WebPageInfo;
 import com.energysistem.energylauncher.tvboxlauncher.ui.LauncherActivity;
 import com.energysistem.energylauncher.tvboxlauncher.ui.adapters.ShortcutAdapter;
+import com.energysistem.energylauncher.tvboxlauncher.ui.adapters.WebShortcutAdapter;
 import com.energysistem.energylauncher.tvboxlauncher.util.Clock;
 import com.energysistem.energylauncher.tvboxlauncher.util.ConnectionIndicator;
 
@@ -34,6 +36,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -41,10 +44,10 @@ import java.util.Locale;
  */
 public class DesktopFragment extends Fragment implements AdapterView.OnItemClickListener {
 
-    private GridView mAppsGrid;
+    private GridView mFavoritesGrid;
     private ShortcutAdapter gridAdapter;
     private GridView mWebShortCutGrid;
-    private ShortcutAdapter gridWebShortcutAdapter;
+    private WebShortcutAdapter gridWebShortcutAdapter;
     private ImageView appButton;
     private ImageView notificationButton;
     private TextView timeTextView;
@@ -60,30 +63,32 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
     int mDesktopIconHeight;
     int mColumnsDesktop;
     int mMarginDesktopIcons;
+    private boolean hasFocus;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_desktop, container, false);
 
-        //GridApp desktopo icons
-        gridAdapter = new ShortcutAdapter(getActivity());
-        mAppsGrid = (GridView) view.findViewById(R.id.app_grid);
-        mAppsGrid.setAdapter(gridAdapter);
-        mAppsGrid.setOnItemClickListener(this);
-        mAppsGrid.setOnItemSelectedListener(itemSelected);
-
-        mAppsGrid.setOnFocusChangeListener(onAppgridSelecctionchange);
-
+        //Margins
         mMarginDesktopIcons = (int)getResources().getDimension(R.dimen.desktop_grid_margins);
         mDesktopIconHeight = (int)getResources().getDimension(R.dimen.altura_desktop_icon);
         mColumnsDesktop = getResources().getInteger(R.integer.num_columns_desktop);
 
+        //GridWebShortcut desktop icons
+/*
+        gridWebShortcutAdapter = new WebShortcutAdapter(getActivity());
         mWebShortCutGrid = (GridView) view.findViewById(R.id.webcut_grid);
-        gridWebShortcutAdapter = new ShortcutAdapter(getActivity());
-
         mWebShortCutGrid.setAdapter(gridWebShortcutAdapter);
-        mWebShortCutGrid.setOnItemClickListener(this);
+        mWebShortCutGrid.setOnItemClickListener(this);*/
+
+        //GridApp desktop icons
+        gridAdapter = new ShortcutAdapter(getActivity());
+        mFavoritesGrid = (GridView) view.findViewById(R.id.app_grid);
+        mFavoritesGrid.setAdapter(gridAdapter);
+        mFavoritesGrid.setOnItemClickListener(this);
+        mFavoritesGrid.setOnItemSelectedListener(itemSelected);
+
 
         appButton = (ImageView) view.findViewById(R.id.icon_drawer);
         appButton.setOnClickListener(new View.OnClickListener() {
@@ -125,102 +130,31 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
     }
 
 
+    /*
+    Fin metodos OnFocus
+     */
 
 
-    View.OnFocusChangeListener onAppgridSelecctionchange = new View.OnFocusChangeListener() {
-        @Override
-        public void onFocusChange(View v, boolean hasFocus) {
-            if (hasFocus){
-                //recuperamosFoco = true;
-//                if (vistaAnterior != null && (vistaAnterior.isSelected()))
-//                    seleccionarView(vistaAnterior);
-//                seleccionarView(mAppsGrid.getSelectedView());
-//                mAppsGrid.requestFocusFromTouch();
-//                mAppsGrid.setSelection(1);
-//                mAppsGrid.setItemChecked(1,true);
-
-                seleccionarView(vistaAnterior);
-            }
-            else {
-                deseleccionarView(vistaAnterior);
-            }
-        }
-    };
-
-
-
-
-    private View vistaAnterior;
-    private boolean recuperamosFoco;
-    AdapterView.OnItemSelectedListener itemSelected = new AdapterView.OnItemSelectedListener() {
-        @Override
-        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-            if (mGridViewHeight == 0) {
-                mGridViewHeight = mAppsGrid.getHeight();
-            }
-
-//            if (recuperamosFoco){
-//                recuperamosFoco = false;
-//
-//            }else if(vistaAnterior !=null && (mAppsGrid.hasFocus())) {
-
-                deseleccionarView(vistaAnterior);
-//            }
-            vistaAnterior =view;
-            seleccionarView(view);
-
-            scrolleaGridView(position, view);
-        }
-        @Override
-        public void onNothingSelected(AdapterView<?> parent) {
-
-        }
-    };
-
-
-
-    private void deseleccionarView(View vista)
-    {
-        if(vista!=null) {
-            final ObjectAnimator backgroundColorAnimator = ObjectAnimator.ofObject(vista,
-                    "backgroundColor",
-                    new ArgbEvaluator(),
-                    getResources().getColor(R.color.desktop_icon_background_selected),
-                    getResources().getColor(R.color.desktop_icon_background));
-            backgroundColorAnimator.setDuration(500);
-            backgroundColorAnimator.start();
-        }
-    }
-
-
-    private void seleccionarView(View vista)
-    {
-        if(vista!=null)
-        {
-            final ObjectAnimator backgroundColorAnimator = ObjectAnimator.ofObject(vista,
-                    "backgroundColor",
-                    new ArgbEvaluator(),
-                    getResources().getColor(R.color.desktop_icon_background),
-                    getResources().getColor(R.color.desktop_icon_background_selected));
-            backgroundColorAnimator.setDuration(500);
-            backgroundColorAnimator.start();
-        }
-    }
-
+    /*
+    Scroll del grid
+     */
 
     private void scrolleaGridView(int posicion, View v){
         float posView = v.getY();
 
         if (posView < (mDesktopIconHeight)){
-            mAppsGrid.smoothScrollBy(-mDesktopIconHeight, 500);
+            mFavoritesGrid.smoothScrollBy(-mDesktopIconHeight, 500);
         }
 
         if (posView > (mGridViewHeight - (mDesktopIconHeight*1.5))){
-            mAppsGrid.smoothScrollBy(mDesktopIconHeight, 500);
+            mFavoritesGrid.smoothScrollBy(mDesktopIconHeight, 500);
         }
     }
+    /***********************/
 
-
+/*
+    Estado de la actividad
+ */
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -247,20 +181,79 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
         getActivity().registerReceiver(connectivityReceiver, intentFilter);
     }
 
-
     @Override
     public void onPause() {
         super.onPause();
     }
 
+    /*******************************/
+
+
+    /*
+        Metodos OnClik de un ShortCutFavorito
+     */
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         ShortcutInfo shortcut = (ShortcutInfo) gridAdapter.getItem(i);
         startActivity(shortcut.getIntent());
     }
 
+
     /*
-    Maneja accesos directos añadidos/quitados
+        Metodos OnFocus de un ShortCutFavorito
+    */
+    private View vistaAnterior;
+    private boolean recuperamosFoco;
+    AdapterView.OnItemSelectedListener itemSelected = new AdapterView.OnItemSelectedListener() {
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            if (mGridViewHeight == 0) {
+                mGridViewHeight = mFavoritesGrid.getHeight();
+            }
+
+            deseleccionarView(vistaAnterior);
+
+            vistaAnterior =view;
+            seleccionarView(view);
+
+            scrolleaGridView(position, view);
+        }
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
+        }
+    };
+
+    private void deseleccionarView(View vista)
+    {
+        if(vista!=null) {
+            final ObjectAnimator backgroundColorAnimator = ObjectAnimator.ofObject(vista,
+                    "backgroundColor",
+                    new ArgbEvaluator(),
+                    getResources().getColor(R.color.desktop_icon_background_selected),
+                    getResources().getColor(R.color.desktop_icon_background));
+            backgroundColorAnimator.setDuration(500);
+            backgroundColorAnimator.start();
+        }
+    }
+
+    private void seleccionarView(View vista)
+    {
+        if(vista!=null)
+        {
+            final ObjectAnimator backgroundColorAnimator = ObjectAnimator.ofObject(vista,
+                    "backgroundColor",
+                    new ArgbEvaluator(),
+                    getResources().getColor(R.color.desktop_icon_background),
+                    getResources().getColor(R.color.desktop_icon_background_selected));
+            backgroundColorAnimator.setDuration(500);
+            backgroundColorAnimator.start();
+        }
+    }
+
+    /***************************************/
+
+    /*
+    Maneja accesos directos AÑADIR-QUITAR
      */
     public void addShortcut(final ShortcutInfo shortcutInfo) {
         if (shortcutInfo instanceof WebPageInfo) {
@@ -281,12 +274,14 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
             });
             thread.start();
 
-            gridWebShortcutAdapter.addItem(shortcutInfo);
-            gridWebShortcutAdapter.notifyDataSetChanged();
+            gridAdapter.addItem(shortcutInfo);
+            gridAdapter.notifyDataSetChanged();
+           // ((LauncherActivity) getActivity()).setsavedGridFav(gridAdapter);
 
         } else {
             gridAdapter.addItem(shortcutInfo);
             gridAdapter.notifyDataSetChanged();
+           // ((LauncherActivity) getActivity()).setsavedGridFav(gridAdapter);
 
 //            if (altoPanelAccesoDirecto == 0){
 //                View childView = gridAdapter.getView(0, null, mAppsGrid);
@@ -302,11 +297,10 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
     }
 
 
-
     public void removeShortcut(ShortcutInfo shortcutInfo) {
         gridAdapter.removeItem(shortcutInfo);
         gridAdapter.notifyDataSetChanged();
-
+        //((LauncherActivity) getActivity()).setsavedGridFav(gridAdapter);
 //
 //        final ShortcutInfo shortc = shortcutInfo;
 //        View tile = mAppsGrid.getSelectedView();
@@ -326,18 +320,13 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
 //        }, 1000);
     }
 
-    public void removeShortcut(int webShortcutPos) {
-        gridWebShortcutAdapter.removeItemPos(webShortcutPos);
-        gridWebShortcutAdapter.notifyDataSetChanged();
-    }
-
     public void clearShortcutsApps() {
         if (gridAdapter != null) {
             gridAdapter.clearItems();
             gridAdapter.notifyDataSetChanged();
+            ((LauncherActivity) getActivity()).setsavedGridFav(gridAdapter);
         }
     }
-
 
 //    public ImageView getAppButton() {
 //        return appButton;
@@ -349,14 +338,15 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
 
 
     public void focusAppGrid() {
-        mAppsGrid.requestFocus();
-        View v = mAppsGrid.getSelectedView();
+        if(mFavoritesGrid!=null){
+            mFavoritesGrid.requestFocus();}
+        View v = mFavoritesGrid.getSelectedView();
         if (v != null) v.requestFocus();
     }
 
     public boolean onKeyRightAndLeft( int key){
-        int itemSelected = mAppsGrid.getSelectedItemPosition();
-        int columns = mAppsGrid.getNumColumns();
+        int itemSelected = mFavoritesGrid.getSelectedItemPosition();
+        int columns = mFavoritesGrid.getNumColumns();
 
         switch (key){
             case KeyEvent.KEYCODE_DPAD_RIGHT:
@@ -376,8 +366,21 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
     }
 
 
+    public List<ShortcutInfo> getFavInfoList() {
 
-    /*
+        return gridAdapter.getListInfo();
+
+    }
+
+    public void setGridAdapter(ShortcutAdapter gridAda){
+        gridAdapter = new ShortcutAdapter(getActivity());
+        gridAdapter.clearItems();
+        this.gridAdapter=gridAda;
+        gridAdapter.notifyDataSetChanged();
+
+    }
+
+   /*
     Wichet reloj
      */
     private void updateClockWidget(Time dateTime) {
@@ -390,4 +393,7 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
         }
     }
 
+    public void setHasFocus(boolean hasFocus) {
+        this.hasFocus = hasFocus;
+    }
 }

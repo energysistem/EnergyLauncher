@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/tabLL"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+
+    <TabHost
+        android:id="@+id/tabHost"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_x="0dp"
+        android:layout_y="0dp"
+        android:nextFocusDown="@+id/tabcontent">
+
+
+        <LinearLayout
+            android:id="@+id/tabLL2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+
+            <TabWidget
+                android:id="@android:id/tabs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+            </TabWidget>
+
+                    <FrameLayout
+                    android:id="@android:id/tabcontent"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" >
+
+                        <LinearLayout
+                            android:id="@+id/tab1"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:contentDescription="HOME"
+                            android:nextFocusUp="@+id/tab1"
+                            android:nextFocusDown="@+id/app_grid"
+                            android:nextFocusRight="@+id/tab2">
+
+                            <TextView
+                                android:id="@+id/textView1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:paddingLeft="10dp"
+                                android:text="TAB 1"
+                                android:visibility="gone" />
+                            <requestFocus/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/tab2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:contentDescription="HOME"
+                            android:nextFocusUp="@+id/tab2"
+                            android:nextFocusDown="@+id/tabcontent"
+                            android:nextFocusLeft="@+id/tab1"
+                            android:nextFocusRight="@+id/tab2">
+
+                            <TextView
+                                android:id="@+id/textView2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:paddingLeft="1dp"
+                                android:visibility="gone"
+                                android:text="TAB 2"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/tab3"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:contentDescription="HOME"
+                            android:nextFocusUp="@+id/tab3"
+                            android:nextFocusDown="@+id/fragment_menu_list"
+                            android:nextFocusLeft="@+id/tab2"
+                            android:nextFocusRight="@+id/tab1">
+
+                            <TextView
+                                android:id="@+id/textView3"
+                                android:layout_width="204dp"
+                                android:layout_height="match_parent"
+                                android:paddingLeft="10dp"
+                                android:text="TAB 3"
+                                android:visibility="gone" />
+                         </LinearLayout>
+
+                     </FrameLayout>
+
+
+
+        </LinearLayout>
+
+    </TabHost>
+
+</LinearLayout>

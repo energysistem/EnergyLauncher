@@ -35,23 +35,23 @@ import java.util.List;
 /**
  * Created by emg on 09/04/2014.
  */
-public class AppListFragment extends Fragment implements LoaderManager.LoaderCallbacks<List<AppInfo>>, AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
+public class AppListFragment extends Fragment
+        implements
+        LoaderManager.LoaderCallbacks<List<AppInfo>>,
+        AdapterView.OnItemClickListener,
+        AdapterView.OnItemLongClickListener {
 
     private static final String TAG = "AppListFragment";
     static List<String> favorites = Arrays.asList("Play Movies & TV", "Netflix", "Plex", "YouTube", "Chrome");
 
-    private ListView mAppsInfoListView;
-    private TabHost mTabHost;
-
-    private MenuBookMarkFragment mMenuBookMarkFragment;
-    private MenuListFragment mMenuListViewFragment;
-
-
+    private static ListView mListViewApps;
     private List<AppInfo> mAppInfosList;
     private AppAdapter mAppAdapter;
+
     private LinearLayout mFavorites;
     private Callbacks mCallbacks = sDummyCallbacks;
-
+    private boolean checkMode=false;
+    private boolean pestanya=true;
 
 
     public interface Callbacks {
@@ -65,65 +65,15 @@ public class AppListFragment extends Fragment implements LoaderManager.LoaderCal
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
         View v = inflater.inflate(R.layout.fragment_app_list, container, false);
 
-        mAppsInfoListView = (ListView) v.findViewById(R.id.app_grid);
-        mAppsInfoListView.setOnItemClickListener(this);
-        mAppsInfoListView.setOnItemLongClickListener(this);
-
-        mTabHost = (TabHost) v.findViewById(R.id.tabHost);
-        mTabHost.setup();
-
-        // *******Tab 1*******
-        TabHost.TabSpec spec1 = mTabHost.newTabSpec("APPS");
-        spec1.setContent(R.id.tab1);
-        spec1.setIndicator(getResources().getText(R.string.tab1));
-
-        //********Tab 2*******
-        TabHost.TabSpec spec2 = mTabHost.newTabSpec("BOOKMARKS");
-        spec2.setContent(R.id.tab2);
-        spec2.setIndicator(getResources().getText(R.string.tab2));
-
-        mMenuBookMarkFragment = new MenuBookMarkFragment();
-        getFragmentManager().beginTransaction().replace(R.id.tab2,
-                mMenuBookMarkFragment)
-                .commit();
-
-        //********Tab 3*******
-        TabHost.TabSpec spec3 = mTabHost.newTabSpec("SETTINGS");
-        spec3.setContent(R.id.tab3);
-        spec3.setIndicator(getResources().getText(R.string.tab3));
-
-        mMenuListViewFragment = new MenuListFragment();
-        getFragmentManager().beginTransaction().replace(R.id.tab3,
-                mMenuListViewFragment)
-                .commit();
-
-        //añadimos los tabs
-        mTabHost.addTab(spec1);
-        mTabHost.addTab(spec2);
-        mTabHost.addTab(spec3);
-
-        mTabHost.setOnTabChangedListener(tabChangeListener);
+        mListViewApps = (ListView) v.findViewById(R.id.app_grid);
+        mListViewApps.setOnItemClickListener(this);
+        mListViewApps.setOnItemLongClickListener(this);
 
         return v;
     }
-
-
-    TabHost.OnTabChangeListener tabChangeListener =new TabHost.OnTabChangeListener() {
-        @Override
-        public void onTabChanged(String tabId) {
-            if (mTabHost.getCurrentTab() != 2){
-                //No esta seleccionado el tercer tab, reseteamos lo que toque
-                ((LauncherActivity)getActivity()).resetArrangeAppsFragment();
-            }
-
-            if (mTabHost.getCurrentTab() != 0){
-                desactivaModoCheckBox();
-            }
-        }
-    };
-
 
 
     @Override
@@ -165,32 +115,6 @@ public class AppListFragment extends Fragment implements LoaderManager.LoaderCal
     }
 
 
-    /*@Override
-    public boolean onKeyUp(int keyCode, KeyEvent event) {
-        Log.d("Key Pressed", KeyEvent.keyCodeToString(keyCode));
-        switch (keyCode) {
-            case KeyEvent.KEYCODE_CAPTIONS:
-                //toggleDrawer(appLayout);
-                return true;
-            case KeyEvent.KEYCODE_SETTINGS:
-                //toggleDrawer(optionLayout);
-                return true;
-            case KeyEvent.KEYCODE_TV:
-                Intent i;
-                //PackageManager manager = getPackageManager();
-                *//*try {
-                    i = manager.getLaunchIntentForPackage("com.amlogic.DTVPlayer");
-                    i.addCategory(Intent.CATEGORY_LAUNCHER);
-                    startActivity(i);
-                } catch (NullPointerException e) {
-                    Log.d("Key Shortcut","App not foumd");
-                }*//*
-                return true;
-        }
-        return super.onKeyUp(keyCode, event);
-    }*/
-
-
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -221,13 +145,13 @@ public class AppListFragment extends Fragment implements LoaderManager.LoaderCal
     }
 
     @Override
-    public void onLoadFinished(Loader<List<AppInfo>> listLoader, List<AppInfo> appInfos) {
+    public void onLoadFinished(Loader<List<AppInfo>> listLoader, List<AppInfo> appInfos) { //Esto ocurre cuando el sistema devuelve todo el listado de Apps instaldas
         //Take out the favorites
         //appInfos = extractFavorites(appInfos);
 
         mAppInfosList = appInfos;
         mAppAdapter = new AppAdapter(getActivity(), appInfos);
-        mAppsInfoListView.setAdapter(mAppAdapter);
+        mListViewApps.setAdapter(mAppAdapter);
 
         //Creamos el listener para el checkbox de dentro del item
         mAppAdapter.setOnCheckBoxClickListener(new View.OnClickListener() {
@@ -242,6 +166,7 @@ public class AppListFragment extends Fragment implements LoaderManager.LoaderCal
                     assert (getActivity()) != null;
                     ((LauncherActivity) getActivity()).addShortcutApp(info);
                 }
+
                 else
                 {
                     assert (getActivity()) != null;
@@ -250,41 +175,16 @@ public class AppListFragment extends Fragment implements LoaderManager.LoaderCal
             }
         });
 
-        cargaListaApps();
+        ((LauncherActivity) getActivity()).cargaListaApps(mAppInfosList);
 
         assert (getActivity()) != null;
-        ((LauncherActivity)getActivity()).actualizaArrayAppsPreferencias();
-    }
-
-
-    public void cargaListaApps() {
-
-        //Limpiamos los shortcuts primero
-        ((LauncherActivity)getActivity()).clearShortcutsApp();
-
-        //Recorremos la lista de aplicaciones en preferencias y añadimos.
-        assert (getActivity()) != null;
-        ArrayList<String> listaApps = ((LauncherActivity)getActivity()).getAppsNamePreferences();
-
-        for (int i = 0; i< listaApps.size(); i++) {
-            String nombreApp = listaApps.get(i);
-            for (int j = 0; j < mAppInfosList.size(); j++) {
-                AppInfo appInfoTemp =  mAppInfosList.get(j);
-                if (SaveLoadAppsPreferences.ComparaNombreAppInfo(appInfoTemp, nombreApp)){
-                    assert (getActivity()) != null;
-                    ((LauncherActivity)getActivity()).addShortcutApp(appInfoTemp);
-                    appInfoTemp.checked = true;
-                    break;
-                }
-            }
-        }
-        ((LauncherActivity)getActivity()).focusAppGrid();
+        //((LauncherActivity)getActivity()).actualizaArrayAppsPreferencias();
     }
 
 
     @Override
     public void onLoaderReset(Loader<List<AppInfo>> listLoader) {
-        mAppsInfoListView.setAdapter(null);
+        mListViewApps.setAdapter(null);
     }
 
     private List<AppInfo> extractFavorites(List<AppInfo> infos) {
@@ -327,86 +227,44 @@ public class AppListFragment extends Fragment implements LoaderManager.LoaderCal
 
     public List<AppInfo> getAppsInfos(){
         if (mAppInfosList != null){
-            return mAppInfosList;
+            //((LauncherActivity) getActivity()).setAppList(mAppInfosList);
+           return mAppInfosList;
         }
         else
         {
+            //((LauncherActivity) getActivity()).setAppList(new ArrayList<AppInfo>(0));
             return new ArrayList<AppInfo>(0);
         }
     }
 
 
-    public boolean onKeyRight(){
-        activaModoCheckBox();
-        return false;
-    }
 
-    private void activaModoCheckBox(){
-        if (mAppsInfoListView.hasFocus()){
+    public void activaModoCheckBox(){
+        if (mListViewApps.hasFocus()){
             Log.d(TAG, "Activamos modo checkbox");
             mAppAdapter.setSelectedCheckBoxMode(true);
-            mAppAdapter.setSelectedItem(mAppsInfoListView.getSelectedItemPosition());
-           // updateView();
+            mAppAdapter.setSelectedItem(mListViewApps.getSelectedItemPosition());
+            updateView();
             mAppAdapter.notifyDataSetChanged();
         }
     }
 
-    private void desactivaModoCheckBox() {
+    public void desactivaModoCheckBox() {
         if (mAppAdapter.getModeCheckBoxSelection()) {
+            Log.d(TAG, "Desactivamos modo checkbox");
             mAppAdapter.setSelectedCheckBoxMode(false);
-            mAppAdapter.setSelectedItem(mAppsInfoListView.getSelectedItemPosition());
-           // updateView();
+            mAppAdapter.setSelectedItem(mListViewApps.getSelectedItemPosition());
+            updateView();
             mAppAdapter.notifyDataSetChanged();
         }
     }
 
     public void setFocus(){
-        mAppsInfoListView.requestFocus();
+        mListViewApps.requestFocus();
     }
 
-    public boolean onKeyUpDown( int event){
-        if (mAppsInfoListView.hasFocus()) {
-            //mAppAdapter.setSelectedItem(mAppsInfoListView.getSelectedItemPosition());
-            //updateView();
-            return true;
-        }else if( event == (int)KeyEvent.KEYCODE_DPAD_DOWN){
-            if ((mTabHost.getCurrentTab() == 0)){
-                Log.d(TAG, "tabhost0 seleccionado");
-                mAppsInfoListView.requestFocus();
-            }
-            else if ((mTabHost.getCurrentTab() == 1)){
-                Log.d(TAG, "tabhost1 seleccionado");
-                mMenuBookMarkFragment.setFocus();
-            }
-            else if ((mTabHost.getCurrentTab() == 2)){
-                Log.d(TAG, "tabhost2 seleccionado");
-                mMenuListViewFragment.setFocus();
-            }
-        }
-        return false;
-    }
-
-    public boolean onKeyLeft() {
-        if (mAppsInfoListView.hasFocus()) {
-            Log.d(TAG, "Estamos en app_grid");
-            if (mAppAdapter.getModeCheckBoxSelection()) {
-                desactivaModoCheckBox();
-                return true;
-            } else {
-                return false;
-            }
-        } else if (mTabHost.hasFocus()) {
-            if (mTabHost.getCurrentTab() != 0) {
-                mTabHost.setCurrentTab(mTabHost.getCurrentTab() - 1);
-                return true;
-            } else {
-                if (mAppAdapter.getModeCheckBoxSelection()) {
-                   desactivaModoCheckBox();
-                }
-                return false;
-            }
-        }
-        return false;
+    public boolean appgetModeCheckBoxSelec(){
+      return   mAppAdapter.getModeCheckBoxSelection();
     }
 
     /**
@@ -415,30 +273,81 @@ public class AppListFragment extends Fragment implements LoaderManager.LoaderCal
     private void updateView() {
 
         //Guardamos en el adapter la seleccion actual
-        mAppAdapter.setSelectedItem(mAppsInfoListView.getSelectedItemPosition());
+        mAppAdapter.setSelectedItem(mListViewApps.getSelectedItemPosition());
 
         //Colocamos el listItem anterior como estaba
-        View viewOld = mAppsInfoListView.getChildAt(mAppAdapter.getLastSelectedItem()- mAppsInfoListView.getFirstVisiblePosition());
+        View viewOld = mListViewApps.getChildAt(mAppAdapter.getLastSelectedItem()- mListViewApps.getFirstVisiblePosition());
         FrameLayout frameOld = (FrameLayout) viewOld.findViewById(R.id.frame_checkbox);
+        Log.e("-------------updateView()", "-----------listItem anterior---");
         frameOld.setBackgroundColor(mAppAdapter.getFrameCheckBoxView(mAppInfosList.get(mAppAdapter.getLastSelectedItem()).checked));
 
         //En caso que dejemos el modo seleccion colocamos el check como estaba
         if (!mAppAdapter.getModeCheckBoxSelection()){
-            View v = mAppsInfoListView.getChildAt(mAppsInfoListView.getSelectedItemPosition() - mAppsInfoListView.getFirstVisiblePosition());
+            View v = mListViewApps.getChildAt(mListViewApps.getSelectedItemPosition() - mListViewApps.getFirstVisiblePosition());
             FrameLayout frame = (FrameLayout) v.findViewById(R.id.frame_checkbox);
+            Log.e("-------------updateView()", "----------el check como estaba---");
             frame.setBackgroundColor(mAppAdapter.getFrameCheckBoxView(mAppInfosList.get(mAppAdapter.getSelectedItem()).checked));
             return;
         }
 
         //Colocamos el checkbox actual con el aspecto seleccionado
-        View v = mAppsInfoListView.getChildAt(mAppsInfoListView.getSelectedItemPosition() - mAppsInfoListView.getFirstVisiblePosition());
+        View v = mListViewApps.getChildAt(mListViewApps.getSelectedItemPosition() - mListViewApps.getFirstVisiblePosition());
 
         if (v == null)
             return;
 
         FrameLayout frame = (FrameLayout) v.findViewById(R.id.frame_checkbox);
+        Log.e("-------------updateView()", "-----------ChekBox ACTUAL---");
         frame.setBackgroundColor(mAppAdapter.getFrameCheckBoxView(false));
     }
+
+    public void onKeyDownD() {
+    }
+
+
+    public void onKeyLeftD() {
+
+    }
+
+
+
+    public void  onKeyUpD() {
+
+
+    }
+
+    public List<AppInfo> getmAppInfosList() {
+        return mAppInfosList;
+    }
+
+
+
+    /*
+
+           public void cargaListaApps() {
+
+             //Limpiamos los shortcuts primero
+             ((LauncherActivity)getActivity()).clearShortcutsApp();
+
+             //Recorremos la lista de aplicaciones en preferencias y añadimos.
+             assert (getActivity()) != null;
+             ArrayList<String> listaApps = ((LauncherActivity)getActivity()).getAppsNamePreferences();
+
+             for (int i = 0; i< listaApps.size(); i++) {
+                 String nombreApp = listaApps.get(i);
+                 for (int j = 0; j < mAppInfosList.size(); j++) {
+                     AppInfo appInfoTemp =  mAppInfosList.get(j);
+                     if (SaveLoadAppsPreferences.ComparaNombreAppInfo(appInfoTemp, nombreApp)){
+                         assert (getActivity()) != null;
+                         ((LauncherActivity)getActivity()).addShortcutApp(appInfoTemp);
+                         appInfoTemp.checked = true;
+                         break;
+                     }
+                 }
+             }
+
+             ((LauncherActivity)getActivity()).focusAppGrid();
+         }*/
 
 
 }

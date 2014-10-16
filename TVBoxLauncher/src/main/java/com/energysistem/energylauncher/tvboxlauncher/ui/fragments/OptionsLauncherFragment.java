@@ -28,6 +28,7 @@ public class OptionsLauncherFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_menu_list, container, false);
 
         mMenuList = (ListView) view.findViewById(R.id.menu_list);
@@ -92,4 +93,30 @@ public class OptionsLauncherFragment extends Fragment {
     }
 
 
+
+
+
+    /**
+     * Teclado en Settings
+     */
+
+    public static boolean onKeyLeftD() {
+
+        return true;
+    }
+
+    public static boolean onKeyRightD() {
+
+        return true;
+    }
+
+    public static boolean onKeyDownD() {
+
+        return true;
+    }
+
+    public static boolean onKeyUpD() {
+
+        return true;
+    }
 }

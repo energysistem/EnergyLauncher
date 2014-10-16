@@ -5,12 +5,10 @@ import android.graphics.Bitmap;
 /**
  * Created by emg on 02/05/2014.
  */
-public class DraggableItemApp {
+public class DraggableItemApp{
 
     int pos;
-    String packageName;
-
-
+    //String name;
     String title;
     Bitmap icono;
 
@@ -18,9 +16,10 @@ public class DraggableItemApp {
         this.pos = pos;
     }
 
+    /*
     public void setPackageName(String packageName) {
-        this.packageName = packageName;
-    }
+        this.name = name;
+    }*/
 
     public void setIcono(Bitmap icono) {
         this.icono = icono;
@@ -30,9 +29,10 @@ public class DraggableItemApp {
         return pos;
     }
 
+    /*
     public String getPackageName() {
-        return packageName;
-    }
+        return name;
+    }*/
 
     public Bitmap getIcono() {
         return icono;
@@ -42,11 +42,11 @@ public class DraggableItemApp {
         return title;
     }
 
-
-    public DraggableItemApp(int pos, String titlee, String packageName, Bitmap icono) {
+    //public DraggableItemApp(int pos, String title, String packageName, Bitmap icono) {
+    public DraggableItemApp(int pos, String title, Bitmap icono) {
         this.pos = pos;
-        this.title = titlee;
-        this.packageName = packageName;
+        this.title = title;
+        //this.name = packageName;
         this.icono = icono;
     }
 }

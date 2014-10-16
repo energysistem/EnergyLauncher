@@ -4,8 +4,14 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import com.energysistem.energylauncher.tvboxlauncher.ui.LauncherActivity;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import static android.app.PendingIntent.getActivities;
+import static android.app.PendingIntent.getActivity;
 
 /**
  * Created by emg on 15/04/2014.
@@ -13,16 +19,19 @@ import java.util.List;
 public class SaveLoadAppsPreferences {
 
     private static final String TAG = "SaveLoadPreferencias";
+    private static final String FAVS_LIST_SIZE = "FavsListSize";
+    private static final String HEADLISTFAVS = "ListFav_";
     private Context mContext;
     private static final String PREFS_LIST_APPS = "SelectedDesktopApps";
-    private static final String PREFS_LIST_SIZE = "ListSize";
-    private static final String HEADLISTAPPS = "List_";
+    //private static final String PREFS_LIST_SIZE = "ListSize";
+    //private static final String HEADLISTAPPS = "List_";
 
-    private static final String WEBPAGES_LIST_SIZE = "WebListSize";
-    private static final String HEADLISTWEBS = "ListW_";
+    //private static final String WEBPAGES_LIST_SIZE = "WebListSize";
+    //private static final String HEADLISTWEBS = "ListW_";
 
-    private ArrayList<String> ListaAppsString;
-    private ArrayList<WebPageItem> ListaWebs;
+    //private ArrayList<String> ListaFavoritos;
+    //private ArrayList<WebPageItem> ListaWebs;
+    private ArrayList<String> listaFavoritos;
 
     private SharedPreferences mSharedPrefs;
 
@@ -30,7 +39,7 @@ public class SaveLoadAppsPreferences {
     public SaveLoadAppsPreferences(Context context) {
         this.mContext = context;
         mSharedPrefs = context.getSharedPreferences(PREFS_LIST_APPS, 0);
-        ListaAppsString = getListaAppsString();
+        listaFavoritos = getListaFavsString();
 
     }
 
@@ -39,22 +48,22 @@ public class SaveLoadAppsPreferences {
     Gestion de las apps guardadas en preferencias
     Al añadir se comprueba que no se haya guardado ya la app
     Se añade por el final.
-    Al borrar se busca la app en concreto, actualizamos la lista gloval y se borra y se vuelve a crear el
+    Al borrar se busca la app en concreto, actualizamos la lista global y se borra y se vuelve a crear el
     array con los nombres de la apps (para no andar mareando con los indices)
     */
 
-    public void ActualizaListaApps(List<AppInfo> listaAppInfos) {
-        ArrayList<String> listAppsString = new ArrayList<String>();
+    public void ActualizaListaApps(List<ShortcutInfo> listaFavInfos) {
+        ArrayList<String> listFavsString = new ArrayList<String>();
 
         //Bucles para comprobar si ya están metidas las apps en preferencias y conservar el orden de introduccion
-        for (int i = 0; i < ListaAppsString.size(); i++) {
-            String nombreApp = ListaAppsString.get(i);
-            for (int j = 0; j < listaAppInfos.size(); j++) {
-                AppInfo appTemp = listaAppInfos.get(j);
-                if (ComparaNombreAppInfo(appTemp, nombreApp) && appTemp.checked) {
+        for (int i = 0; i < listaFavoritos.size(); i++) {
+            String nombreFav = listaFavoritos.get(i);
+            for (int j = 0; j < listaFavInfos.size(); j++) {
+                ShortcutInfo favTemp = listaFavInfos.get(j);
+                if (ComparaNombreFavInfo(favTemp.getTitle(), nombreFav) && chek(favTemp)){
                     //Miramos si ya está metida en la lista
-                    if (!listAppsString.contains(nombreApp)) {
-                        listAppsString.add(nombreApp);
+                    if (!listaFavoritos.contains(nombreFav)) {
+                        listaFavoritos.add(nombreFav);
                     }
                     break;
                 }
@@ -62,18 +71,18 @@ public class SaveLoadAppsPreferences {
         }
 
         //Bucles para introducir las nuevas apps
-        for (int i = 0; i < listaAppInfos.size(); i++) {
-            AppInfo appTemp = listaAppInfos.get(i);
-            if (appTemp.checked) {
-                String nombreAppinfo = getNombreApp(appTemp);
-                if (!listAppsString.contains(nombreAppinfo)) {
-                    listAppsString.add(nombreAppinfo);
+        for (int i = 0; i < listaFavInfos.size(); i++) {
+            ShortcutInfo favTemp = listaFavInfos.get(i);
+            if (chek(favTemp)) {
+                String nombreAppinfo = getNombreFav(favTemp);
+                if (!listFavsString.contains(nombreAppinfo)) {
+                    listFavsString.add(nombreAppinfo);
                 }
             }
         }
 
         removeAppsArray();
-        guardaArrayApps(listAppsString);
+        guardaFavArray(listFavsString);
     }
 
     public void ActualizaOrdenListaApps(List<DraggableItemApp> listaDraggables) {
@@ -81,74 +90,92 @@ public class SaveLoadAppsPreferences {
         ArrayList<String> listAppsString = new ArrayList<String>();
 
         for (int i = 0; i < listaDraggables.size(); i++) {
-            String nombreAppinfo = listaDraggables.get(i).getPackageName();
+            String nombreAppinfo = listaDraggables.get(i).getTitle();
             if (!listAppsString.contains(nombreAppinfo)) {
                 listAppsString.add(nombreAppinfo);
             }
         }
 
         removeAppsArray();
-        guardaArrayApps(listAppsString);
+        guardaFavArray(listAppsString);
     }
 
     public boolean addAppInfo(AppInfo app) {
-        String nombre = getNombreApp(app);
+        String nombre = getNombreFav(app);
 
-        if (ListaAppsString.contains(nombre)) {
+        if (listaFavoritos.contains(nombre)) {
             //Ya está metida
             return false;
         } else {
-            Log.v(TAG, "Añadida a las preferencias la app: " + getNombreApp(app));
-            ListaAppsString.add(nombre);
+            Log.v(TAG, "Añadida a las preferencias la app: " + getNombreFav(app));
+            listaFavoritos.add(nombre);
             insertItemEnd(nombre);
             return true;
         }
     }
 
-    public boolean removeAppInfo(AppInfo app) {
-        String nombre = getNombreApp(app);
+    public boolean removeFavInfo(ShortcutInfo favInfo){
 
-        if (ListaAppsString.contains(nombre)) {
-            //Pasando de gestionar los indices de la lista de las preferencias
+        String nombre = getNombreFav(favInfo);
+        return removeFavInfoByName(nombre);
+
+    }
+
+    public boolean removeFavInfoByName(String nombre){
+
+        if (listaFavoritos.contains(nombre)) {
+            //Pasando de gestionar los indices de la lista de las preferencias - jajajajaja
 
             //Está la app. Borramos la lista entera y la volvemos a crear.
             removeAppsArray();
 
             //La qutamos de la lista global
-            ListaAppsString.remove(nombre);
+            listaFavoritos.remove(nombre);
             //Volvemos a alamacenar la lista
-            guardaArrayApps(ListaAppsString);
+            guardaFavArray(listaFavoritos);
             return true;
         }
         return false;
     }
 
-    public static boolean ComparaNombreAppInfo(AppInfo appinfo, String nombre) {
-        return nombre.equalsIgnoreCase(getNombreApp(appinfo));
+
+    public static boolean ComparaNombreFavInfo(String favTitle, String nombre) {
+        return nombre.equalsIgnoreCase(favTitle);
+    }
+    public static boolean ComparaNombreFav(DraggableItemApp draggableItemApp, String nombre) {
+        return nombre.equalsIgnoreCase(draggableItemApp.getTitle());
     }
 
-    public ArrayList<String> getListaAppsString() {
+
+
+    public static boolean ComparaNombreFavInfoInv(String favTitle, String nombre) {
+        return favTitle.equalsIgnoreCase(nombre);
+    }
+
+
+    public ArrayList<String> getListaFavsString() {
         ArrayList<String> listaStrings = new ArrayList<String>();
 
-        int size = mSharedPrefs.getInt(PREFS_LIST_SIZE, 0);
+        int size = mSharedPrefs.getInt(FAVS_LIST_SIZE, 0);
 
         for (int i = 0; i < size; i++) {
-            String appS = mSharedPrefs.getString(HEADLISTAPPS + i, "");
+            String appS = mSharedPrefs.getString(HEADLISTFAVS + i, "");
             listaStrings.add(appS);
         }
         return listaStrings;
+
     }
 
 
     private void insertItemEnd(String appName) {
         SharedPreferences.Editor editor = mSharedPrefs.edit();
 
-        int size = mSharedPrefs.getInt(PREFS_LIST_SIZE, 0);
+        int size = mSharedPrefs.getInt(FAVS_LIST_SIZE, 0);
         //El ultimo indice es el tamaño nuevo menos 1
-        editor.putString(HEADLISTAPPS + (size), appName);
+        editor.putString(HEADLISTFAVS + (size), appName);
 
         size = size + 1;
-        editor.putInt(PREFS_LIST_SIZE, size);
+        editor.putInt(FAVS_LIST_SIZE, size);
 
         editor.commit();
     }
@@ -156,34 +183,41 @@ public class SaveLoadAppsPreferences {
     private void removeAppsArray() {
         SharedPreferences.Editor editor = mSharedPrefs.edit();
 
-        int size = mSharedPrefs.getInt(PREFS_LIST_SIZE, 0);
+        int size = mSharedPrefs.getInt(FAVS_LIST_SIZE, 0);
 
         for (int i = 0; i < size; i++) {
-            editor.remove(HEADLISTAPPS + i);
+            editor.remove(HEADLISTFAVS + i);
         }
 
-        editor.putInt(PREFS_LIST_SIZE, 0);
+        editor.putInt(FAVS_LIST_SIZE, 0);
         editor.commit();
     }
 
-    private void guardaArrayApps(ArrayList<String> list) {
+
+    private void guardaFavArray(ArrayList<String> listaFav){
         SharedPreferences.Editor editor = mSharedPrefs.edit();
 
-        int size = list.size();
-        editor.putInt(PREFS_LIST_SIZE, size);
+        int size = listaFav.size();
+        editor.putInt(FAVS_LIST_SIZE, size);
 
         for (int i = 0; i < size; i++) {
-            editor.putString(HEADLISTAPPS + i, list.get(i));
+            editor.putString(HEADLISTFAVS + i, listaFav.get(i));
         }
         editor.commit();
+
     }
 
-    private static String getNombreApp(AppInfo app) {
-        //return  app.title;
-        //return app.getComponentName().toString() + app.title;
-        return app.getPackageName();
-    }
 
+    private static String getNombreFav(ShortcutInfo fav) {
+        if (fav instanceof AppInfo) {
+            return ((AppInfo) fav).getPackageName();
+        } else if (fav instanceof WebPageInfo) {
+            return ((WebPageInfo) fav).getName();
+        }
+        else{
+            return null;
+        }
+    }
 
     /*
     Gestion de los enlaces guardados en preferencias
@@ -194,15 +228,15 @@ public class SaveLoadAppsPreferences {
     public void addWebPageInfo(WebPageInfo info) {
         WebPageItem item = new WebPageItem(info.getTitle(), info.getPageUrl().toString());
         String itemString = getStringWebPagePreferencias(item);
-        ListaWebs.add(item);
+        listaFavoritos.add(getNombreFav(info));
 
         SharedPreferences.Editor editor = mSharedPrefs.edit();
 
-        int size = mSharedPrefs.getInt(WEBPAGES_LIST_SIZE, 0);
+        int size = mSharedPrefs.getInt(FAVS_LIST_SIZE, 0);
         //El ultimo indice es el tamaño nuevo menos 1
-        editor.putString(HEADLISTWEBS + (size), itemString);
+        editor.putString(HEADLISTFAVS + (size), itemString);
         size = size + 1;
-        editor.putInt(WEBPAGES_LIST_SIZE, size);
+        editor.putInt(FAVS_LIST_SIZE, size);
 
         editor.commit();
 
@@ -211,63 +245,43 @@ public class SaveLoadAppsPreferences {
     }
 
     public void removeWebPageInfo(int indice) throws ArrayIndexOutOfBoundsException {
-        if (indice >= ListaWebs.size()) {
+        if (indice >= listaFavoritos.size()) {
             throw new ArrayIndexOutOfBoundsException("Indice fuera del array");
         }
         removeWebPagesArray();
 
-        ListaWebs.remove(indice);
-        guardaWebPagesArray(ListaWebs);
+        listaFavoritos.remove(indice);
+        guardaFavArray(listaFavoritos);
     }
 
-    public ArrayList<WebPageItem> getListaWebs() {
-        if (ListaWebs == null) {
-            ListaWebs = new ArrayList<WebPageItem>();
-
-            int size = mSharedPrefs.getInt(WEBPAGES_LIST_SIZE, 0);
-
-            for (int i = 0; i < size; i++) {
-                String texto = mSharedPrefs.getString(HEADLISTWEBS + i, "");
-                String[] partes = texto.split(",");
-                WebPageItem item = new WebPageItem(partes[0], partes[1]);
-                ListaWebs.add(item);
-            }
-        }
-        return ListaWebs;
-    }
 
 
     private void removeWebPagesArray() {
         SharedPreferences.Editor editor = mSharedPrefs.edit();
 
-        int size = mSharedPrefs.getInt(WEBPAGES_LIST_SIZE, 0);
+        int size = mSharedPrefs.getInt(PREFS_LIST_APPS, 0);
 
         for (int i = 0; i < size; i++) {
-            editor.remove(HEADLISTWEBS + i);
+            editor.remove(HEADLISTFAVS + i);
         }
 
-        editor.putInt(WEBPAGES_LIST_SIZE, 0);
+        editor.putInt(PREFS_LIST_APPS, 0);
         editor.commit();
     }
 
-    private void guardaWebPagesArray(ArrayList<WebPageItem> listaWebs) {
-        SharedPreferences.Editor editor = mSharedPrefs.edit();
 
-        int size = listaWebs.size();
-        editor.putInt(WEBPAGES_LIST_SIZE, size);
-
-        for (int i = 0; i < size; i++) {
-            String linea = getStringWebPagePreferencias(getListaWebs().get(i));
-            editor.putString(HEADLISTWEBS + i, linea);
-        }
-        editor.commit();
-    }
 
     private String getStringWebPagePreferencias(WebPageItem item) {
         return item.getTitle() + "," + item.getUri();
     }
 
 
+    public boolean chek(ShortcutInfo favTemp){
+    if(favTemp instanceof WebPageInfo){
+        return ((WebPageInfo)favTemp).checked;}
+    else{
+        return ((AppInfo)favTemp).checked;}
+    }
 
 
     public class WebPageItem {

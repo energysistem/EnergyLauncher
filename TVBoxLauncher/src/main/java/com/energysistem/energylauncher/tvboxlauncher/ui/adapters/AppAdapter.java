@@ -38,6 +38,7 @@ public class AppAdapter extends ArrayAdapter<AppInfo> {
 
     public AppAdapter(Context context, List<AppInfo> objects) {
         super(context, 0, objects);
+
         mLayoutInflater = LayoutInflater.from(context);
         mResources = context.getResources();
     }
@@ -70,15 +71,9 @@ public class AppAdapter extends ArrayAdapter<AppInfo> {
         else
             holder.frameLayout.setVisibility(View.INVISIBLE);
 
-
+        Log.e("-------------AppAdapter", "----holder Time-----");
         holder.frameLayout.setBackgroundColor(getFrameCheckBoxView(info.checked));
 
-
-        /*if (checkBoxSelected) {
-            if (position == selectedItem) {
-                holder.frameLayout.setBackgroundColor(Color.GREEN);
-            }
-        }*/
 
         holder.frameLayout.setOnClickListener(this.onCkeckBoxClickListener);
 
@@ -87,6 +82,7 @@ public class AppAdapter extends ArrayAdapter<AppInfo> {
             public void onClick(View v) {
                 Log.i("onclickListener", "framelayout " + position);
                 info.checked = !info.checked;
+                Log.e("-------------AppAdapter", "----ClikListener-----");
                 v.setBackgroundColor(getFrameCheckBoxView(info.checked));
                 v.setId(position);
                 onCkeckBoxClickListener.onClick(v);
@@ -99,12 +95,13 @@ public class AppAdapter extends ArrayAdapter<AppInfo> {
 
     public int getFrameCheckBoxView(boolean checked){
 
-        if (checked)
-             return getContext().getResources().getColor(R.color.blue);
-        else
-            return getContext().getResources().getColor(R.color.black_overlay);
+        if (checked){
+            Log.e("-------------updateView()", "-----AZULANDOO-----");
+             return getContext().getResources().getColor(R.color.blue);}
+        else{
+            Log.e("-------------updateView()", "-----NEGRANDOOO-----");
+            return getContext().getResources().getColor(R.color.black_overlay);}
     }
-
 
 
     private int lastSelectedItem = 0;
@@ -139,6 +136,8 @@ public class AppAdapter extends ArrayAdapter<AppInfo> {
     public void setOnCheckBoxClickListener(final View.OnClickListener onClickListener) {
         this.onCkeckBoxClickListener = onClickListener;
     }
+
+
 
 
 

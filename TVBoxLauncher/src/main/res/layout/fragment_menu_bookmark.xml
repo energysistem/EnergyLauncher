@@ -4,53 +4,62 @@
     android:layout_height="fill_parent"
     android:background="@color/black_grey"
     android:padding="10dp"
+    android:id="@+id/lol"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Name"
-        android:textColor="#ffffff"
-        android:textSize="22sp"
-        android:id="@+id/menuBookmarkLblName" />
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="#ffffff"
-        android:textSize="22sp"
-        android:id="@+id/menuBookmarkTxtName">
-        <requestFocus />
-     </EditText>
+          <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Name"
+            android:textColor="#ffffff"
+            android:textSize="22sp"
+            android:id="@+id/menuBookmarkLblName"
+            android:focusable="false"/>
+        <EditText
+            android:id="@+id/menuBookmarkTxtName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#ffffff"
+            android:textSize="22sp"
+            android:nextFocusUp="@+id/tab2"
+            android:nextFocusDown="@+id/menuBookmarkTxtUri"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Uri:"
-        android:textColor="#ffffff"
-        android:textSize="22sp"
-        android:id="@+id/menuBookmarklblUri" />
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="http://"
-        android:textColor="#ffffff"
-        android:textSize="22sp"
-        android:id="@+id/menuBookmarkTxtUri"
-        android:inputType="textUri" />
+        <TextView
+            android:id="@+id/menuBookmarklblUri"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Uri:"
+            android:textColor="#ffffff"
+            android:textSize="22sp"
+            android:focusable="false"/>
+        <EditText
+            android:id="@+id/menuBookmarkTxtUri"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="http://"
+            android:textColor="#ffffff"
+            android:textSize="22sp"
+            android:inputType="textUri"
+            android:nextFocusDown="@+id/menuBookmarkBtn"/>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Save"
-        android:textSize="22sp"
-        android:id="@+id/menuBookmarkBtn"
-        android:layout_gravity="right" />
+        <Button
+            android:id="@+id/menuBookmarkBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Save"
+            android:textSize="22sp"
+            android:layout_gravity="right"
+            android:nextFocusDown="@+id/listViewLinks"/>
 
     <ListView
+        android:id="@+id/listViewLinks"
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
-        android:id="@+id/listViewLinks"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:nextFocusDown="@+id/menuBookmarkList"
+        android:nextFocusRight="@+id/listViewLinks"/>
+
+
 </LinearLayout>

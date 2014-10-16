@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="70dp"
     android:background="@color/black_grey"
-    android:id="@+id/frame_checkbox">
+    android:id="@+id/frame_frame_checkbox">
 
     <CheckBox
         android:layout_width="wrap_content"
@@ -14,3 +14,4 @@
         android:singleLine="true"
         android:focusable="false"/>
 </FrameLayout>
+

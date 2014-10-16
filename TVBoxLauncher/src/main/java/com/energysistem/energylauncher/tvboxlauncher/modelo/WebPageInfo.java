@@ -24,7 +24,10 @@ import java.net.URL;
  */
 public class WebPageInfo extends ShortcutInfo {
 
+    private static final String TAG = "EnergyLauncher.WebPageInfo";
+
     private Uri pageUrl;
+    public Boolean checked = false;
 
     public WebPageInfo(Uri pageUrl) {
         this.pageUrl = pageUrl;
@@ -51,8 +54,7 @@ public class WebPageInfo extends ShortcutInfo {
     }
 
 
-
-
-
-
+    public String getName() {
+        return String.valueOf(pageUrl);
+    }
 }

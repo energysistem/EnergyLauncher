@@ -64,6 +64,18 @@ public class MenuListFragment extends Fragment {
         }
     }
 
+    public void onKeyDownD() {
+    }
+
+    public void onKeyLeftD() {
+    }
+
+    public void onKeyRightD() {
+    }
+
+    public void onKeyUpD() {
+    }
+
     /**
      * funcion para resetear lo que correcponda cuando ocultamos el fragment
      */

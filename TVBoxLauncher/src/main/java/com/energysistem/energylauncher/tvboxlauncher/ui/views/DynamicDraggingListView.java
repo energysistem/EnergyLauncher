@@ -792,6 +792,7 @@ public class DynamicDraggingListView extends ListView {
 
     public void setAppsList(List<DraggableItemApp> listaApps) {
         mListaApps = listaApps;
+        Log.d("----setAppsList(Dynamic Dragging), tamaño nueva Lista Draggable: ",Integer.toString(listaApps.size()));
     }
 
     private int mPreviousFirstVisibleItem = -1;
