@@ -43,6 +43,7 @@ public class MenuBookMarkFragment  extends Fragment
 
     private static ListView mlistViewWebshorts;
     private List<WebPageInfo> mListWebPage;
+    private List<WebPageInfo> mSavedWebpages;
     private WebShortcutAdapter mAdapter;
 
     private TextView mTxtName;
@@ -62,13 +63,16 @@ public class MenuBookMarkFragment  extends Fragment
        // mEditText=(EditText) view.findViewById(R.id.menuBookmarkTxtName);
        // mEditText.requestFocus();
         mTxtName.requestFocus();
-        mListWebPage = new ArrayList<WebPageInfo>();
 
+        //if(mSavedWebpages==null){mSavedWebpages = new ArrayList<WebPageInfo>();}
+        mListWebPage = new ArrayList<WebPageInfo>();
+        mListWebPage = ((LauncherActivity) getActivity()).getlistaWeb();
         //Button btnSave = (Button) view.findViewById(R.id.menuBookmarkBtn);
         mBtnSave = (Button) view.findViewById(R.id.menuBookmarkBtn);
         mlistViewWebshorts = (ListView) view.findViewById(R.id.listViewLinks);
         mlistViewWebshorts.setOnItemClickListener(this);
         mlistViewWebshorts.setOnItemLongClickListener(this);
+
 
 
         mBtnSave.setOnClickListener(new View.OnClickListener() {
@@ -79,8 +83,9 @@ public class MenuBookMarkFragment  extends Fragment
                     info.setTitle(mTxtName.getText().toString());
                     //((LauncherActivity) getActivity()).addShortcutApp(info);
                     if(info!=null){
-                        if(mListWebPage!=null){Log.d("mListWebPage", "NO NULL");}else{Log.d("mListWebPage", "NULLACO");}
+                       // if(mListWebPage!=null){Log.d("mListWebPage", "NO NULL");}else{Log.d("mListWebPage", "NULLACO");}
                         mListWebPage.add(mListWebPage.size(), info);
+                        ((LauncherActivity) getActivity()).setlistaWeb(mListWebPage);
                         //mListWebPage.add(info);
                         }
                     mAdapter.notifyDataSetChanged();
@@ -98,9 +103,10 @@ public class MenuBookMarkFragment  extends Fragment
 
        // mListWebPage = ((LauncherActivity) getActivity()).cargaShortcutsEnDesktop();
         if(mListWebPage!=null){
-        mAdapter = new WebShortcutAdapter(getActivity(), mListWebPage);
-        mlistViewWebshorts.setAdapter(mAdapter);}
 
+            mAdapter = new WebShortcutAdapter(getActivity(), mListWebPage);
+            mlistViewWebshorts.setAdapter(mAdapter);}
+        setmListWebPage((ArrayList<WebPageInfo>) mListWebPage);
         return view;
     }
 
@@ -245,8 +251,8 @@ public class MenuBookMarkFragment  extends Fragment
         //Take out the favorites
         //appInfos = extractFavorites(appInfos);
 
-        mListWebPage = webPageInfos;
-        mAdapter = new WebShortcutAdapter(getActivity(), webPageInfos);
+        //mListWebPage = webPageInfos;
+        mAdapter = new WebShortcutAdapter(getActivity(), mListWebPage);
         mlistViewWebshorts.setAdapter(mAdapter);
 
         //Creamos el listener para el checkbox de dentro del item
@@ -270,6 +276,8 @@ public class MenuBookMarkFragment  extends Fragment
             }
         });
 
+        ((LauncherActivity) getActivity()).cargaListaWeb();
+
         assert (getActivity()) != null;
 
 
@@ -281,6 +289,7 @@ public class MenuBookMarkFragment  extends Fragment
     public void onLoaderReset(Loader<List<WebPageInfo>> listLoader) {
         mlistViewWebshorts.setAdapter(null);
     }
+
 
     /**
      * Teclado en BookMarks
@@ -305,5 +314,18 @@ public class MenuBookMarkFragment  extends Fragment
     public List<WebPageInfo> getmListWebPage(){
         return mListWebPage;
     }
+
+    public void setmListWebPage(ArrayList<WebPageInfo> n){
+        mListWebPage=n;
+    }
+    public void actualisa(){
+        mAdapter.notifyDataSetChanged();
+    }
+
+    public ArrayList<WebPageInfo> getListWebPage(){
+        return (ArrayList<WebPageInfo>) mListWebPage;
+    }
+
+
 
 }

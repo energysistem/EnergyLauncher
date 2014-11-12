@@ -82,7 +82,7 @@ import java.util.List;
         private CharSequence mLabel;
 
     public List<WebPageInfo> getmWebInfosListAx() {
-             return mMenuBookMarkFragment.getmListWebPage();
+             return mMenuBookMarkFragment.getListWebPage();
          }
 
     /*
@@ -428,6 +428,15 @@ public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle sav
         return mAppListFragment.getmAppInfosList();
     }
 
+
+    public void setListWebPage(ArrayList<WebPageInfo> lista){
+        mMenuBookMarkFragment.setmListWebPage(lista);
+        mMenuBookMarkFragment.actualisa();
+    }
+
+    public ArrayList<WebPageInfo> getListWebpage(){
+        return mMenuBookMarkFragment.getListWebPage();
+    }
 
 /*
     public void tabChange(Fragment newFragment int simpleFragment){

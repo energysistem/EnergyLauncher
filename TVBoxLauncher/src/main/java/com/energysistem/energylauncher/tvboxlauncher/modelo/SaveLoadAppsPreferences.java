@@ -5,10 +5,14 @@ import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.energysistem.energylauncher.tvboxlauncher.ui.LauncherActivity;
+import com.energysistem.energylauncher.tvboxlauncher.ui.adapters.ShortcutAdapter;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 
 import static android.app.PendingIntent.getActivities;
 import static android.app.PendingIntent.getActivity;
@@ -22,7 +26,7 @@ public class SaveLoadAppsPreferences {
     private static final String FAVS_LIST_SIZE = "FavsListSize";
     private static final String HEADLISTFAVS = "ListFav_";
     private Context mContext;
-    private static final String PREFS_LIST_APPS = "SelectedDesktopApps";
+    private final String PREFS_LIST_APPS = "SelectedDesktopApps";
     //private static final String PREFS_LIST_SIZE = "ListSize";
     //private static final String HEADLISTAPPS = "List_";
 
@@ -35,12 +39,18 @@ public class SaveLoadAppsPreferences {
 
     private SharedPreferences mSharedPrefs;
 
+    private ArrayList<DraggableItemApp> mListAppsDragablesOrdenadaAUX;
+    private ArrayList<WebPageInfo> listaWebF;
+    private ArrayList<WebPageInfo> listaWeb;
+    private ArrayList<AppInfo> listaApp;
+    private static ShortcutAdapter listaDesktop;
+
 
     public SaveLoadAppsPreferences(Context context) {
         this.mContext = context;
         mSharedPrefs = context.getSharedPreferences(PREFS_LIST_APPS, 0);
         listaFavoritos = getListaFavsString();
-
+        listaWebF = getListaWebF();
     }
 
 
@@ -85,7 +95,7 @@ public class SaveLoadAppsPreferences {
         guardaFavArray(listFavsString);
     }
 
-    public void ActualizaOrdenListaApps(List<DraggableItemApp> listaDraggables) {
+    public void ActualizaOrdenListaApps(ArrayList<DraggableItemApp> listaDraggables) {
         //Borramos Array y creamos de nuevo.
         ArrayList<String> listAppsString = new ArrayList<String>();
 
@@ -95,6 +105,8 @@ public class SaveLoadAppsPreferences {
                 listAppsString.add(nombreAppinfo);
             }
         }
+
+        setmListAppsDragablesOrdenadaAUX(listaDraggables);
 
         removeAppsArray();
         guardaFavArray(listAppsString);
@@ -110,6 +122,8 @@ public class SaveLoadAppsPreferences {
             Log.v(TAG, "Añadida a las preferencias la app: " + getNombreFav(app));
             listaFavoritos.add(nombre);
             insertItemEnd(nombre);
+            if(listaApp==null){listaApp = new ArrayList<AppInfo>();}
+            listaApp.add(app);
             return true;
         }
     }
@@ -135,6 +149,7 @@ public class SaveLoadAppsPreferences {
             guardaFavArray(listaFavoritos);
             return true;
         }
+
         return false;
     }
 
@@ -225,8 +240,13 @@ public class SaveLoadAppsPreferences {
     Se añaden por el final y que quitan dado un indice en concreto
     Para borrar se borra el array completo y se vuelve a crear (para no andar moviendo indices)
      */
+    int pos;
     public void addWebPageInfo(WebPageInfo info) {
-        WebPageItem item = new WebPageItem(info.getTitle(), info.getPageUrl().toString());
+        if(listaWebF==null){ new ArrayList<WebPageInfo>(); pos=0;}else{pos=listaWebF.size();}
+        listaWebF.add(pos,info);
+
+        WebPageItem item;
+        item = new WebPageItem(info.getTitle(), info.getPageUrl().toString());
         String itemString = getStringWebPagePreferencias(item);
         listaFavoritos.add(getNombreFav(info));
 
@@ -244,16 +264,11 @@ public class SaveLoadAppsPreferences {
 
     }
 
-    public void removeWebPageInfo(int indice) throws ArrayIndexOutOfBoundsException {
-        if (indice >= listaFavoritos.size()) {
-            throw new ArrayIndexOutOfBoundsException("Indice fuera del array");
-        }
+    public void removeWebPageInfo(WebPageInfo info){
         removeWebPagesArray();
-
-        listaFavoritos.remove(indice);
+        listaFavoritos.remove(info);
         guardaFavArray(listaFavoritos);
     }
-
 
 
     private void removeWebPagesArray() {
@@ -270,7 +285,6 @@ public class SaveLoadAppsPreferences {
     }
 
 
-
     private String getStringWebPagePreferencias(WebPageItem item) {
         return item.getTitle() + "," + item.getUri();
     }
@@ -281,6 +295,19 @@ public class SaveLoadAppsPreferences {
         return ((WebPageInfo)favTemp).checked;}
     else{
         return ((AppInfo)favTemp).checked;}
+    }
+
+    public ArrayList<WebPageInfo> getListaWebF() {
+        if(listaWebF==null){
+            listaWebF = new ArrayList<WebPageInfo>();
+        }
+        return listaWebF;
+    }
+
+    public void removeFavList(ShortcutInfo shortcutInfo) {
+        if(listaWebF.contains(shortcutInfo)){
+            listaWebF.remove(shortcutInfo);
+        }
     }
 
 
@@ -303,6 +330,79 @@ public class SaveLoadAppsPreferences {
 
 
     }
+
+    public void setmListAppsDragablesOrdenadaAUX(ArrayList<DraggableItemApp> li){
+        mListAppsDragablesOrdenadaAUX=li;
+    }
+
+    public ArrayList<DraggableItemApp> getmListAppsDragablesOrdenadaAUX(){
+        if(mListAppsDragablesOrdenadaAUX==null){
+            mListAppsDragablesOrdenadaAUX = new ArrayList<DraggableItemApp>();
+        }
+        return mListAppsDragablesOrdenadaAUX;
+    }
+
+
+    /*
+        LISTA WEBS
+     */
+
+    public void setListaWeb(ArrayList<WebPageInfo> lista){
+      listaWeb= lista;
+    }
+
+    public ArrayList<WebPageInfo> getListaWeb(){
+        if(listaWeb==null){ listaWeb = new ArrayList<WebPageInfo>(); }
+        return listaWeb;
+    }
+ //------------------------------------
+
+    /*
+        LISTA APPS
+     */
+    public void addAppInfoLista(AppInfo appInfo){
+        listaApp.add(appInfo);
+    }
+
+    public void setListaApp(ArrayList<AppInfo> lista){
+        listaApp = lista;
+    }
+
+    public ArrayList<AppInfo> getListaApp(){
+        if(listaApp==null){ listaApp = new ArrayList<AppInfo>(); }
+        return listaApp;
+    }
+    //------------------------------
+
+    /*
+        LISTA DESKTOP
+     */
+    public void setListaDesktop(ShortcutAdapter lista){
+        listaDesktop=lista;
+        listaDesktop.notifyDataSetChanged();
+        //((LauncherActivity) getActivity().reloadDesktop(lista);
+    }
+
+    public ShortcutAdapter getListaDesktop(){
+        if(listaDesktop==null){listaDesktop =  new ShortcutAdapter(mContext);}
+        listaDesktop.notifyDataSetChanged();
+        return listaDesktop;
+    }
+
+    public void addInfoDesktop (ShortcutInfo info){
+        if(listaDesktop==null){ listaDesktop = new ShortcutAdapter(mContext);}
+        listaDesktop.addItem(info);
+        listaDesktop.notifyDataSetChanged();
+    }
+
+    public void removeInfoDesktop(ShortcutInfo info){
+        listaDesktop.removeItem(info);
+        listaDesktop.notifyDataSetChanged();
+    }
+
+
+
+    //;ArrayList<ShortcutAdapter> listaDesktop;
 
 
 }

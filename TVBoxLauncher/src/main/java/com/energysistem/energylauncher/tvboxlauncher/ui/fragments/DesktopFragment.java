@@ -28,7 +28,6 @@ import com.energysistem.energylauncher.tvboxlauncher.modelo.ShortcutInfo;
 import com.energysistem.energylauncher.tvboxlauncher.modelo.WebPageInfo;
 import com.energysistem.energylauncher.tvboxlauncher.ui.LauncherActivity;
 import com.energysistem.energylauncher.tvboxlauncher.ui.adapters.ShortcutAdapter;
-import com.energysistem.energylauncher.tvboxlauncher.ui.adapters.WebShortcutAdapter;
 import com.energysistem.energylauncher.tvboxlauncher.util.Clock;
 import com.energysistem.energylauncher.tvboxlauncher.util.ConnectionIndicator;
 
@@ -46,8 +45,6 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
 
     private GridView mFavoritesGrid;
     private ShortcutAdapter gridAdapter;
-    private GridView mWebShortCutGrid;
-    private WebShortcutAdapter gridWebShortcutAdapter;
     private ImageView appButton;
     private ImageView notificationButton;
     private TextView timeTextView;
@@ -84,11 +81,12 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
 
         //GridApp desktop icons
         gridAdapter = new ShortcutAdapter(getActivity());
+        gridAdapter = ((LauncherActivity) getActivity()).getGridDesktop();
         mFavoritesGrid = (GridView) view.findViewById(R.id.app_grid);
         mFavoritesGrid.setAdapter(gridAdapter);
         mFavoritesGrid.setOnItemClickListener(this);
         mFavoritesGrid.setOnItemSelectedListener(itemSelected);
-
+        mFavoritesGrid.setOnFocusChangeListener(onAppgridSelecctionchange);
 
         appButton = (ImageView) view.findViewById(R.id.icon_drawer);
         appButton.setOnClickListener(new View.OnClickListener() {
@@ -126,8 +124,34 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
         wifiIcon = (ImageView) view.findViewById(R.id.wifi_icon);
         ethernetIcon = (ImageView) view.findViewById(R.id.ethernet_icon);
         connectionIndicator = new ConnectionIndicator(getActivity(), wifiIcon, ethernetIcon);
+
+        Log.d("-------------onCreateView() Desktop Fragment", Integer.toString((gridAdapter.getCount())));
         return view;
+
     }
+
+
+
+    View.OnFocusChangeListener onAppgridSelecctionchange = new View.OnFocusChangeListener() {
+        @Override
+        public void onFocusChange(View v, boolean hasFocus) {
+            if (hasFocus){
+                //recuperamosFoco = true;
+//                if (vistaAnterior != null && (vistaAnterior.isSelected()))
+//                    seleccionarView(vistaAnterior);
+//                seleccionarView(mAppsGrid.getSelectedView());
+//                mAppsGrid.requestFocusFromTouch();
+//                mAppsGrid.setSelection(1);
+//                mAppsGrid.setItemChecked(1,true);
+                Log.e("-------------FOCUS", "-----------Vuelta al AppGrid-----");
+
+                seleccionarView(vistaAnterior);
+            }
+            else {
+                deseleccionarView(vistaAnterior);
+            }
+        }
+    };
 
 
     /*
@@ -138,30 +162,36 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
     /*
     Scroll del grid
      */
+        private void scrolleaGridView(int posicion, View v) {
+            float posView = v.getY();
 
-    private void scrolleaGridView(int posicion, View v){
-        float posView = v.getY();
+            if (posView < (mDesktopIconHeight)) {
+                mFavoritesGrid.smoothScrollBy(-mDesktopIconHeight, 500);
+            }
 
-        if (posView < (mDesktopIconHeight)){
-            mFavoritesGrid.smoothScrollBy(-mDesktopIconHeight, 500);
+            if (posView > (mGridViewHeight - (mDesktopIconHeight * 1.5))) {
+                mFavoritesGrid.smoothScrollBy(mDesktopIconHeight, 500);
+            }
         }
-
-        if (posView > (mGridViewHeight - (mDesktopIconHeight*1.5))){
-            mFavoritesGrid.smoothScrollBy(mDesktopIconHeight, 500);
-        }
-    }
-    /***********************/
+        /***********************/
 
 /*
     Estado de la actividad
  */
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-    }
+        /*@Override
+        public void onStart(){
+            super.onStart();
+            gridAdapter = ((LauncherActivity) getActivity()).getGridDesktop();
+        }*/
 
-    @Override
-    public void onResume() {
+        @Override
+        public void onActivityCreated(Bundle savedInstanceState) {
+
+            super.onActivityCreated(savedInstanceState);
+        }
+
+        @Override
+        public void onResume() {
         super.onResume();
         Time time = new Time();
         time.setToNow();
@@ -256,6 +286,8 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
     Maneja accesos directos AÑADIR-QUITAR
      */
     public void addShortcut(final ShortcutInfo shortcutInfo) {
+        Log.i("Add on desktop -->", shortcutInfo.getTitle());
+
         if (shortcutInfo instanceof WebPageInfo) {
             Thread thread = new Thread(new Runnable() {
                 public void run() {
@@ -276,23 +308,13 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
 
             gridAdapter.addItem(shortcutInfo);
             gridAdapter.notifyDataSetChanged();
-           // ((LauncherActivity) getActivity()).setsavedGridFav(gridAdapter);
+            //setGridAdapter(((LauncherActivity) getActivity()).getGridDesktop());
 
         } else {
             gridAdapter.addItem(shortcutInfo);
             gridAdapter.notifyDataSetChanged();
-           // ((LauncherActivity) getActivity()).setsavedGridFav(gridAdapter);
+            //setGridAdapter(((LauncherActivity) getActivity()).getGridDesktop());
 
-//            if (altoPanelAccesoDirecto == 0){
-//                View childView = gridAdapter.getView(0, null, mAppsGrid);
-//                childView.measure(
-//                        View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
-//                        View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
-//                );
-//                //int[] anchoAlto = getItemHeightofGridView(mAppsGrid);
-//                anchoPanelAccesoDirecto = childView.getWidth();
-//                altoPanelAccesoDirecto = childView.getHeight();
-//            }
         }
     }
 
@@ -300,33 +322,16 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
     public void removeShortcut(ShortcutInfo shortcutInfo) {
         gridAdapter.removeItem(shortcutInfo);
         gridAdapter.notifyDataSetChanged();
-        //((LauncherActivity) getActivity()).setsavedGridFav(gridAdapter);
-//
-//        final ShortcutInfo shortc = shortcutInfo;
-//        View tile = mAppsGrid.getSelectedView();
-//
-//        final Animation animation = AnimationUtils.loadAnimation(tile.getContext(), R.anim.splashfadeout);
-//        tile.startAnimation(animation);
-//        Handler handle = new Handler();
-//        handle.postDelayed(new Runnable() {
-//
-//            @Override
-//            public void run() {
-//                // TODO Auto-generated method stub
-//                gridAdapter.removeItem(shortc);
-//                gridAdapter.notifyDataSetChanged();
-//                animation.cancel();
-//            }
-//        }, 1000);
     }
 
+    /*
     public void clearShortcutsApps() {
         if (gridAdapter != null) {
             gridAdapter.clearItems();
             gridAdapter.notifyDataSetChanged();
             ((LauncherActivity) getActivity()).setsavedGridFav(gridAdapter);
         }
-    }
+    }*/
 
 //    public ImageView getAppButton() {
 //        return appButton;
@@ -362,6 +367,10 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
         }
 
 
+
+
+
+
         return false;
     }
 
@@ -373,11 +382,21 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
     }
 
     public void setGridAdapter(ShortcutAdapter gridAda){
-        gridAdapter = new ShortcutAdapter(getActivity());
-        gridAdapter.clearItems();
-        this.gridAdapter=gridAda;
-        gridAdapter.notifyDataSetChanged();
-
+       // gridAdapter = new ShortcutAdapter(getActivity());
+        Log.d("----setGridAdapter() DESKTOP: ",Integer.toString(gridAda.getCount()));
+        if(this.gridAdapter!=null){
+            this.gridAdapter.clearItems();
+            //gridAdapter.setListInfo(((LauncherActivity) getActivity()).getGridDesktop().getListInfo());
+            this.gridAdapter.setListInfo(gridAda.getListInfo());
+            this.gridAdapter.notifyDataSetChanged();
+        }
+        else{
+            this.gridAdapter = new ShortcutAdapter(getActivity());
+            this.gridAdapter.setListInfo(gridAda.getListInfo());
+           // gridAdapter.getCount();
+            this.gridAdapter.notifyDataSetChanged();
+        }
+        Log.d("-------------setGridAdapter() Desktop Fragment", Integer.toString((this.gridAdapter.getCount())));
     }
 
    /*

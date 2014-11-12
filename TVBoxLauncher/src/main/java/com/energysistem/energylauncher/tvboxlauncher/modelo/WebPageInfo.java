@@ -29,6 +29,8 @@ public class WebPageInfo extends ShortcutInfo {
     private Uri pageUrl;
     public Boolean checked = false;
 
+
+
     public WebPageInfo(Uri pageUrl) {
         this.pageUrl = pageUrl;
     }

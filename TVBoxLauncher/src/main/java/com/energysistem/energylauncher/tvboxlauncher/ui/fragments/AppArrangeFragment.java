@@ -1,6 +1,7 @@
 package com.energysistem.energylauncher.tvboxlauncher.ui.fragments;
 
 import android.app.Fragment;
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -8,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.energysistem.energylauncher.tvboxlauncher.R;
 import com.energysistem.energylauncher.tvboxlauncher.modelo.AppInfo;
@@ -28,9 +30,11 @@ import java.util.List;
 public class AppArrangeFragment extends Fragment {
 
 
-    private List<DraggableItemApp> mFavInfosList;
+    private ArrayList<DraggableItemApp> mFavInfosList;
 
-    private List<DraggableItemApp> mListAppsDragablesOrdenada;
+    private ArrayList<DraggableItemApp> mListAppsDragablesOrdenada;
+    private ArrayList<DraggableItemApp> mListAppsDragablesOrdenadaAUX;
+
     private DynamicDraggingListView mListView;
     private Button mBtnGuardar;
     private StableArrayAdapter mAdapter;
@@ -99,33 +103,15 @@ public class AppArrangeFragment extends Fragment {
             mListAppsDragablesOrdenada = new ArrayList<DraggableItemApp>();
         }
 
-
-        ArrayList<String> listaApps;
-        try {
-            listaApps = ((LauncherActivity) getActivity()).getAppsNamePreferences();
-        } catch (NullPointerException e) {
-            listaApps = new ArrayList<String>();
-        }
-
-        /*for (int i = 0; i < listaApps.size(); i++) {
-            for (int j = 0; j < mFavInfosList.size(); j++) {
-                if (SaveLoadAppsPreferences.ComparaNombreFav(mFavInfosList.get(j),
-                        ((LauncherActivity) getActivity()).getAppsNamePreferences().get(i))) {
-                    //if (mFavInfosList instanceof AppInfo){//para que solo recorra los favoritos que sean Apps
-                            //Creamos el item que contendrá la pos, el nombre y el icono y lo añadimos a la lista
-                    Log.e("------Rellenando mListAppsDragablesOrdenada--->", "Elemento nº"+mListAppsDragablesOrdenada.size());
-                            DraggableItemApp item = new DraggableItemApp(
-                                    mListAppsDragablesOrdenada.size(),//ultima posicion de la lista de favoritos draggables
-                                    mFavInfosList.get(j).getTitle(),                                    //hacen lo mismo? getTitle de ShortcutInfo ------------->Titulo del objeto info
-                                    //((LauncherActivity) getActivity()).getAppsNamePreferences().get(i), //Hacen lo mismo? getString de SavedLoadAppsPreferences ->Titulo de la lista de favoritos de solo titulos
-                                    mFavInfosList.get(j).getIcono());
-                            mListAppsDragablesOrdenada.add(item);
-            }
-            }
+       /* if(mListAppsDragablesOrdenadaAUX==null){
+        mListAppsDragablesOrdenada=getDraggableListActualizada();}//Inicia el fragment
+        else{
+            mListAppsDragablesOrdenada=mListAppsDragablesOrdenadaAUX;
         }*/
 
         mListAppsDragablesOrdenada=getDraggableListActualizada();
-        Log.d("----CreaListaFiltradaOrdenada() AppArrangeFragment: ",Integer.toString(((LauncherActivity) getActivity()).getListFavDraggables().size()));
+
+        //Log.d("----CreaListaFiltradaOrdenada() AppArrangeFragment: ",Integer.toString(mListAppsDragablesOrdenada.size()));
 
     }
 
@@ -134,33 +120,38 @@ public class AppArrangeFragment extends Fragment {
         assert (getActivity()) != null;
 
         ((LauncherActivity) getActivity()).actualizaOrdenApps(mListAppsDragablesOrdenada);
-        //((LauncherActivity) getActivity()).setsavedGridFav(mListAppsDragablesOrdenada);
 
+        mListAppsDragablesOrdenada=getDraggableListActualizada();
         resetFragment();
         mListView.requestFocus();
     }
 
 
 
-    public List<DraggableItemApp> getDraggableListActualizada(){
-        Log.d("----getDraggableListActualizada() AppArrangeFragment: ",Integer.toString(((LauncherActivity) getActivity()).getListFavDraggables().size()));
-
+    public ArrayList<DraggableItemApp> getDraggableListActualizada(){
+       // Log.d("----CreaListaFiltradaOrdenada() AppArrangeFragment: ",Integer.toString(mListAppsDragablesOrdenada.size()));
         return ((LauncherActivity) getActivity()).getListFavDraggables();
-        //Log.d("----getDraggableListActualizada() AppArrangeFragment: ",Integer.toString(mListAppsDragablesOrdenada.size()));
+
 
     }
 
     public void resetFragment() {
         if (mListView != null) {
-            CreaListaFiltradaOrdenada();
+            //CreaListaFiltradaOrdenada();
             mListView.setAppsList(mListAppsDragablesOrdenada);
             mListView.setListaReseteada();
 
             mAdapter.notifyDataSetChanged();
+            //((LauncherActivity) getActivity()).reloadDesktop(mListAppsDragablesOrdenada);
 
             mBtnGuardar.setEnabled(false);
             mBtnGuardar.setFocusable(false);
+
         }
+    }
+
+    public void setmListAppsDragablesOrdenada(ArrayList<DraggableItemApp> neo){
+        mListAppsDragablesOrdenada=neo;
     }
 
     /*

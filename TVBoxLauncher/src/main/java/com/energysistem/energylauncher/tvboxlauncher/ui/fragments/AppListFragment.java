@@ -111,6 +111,7 @@ public class AppListFragment extends Fragment
             info.checked = true;
         }
         mAppAdapter.notifyDataSetChanged();
+        //((LauncherActivity) getActivity()).reloadDesktop();
         return true;
     }
 
@@ -175,7 +176,7 @@ public class AppListFragment extends Fragment
             }
         });
 
-        ((LauncherActivity) getActivity()).cargaListaApps(mAppInfosList);
+        //((LauncherActivity) getActivity()).reloadDesktop();
 
         assert (getActivity()) != null;
         //((LauncherActivity)getActivity()).actualizaArrayAppsPreferencias();
@@ -317,6 +318,8 @@ public class AppListFragment extends Fragment
     }
 
     public List<AppInfo> getmAppInfosList() {
+
+        //if(mAppInfosList==null){}
         return mAppInfosList;
     }
 

@@ -3,6 +3,7 @@ package com.energysistem.energylauncher.tvboxlauncher.ui;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -15,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.GridView;
+import android.widget.Toast;
 
 import com.energysistem.energylauncher.tvboxlauncher.LauncherAppState;
 import com.energysistem.energylauncher.tvboxlauncher.R;
@@ -32,6 +34,7 @@ import com.energysistem.energylauncher.tvboxlauncher.ui.fragments.NotificationsF
 import com.energysistem.energylauncher.tvboxlauncher.ui.fragments.OptionsLauncherFragment;
 import com.energysistem.energylauncher.tvboxlauncher.ui.fragments.RightFragment;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -48,7 +51,7 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
     private NotificationsFragment mNotificationFragent;
     private OptionsLauncherFragment mOptionsLauncherFragment;
     private AppArrangeFragment mAppArrangeFragment;
-    private static List<DraggableItemApp> mListFavDraggables;
+    private ArrayList<DraggableItemApp> mListFavDraggables;
 
     List<AppInfo> AppList;
 
@@ -67,26 +70,24 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
     private ActionBarDrawerToggle drawerToggle;
 
 
-    private ShortcutAdapter savedGridFav;//gridAdapter = new ShortcutAdapter(getActivity());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         Log.e("-------------ONCREATED", "------------------");
-        savedGridFav = new ShortcutAdapter(this);
 
         if (savedInstanceState == null) {
-            mDesktopFragment = new DesktopFragment();
-            getFragmentManager().beginTransaction()
-                    .add(R.id.content_frame, mDesktopFragment, TAGFFRAGMENTDESKTOP)
-                    .commit();
-
             //Drawer derecho
             mRightFragment = new RightFragment();
             getFragmentManager().beginTransaction()
                    .add(R.id.right_drawer, mRightFragment, TAGFFRAGMENTRIGHT)
                    .commit();
+
+            mDesktopFragment = new DesktopFragment();
+            getFragmentManager().beginTransaction()
+                    .add(R.id.content_frame, mDesktopFragment, TAGFFRAGMENTDESKTOP)
+                    .commit();
 
 
             //Drawer Izquierdo
@@ -132,6 +133,10 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
         };
         desktopLayout.setDrawerListener(drawerToggle);
         LauncherAppState.setApplicationContext(getApplicationContext());
+
+
+        //carga el desktop guardado
+
 
     }
 
@@ -394,31 +399,39 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
      */
 
     public void addShortcutApp(ShortcutInfo shortcutInfo) { //Añade Apps y Accesos directos Web
+        preferencesListadoApps.addInfoDesktop(shortcutInfo);
         if (shortcutInfo instanceof AppInfo) {
             mDesktopFragment.addShortcut(shortcutInfo);
             preferencesListadoApps.addAppInfo((AppInfo) shortcutInfo);
             fillDraggableList(shortcutInfo);
             resetArrangeAppsFragment();
+            reloadDesktop();
         } else if (shortcutInfo instanceof WebPageInfo) {
             mDesktopFragment.addShortcut(shortcutInfo);
             preferencesListadoApps.addWebPageInfo((WebPageInfo) shortcutInfo);
             fillDraggableList(shortcutInfo);
             resetArrangeAppsFragment();
+            reloadDesktop();
         }
     }
 
+
     public void removeShortcutApp(ShortcutInfo shortcutInfo) {
+        preferencesListadoApps.removeInfoDesktop(shortcutInfo);
         if (shortcutInfo instanceof AppInfo) {
             mDesktopFragment.removeShortcut(shortcutInfo);
             preferencesListadoApps.removeFavInfo(shortcutInfo);
             removeDraggableList(shortcutInfo);
             resetArrangeAppsFragment();
+            reloadDesktop();
         }
         else if (shortcutInfo instanceof WebPageInfo) {
             mDesktopFragment.removeShortcut(shortcutInfo);
             preferencesListadoApps.removeFavInfo(shortcutInfo);
+            preferencesListadoApps.removeFavList(shortcutInfo);
             removeDraggableList(shortcutInfo);
             resetArrangeAppsFragment();
+            reloadDesktop();
         }
     }
 
@@ -427,8 +440,10 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
         return preferencesListadoApps.getListaFavsString();
     }
 
-    public void actualizaOrdenApps(List<DraggableItemApp> listaDraggables) {
+    public void actualizaOrdenApps(ArrayList<DraggableItemApp> listaDraggables) {
         Log.d("----Asctualiza Orden Apps ACTIVITY: ",Integer.toString(listaDraggables.size()));
+       // mDesktopFragment.setGridAdapter(draggableTOshortcutAdapter(listaDraggables));
+        preferencesListadoApps.setListaDesktop(draggableTOshortcutAdapter(listaDraggables));
         mDesktopFragment.setGridAdapter(draggableTOshortcutAdapter(listaDraggables));
         preferencesListadoApps.ActualizaOrdenListaApps(listaDraggables);
         setListFavDraggables(listaDraggables);
@@ -438,8 +453,6 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
     private ShortcutAdapter draggableTOshortcutAdapter(List<DraggableItemApp> listaDraggables) {
         ShortcutAdapter shortcutAdapter;
         shortcutAdapter = new ShortcutAdapter(this);
-        ArrayList<ShortcutInfo> data;
-        data = new ArrayList<ShortcutInfo>();
         ShortcutInfo shortcutinfo;
         shortcutinfo = new ShortcutInfo() {
             @Override
@@ -487,10 +500,10 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
                 shortcutinfo = appList.get(pos);}
                 if(tip==2) {
                 shortcutinfo = webList.get(pos);}
-                data.add(shortcutinfo);
+                shortcutAdapter.addItem(shortcutinfo);
             }
         }
-        shortcutAdapter.setListInfo(data);
+
         return shortcutAdapter;
     }
 
@@ -499,8 +512,8 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
              Manejar-Rellenar-Vaciar la lista de FavoritosOrdenables
           */
     public void fillDraggableList(ShortcutInfo info){
-
-             if(mListFavDraggables== null)
+        mListFavDraggables =  preferencesListadoApps.getmListAppsDragablesOrdenadaAUX();
+            if(mListFavDraggables== null)
              {mListFavDraggables = new ArrayList<DraggableItemApp>();}
 
              //creamos un nuevo draggable
@@ -510,29 +523,49 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
                      info.getBitmap());
              //añadimos a la lista maestra de draggables
              mListFavDraggables.add(item);
+        preferencesListadoApps.setmListAppsDragablesOrdenadaAUX(mListFavDraggables);
          }
 
     public void removeDraggableList(ShortcutInfo info){
-        for(int k=0;k<mListFavDraggables.size();k++){
-           if(mListFavDraggables.get(k).getTitle()==info.getTitle()){
-               mListFavDraggables.remove(k);
-           }
+        mListFavDraggables =  preferencesListadoApps.getmListAppsDragablesOrdenadaAUX();
+        if(mListFavDraggables.size()!=0) {
+            for (int k = 0; k < mListFavDraggables.size(); k++) {
+                if (mListFavDraggables.get(k).getTitle() == info.getTitle()) {
+                    mListFavDraggables.remove(k);
+                }
+            }
         }
+        preferencesListadoApps.setmListAppsDragablesOrdenadaAUX(mListFavDraggables);
+
     }
 
-    public List<DraggableItemApp> getListFavDraggables(){
-        Log.d("----getmListFavDraggables ACTIVITY: ",Integer.toString(mListFavDraggables.size()));
 
-        return mListFavDraggables;
+    public ArrayList<DraggableItemApp> getListFavDraggables(){
+       // Log.d("----getmListFavDraggables ACTIVITY: ",Integer.toString(mListFavDraggables.size()));
+       return preferencesListadoApps.getmListAppsDragablesOrdenadaAUX();
+       // return this.mListFavDraggables;
     }
 
-    public void setListFavDraggables(List<DraggableItemApp> listAppsString){
-        Log.d("----setmListFavDraggables ACTIVITY: ",Integer.toString(listAppsString.size()));
-
-        mListFavDraggables=listAppsString;
-        Log.d("----setmListFavDraggables ACTIVITY: cambio a",Integer.toString(mListFavDraggables.size()));
+    public void setListFavDraggables(ArrayList<DraggableItemApp> listAppsString){
+        //Log.d("----setmListFavDraggables ACTIVITY le meto: ",Integer.toString(listAppsString.size()));
+       // mListFavDraggables=listAppsString;
+        preferencesListadoApps.setmListAppsDragablesOrdenadaAUX(listAppsString);
+        //mAppArrangeFragment.setmListAppsDragablesOrdenada(listAppsString);
+        //Log.d("----setmListFavDraggables ACTIVITY: cambio a",Integer.toString(mListFavDraggables.size()));
     }
 
+    /*
+    public void reloadDesktop(ArrayList<DraggableItemApp> mDragablesOrdenada) {
+        mDesktopFragment.setGridAdapter(draggableTOshortcutAdapter(mDragablesOrdenada));
+    }*/
+
+    public void reloadDesktop() {
+        mDesktopFragment.setGridAdapter(preferencesListadoApps.getListaDesktop());
+    }
+
+    public ShortcutAdapter getGridDesktop(){
+        return preferencesListadoApps.getListaDesktop();
+    }
 
 
 
@@ -543,7 +576,7 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
         Log.e("-----Tamaño mAppsInstaladas cargaListaApps()-------->", Integer.toString(mAppsInstaladas.size()));
 
         //Limpiamos los shortcuts primero
-        clearShortcutsApp();
+        //clearShortcutsApp();
 
         //Recorremos la lista de aplicaciones en preferencias y añadimos.
         assert (this) != null;
@@ -555,7 +588,9 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
                     AppInfo appInfoTemp = mAppsInstaladas.get(j);
                     if (SaveLoadAppsPreferences.ComparaNombreFavInfo(appInfoTemp.getTitle(), nombreApp)) {//Esta la App instalada en Favoritos?
                         assert (this) != null;
-                        addShortcutApp(appInfoTemp);
+                        //addShortcutApp(appInfoTemp);
+                        addAppInfoInstaladas(appInfoTemp);
+
                         Log.e("-----cargaListaApps()----Cargo App nº", Integer.toString(j));
                         appInfoTemp.checked = true;
                         break;
@@ -566,15 +601,46 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
         focusAppGrid();
     }
 
+    void addAppInfoInstaladas(AppInfo appInfo){
+        preferencesListadoApps.addAppInfoLista(appInfo);
+    }
+
+
+    /*
+        Cargar la lista de Webs guardadas
+     */
+    public void cargaListaWeb() {
+        mRightFragment.setListWebPage(getlistaWeb());
+    }
+
+    public ArrayList<WebPageInfo> getListaWebF(){
+        return preferencesListadoApps.getListaWebF();
+    }
+
+    public void setlistaWeb(List<WebPageInfo> lista){
+        preferencesListadoApps.setListaWeb((ArrayList<WebPageInfo>) lista);
+    }
+
+    public ArrayList<WebPageInfo> getlistaWeb(){
+        if(preferencesListadoApps.getListaWeb()!=null) {
+            return preferencesListadoApps.getListaWeb();
+        }
+        else{
+            return new ArrayList<WebPageInfo>();
+        }
+    }
+
+
 
     /**
      * ***********************************************************
      * Gestionar Shortcuts del Desktop
      * ************************************************************
      */
+    /*
     public void clearShortcutsApp() {
         mDesktopFragment.clearShortcutsApps();
-    }
+    }*/
 
     public void exitRightFragment() {
         focusProblems(true, 1);
@@ -589,16 +655,6 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
             gwDesktop.setFocusable(focus);
         }
     }
-
-    public void setsavedGridFav(ShortcutAdapter neoFav){
-        this.savedGridFav = neoFav;
-    }
-
-    public ShortcutAdapter getsavedGridFav(){
-        return this.savedGridFav;
-    }
-
-
 
 
 

@@ -29,6 +29,7 @@ public class ShortcutAdapter extends BaseAdapter  {
     public ShortcutAdapter(Context context) {
         this.data = new ArrayList<ShortcutInfo>();
         this.context = context;
+    //if(context==null){context=getApplicationContext()}
         this.inflater = LayoutInflater.from(context);
     }
 
@@ -108,8 +109,7 @@ public class ShortcutAdapter extends BaseAdapter  {
            return this.data;
        }
 
-    public void setListInfo(List<ShortcutInfo> listaN){ data=listaN;}
-
+    public void setListInfo(List<ShortcutInfo> listaN){ this.data=listaN;}
 
 
     class ViewHolder {

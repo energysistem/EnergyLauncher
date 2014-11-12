@@ -790,9 +790,9 @@ public class DynamicDraggingListView extends ListView {
         mListOrderHasChanged = false;
     }
 
-    public void setAppsList(List<DraggableItemApp> listaApps) {
-        mListaApps = listaApps;
-        Log.d("----setAppsList(Dynamic Dragging), tamaño nueva Lista Draggable: ",Integer.toString(listaApps.size()));
+    public void setAppsList(List<DraggableItemApp> mlistaApps) {
+        mListaApps = mlistaApps;
+       // Log.d("----setAppsList(Dynamic Dragging), tamaño nueva Lista Draggable: ",Integer.toString(listaApps.size()));
     }
 
     private int mPreviousFirstVisibleItem = -1;
