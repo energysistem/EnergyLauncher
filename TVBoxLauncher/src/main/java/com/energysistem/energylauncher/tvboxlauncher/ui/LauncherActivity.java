@@ -37,7 +37,7 @@ import java.util.List;
 public class LauncherActivity extends Activity implements AppListFragment.Callbacks {
 
     private static final String TAG = "LauncherActivity";
-    SaveLoadAppsPreferences preferencesListadoApps;
+    public SaveLoadAppsPreferences preferencesListadoApps;
     private RightFragment mRightFragment;
     private DesktopFragment mDesktopFragment;
     private NotificationsFragment mNotificationFragent;
@@ -102,6 +102,12 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
 
 
         preferencesListadoApps = new SaveLoadAppsPreferences(this);
+        Log.e("WWWWWWWWWWWWWWTFFFFFFFFFFFF","HUEHUEUHEUHEUHEHUEUHEUHEUUHEHUE YOLO");
+        for (int i = 0; i < preferencesListadoApps.listaFavoritos.size(); i++) {
+            Log.e("Elemento "+i,preferencesListadoApps.listaFavoritos.get(i));
+        }
+
+
 
         drawerToggle = new ActionBarDrawerToggle(this,
                 desktopLayout,
@@ -128,6 +134,7 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
 
 
         //carga el desktop guardado
+        //Log.e("APPS SISTEMA",mRightFragment.mAppListFragment.getAppsInfos().size()+"");
 
 
     }
@@ -165,7 +172,6 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
 
         desktopLayout.closeDrawers();
     }
-
 
     @Override
          public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -529,6 +535,7 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
             }
         }
         preferencesListadoApps.setmListAppsDragablesOrdenadaAUX(mListFavDraggables);
+
 
     }
 

@@ -62,7 +62,7 @@ import java.util.List;
 
 
         /*1º pestaña*/
-        private AppListFragment mAppListFragment;
+        public AppListFragment mAppListFragment;
         /*2º pestaña*/
         private MenuBookMarkFragment mMenuBookMarkFragment;
         /*3º pestaña*/

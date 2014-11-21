@@ -35,14 +35,14 @@ public class SaveLoadAppsPreferences {
 
     //private ArrayList<String> ListaFavoritos;
     //private ArrayList<WebPageItem> ListaWebs;
-    private ArrayList<String> listaFavoritos;
+    public ArrayList<String> listaFavoritos;
 
     private SharedPreferences mSharedPrefs;
 
     private ArrayList<DraggableItemApp> mListAppsDragablesOrdenadaAUX;
     private ArrayList<WebPageInfo> listaWebF;
     private ArrayList<WebPageInfo> listaWeb;
-    private ArrayList<AppInfo> listaApp;
+    public ArrayList<AppInfo> listaApp;
     private static ShortcutAdapter listaDesktop;
 
 
@@ -64,15 +64,19 @@ public class SaveLoadAppsPreferences {
 
     public void ActualizaListaApps(List<ShortcutInfo> listaFavInfos) {
         ArrayList<String> listFavsString = new ArrayList<String>();
-
+        Log.e("----LISTA FAVORITOOOOOS---",listaFavoritos.size()+"");
         //Bucles para comprobar si ya están metidas las apps en preferencias y conservar el orden de introduccion
         for (int i = 0; i < listaFavoritos.size(); i++) {
             String nombreFav = listaFavoritos.get(i);
+            Log.e("----FAVORITOOOO---",nombreFav);
             for (int j = 0; j < listaFavInfos.size(); j++) {
                 ShortcutInfo favTemp = listaFavInfos.get(j);
-                if (ComparaNombreFavInfo(favTemp.getTitle(), nombreFav) && chek(favTemp)){
+                Log.e("Primer COMPARE",((AppInfo) favTemp).getPackageName());
+                if (ComparaNombreFavInfo(((AppInfo) favTemp).getPackageName(), nombreFav) && chek(favTemp)){
+
                     //Miramos si ya está metida en la lista
                     if (!listaFavoritos.contains(nombreFav)) {
+                        Log.e("----NOMBRE FAVORITO---",nombreFav);
                         listaFavoritos.add(nombreFav);
                     }
                     break;
@@ -384,7 +388,7 @@ public class SaveLoadAppsPreferences {
     public boolean addAppInfo(AppInfo app) {
         String nombre = getNombreFav(app);
 
-        if (listaFavoritos.contains(nombre)) {
+        if (listaFavoritos.contains(nombre)) {//
             //Ya está metida
             return false;
         } else {

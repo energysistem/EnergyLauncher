@@ -180,6 +180,9 @@ public class AppListFragment extends Fragment
 
         assert (getActivity()) != null;
         //((LauncherActivity)getActivity()).actualizaArrayAppsPreferencias();
+
+        Log.e("HUEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE?-.---------","HEMOS LLEGADOOOOOOOOOOO!");
+        cargaListaApps();
     }
 
 
@@ -325,32 +328,32 @@ public class AppListFragment extends Fragment
 
 
 
-    /*
+
 
            public void cargaListaApps() {
 
              //Limpiamos los shortcuts primero
-             ((LauncherActivity)getActivity()).clearShortcutsApp();
 
              //Recorremos la lista de aplicaciones en preferencias y añadimos.
              assert (getActivity()) != null;
-             ArrayList<String> listaApps = ((LauncherActivity)getActivity()).getAppsNamePreferences();
+             ArrayList<String> listaApps = ((LauncherActivity)getActivity()).preferencesListadoApps.listaFavoritos;
 
              for (int i = 0; i< listaApps.size(); i++) {
                  String nombreApp = listaApps.get(i);
                  for (int j = 0; j < mAppInfosList.size(); j++) {
                      AppInfo appInfoTemp =  mAppInfosList.get(j);
-                     if (SaveLoadAppsPreferences.ComparaNombreAppInfo(appInfoTemp, nombreApp)){
+                     if (SaveLoadAppsPreferences.ComparaNombreFavInfo(appInfoTemp.getPackageName(), nombreApp)){
                          assert (getActivity()) != null;
                          ((LauncherActivity)getActivity()).addShortcutApp(appInfoTemp);
                          appInfoTemp.checked = true;
+                         //dsasuhuhuhuhugyfggyjygyggyygygyggyjygyjgyjggjy
                          break;
                      }
                  }
              }
 
              ((LauncherActivity)getActivity()).focusAppGrid();
-         }*/
+         }
 
 
 }

@@ -296,6 +296,7 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
                         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                         connection.setDoInput(true);
                         connection.connect();
+
                         InputStream input = connection.getInputStream();
                         shortcutInfo.setBitmap(BitmapFactory.decodeStream(input));
 
@@ -308,11 +309,14 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
 
             gridAdapter.addItem(shortcutInfo);
             gridAdapter.notifyDataSetChanged();
+            //((LauncherActivity) getActivity()).preferencesListadoApps.ActualizaListaApps(gridAdapter.getListInfo());
             //setGridAdapter(((LauncherActivity) getActivity()).getGridDesktop());
 
         } else {
+
             gridAdapter.addItem(shortcutInfo);
             gridAdapter.notifyDataSetChanged();
+            //((LauncherActivity) getActivity()).preferencesListadoApps.ActualizaListaApps(gridAdapter.getListInfo());
             //setGridAdapter(((LauncherActivity) getActivity()).getGridDesktop());
 
         }
