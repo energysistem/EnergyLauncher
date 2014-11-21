@@ -112,21 +112,7 @@ public class SaveLoadAppsPreferences {
         guardaFavArray(listAppsString);
     }
 
-    public boolean addAppInfo(AppInfo app) {
-        String nombre = getNombreFav(app);
 
-        if (listaFavoritos.contains(nombre)) {
-            //Ya está metida
-            return false;
-        } else {
-            Log.v(TAG, "Añadida a las preferencias la app: " + getNombreFav(app));
-            listaFavoritos.add(nombre);
-            insertItemEnd(nombre);
-            if(listaApp==null){listaApp = new ArrayList<AppInfo>();}
-            listaApp.add(app);
-            return true;
-        }
-    }
 
     public boolean removeFavInfo(ShortcutInfo favInfo){
 
@@ -393,6 +379,22 @@ public class SaveLoadAppsPreferences {
         if(listaDesktop==null){ listaDesktop = new ShortcutAdapter(mContext);}
         listaDesktop.addItem(info);
         listaDesktop.notifyDataSetChanged();
+    }
+
+    public boolean addAppInfo(AppInfo app) {
+        String nombre = getNombreFav(app);
+
+        if (listaFavoritos.contains(nombre)) {
+            //Ya está metida
+            return false;
+        } else {
+            Log.v(TAG, "Añadida a las preferencias la app: " + getNombreFav(app));
+            listaFavoritos.add(nombre);
+            insertItemEnd(nombre);
+            if(listaApp==null){listaApp = new ArrayList<AppInfo>();}
+            listaApp.add(app);
+            return true;
+        }
     }
 
     public void removeInfoDesktop(ShortcutInfo info){

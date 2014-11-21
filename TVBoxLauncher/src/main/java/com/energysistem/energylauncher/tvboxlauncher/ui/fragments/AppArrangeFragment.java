@@ -111,6 +111,8 @@ public class AppArrangeFragment extends Fragment {
 
         mListAppsDragablesOrdenada=getDraggableListActualizada();
 
+        Log.d("---------LISTA DRAGABLES---------",mListAppsDragablesOrdenada.size()+"");
+
         //Log.d("----CreaListaFiltradaOrdenada() AppArrangeFragment: ",Integer.toString(mListAppsDragablesOrdenada.size()));
 
     }

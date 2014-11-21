@@ -399,39 +399,40 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
      */
 
     public void addShortcutApp(ShortcutInfo shortcutInfo) { //Añade Apps y Accesos directos Web
-        preferencesListadoApps.addInfoDesktop(shortcutInfo);
+        Log.d("----ENTRAMOSSSS-------------------ADDD---------------------","dentro");
+        //preferencesListadoApps.addInfoDesktop(shortcutInfo);
         if (shortcutInfo instanceof AppInfo) {
             mDesktopFragment.addShortcut(shortcutInfo);
             preferencesListadoApps.addAppInfo((AppInfo) shortcutInfo);
             fillDraggableList(shortcutInfo);
             resetArrangeAppsFragment();
-            reloadDesktop();
+           // reloadDesktop();
         } else if (shortcutInfo instanceof WebPageInfo) {
             mDesktopFragment.addShortcut(shortcutInfo);
             preferencesListadoApps.addWebPageInfo((WebPageInfo) shortcutInfo);
             fillDraggableList(shortcutInfo);
             resetArrangeAppsFragment();
-            reloadDesktop();
+           // reloadDesktop();
         }
     }
 
 
     public void removeShortcutApp(ShortcutInfo shortcutInfo) {
-        preferencesListadoApps.removeInfoDesktop(shortcutInfo);
+        Log.d("----ENTRAMOSSSS--------------------REMOVEEEE--------------------","dentro");
+        //preferencesListadoApps.removeInfoDesktop(shortcutInfo);
         if (shortcutInfo instanceof AppInfo) {
             mDesktopFragment.removeShortcut(shortcutInfo);
-            preferencesListadoApps.removeFavInfo(shortcutInfo);
+           preferencesListadoApps.removeFavInfo(shortcutInfo);
             removeDraggableList(shortcutInfo);
             resetArrangeAppsFragment();
-            reloadDesktop();
+          //  reloadDesktop();
         }
         else if (shortcutInfo instanceof WebPageInfo) {
             mDesktopFragment.removeShortcut(shortcutInfo);
             preferencesListadoApps.removeFavInfo(shortcutInfo);
-            preferencesListadoApps.removeFavList(shortcutInfo);
             removeDraggableList(shortcutInfo);
             resetArrangeAppsFragment();
-            reloadDesktop();
+          //  reloadDesktop();
         }
     }
 
@@ -560,6 +561,8 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
     }*/
 
     public void reloadDesktop() {
+        Log.e("------preferencesListadoApps.getListaDesktop()------->", Integer.toString(preferencesListadoApps.getListaDesktop().getCount()));
+
         mDesktopFragment.setGridAdapter(preferencesListadoApps.getListaDesktop());
     }
 
