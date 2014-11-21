@@ -3,11 +3,9 @@ package com.energysistem.energylauncher.tvboxlauncher.ui;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
@@ -16,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.GridView;
-import android.widget.Toast;
 
 import com.energysistem.energylauncher.tvboxlauncher.LauncherAppState;
 import com.energysistem.energylauncher.tvboxlauncher.R;
@@ -29,17 +26,12 @@ import com.energysistem.energylauncher.tvboxlauncher.ui.adapters.ShortcutAdapter
 import com.energysistem.energylauncher.tvboxlauncher.ui.fragments.AppArrangeFragment;
 import com.energysistem.energylauncher.tvboxlauncher.ui.fragments.AppListFragment;
 import com.energysistem.energylauncher.tvboxlauncher.ui.fragments.DesktopFragment;
-import com.energysistem.energylauncher.tvboxlauncher.ui.fragments.MenuListFragment;
 import com.energysistem.energylauncher.tvboxlauncher.ui.fragments.NotificationsFragment;
 import com.energysistem.energylauncher.tvboxlauncher.ui.fragments.OptionsLauncherFragment;
 import com.energysistem.energylauncher.tvboxlauncher.ui.fragments.RightFragment;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 
 
 public class LauncherActivity extends Activity implements AppListFragment.Callbacks {

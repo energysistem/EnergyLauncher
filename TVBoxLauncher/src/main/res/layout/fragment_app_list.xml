@@ -6,7 +6,7 @@
 
     <ListView
         android:orientation="vertical"
-        android:id="@+id/app_grid"
+        android:id="@+id/app_grid_list"
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
         android:gravity="center_horizontal"
