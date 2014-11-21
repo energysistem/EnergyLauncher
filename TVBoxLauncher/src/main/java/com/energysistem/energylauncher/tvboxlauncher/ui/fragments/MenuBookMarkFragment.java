@@ -18,6 +18,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.energysistem.energylauncher.tvboxlauncher.R;
+import com.energysistem.energylauncher.tvboxlauncher.database.BookmarkDAO;
 import com.energysistem.energylauncher.tvboxlauncher.modelo.AppInfo;
 import com.energysistem.energylauncher.tvboxlauncher.modelo.SaveLoadAppsPreferences;
 import com.energysistem.energylauncher.tvboxlauncher.modelo.WebPageInfo;
@@ -51,6 +52,8 @@ public class MenuBookMarkFragment  extends Fragment
     private Button mBtnSave;
     private boolean checkMode=false;
     private EditText mEditText;
+    private BookmarkDAO datasource;
+
 
 
     @Override
@@ -72,6 +75,8 @@ public class MenuBookMarkFragment  extends Fragment
         mlistViewWebshorts = (ListView) view.findViewById(R.id.listViewLinks);
         mlistViewWebshorts.setOnItemClickListener(this);
         mlistViewWebshorts.setOnItemLongClickListener(this);
+        datasource = new BookmarkDAO(getActivity());
+
 
 
 
@@ -79,13 +84,18 @@ public class MenuBookMarkFragment  extends Fragment
             public void onClick(View v) {
                 WebPageInfo info = null;
                 try {
-                    info = new WebPageInfo(mTxtUri.getText().toString());
+
+                    info = new WebPageInfo(mListWebPage.size(),mTxtUri.getText().toString());
                     info.setTitle(mTxtName.getText().toString());
                     //((LauncherActivity) getActivity()).addShortcutApp(info);
                     if(info!=null){
                        // if(mListWebPage!=null){Log.d("mListWebPage", "NO NULL");}else{Log.d("mListWebPage", "NULLACO");}
                         mListWebPage.add(mListWebPage.size(), info);
                         ((LauncherActivity) getActivity()).setlistaWeb(mListWebPage);
+                        //guardamos en base de datos, por defecto fav false
+                        datasource.open();
+                        datasource.createBookmark(info);
+                        datasource.close();
                         //mListWebPage.add(info);
                         }
                     mAdapter.notifyDataSetChanged();
@@ -263,16 +273,29 @@ public class MenuBookMarkFragment  extends Fragment
                 Log.i("Onclicklistener", "OncheckboxClickListener posicion: " + v.getId());
                 //La posicion está en el id del view
                 WebPageInfo info = mListWebPage.get(v.getId());
+                //guardamos en base de datos, por defecto fav false
+
+
 
                 if (info.checked) {
                     assert (getActivity()) != null;
+                    info.setFav(1);
                     ((LauncherActivity) getActivity()).addShortcutApp(info);
+                    datasource.open();
+                    datasource.updateBookmark(info);
+                    datasource.close();
                 }
                 else
                 {
                     assert (getActivity()) != null;
+                    info.setFav(0);
                     ((LauncherActivity) getActivity()).removeShortcutApp(info);
+                    datasource.open();
+                    datasource.updateBookmark(info);
+                    datasource.close();
                 }
+
+
             }
         });
 

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import com.energysistem.energylauncher.tvboxlauncher.database.BookmarkDAO;
 import com.energysistem.energylauncher.tvboxlauncher.ui.LauncherActivity;
 import com.energysistem.energylauncher.tvboxlauncher.ui.adapters.ShortcutAdapter;
 
@@ -46,6 +47,7 @@ public class SaveLoadAppsPreferences {
     private ArrayList<WebPageInfo> listaWeb;
     public ArrayList<AppInfo> listaApp;
     private static ShortcutAdapter listaDesktop;
+    private BookmarkDAO datasource;
 
 
     public SaveLoadAppsPreferences(Context context) {
@@ -53,6 +55,16 @@ public class SaveLoadAppsPreferences {
         mSharedPrefs = context.getSharedPreferences(PREFS_LIST_APPS, 0);
         listaFavoritos = getListaFavsString();
         listaWebF = getListaWebF();
+
+        datasource = new BookmarkDAO(context);
+        datasource.open();
+        List<WebPageInfo> lBookmarks = datasource.getAllBookmarks();
+        datasource.close();
+
+        for(int i = 0; i < lBookmarks.size(); i++) {
+              Log.e("Bookmark "+ i,lBookmarks.get(i).toString());
+        }
+
 
     }
 
@@ -107,7 +119,7 @@ public class SaveLoadAppsPreferences {
         //Borramos Array y creamos de nuevo.
         ArrayList<String> listAppsString = new ArrayList<String>();
 
-
+        datasource.open();
 
         for (int i = 0; i < shAdapter.getCount(); i++) {
             if(shAdapter.getItem(i) instanceof AppInfo) {
@@ -118,11 +130,11 @@ public class SaveLoadAppsPreferences {
             }
             else
             {
-               
+               // datasource.createBookmark((WebPageInfo)shAdapter.getItem(i));
                 //Para los bookmarks, guardarlos en DB (lista bookmarks + cuales son favoritos)
             }
         }
-
+        datasource.close();
         setmListAppsDragablesOrdenadaAUX(listaDraggables);
 
         removeAppsArray();
