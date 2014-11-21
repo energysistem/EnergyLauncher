@@ -96,10 +96,10 @@ public class AppAdapter extends ArrayAdapter<AppInfo> {
     public int getFrameCheckBoxView(boolean checked){
 
         if (checked){
-            Log.e("-------------updateView()", "-----AZULANDOO-----");
+            //Log.e("-------------updateView()", "-----AZULANDOO-----");
              return getContext().getResources().getColor(R.color.blue);}
         else{
-            Log.e("-------------updateView()", "-----NEGRANDOOO-----");
+            //Log.e("-------------updateView()", "-----NEGRANDOOO-----");
             return getContext().getResources().getColor(R.color.black_overlay);}
     }
 

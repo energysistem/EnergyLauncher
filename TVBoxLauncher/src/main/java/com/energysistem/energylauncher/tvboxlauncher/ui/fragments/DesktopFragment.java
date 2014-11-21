@@ -143,7 +143,7 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
 //                mAppsGrid.requestFocusFromTouch();
 //                mAppsGrid.setSelection(1);
 //                mAppsGrid.setItemChecked(1,true);
-                Log.e("-------------FOCUS", "-----------Vuelta al AppGrid-----");
+
 
                 seleccionarView(vistaAnterior);
             }

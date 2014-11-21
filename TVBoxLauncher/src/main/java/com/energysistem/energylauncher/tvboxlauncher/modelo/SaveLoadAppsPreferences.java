@@ -20,6 +20,8 @@ import static android.app.PendingIntent.getActivity;
 /**
  * Created by emg on 15/04/2014.
  */
+
+
 public class SaveLoadAppsPreferences {
 
     private static final String TAG = "SaveLoadPreferencias";
@@ -51,6 +53,7 @@ public class SaveLoadAppsPreferences {
         mSharedPrefs = context.getSharedPreferences(PREFS_LIST_APPS, 0);
         listaFavoritos = getListaFavsString();
         listaWebF = getListaWebF();
+
     }
 
 
@@ -99,14 +102,24 @@ public class SaveLoadAppsPreferences {
         guardaFavArray(listFavsString);
     }
 
-    public void ActualizaOrdenListaApps(ArrayList<DraggableItemApp> listaDraggables) {
+
+    public void ActualizaOrdenListaApps(ArrayList<DraggableItemApp> listaDraggables, ShortcutAdapter shAdapter) {
         //Borramos Array y creamos de nuevo.
         ArrayList<String> listAppsString = new ArrayList<String>();
 
-        for (int i = 0; i < listaDraggables.size(); i++) {
-            String nombreAppinfo = listaDraggables.get(i).getTitle();
-            if (!listAppsString.contains(nombreAppinfo)) {
-                listAppsString.add(nombreAppinfo);
+
+
+        for (int i = 0; i < shAdapter.getCount(); i++) {
+            if(shAdapter.getItem(i) instanceof AppInfo) {
+                String nombreAppinfo = ((AppInfo) shAdapter.getItem(i)).getPackageName();
+                if (!listAppsString.contains(nombreAppinfo)) {
+                    listAppsString.add(nombreAppinfo);
+                }
+            }
+            else
+            {
+               
+                //Para los bookmarks, guardarlos en DB (lista bookmarks + cuales son favoritos)
             }
         }
 
@@ -215,8 +228,10 @@ public class SaveLoadAppsPreferences {
 
     private static String getNombreFav(ShortcutInfo fav) {
         if (fav instanceof AppInfo) {
+            Log.e("entramos en appinfo","huhu");
             return ((AppInfo) fav).getPackageName();
         } else if (fav instanceof WebPageInfo) {
+            Log.e("entramos en webinfo","huhu");
             return ((WebPageInfo) fav).getName();
         }
         else{
@@ -299,6 +314,8 @@ public class SaveLoadAppsPreferences {
             listaWebF.remove(shortcutInfo);
         }
     }
+
+
 
 
     public class WebPageItem {

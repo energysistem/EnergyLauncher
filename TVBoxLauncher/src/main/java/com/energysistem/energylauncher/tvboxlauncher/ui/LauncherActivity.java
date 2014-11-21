@@ -444,12 +444,12 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
        // mDesktopFragment.setGridAdapter(draggableTOshortcutAdapter(listaDraggables));
         preferencesListadoApps.setListaDesktop(draggableTOshortcutAdapter(listaDraggables));
         mDesktopFragment.setGridAdapter(draggableTOshortcutAdapter(listaDraggables));
-        preferencesListadoApps.ActualizaOrdenListaApps(listaDraggables);
+        preferencesListadoApps.ActualizaOrdenListaApps(listaDraggables, draggableTOshortcutAdapter(listaDraggables));
         setListFavDraggables(listaDraggables);
         //mRightFragment.cargaListaAppsAux();
     }
 
-    private ShortcutAdapter draggableTOshortcutAdapter(List<DraggableItemApp> listaDraggables) {
+    public ShortcutAdapter draggableTOshortcutAdapter(List<DraggableItemApp> listaDraggables) {
         ShortcutAdapter shortcutAdapter;
         shortcutAdapter = new ShortcutAdapter(this);
         ShortcutInfo shortcutinfo;
