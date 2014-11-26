@@ -25,6 +25,7 @@ import com.energysistem.energylauncher.tvboxlauncher.Loader.AppLoader;
 import com.energysistem.energylauncher.tvboxlauncher.R;
 import com.energysistem.energylauncher.tvboxlauncher.modelo.AppInfo;
 import com.energysistem.energylauncher.tvboxlauncher.modelo.SaveLoadAppsPreferences;
+import com.energysistem.energylauncher.tvboxlauncher.modelo.WebPageInfo;
 import com.energysistem.energylauncher.tvboxlauncher.ui.LauncherActivity;
 import com.energysistem.energylauncher.tvboxlauncher.ui.adapters.AppAdapter;
 
@@ -338,9 +339,13 @@ public class AppListFragment extends Fragment
              assert (getActivity()) != null;
              ArrayList<String> listaApps = ((LauncherActivity)getActivity()).preferencesListadoApps.listaFavoritos;
 
+             ArrayList<WebPageInfo> liWeb = ((LauncherActivity) getActivity()).listaWebsDB;
+
+
              for (int i = 0; i< listaApps.size(); i++) {
                  String nombreApp = listaApps.get(i);
                  for (int j = 0; j < mAppInfosList.size(); j++) {
+
                      AppInfo appInfoTemp =  mAppInfosList.get(j);
                      if (SaveLoadAppsPreferences.ComparaNombreFavInfo(appInfoTemp.getPackageName(), nombreApp)){
                          assert (getActivity()) != null;
@@ -350,6 +355,12 @@ public class AppListFragment extends Fragment
                      }
                  }
              }
+
+               for(int f = 0; f < liWeb.size(); f++)
+               {
+                   if(liWeb.get(f).getFav()==1)
+                    ((LauncherActivity) getActivity()).addShortcutApp(liWeb.get(f));
+               }
 
              ((LauncherActivity)getActivity()).focusAppGrid();
          }

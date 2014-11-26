@@ -248,11 +248,12 @@ public class MenuBookMarkFragment  extends Fragment
 
             } else {
                 assert (getActivity()) != null;
-                ((LauncherActivity) getActivity()).addShortcutApp(info);
+
                 info.checked = true;
                 info.setFav(1);
-                info.setPosi(((LauncherActivity) getActivity()).getGridDesktop().getCount() + 1);
+                info.setPosi(((LauncherActivity) getActivity()).getGridDesktop().getCount()+1);
                 datasource.updateBookmark(info);
+                ((LauncherActivity) getActivity()).addShortcutApp(info);
             }
             mAdapter.notifyDataSetChanged();
             datasource.close();

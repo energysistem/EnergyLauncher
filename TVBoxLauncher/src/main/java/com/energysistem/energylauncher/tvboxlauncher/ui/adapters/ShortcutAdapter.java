@@ -1,6 +1,7 @@
 package com.energysistem.energylauncher.tvboxlauncher.ui.adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,8 +12,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.energysistem.energylauncher.tvboxlauncher.modelo.AppInfo;
 import com.energysistem.energylauncher.tvboxlauncher.modelo.ShortcutInfo;
 import com.energysistem.energylauncher.tvboxlauncher.R;
+import com.energysistem.energylauncher.tvboxlauncher.modelo.WebPageInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,7 +62,19 @@ public class ShortcutAdapter extends BaseAdapter  {
     }
 
     public void addItem(ShortcutInfo i) {
-        data.add(i);
+        if (i instanceof WebPageInfo) {
+
+            data.add(((WebPageInfo) i).getPosi()-1, i);
+        }
+        else if(i instanceof AppInfo) {
+            Log.e("metemos",i.toString());
+            data.add(i);
+        }
+    }
+
+    public void addItemPos(ShortcutInfo i) {
+        if (i instanceof WebPageInfo)
+            data.set(((WebPageInfo) i).getPosi(),i);
     }
 
     public void removeItem(ShortcutInfo i) {
