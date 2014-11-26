@@ -346,7 +346,6 @@ public class AppListFragment extends Fragment
                          assert (getActivity()) != null;
                          ((LauncherActivity)getActivity()).addShortcutApp(appInfoTemp);
                          appInfoTemp.checked = true;
-                         //dsasuhuhuhuhugyfggyjygyggyygygyggyjygyjgyjggjy
                          break;
                      }
                  }

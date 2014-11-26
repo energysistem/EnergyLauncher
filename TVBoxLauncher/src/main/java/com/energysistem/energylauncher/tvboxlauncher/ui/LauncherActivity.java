@@ -45,6 +45,8 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
     private AppArrangeFragment mAppArrangeFragment;
     private ArrayList<DraggableItemApp> mListFavDraggables;
 
+    public ArrayList <WebPageInfo> listaWebsDB;
+
     List<AppInfo> AppList;
 
     private final String TAGFFRAGMENTRIGHT = "FRight";
@@ -102,6 +104,7 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
 
 
         preferencesListadoApps = new SaveLoadAppsPreferences(this);
+        listaWebsDB = preferencesListadoApps.getListaWeb();
         Log.e("WWWWWWWWWWWWWWTFFFFFFFFFFFF","HUEHUEUHEUHEUHEHUEUHEUHEUUHEHUE YOLO");
         for (int i = 0; i < preferencesListadoApps.listaFavoritos.size(); i++) {
             Log.e("Elemento "+i,preferencesListadoApps.listaFavoritos.get(i));

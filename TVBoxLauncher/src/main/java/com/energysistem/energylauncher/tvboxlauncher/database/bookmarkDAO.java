@@ -9,6 +9,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.energysistem.energylauncher.tvboxlauncher.modelo.WebPageInfo;
 
@@ -24,7 +25,7 @@ public class BookmarkDAO {
     private SQLiteDatabase database;
     private SqliteHelper dbHelper;
     private String[] allColumns = {SqliteHelper.COLUMN_ID,
-            SqliteHelper.COLUMN_TITULO, SqliteHelper.COLUMN_URL, SqliteHelper.COLUMN_FAVORITO};
+            SqliteHelper.COLUMN_TITULO, SqliteHelper.COLUMN_URL, SqliteHelper.COLUMN_POSI, SqliteHelper.COLUMN_FAVORITO};
 
     public BookmarkDAO(Context context) {
         dbHelper = new SqliteHelper(context);
@@ -38,12 +39,13 @@ public class BookmarkDAO {
         dbHelper.close();
     }
 
-    public WebPageInfo createBookmark(int _id, String _titulo, String _url, int _fav) {
+    public WebPageInfo createBookmark(int _id, String _titulo, String _url, int _posi, int _fav) {
 
         ContentValues values = new ContentValues();
         values.put(SqliteHelper.COLUMN_ID, _id);
         values.put(SqliteHelper.COLUMN_TITULO, _titulo);
         values.put(SqliteHelper.COLUMN_URL, _url);
+        values.put(SqliteHelper.COLUMN_POSI, _posi);
         values.put(SqliteHelper.COLUMN_FAVORITO, _fav);
 
 
@@ -65,6 +67,7 @@ public class BookmarkDAO {
         values.put(SqliteHelper.COLUMN_ID, _bookmark.getId());
         values.put(SqliteHelper.COLUMN_TITULO, _bookmark.getTitle());
         values.put(SqliteHelper.COLUMN_URL, _bookmark.getPageUrl().toString());
+        values.put(SqliteHelper.COLUMN_POSI, _bookmark.getPosi());
         values.put(SqliteHelper.COLUMN_FAVORITO, _bookmark.getFav());
 
         long insertId = database.insert(SqliteHelper.TABLE_BOOKMARKS, null,
@@ -86,8 +89,8 @@ public class BookmarkDAO {
                 + " = " + id, null);
     }
 
-    public List<WebPageInfo> getAllBookmarks() {
-        List<WebPageInfo> bookmarks = new ArrayList<WebPageInfo>();
+    public ArrayList<WebPageInfo> getAllBookmarks() {
+        ArrayList<WebPageInfo> bookmarks = new ArrayList<WebPageInfo>();
 
         Cursor cursor = database.query(SqliteHelper.TABLE_BOOKMARKS,
                 allColumns, null, null, null, null, null);
@@ -111,7 +114,10 @@ public class BookmarkDAO {
         try {
             bookmark = new WebPageInfo(cursor.getInt(0),cursor.getString(2));
             bookmark.setTitle(cursor.getString(1));
-            bookmark.setFav(cursor.getInt(3));
+            bookmark.setPosi(cursor.getInt(3));
+            bookmark.setFav(cursor.getInt(4));
+            if(bookmark.getFav()==1)
+                bookmark.checked=true;
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
@@ -119,9 +125,12 @@ public class BookmarkDAO {
     }
 
     public void updateBookmark(WebPageInfo info) {
-        String strFilter = "_id=" + info.getId();
+        String strFilter = "id=" + info.getId();
         ContentValues args = new ContentValues();
+        Log.e("favorito:",info.getFav()+"");
+        args.put(SqliteHelper.COLUMN_POSI, info.getPosi());
         args.put(SqliteHelper.COLUMN_FAVORITO, info.getFav());
+
 
 
         database.update(SqliteHelper.TABLE_BOOKMARKS, args, strFilter, null);

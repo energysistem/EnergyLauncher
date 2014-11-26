@@ -58,13 +58,14 @@ public class SaveLoadAppsPreferences {
 
         datasource = new BookmarkDAO(context);
         datasource.open();
-        List<WebPageInfo> lBookmarks = datasource.getAllBookmarks();
+        ArrayList<WebPageInfo> lBookmarks = datasource.getAllBookmarks();
         datasource.close();
 
         for(int i = 0; i < lBookmarks.size(); i++) {
               Log.e("Bookmark "+ i,lBookmarks.get(i).toString());
         }
 
+        listaWeb = lBookmarks;
 
     }
 

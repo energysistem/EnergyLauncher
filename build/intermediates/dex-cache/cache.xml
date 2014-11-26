@@ -1,23 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<pre-dex-items>
+<items version="2" >
 
     <item
-        dex="C:\Users\pgc\Proyectos\EnergyLauncher\TVBoxLauncher\build\intermediates\pre-dexed\debug\classes-584cf96b524481fea632a03a6105c84db25d515c.jar"
-        jar="C:\Users\pgc\Proyectos\EnergyLauncher\TVBoxLauncher\build\intermediates\exploded-aar\com.android.support\appcompat-v7\19.1.0\classes.jar"
-        jumboMode="false"
-        revision="19.1.0"
-        sha1="3499ceba05ca1f6037c6a2fad73df8f636224a28"/>
-    <item
-        dex="C:\Users\pgc\Proyectos\EnergyLauncher\TVBoxLauncher\build\intermediates\pre-dexed\debug\support-v4-19.1.0-452c31de0e675dc54969332876ef864886e33970.jar"
         jar="C:\Users\pgc\sdk\extras\android\m2repository\com\android\support\support-v4\19.1.0\support-v4-19.1.0.jar"
         jumboMode="false"
         revision="19.1.0"
-        sha1="85f201b380937e61a9dce6ca90ccf6872abbfb67"/>
+        sha1="85f201b380937e61a9dce6ca90ccf6872abbfb67">
+        <dex dex="C:\Users\pgc\Android studioProjects\EnergyLauncher\TVBoxLauncher\build\intermediates\pre-dexed\debug\support-v4-19.1.0-452c31de0e675dc54969332876ef864886e33970.jar" />
+    </item>
     <item
-        dex="C:\Users\pgc\Proyectos\EnergyLauncher\TVBoxLauncher\build\intermediates\pre-dexed\debug\classes-f3b1e82e7251d75f8149ecbb8c9147e385f9473d.jar"
-        jar="C:\Users\pgc\Proyectos\EnergyLauncher\TVBoxLauncher\build\intermediates\exploded-aar\com.android.support\gridlayout-v7\19.1.0\classes.jar"
+        jar="C:\Users\pgc\Android studioProjects\EnergyLauncher\TVBoxLauncher\build\intermediates\exploded-aar\com.android.support\appcompat-v7\19.1.0\classes.jar"
         jumboMode="false"
         revision="19.1.0"
-        sha1="af4cc326e6cd92f88db12298767e521743aedd36"/>
+        sha1="3499ceba05ca1f6037c6a2fad73df8f636224a28">
+        <dex dex="C:\Users\pgc\Android studioProjects\EnergyLauncher\TVBoxLauncher\build\intermediates\pre-dexed\debug\classes-0b559f85f30584371a7f261d07635bc6a4b63b38.jar" />
+    </item>
+    <item
+        jar="C:\Users\pgc\Android studioProjects\EnergyLauncher\TVBoxLauncher\build\intermediates\exploded-aar\com.android.support\gridlayout-v7\19.1.0\classes.jar"
+        jumboMode="false"
+        revision="19.1.0"
+        sha1="af4cc326e6cd92f88db12298767e521743aedd36">
+        <dex dex="C:\Users\pgc\Android studioProjects\EnergyLauncher\TVBoxLauncher\build\intermediates\pre-dexed\debug\classes-90695f348c7b010b742af8c76f3e831795b8c831.jar" />
+    </item>
 
-</pre-dex-items>
+</items>

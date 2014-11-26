@@ -29,12 +29,24 @@ public class WebPageInfo extends ShortcutInfo {
     private Uri pageUrl;
     private int id;
     private int fav = 0;
+    private int posi = -1;
     public Boolean checked = false;
 
     public WebPageInfo(int _id, Uri pageUrl) {
         this.id = _id;
         this.pageUrl = pageUrl;
         this.fav = 0;
+    }
+
+    @Override
+    public String toString() {
+        return "WebPageInfo{" +
+                "pageUrl=" + pageUrl +
+                ", id=" + id +
+                ", fav=" + fav +
+                ", posi=" + posi +
+                ", checked=" + checked +
+                '}';
     }
 
     public WebPageInfo(int _id, String pageUrl) throws MalformedURLException {
@@ -80,13 +92,11 @@ public class WebPageInfo extends ShortcutInfo {
         this.fav = fav;
     }
 
-    @Override
-    public String toString() {
-        return "WebPageInfo{" +
-                "pageUrl=" + pageUrl.toString() +
-                ", id=" + id +
-                ", fav=" + fav +
-                ", checked=" + checked +
-                '}';
+    public int getPosi() {
+        return posi;
+    }
+
+    public void setPosi(int posi) {
+        this.posi = posi;
     }
 }

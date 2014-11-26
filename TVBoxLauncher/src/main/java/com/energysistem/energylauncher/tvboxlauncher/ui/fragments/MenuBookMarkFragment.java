@@ -69,13 +69,15 @@ public class MenuBookMarkFragment  extends Fragment
 
         //if(mSavedWebpages==null){mSavedWebpages = new ArrayList<WebPageInfo>();}
         mListWebPage = new ArrayList<WebPageInfo>();
-        mListWebPage = ((LauncherActivity) getActivity()).getlistaWeb();
+        //mListWebPage = ((LauncherActivity) getActivity()).getlistaWeb();
         //Button btnSave = (Button) view.findViewById(R.id.menuBookmarkBtn);
         mBtnSave = (Button) view.findViewById(R.id.menuBookmarkBtn);
         mlistViewWebshorts = (ListView) view.findViewById(R.id.listViewLinks);
         mlistViewWebshorts.setOnItemClickListener(this);
         mlistViewWebshorts.setOnItemLongClickListener(this);
         datasource = new BookmarkDAO(getActivity());
+
+        mListWebPage = ((LauncherActivity) getActivity()).listaWebsDB;
 
 
 
@@ -85,7 +87,7 @@ public class MenuBookMarkFragment  extends Fragment
                 WebPageInfo info = null;
                 try {
 
-                    info = new WebPageInfo(mListWebPage.size(),mTxtUri.getText().toString());
+                    info = new WebPageInfo(((LauncherActivity) getActivity()).getlistaWeb().size(),mTxtUri.getText().toString());
                     info.setTitle(mTxtName.getText().toString());
                     //((LauncherActivity) getActivity()).addShortcutApp(info);
                     if(info!=null){
@@ -231,18 +233,29 @@ public class MenuBookMarkFragment  extends Fragment
     @Override
     public void onItemClick(AdapterView adapter, View v, int position, long arg) {
           final WebPageInfo info = mAdapter.getItem(position);
-
+        Log.e("Numero elementos en grid", ((LauncherActivity) getActivity()).getGridDesktop().getCount() +"");
         if (mAdapter.getModeCheckBoxSelection()) {
+            datasource.open();
             if (info.checked) {
                 assert (getActivity()) != null;
                 ((LauncherActivity) getActivity()).removeShortcutApp(info);
                 info.checked = false;
+                info.setFav(0);
+                info.setPosi(-1);
+
+
+                datasource.updateBookmark(info);
+
             } else {
                 assert (getActivity()) != null;
                 ((LauncherActivity) getActivity()).addShortcutApp(info);
                 info.checked = true;
+                info.setFav(1);
+                info.setPosi(((LauncherActivity) getActivity()).getGridDesktop().getCount() + 1);
+                datasource.updateBookmark(info);
             }
             mAdapter.notifyDataSetChanged();
+            datasource.close();
         } else {
             startActivity(info.getIntent());
         }
@@ -275,24 +288,22 @@ public class MenuBookMarkFragment  extends Fragment
                 WebPageInfo info = mListWebPage.get(v.getId());
                 //guardamos en base de datos, por defecto fav false
 
+                Log.e("-------ANTES------",info.toString());
 
-
-                if (info.checked) {
+                if (info.getFav()==1) {
                     assert (getActivity()) != null;
-                    info.setFav(1);
+                    Log.e("Entramos fav = 1","onLoadFinished");
+
+
                     ((LauncherActivity) getActivity()).addShortcutApp(info);
-                    datasource.open();
-                    datasource.updateBookmark(info);
-                    datasource.close();
+
                 }
                 else
                 {
                     assert (getActivity()) != null;
-                    info.setFav(0);
+                    Log.e("Entramos fav = 0","onLoadFinished");
                     ((LauncherActivity) getActivity()).removeShortcutApp(info);
-                    datasource.open();
-                    datasource.updateBookmark(info);
-                    datasource.close();
+
                 }
 
 
