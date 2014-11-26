@@ -96,6 +96,7 @@ public class WebShortcutAdapter extends ArrayAdapter<WebPageInfo>{
             holder.image = (ImageView) view.findViewById(R.id.webImage);
             holder.title = (TextView) view.findViewById(R.id.webTitulo);
             holder.url = (TextView) view.findViewById(R.id.webUrl);
+            //hola, adri
             holder.frameLayout = (FrameLayout) view.findViewById(R.id.frame_checkboxWeb);
 
             view.setTag(holder);
