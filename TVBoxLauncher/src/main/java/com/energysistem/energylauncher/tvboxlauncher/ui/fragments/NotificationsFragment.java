@@ -53,7 +53,7 @@ public class NotificationsFragment extends Fragment implements AdapterView.OnIte
         listNotify();
         return view;
     }
-//nada de nada
+//nada de nada juju dede
 
 
     private void clearNotify(){
