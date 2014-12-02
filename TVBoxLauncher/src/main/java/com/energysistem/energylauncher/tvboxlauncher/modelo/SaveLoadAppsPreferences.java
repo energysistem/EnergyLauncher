@@ -129,10 +129,10 @@ public class SaveLoadAppsPreferences {
                     listAppsString.add(nombreAppinfo);
                 }
             }
-            else
+            else if(shAdapter.getItem(i) instanceof WebPageInfo)
             {
-               // datasource.createBookmark((WebPageInfo)shAdapter.getItem(i));
-                //Para los bookmarks, guardarlos en DB (lista bookmarks + cuales son favoritos)
+                
+               //listAppsString.add(((WebPageInfo) shAdapter.getItem(i)).getPosi(),shAdapter.getItem(i));
             }
         }
         datasource.close();

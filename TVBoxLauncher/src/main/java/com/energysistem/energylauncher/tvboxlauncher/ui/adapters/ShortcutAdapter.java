@@ -63,8 +63,16 @@ public class ShortcutAdapter extends BaseAdapter  {
 
     public void addItem(ShortcutInfo i) {
         if (i instanceof WebPageInfo) {
+                Log.e("metemos",i.toString());
+                if(data.size() < ((WebPageInfo) i).getPosi()-1)
+                {
+                    data.add(i);
+                }
+                else
+                {
+                    data.add(((WebPageInfo) i).getPosi()-1, i);
+                }
 
-            data.add(((WebPageInfo) i).getPosi()-1, i);
         }
         else if(i instanceof AppInfo) {
             Log.e("metemos",i.toString());

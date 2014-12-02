@@ -17,6 +17,7 @@ import android.widget.GridView;
 
 import com.energysistem.energylauncher.tvboxlauncher.LauncherAppState;
 import com.energysistem.energylauncher.tvboxlauncher.R;
+import com.energysistem.energylauncher.tvboxlauncher.database.BookmarkDAO;
 import com.energysistem.energylauncher.tvboxlauncher.modelo.AppInfo;
 import com.energysistem.energylauncher.tvboxlauncher.modelo.DraggableItemApp;
 import com.energysistem.energylauncher.tvboxlauncher.modelo.SaveLoadAppsPreferences;
@@ -46,6 +47,7 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
     private ArrayList<DraggableItemApp> mListFavDraggables;
 
     public ArrayList <WebPageInfo> listaWebsDB;
+    private BookmarkDAO datasource;
 
     List<AppInfo> AppList;
 
@@ -134,6 +136,7 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
         };
         desktopLayout.setDrawerListener(drawerToggle);
         LauncherAppState.setApplicationContext(getApplicationContext());
+        datasource = new BookmarkDAO(this);
 
 
         //carga el desktop guardado
@@ -463,7 +466,6 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
             }
         };
 
-
         List<AppInfo> appList;
         List<WebPageInfo> webList;
         appList=mRightFragment.getmAppInfosListAx();
@@ -501,7 +503,14 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
                 if(tip==1){
                 shortcutinfo = appList.get(pos);}
                 if(tip==2) {
-                shortcutinfo = webList.get(pos);}
+                    datasource.open();
+                    shortcutinfo = webList.get(pos);
+                    Log.v(((WebPageInfo) shortcutinfo).toString(),"Anterior");
+                    Log.v("Guardamos en la base de datos la posición nueva: "+(k+1),((WebPageInfo) shortcutinfo).toString());
+                    ((WebPageInfo) shortcutinfo).setPosi(k+1); //cast a WebPageInfo
+                    datasource.updateBookmark((WebPageInfo)shortcutinfo);
+                    datasource.close(); //Intento de actualizar la DB. Comprobar que así sea.
+                }
                 shortcutAdapter.addItem(shortcutinfo);
             }
         }
@@ -515,8 +524,12 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
           */
     public void fillDraggableList(ShortcutInfo info){
         mListFavDraggables =  preferencesListadoApps.getmListAppsDragablesOrdenadaAUX();
-            if(mListFavDraggables== null)
-             {mListFavDraggables = new ArrayList<DraggableItemApp>();}
+            if(mListFavDraggables== null) {
+                Log.d("entramos? Creación de la lista de dragables","Eso parece");
+                mListFavDraggables = new ArrayList<DraggableItemApp>();
+            }
+
+
 
              //creamos un nuevo draggable
              DraggableItemApp item = new DraggableItemApp(
@@ -524,7 +537,22 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
                      info.getTitle(),
                      info.getBitmap());
              //añadimos a la lista maestra de draggables
-             mListFavDraggables.add(item);
+        if(info instanceof AppInfo) { //Añadimos el WebPageInfo a la lista de dragables en cierta posición
+            mListFavDraggables.add(item);
+            Log.e("Insertamos elemento:",info.toString());
+        }
+        else {
+            Log.e("Insertamos elemento:",info.toString());
+            if(mListFavDraggables.size() < ((WebPageInfo) info).getPosi()-1)
+            {
+                mListFavDraggables.add(item);
+            }
+            else
+            {
+                mListFavDraggables.add(((WebPageInfo) info).getPosi()-1,item);
+            }
+
+        }
         preferencesListadoApps.setmListAppsDragablesOrdenadaAUX(mListFavDraggables);
          }
 

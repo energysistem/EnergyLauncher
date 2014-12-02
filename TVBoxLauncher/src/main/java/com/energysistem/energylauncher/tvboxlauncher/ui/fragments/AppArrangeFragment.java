@@ -16,6 +16,7 @@ import com.energysistem.energylauncher.tvboxlauncher.modelo.AppInfo;
 import com.energysistem.energylauncher.tvboxlauncher.modelo.DraggableItemApp;
 import com.energysistem.energylauncher.tvboxlauncher.modelo.SaveLoadAppsPreferences;
 import com.energysistem.energylauncher.tvboxlauncher.modelo.ShortcutInfo;
+import com.energysistem.energylauncher.tvboxlauncher.modelo.WebPageInfo;
 import com.energysistem.energylauncher.tvboxlauncher.ui.LauncherActivity;
 import com.energysistem.energylauncher.tvboxlauncher.ui.adapters.StableArrayAdapter;
 import com.energysistem.energylauncher.tvboxlauncher.ui.views.DynamicDraggingListView;
@@ -121,6 +122,7 @@ public class AppArrangeFragment extends Fragment {
     private void aplicaCambios() {
         assert (getActivity()) != null;
 
+
         ((LauncherActivity) getActivity()).actualizaOrdenApps(mListAppsDragablesOrdenada);
 
         mListAppsDragablesOrdenada=getDraggableListActualizada();
@@ -133,7 +135,6 @@ public class AppArrangeFragment extends Fragment {
     public ArrayList<DraggableItemApp> getDraggableListActualizada(){
        // Log.d("----CreaListaFiltradaOrdenada() AppArrangeFragment: ",Integer.toString(mListAppsDragablesOrdenada.size()));
         return ((LauncherActivity) getActivity()).getListFavDraggables();
-
 
     }
 
