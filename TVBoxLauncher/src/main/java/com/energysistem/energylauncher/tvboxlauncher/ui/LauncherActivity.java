@@ -8,7 +8,7 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
-import android.util.Log;
+
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,7 +71,7 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        Log.e("-------------ONCREATED", "------------------");
+
 
         if (savedInstanceState == null) {
             //Drawer derecho
@@ -92,7 +92,7 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
                     .add(R.id.left_drawer, mNotificationFragent, TAGFFRAGMENTNOTIFICATIONS)
                     .commit();
         } else {
-            Log.e("-------------ONCREATED", "recuperamos los fragments");
+
             mDesktopFragment = (DesktopFragment) getFragmentManager().findFragmentByTag(TAGFFRAGMENTDESKTOP);
             mRightFragment = (RightFragment) getFragmentManager().findFragmentByTag(TAGFFRAGMENTRIGHT);
             mNotificationFragent = (NotificationsFragment) getFragmentManager().findFragmentByTag(TAGFFRAGMENTNOTIFICATIONS);
@@ -107,10 +107,10 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
 
         preferencesListadoApps = new SaveLoadAppsPreferences(this);
         listaWebsDB = preferencesListadoApps.getListaWeb();
-        Log.e("WWWWWWWWWWWWWWTFFFFFFFFFFFF","HUEHUEUHEUHEUHEHUEUHEUHEUUHEHUE YOLO");
-        for (int i = 0; i < preferencesListadoApps.listaFavoritos.size(); i++) {
+
+        /*for (int i = 0; i < preferencesListadoApps.listaFavoritos.size(); i++) {
             Log.e("Elemento "+i,preferencesListadoApps.listaFavoritos.get(i));
-        }
+        }*/
 
 
 
@@ -148,13 +148,13 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
     @Override
          protected void onResume() {
              super.onResume();
-             Log.e("-------------ONRESUME", "------------------");
+
          }
 
     @Override
     protected void onStart() {
         super.onStart();
-         Log.e("-------------ONSTART", "------------------");
+
     }
 
      /*
@@ -168,11 +168,11 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
     public void onBackPressed() {
         FragmentManager fm = getFragmentManager();
         if (fm.getBackStackEntryCount() > 0) {
-            Log.i("MainActivity", "popping backstack");
+
             fm.popBackStack();
             return;
         } else {
-            Log.i("MainActivity", "nothing on backstack, calling super");
+
             //super.onBackPressed();
         }
 
@@ -181,7 +181,7 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
 
     @Override
          public boolean onKeyDown(int keyCode, KeyEvent event) {
-             Log.d("onKeyDown Pressed", KeyEvent.keyCodeToString(keyCode));
+
              switch (keyCode) {
                  case KeyEvent.KEYCODE_DPAD_RIGHT:
                      if (appLayout.isShown()) {
@@ -224,7 +224,7 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
 
     @Override
          public boolean onKeyUp(int keyCode, KeyEvent event) {
-             Log.d("onKeyUp Pressed", KeyEvent.keyCodeToString(keyCode));
+
              switch (keyCode) {
                  case KeyEvent.KEYCODE_CAPTIONS:
                      toggleDrawer(appLayout);
@@ -240,7 +240,7 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
                          i.addCategory(Intent.CATEGORY_LAUNCHER);
                          startActivity(i);
                      } catch (NullPointerException e) {
-                         Log.d("Key Shortcut", "App not foumd");
+
                      }
                      return true;
                  case KeyEvent.KEYCODE_MEDIA_RECORD:
@@ -266,7 +266,7 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
                      }
                      return true;
                  case KeyEvent.KEYCODE_BACK:
-                     Log.d("Presed", "KEYCODE_BACK");
+
                      onBackPressed();
                      return true;
                  case KeyEvent.KEYCODE_DPAD_RIGHT:
@@ -403,7 +403,7 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
      */
 
     public void addShortcutApp(ShortcutInfo shortcutInfo) { //Añade Apps y Accesos directos Web
-        Log.d("----ENTRAMOSSSS-------------------ADDD---------------------","dentro");
+
         //preferencesListadoApps.addInfoDesktop(shortcutInfo);
         if (shortcutInfo instanceof AppInfo) {
             mDesktopFragment.addShortcut(shortcutInfo);
@@ -422,7 +422,7 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
 
 
     public void removeShortcutApp(ShortcutInfo shortcutInfo) {
-        Log.d("----ENTRAMOSSSS--------------------REMOVEEEE--------------------","dentro");
+
         //preferencesListadoApps.removeInfoDesktop(shortcutInfo);
         if (shortcutInfo instanceof AppInfo) {
             mDesktopFragment.removeShortcut(shortcutInfo);
@@ -446,7 +446,7 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
     }
 
     public void actualizaOrdenApps(ArrayList<DraggableItemApp> listaDraggables) {
-        Log.d("----Asctualiza Orden Apps ACTIVITY: ",Integer.toString(listaDraggables.size()));
+
        // mDesktopFragment.setGridAdapter(draggableTOshortcutAdapter(listaDraggables));
         preferencesListadoApps.setListaDesktop(draggableTOshortcutAdapter(listaDraggables));
         mDesktopFragment.setGridAdapter(draggableTOshortcutAdapter(listaDraggables));
@@ -505,8 +505,6 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
                 if(tip==2) {
                     datasource.open();
                     shortcutinfo = webList.get(pos);
-                    Log.v(((WebPageInfo) shortcutinfo).toString(),"Anterior");
-                    Log.v("Guardamos en la base de datos la posición nueva: "+(k+1),((WebPageInfo) shortcutinfo).toString());
                     ((WebPageInfo) shortcutinfo).setPosi(k+1); //cast a WebPageInfo
                     datasource.updateBookmark((WebPageInfo)shortcutinfo);
                     datasource.close(); //Intento de actualizar la DB. Comprobar que así sea.
@@ -525,7 +523,7 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
     public void fillDraggableList(ShortcutInfo info){
         mListFavDraggables =  preferencesListadoApps.getmListAppsDragablesOrdenadaAUX();
             if(mListFavDraggables== null) {
-                Log.d("entramos? Creación de la lista de dragables","Eso parece");
+
                 mListFavDraggables = new ArrayList<DraggableItemApp>();
             }
 
@@ -539,10 +537,10 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
              //añadimos a la lista maestra de draggables
         if(info instanceof AppInfo) { //Añadimos el WebPageInfo a la lista de dragables en cierta posición
             mListFavDraggables.add(item);
-            Log.e("Insertamos elemento:",info.toString());
+
         }
         else {
-            Log.e("Insertamos elemento:",info.toString());
+
             if(mListFavDraggables.size() < ((WebPageInfo) info).getPosi()-1)
             {
                 mListFavDraggables.add(item);
@@ -591,7 +589,6 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
     }*/
 
     public void reloadDesktop() {
-        Log.e("------preferencesListadoApps.getListaDesktop()------->", Integer.toString(preferencesListadoApps.getListaDesktop().getCount()));
 
         mDesktopFragment.setGridAdapter(preferencesListadoApps.getListaDesktop());
     }
@@ -606,7 +603,6 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
         Cargar la lista de Apps Instaldas
      */
     public void cargaListaApps(List<AppInfo> mAppsInstaladas) {
-        Log.e("-----Tamaño mAppsInstaladas cargaListaApps()-------->", Integer.toString(mAppsInstaladas.size()));
 
         //Limpiamos los shortcuts primero
         //clearShortcutsApp();
@@ -623,8 +619,6 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
                         assert (this) != null;
                         //addShortcutApp(appInfoTemp);
                         addAppInfoInstaladas(appInfoTemp);
-
-                        Log.e("-----cargaListaApps()----Cargo App nº", Integer.toString(j));
                         appInfoTemp.checked = true;
                         break;
                     }
