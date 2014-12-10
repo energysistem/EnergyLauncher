@@ -23,5 +23,8 @@
     <string name="cancel">"Cancelar"</string>
     <string name="guarda_button">"Guardar</string>
     <string name="reordena_button">"Move app icons</string>
+    <string name="bookmark_duplicado">Marcador duplicado</string>
+    <string name="titulo_vacio">Título vacío</string>
+    <string name="url_vacia">Url vacia</string>
 
 </resources>

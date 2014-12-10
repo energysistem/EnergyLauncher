@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.util.Log;
 
 import com.energysistem.energylauncher.tvboxlauncher.R;
 
@@ -36,6 +37,11 @@ public class WebPageInfo extends ShortcutInfo {
         this.id = _id;
         this.pageUrl = pageUrl;
         this.fav = 0;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return this.getTitle().equals(((WebPageInfo) o).getTitle());
     }
 
     @Override

@@ -86,21 +86,38 @@ public class MenuBookMarkFragment  extends Fragment
             public void onClick(View v) {
                 WebPageInfo info = null;
                 try {
+                    if(mTxtName.getText().toString().length() == 0 ) {
+                        mTxtName.requestFocus(); //Ponemos el marcador donde debe
+                        mTxtName.setError(getActivity().getString(R.string.titulo_vacio));
+                    }
+                    else if (mTxtUri.getText().toString().length() == 0 ) {
+                        mTxtUri.requestFocus(); //Ponemos el marcador donde debe
+                        mTxtUri.setError(getActivity().getString(R.string.url_vacia));
+                    }
+                    else {
+                        info = new WebPageInfo(((LauncherActivity) getActivity()).getlistaWeb().size(),mTxtUri.getText().toString());
+                        info.setTitle(mTxtName.getText().toString());
 
-                    info = new WebPageInfo(((LauncherActivity) getActivity()).getlistaWeb().size(),mTxtUri.getText().toString());
-                    info.setTitle(mTxtName.getText().toString());
-                    //((LauncherActivity) getActivity()).addShortcutApp(info);
-                    if(info!=null){
-                       // if(mListWebPage!=null){Log.d("mListWebPage", "NO NULL");}else{Log.d("mListWebPage", "NULLACO");}
-                        mListWebPage.add(mListWebPage.size(), info);
-                        ((LauncherActivity) getActivity()).setlistaWeb(mListWebPage);
-                        //guardamos en base de datos, por defecto fav false
-                        datasource.open();
-                        datasource.createBookmark(info);
-                        datasource.close();
-                        //mListWebPage.add(info);
-                        }
-                    mAdapter.notifyDataSetChanged();
+                        //((LauncherActivity) getActivity()).addShortcutApp(info);
+                        if(info!=null){
+                           // if(mListWebPage!=null){Log.d("mListWebPage", "NO NULL");}else{Log.d("mListWebPage", "NULLACO");}
+                            if(mListWebPage.contains((WebPageInfo)info)) {
+                                mTxtName.requestFocus(); //Ponemos el marcador donde debe
+                                mTxtName.setError(getActivity().getString(R.string.bookmark_duplicado));
+                            }
+                            else {
+                                mListWebPage.add(mListWebPage.size(), info);
+                                ((LauncherActivity) getActivity()).setlistaWeb(mListWebPage);
+                                //guardamos en base de datos, por defecto fav false
+                                datasource.open();
+                                datasource.createBookmark(info);
+                                datasource.close();
+                                //mListWebPage.add(info);
+                            }
+    
+                            }
+                        mAdapter.notifyDataSetChanged();
+                    }
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
                     //TODO
