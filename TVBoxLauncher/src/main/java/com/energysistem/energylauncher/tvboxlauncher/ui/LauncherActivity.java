@@ -257,7 +257,7 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
                      return true;
                  case KeyEvent.KEYCODE_DPAD_UP:
                      if (appLayout.isShown()) {
-                         mRightFragment.onKeyDownU();
+                         //mRightFragment.onKeyDownU();
                      } else if (notificationLayout.isShown()) {
                      /*
                      TODO: REVISAR

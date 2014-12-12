@@ -80,6 +80,7 @@ import java.util.List;
        // private ActionBar aBar;
 
         private CharSequence mLabel;
+    private boolean fueraDeBookmarks = true;
 
     public List<WebPageInfo> getmWebInfosListAx() {
              return mMenuBookMarkFragment.getListWebPage();
@@ -166,7 +167,14 @@ public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle sav
         menu=true;
 */
         //mTabHost.setOnTabChangedListener(tabChangeListener);
-
+    mTabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener(){
+        public void onTabChanged(String tabID) {
+            if(tabID.equals("BOOKMARKS")) {
+                mTabHost.setCurrentTab(1);
+            }
+            fueraDeBookmarks = true;
+        }
+    });
         return v;
     }
 
@@ -223,7 +231,8 @@ public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle sav
            case 0:      Log.d("TAG", "Estamos en app_grid");
                         if (mAppListFragment.appgetModeCheckBoxSelec()) {
                            mAppListFragment.desactivaModoCheckBox();
-                           // return true;
+
+                            // return true;
                         } else {
                            ((LauncherActivity) getActivity()).exitRightFragment();
                         }
@@ -361,17 +370,24 @@ public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle sav
 
         switch (mTabHost.getCurrentTab())
         {
-            case 0:     Log.d("Entramos en case 0","0");
+            case 0:     Log.d("Entramos en case 03131231213123","0");
+
                         break;
 
             case 1:
-                        Log.d("Entramos en case 1","1");
+
+                        if(fueraDeBookmarks==true) {
+                            mMenuBookMarkFragment.setFocus();
+                            fueraDeBookmarks=false;
+                        }
                         break;
 
             case 2:     Log.d("Entramos en case 2","2");
+                        fueraDeBookmarks = true;
                         break;
 
-            default:    break;
+            default:    fueraDeBookmarks = true;
+                        break;
         }
 
 

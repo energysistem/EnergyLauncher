@@ -289,9 +289,15 @@ public class AppListFragment extends Fragment
         //En caso que dejemos el modo seleccion colocamos el check como estaba
         if (!mAppAdapter.getModeCheckBoxSelection()){
             View v = mListViewApps.getChildAt(mListViewApps.getSelectedItemPosition() - mListViewApps.getFirstVisiblePosition());
-            FrameLayout frame = (FrameLayout) v.findViewById(R.id.frame_checkbox);
-            Log.e("-------------updateView()", "----------el check como estaba---");
-            frame.setBackgroundColor(mAppAdapter.getFrameCheckBoxView(mAppInfosList.get(mAppAdapter.getSelectedItem()).checked));
+            if(v!= null) {
+                FrameLayout frame = (FrameLayout) v.findViewById(R.id.frame_checkbox);
+                Log.e("-------------updateView()", "----------el check como estaba---");
+                frame.setBackgroundColor(mAppAdapter.getFrameCheckBoxView(mAppInfosList.get(mAppAdapter.getSelectedItem()).checked));
+            }
+            else
+            {
+                Log.d("entramos en view del fragment es NULL","NULL");
+            }
             return;
         }
 
