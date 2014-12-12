@@ -282,34 +282,34 @@ public class AppListFragment extends Fragment
 
         //Colocamos el listItem anterior como estaba
         View viewOld = mListViewApps.getChildAt(mAppAdapter.getLastSelectedItem()- mListViewApps.getFirstVisiblePosition());
-        FrameLayout frameOld = (FrameLayout) viewOld.findViewById(R.id.frame_checkbox);
-        Log.e("-------------updateView()", "-----------listItem anterior---");
-        frameOld.setBackgroundColor(mAppAdapter.getFrameCheckBoxView(mAppInfosList.get(mAppAdapter.getLastSelectedItem()).checked));
+        if(viewOld!=null) {
+            FrameLayout frameOld = (FrameLayout) viewOld.findViewById(R.id.frame_checkbox);
+            Log.e("-------------updateView()", "-----------listItem anterior---");
+            frameOld.setBackgroundColor(mAppAdapter.getFrameCheckBoxView(mAppInfosList.get(mAppAdapter.getLastSelectedItem()).checked));
 
-        //En caso que dejemos el modo seleccion colocamos el check como estaba
-        if (!mAppAdapter.getModeCheckBoxSelection()){
+            //En caso que dejemos el modo seleccion colocamos el check como estaba
+            if (!mAppAdapter.getModeCheckBoxSelection()) {
+                View v = mListViewApps.getChildAt(mListViewApps.getSelectedItemPosition() - mListViewApps.getFirstVisiblePosition());
+                if (v != null) {
+                    FrameLayout frame = (FrameLayout) v.findViewById(R.id.frame_checkbox);
+                    Log.e("-------------updateView()", "----------el check como estaba---");
+                    frame.setBackgroundColor(mAppAdapter.getFrameCheckBoxView(mAppInfosList.get(mAppAdapter.getSelectedItem()).checked));
+                } else {
+                    Log.d("entramos en view del fragment es NULL", "NULL");
+                }
+                return;
+            }
+
+            //Colocamos el checkbox actual con el aspecto seleccionado
             View v = mListViewApps.getChildAt(mListViewApps.getSelectedItemPosition() - mListViewApps.getFirstVisiblePosition());
-            if(v!= null) {
-                FrameLayout frame = (FrameLayout) v.findViewById(R.id.frame_checkbox);
-                Log.e("-------------updateView()", "----------el check como estaba---");
-                frame.setBackgroundColor(mAppAdapter.getFrameCheckBoxView(mAppInfosList.get(mAppAdapter.getSelectedItem()).checked));
-            }
-            else
-            {
-                Log.d("entramos en view del fragment es NULL","NULL");
-            }
-            return;
+
+            if (v == null)
+                return;
+
+            FrameLayout frame = (FrameLayout) v.findViewById(R.id.frame_checkbox);
+            Log.e("-------------updateView()", "-----------ChekBox ACTUAL---");
+            frame.setBackgroundColor(mAppAdapter.getFrameCheckBoxView(false));
         }
-
-        //Colocamos el checkbox actual con el aspecto seleccionado
-        View v = mListViewApps.getChildAt(mListViewApps.getSelectedItemPosition() - mListViewApps.getFirstVisiblePosition());
-
-        if (v == null)
-            return;
-
-        FrameLayout frame = (FrameLayout) v.findViewById(R.id.frame_checkbox);
-        Log.e("-------------updateView()", "-----------ChekBox ACTUAL---");
-        frame.setBackgroundColor(mAppAdapter.getFrameCheckBoxView(false));
     }
 
     public void onKeyDownD() {

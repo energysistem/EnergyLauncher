@@ -102,7 +102,7 @@ import java.util.List;
 
 
 
-public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
+public View onCreateView(LayoutInflater inflater, ViewGroup container, final Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View v = inflater.inflate(R.layout.fragment_right, container, false);
 
@@ -173,6 +173,17 @@ public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle sav
                 mTabHost.setCurrentTab(1);
             }
             fueraDeBookmarks = true;
+        }
+    });
+
+    mTabHost.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
+
+        @Override
+        public void onViewDetachedFromWindow(View v) {}
+
+        @Override
+        public void onViewAttachedToWindow(View v) {
+            mTabHost.getViewTreeObserver().removeOnTouchModeChangeListener(mTabHost);
         }
     });
         return v;
@@ -266,8 +277,8 @@ public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle sav
                         }
                         else{
                             Log.d("lansandooooDDD", "mMenuBookMarkFragment.setFocus()");
-                            mTabHost.setCurrentTab(mTabHost.getCurrentTab() + 1);
-                            mMenuBookMarkFragment.setFocus();
+                            //mTabHost.setCurrentTab(1);
+                            //mMenuBookMarkFragment.setFocus();
                         }
                             break;
 

@@ -42,6 +42,7 @@
             android:textColor="#ffffff"
             android:textSize="22sp"
             android:inputType="textUri"
+            android:nextFocusUp="@+id/menuBookmarkTxtName"
             android:nextFocusDown="@+id/menuBookmarkBtn"/>
 
         <Button

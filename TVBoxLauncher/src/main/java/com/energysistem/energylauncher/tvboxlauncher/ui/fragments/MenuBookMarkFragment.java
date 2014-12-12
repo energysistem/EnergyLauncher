@@ -62,6 +62,7 @@ public class MenuBookMarkFragment  extends Fragment
         View view = inflater.inflate(R.layout.fragment_menu_bookmark, container, false);
 
         mTxtName = (TextView) view.findViewById(R.id.menuBookmarkTxtName);
+
         mTxtUri = (TextView) view.findViewById(R.id.menuBookmarkTxtUri);
        // mEditText=(EditText) view.findViewById(R.id.menuBookmarkTxtName);
        // mEditText.requestFocus();
@@ -194,6 +195,7 @@ public class MenuBookMarkFragment  extends Fragment
 
     private void updateView() {
         //Guardamos en el adapter la seleccion actual
+
         mAdapter.setSelectedItem(mlistViewWebshorts.getSelectedItemPosition());
 
         //Colocamos el listItem anterior como estaba
