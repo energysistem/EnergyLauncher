@@ -364,7 +364,9 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
                 }
                 break;
             case KeyEvent.KEYCODE_DPAD_LEFT:
-                if (((itemSelected) % columns) == 0){
+                Log.e("LEFT TOCADO","itemSelected: "+itemSelected+" - columns: "+columns);
+                if (((itemSelected) % columns) == 0 || itemSelected==-1){ 
+
                     ((LauncherActivity) getActivity()).toggleDrawer(((LauncherActivity) getActivity()).getNotificationLayout());
                 }
                 break;

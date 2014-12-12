@@ -217,52 +217,66 @@ public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle sav
 
     //********** KEY DOWN
    public void onKeyLeftD(){
-       if (mTabHost.getCurrentTab()==0 ) {
-           Log.d("TAG", "Estamos en app_grid");
-          if (mAppListFragment.appgetModeCheckBoxSelec()) {
-               mAppListFragment.desactivaModoCheckBox();
-               // return true;
-           } else {
-               ((LauncherActivity) getActivity()).exitRightFragment();
-           }
-       }
-       else if(mTabHost.getCurrentTab() == 1) {
-           if (mMenuBookMarkFragment.appgetModeCheckBoxSelec()) {
-               mMenuBookMarkFragment.desactivaModoCheckBox();
-           } else {
-                mTabHost.setCurrentTab(0);
-           }
-       }
-      else if(mTabHost.getCurrentTab() == 2) {
-               mTabHost.setCurrentTab(mTabHost.getCurrentTab() - 1);
-                Log.d("lansandooooIII", "mMenuBookMarkFragment.setFocus()");
-                resetTab3();
-               mMenuBookMarkFragment.setFocus();
+        Log.e("CurrentTAB:",mTabHost.getCurrentTab()+"");
+       switch (mTabHost.getCurrentTab())
+       {
+           case 0:      Log.d("TAG", "Estamos en app_grid");
+                        if (mAppListFragment.appgetModeCheckBoxSelec()) {
+                           mAppListFragment.desactivaModoCheckBox();
+                           // return true;
+                        } else {
+                           ((LauncherActivity) getActivity()).exitRightFragment();
+                        }
+                        break;
+
+           case 1:      if (mMenuBookMarkFragment.appgetModeCheckBoxSelec()) {
+                           mMenuBookMarkFragment.desactivaModoCheckBox();
+                        }
+                        else {
+                           mTabHost.setCurrentTab(0);
+                        }
+                        break;
+
+           case 2:      mTabHost.setCurrentTab(1);
+                        Log.d("lansandooooIII", "mMenuBookMarkFragment.setFocus()");
+                        resetTab3();
+                        //mMenuBookMarkFragment.setFocus();
+                        break;
+
+           default:     break;
        }
    }
 
 
     public void onKeyRightD(){
-            if(mTabHost.getCurrentTab()==0 ){
-                if(!mAppListFragment.appgetModeCheckBoxSelec()){
-                mAppListFragment.activaModoCheckBox();
-                }
-                else{
-                    Log.d("lansandooooDDD", "mMenuBookMarkFragment.setFocus()");
-                    mTabHost.setCurrentTab(mTabHost.getCurrentTab() + 1);
-                    mMenuBookMarkFragment.setFocus();
-                }
-            } else if(mTabHost.getCurrentTab()==1 ){
-                //mMenuBookMarkFragment.setHasFocus(false);
-                if(!mMenuBookMarkFragment.appgetModeCheckBoxSelec()) {
-                    mMenuBookMarkFragment.activaModoCheckBox();
-                }
-                else{
-                    Log.e("-KeyRighD--", "---------CheckBoxMode Activado ya--");
-                }
-            }
+
+        switch (mTabHost.getCurrentTab())
+        {
+            case 0:     if(!mAppListFragment.appgetModeCheckBoxSelec()){
+                            mAppListFragment.activaModoCheckBox();
+                        }
+                        else{
+                            Log.d("lansandooooDDD", "mMenuBookMarkFragment.setFocus()");
+                            mTabHost.setCurrentTab(mTabHost.getCurrentTab() + 1);
+                            mMenuBookMarkFragment.setFocus();
+                        }
+                            break;
+
+            case 1:     //mMenuBookMarkFragment.setHasFocus(false);
+                        if(!mMenuBookMarkFragment.appgetModeCheckBoxSelec()) {
+                            mMenuBookMarkFragment.activaModoCheckBox();
+                        }
+                        else{
+                            Log.e("-KeyRighD--", "---------CheckBoxMode Activado ya--");
+                        }
+                        break;
+
+            case 2:     break;
+
+            default:    break;
 
 
+        }
     }
 
 
@@ -344,7 +358,22 @@ public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle sav
     }
 
     public void onKeyDownU() {
-        Log.d("Current Tab-->",String.valueOf(mTabHost.getCurrentTab()));
+
+        switch (mTabHost.getCurrentTab())
+        {
+            case 0:     Log.d("Entramos en case 0","0");
+                        break;
+
+            case 1:
+                        Log.d("Entramos en case 1","1");
+                        break;
+
+            case 2:     Log.d("Entramos en case 2","2");
+                        break;
+
+            default:    break;
+        }
+
 
     }
 

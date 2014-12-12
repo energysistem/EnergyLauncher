@@ -604,7 +604,7 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
      */
     public void cargaListaApps(List<AppInfo> mAppsInstaladas) {
 
-        //Limpiamos los shortcuts primero
+        //Limpiamos los shorktcuts primero
         //clearShortcutsApp();
 
         //Recorremos la lista de aplicaciones en preferencias y añadimos.
