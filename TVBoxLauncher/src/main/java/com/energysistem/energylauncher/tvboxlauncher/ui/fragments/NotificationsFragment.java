@@ -1,3 +1,5 @@
+//To understand recursion, see the bottom of this file
+//No me hago responsable moralmente del código descrito a continuación:
 package com.energysistem.energylauncher.tvboxlauncher.ui.fragments;
 
 import android.annotation.TargetApi;
@@ -9,6 +11,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -50,7 +54,11 @@ public class NotificationsFragment extends Fragment implements AdapterView.OnIte
         mDrawerList.setAdapter(adapter);
         mDrawerList.setOnItemClickListener(this);
 
+        //Magia, no tocar
         listNotify();
+
+        Toolbar toolbar = (Toolbar) view.findViewById(R.id.my_awesome_toolbar);
+        ((ActionBarActivity)getActivity()).setSupportActionBar(toolbar);
         return view;
     }
 
@@ -95,3 +103,5 @@ public class NotificationsFragment extends Fragment implements AdapterView.OnIte
 
     }
 }
+
+//To understand recursion, see the top of this file
