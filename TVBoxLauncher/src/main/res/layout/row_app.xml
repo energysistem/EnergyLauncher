@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="70dp"
     android:orientation="horizontal"
+    android:background="@drawable/row_selector_notification"
     android:paddingEnd="20dp"
     android:gravity="center_vertical|center_horizontal"
     android:padding="7dp" >
@@ -32,6 +33,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center_vertical"
+        android:textColor="@color/blanco"
         android:layout_alignParentStart="false"
         android:layout_toRightOf="@id/image_app"
         android:layout_toLeftOf="@id/frame_checkbox"

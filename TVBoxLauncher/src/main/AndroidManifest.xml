@@ -11,10 +11,10 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppThemeVerde" >
 
         <activity
-            android:theme="@android:style/Theme.Holo.Wallpaper.NoTitleBar"
+            android:theme="@style/AppThemeVerde.NoTitleBar"
             android:name=".ui.LauncherActivity"
             android:configChanges="mcc|mnc|locale|touchscreen|navigation|screenLayout|screenLayout|uiMode|keyboard|keyboardHidden|orientation|screenSize|smallestScreenSize"
             android:label="@string/app_name"
@@ -35,7 +35,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:theme="@android:style/Theme.Holo.Wallpaper.NoTitleBar"
+            android:theme="@style/AppThemeVerde.NoTitleBar"
             android:name=".ui.ImagePickerActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/app_name"

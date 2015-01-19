@@ -4,12 +4,14 @@
     android:id="@+id/tabLL"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+
     android:orientation="vertical">
 
     <TabHost
         android:id="@+id/tabHost"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+
         android:layout_x="0dp"
         android:layout_y="0dp"
         android:nextFocusDown="@+id/tabcontent">
@@ -22,6 +24,7 @@
             android:orientation="vertical" >
 
             <TabWidget
+                style="AppThemeVerde.TabWidget"
                 android:id="@android:id/tabs"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" >

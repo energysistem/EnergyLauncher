@@ -6,4 +6,5 @@
     <dimen name="collapsed_height">220dp</dimen>
     <dimen name="altura_desktop_icon">160dp</dimen>
     <dimen name="desktop_grid_margins">18dp</dimen>
+    <dimen name="tamano_icono_not">120dp</dimen>
 </resources>

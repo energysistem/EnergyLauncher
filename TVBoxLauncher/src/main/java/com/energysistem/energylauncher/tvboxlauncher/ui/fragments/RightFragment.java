@@ -25,6 +25,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TabHost;
+import android.widget.TabWidget;
 import android.widget.TextView;
 
 import com.energysistem.energylauncher.tvboxlauncher.LauncherAppState;
@@ -105,7 +106,7 @@ import java.util.List;
 public View onCreateView(LayoutInflater inflater, ViewGroup container, final Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View v = inflater.inflate(R.layout.fragment_right, container, false);
-
+    //View v = inflater.inflate(R.layout.appthemeverde_tab_indicator_holo, container, false);
        /* vPager = (LinearLayout)findViewById(R.id.tabLL2);
         vPager.setAdapter(tAdapter);*/
 
@@ -118,7 +119,6 @@ public View onCreateView(LayoutInflater inflater, ViewGroup container, final Bun
 
         mTabHost = (TabHost) v.findViewById(R.id.tabHost);
         mTabHost.setup();
-
 
 
         // *******Tab 1*******

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Generated with http://android-holo-colors.com -->
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+  <style name="AppThemeVerde" parent="@style/_AppThemeVerde"/>
+
+  <style name="AppThemeVerde.NoTitleBar" parent="@style/_AppThemeVerde.NoTitleBar"/>
+
+  <style name="_AppThemeVerde" parent="android:Theme.Holo.Light">
+
+    <item name="android:editTextBackground">@drawable/appthemeverde_edit_text_holo_light</item>
+      <item name="android:tabWidgetStyle">@style/AppThemeVerde.TabWidget</item>
+    <item name="android:textColorHighlight">#99669900</item>
+    <item name="android:textSelectHandleLeft">@drawable/appthemeverde_text_select_handle_left</item>
+    <item name="android:textSelectHandleRight">@drawable/appthemeverde_text_select_handle_right</item>
+    <item name="android:textSelectHandle">@drawable/appthemeverde_text_select_handle_middle</item>
+
+    <item name="android:autoCompleteTextViewStyle">@style/AutoCompleteTextViewAppThemeVerde</item>
+
+    <item name="android:listChoiceIndicatorMultiple">@drawable/appthemeverde_btn_check_holo_light</item>
+
+    <item name="android:listChoiceIndicatorSingle">@drawable/appthemeverde_btn_radio_holo_light</item>
+
+    <item name="android:buttonStyle">@style/ButtonAppThemeVerde</item>
+
+    <item name="android:imageButtonStyle">@style/ImageButtonAppThemeVerde</item>
+
+    <item name="android:dropDownSpinnerStyle">@style/SpinnerAppThemeVerde</item>
+
+    <item name="android:progressBarStyleHorizontal">@style/ProgressBarAppThemeVerde</item>
+
+    <item name="android:seekBarStyle">@style/SeekBarAppThemeVerde</item>
+
+    <item name="android:ratingBarStyle">@style/RatingBarAppThemeVerde</item>
+
+    <item name="android:ratingBarStyleIndicator">@style/RatingBarBigAppThemeVerde</item>
+
+    <item name="android:ratingBarStyleSmall">@style/RatingBarSmallAppThemeVerde</item>
+
+    <item name="android:buttonStyleToggle">@style/ToggleAppThemeVerde</item>
+
+    <item name="android:listChoiceBackgroundIndicator">@drawable/appthemeverde_list_selector_holo_light</item>
+
+    <item name="android:activatedBackgroundIndicator">@drawable/appthemeverde_activated_background_holo_light</item>
+
+    <item name="android:fastScrollThumbDrawable">@drawable/appthemeverde_fastscroll_thumb_holo</item>
+
+  </style>
+
+    <style name="_AppThemeVerde.NoTitleBar" parent="android:Theme.Holo.Wallpaper.NoTitleBar">
+
+        <item name="android:editTextBackground">@drawable/appthemeverde_edit_text_holo_light</item>
+        <item name="android:tabWidgetStyle">@style/AppThemeVerde.TabWidget</item>
+        <item name="android:textColorHighlight">#99669900</item>
+        <item name="android:textSelectHandleLeft">@drawable/appthemeverde_text_select_handle_left</item>
+        <item name="android:textSelectHandleRight">@drawable/appthemeverde_text_select_handle_right</item>
+        <item name="android:textSelectHandle">@drawable/appthemeverde_text_select_handle_middle</item>
+
+        <item name="android:autoCompleteTextViewStyle">@style/AutoCompleteTextViewAppThemeVerde</item>
+
+        <item name="android:listChoiceIndicatorMultiple">@drawable/appthemeverde_btn_check_holo_light</item>
+
+        <item name="android:listChoiceIndicatorSingle">@drawable/appthemeverde_btn_radio_holo_light</item>
+
+        <item name="android:buttonStyle">@style/ButtonAppThemeVerde</item>
+
+        <item name="android:imageButtonStyle">@style/ImageButtonAppThemeVerde</item>
+
+        <item name="android:dropDownSpinnerStyle">@style/SpinnerAppThemeVerde</item>
+
+        <item name="android:progressBarStyleHorizontal">@style/ProgressBarAppThemeVerde</item>
+
+        <item name="android:seekBarStyle">@style/SeekBarAppThemeVerde</item>
+
+        <item name="android:ratingBarStyle">@style/RatingBarAppThemeVerde</item>
+
+        <item name="android:ratingBarStyleIndicator">@style/RatingBarBigAppThemeVerde</item>
+
+        <item name="android:ratingBarStyleSmall">@style/RatingBarSmallAppThemeVerde</item>
+
+        <item name="android:buttonStyleToggle">@style/ToggleAppThemeVerde</item>
+
+        <item name="android:listChoiceBackgroundIndicator">@drawable/appthemeverde_list_selector_holo_light</item>
+
+        <item name="android:activatedBackgroundIndicator">@drawable/appthemeverde_activated_background_holo_light</item>
+
+        <item name="android:fastScrollThumbDrawable">@drawable/appthemeverde_fastscroll_thumb_holo</item>
+
+    </style>
+
+</resources>
