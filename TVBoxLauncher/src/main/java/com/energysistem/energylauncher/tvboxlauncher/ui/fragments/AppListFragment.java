@@ -271,7 +271,8 @@ public class AppListFragment extends Fragment
 
     public void clearFocus() {
         //mListViewApps.clearFocus();
-        mListViewApps.getFocusedChild().clearFocus();
+        Log.e("printeamos",mListViewApps.getSelectedItemPosition()+"");
+        mListViewApps.getChildAt(0).requestFocus();
 
     }
 
