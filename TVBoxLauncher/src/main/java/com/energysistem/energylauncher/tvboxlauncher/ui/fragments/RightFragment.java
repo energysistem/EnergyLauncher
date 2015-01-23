@@ -246,6 +246,7 @@ public View onCreateView(LayoutInflater inflater, ViewGroup container, final Bun
                             // return true;
                         } else {
                            ((LauncherActivity) getActivity()).exitRightFragment();
+                            mAppListFragment.clearFocus();
                         }
                         break;
 
