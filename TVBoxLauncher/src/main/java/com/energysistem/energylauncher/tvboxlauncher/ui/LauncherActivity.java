@@ -1,5 +1,6 @@
 package com.energysistem.energylauncher.tvboxlauncher.ui;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -30,6 +31,7 @@ import com.energysistem.energylauncher.tvboxlauncher.ui.fragments.DesktopFragmen
 import com.energysistem.energylauncher.tvboxlauncher.ui.fragments.NotificationsFragment;
 import com.energysistem.energylauncher.tvboxlauncher.ui.fragments.OptionsLauncherFragment;
 import com.energysistem.energylauncher.tvboxlauncher.ui.fragments.RightFragment;
+import com.energysistem.energylauncher.tvboxlauncher.ui.views.StatusBarAdmin;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,6 +47,9 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
     private OptionsLauncherFragment mOptionsLauncherFragment;
     private AppArrangeFragment mAppArrangeFragment;
     private ArrayList<DraggableItemApp> mListFavDraggables;
+
+    private StatusBarAdmin statusBarAdmin;
+
 
     public ArrayList <WebPageInfo> listaWebsDB;
     private BookmarkDAO datasource;
@@ -98,12 +103,15 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
             mNotificationFragent = (NotificationsFragment) getFragmentManager().findFragmentByTag(TAGFFRAGMENTNOTIFICATIONS);
             return;
         }
-
+                                                                /*int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
+                                                                View decorView = getWindow().getDecorView();
+                                                                decorView.setSystemUiVisibility(uiOptions);*/
         setContentView(R.layout.activity_main);
         desktopLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         appLayout = (FrameLayout) findViewById(R.id.right_drawer);
         notificationLayout = (FrameLayout) findViewById(R.id.left_drawer);
 
+        statusBarAdmin = new StatusBarAdmin();
 
         preferencesListadoApps = new SaveLoadAppsPreferences(this);
         listaWebsDB = preferencesListadoApps.getListaWeb();
@@ -148,8 +156,15 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
     @Override
          protected void onResume() {
              super.onResume();
+            statusBarAdmin.HideStatusBar();
 
          }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        //statusBarAdmin.ShowStatusBar();
+    }
 
     @Override
     protected void onStart() {

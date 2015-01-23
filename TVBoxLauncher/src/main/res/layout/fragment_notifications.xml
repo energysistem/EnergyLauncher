@@ -24,6 +24,7 @@
             android:background="@color/grisOSCURO"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:dividerHeight="2dp"
             android:id="@+id/listViewNotif"/>
 
     </LinearLayout>
@@ -31,11 +32,13 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/tamano_icono_not">
         <ImageView
-            android:src="@drawable/ic_launcher"
+            android:src="@drawable/notification_bell_red_static"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:contentDescription="@string/descr_icono_not" />
         </RelativeLayout>
 </RelativeLayout>

@@ -48,7 +48,7 @@
 
   </style>
 
-    <style name="_AppThemeVerde.NoTitleBar" parent="android:Theme.Holo.Wallpaper.NoTitleBar">
+    <style name="_AppThemeVerde.NoTitleBar" parent="android:Theme.Wallpaper.NoTitleBar.Fullscreen">
 
         <item name="android:editTextBackground">@drawable/appthemeverde_edit_text_holo_light</item>
         <item name="android:tabWidgetStyle">@style/AppThemeVerde.TabWidget</item>
