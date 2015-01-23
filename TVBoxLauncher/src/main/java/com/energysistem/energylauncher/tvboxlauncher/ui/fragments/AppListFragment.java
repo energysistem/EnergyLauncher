@@ -271,6 +271,8 @@ public class AppListFragment extends Fragment
 
     public void clearFocus() {
         mListViewApps.clearFocus();
+        mListViewApps.setSelection(-1);
+
     }
 
     public boolean appgetModeCheckBoxSelec(){
