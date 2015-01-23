@@ -48,7 +48,6 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
     private AppArrangeFragment mAppArrangeFragment;
     private ArrayList<DraggableItemApp> mListFavDraggables;
 
-    private StatusBarAdmin statusBarAdmin;
 
 
     public ArrayList <WebPageInfo> listaWebsDB;
@@ -111,7 +110,7 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
         appLayout = (FrameLayout) findViewById(R.id.right_drawer);
         notificationLayout = (FrameLayout) findViewById(R.id.left_drawer);
 
-        statusBarAdmin = new StatusBarAdmin();
+
 
         preferencesListadoApps = new SaveLoadAppsPreferences(this);
         listaWebsDB = preferencesListadoApps.getListaWeb();
@@ -156,7 +155,7 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
     @Override
          protected void onResume() {
              super.onResume();
-            statusBarAdmin.HideStatusBar();
+           // statusBarAdmin.HideStatusBar();
 
          }
 

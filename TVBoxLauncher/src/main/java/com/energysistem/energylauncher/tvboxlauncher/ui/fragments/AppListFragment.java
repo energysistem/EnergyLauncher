@@ -166,7 +166,7 @@ public class AppListFragment extends Fragment
 
                 if (info.checked) {
                     assert (getActivity()) != null;
-                    ((LauncherActivity) getActivity()).addShortcutApp(info);
+                    //((LauncherActivity) getActivity()).addShortcutApp(info);
                 }
 
                 else
@@ -183,7 +183,7 @@ public class AppListFragment extends Fragment
         //((LauncherActivity)getActivity()).actualizaArrayAppsPreferencias();
 
         Log.e("HUEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE?-.---------","HEMOS LLEGADOOOOOOOOOOO!");
-        cargaListaApps();
+        //cargaListaApps();
     }
 
 

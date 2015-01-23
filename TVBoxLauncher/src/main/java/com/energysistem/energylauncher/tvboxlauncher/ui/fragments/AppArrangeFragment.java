@@ -149,7 +149,6 @@ public class AppArrangeFragment extends Fragment {
 
             mBtnGuardar.setEnabled(false);
             mBtnGuardar.setFocusable(false);
-
         }
     }
 

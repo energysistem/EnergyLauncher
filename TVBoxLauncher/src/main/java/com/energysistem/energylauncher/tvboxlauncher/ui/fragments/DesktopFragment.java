@@ -96,13 +96,13 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
             }
         });
 
-        notificationButton = (ImageView) view.findViewById(R.id.icon_notification);
+        /*notificationButton = (ImageView) view.findViewById(R.id.icon_notification);
         notificationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 ((LauncherActivity) getActivity()).toggleDrawer(((LauncherActivity) getActivity()).getNotificationLayout());
             }
-        });
+        });*/
 
         currentLocale = getResources().getConfiguration().locale;
         timeTextView = (TextView) view.findViewById(R.id.clock);
