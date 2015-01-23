@@ -23,7 +23,7 @@
         <ListView
             android:background="@color/grisOSCURO"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:dividerHeight="2dp"
             android:id="@+id/listViewNotif"/>
 

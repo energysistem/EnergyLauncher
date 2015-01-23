@@ -10,9 +10,11 @@ import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
 
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.GridView;
 
@@ -28,6 +30,7 @@ import com.energysistem.energylauncher.tvboxlauncher.ui.adapters.ShortcutAdapter
 import com.energysistem.energylauncher.tvboxlauncher.ui.fragments.AppArrangeFragment;
 import com.energysistem.energylauncher.tvboxlauncher.ui.fragments.AppListFragment;
 import com.energysistem.energylauncher.tvboxlauncher.ui.fragments.DesktopFragment;
+import com.energysistem.energylauncher.tvboxlauncher.ui.fragments.MenuListFragment;
 import com.energysistem.energylauncher.tvboxlauncher.ui.fragments.NotificationsFragment;
 import com.energysistem.energylauncher.tvboxlauncher.ui.fragments.OptionsLauncherFragment;
 import com.energysistem.energylauncher.tvboxlauncher.ui.fragments.RightFragment;
@@ -43,7 +46,8 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
     public SaveLoadAppsPreferences preferencesListadoApps;
     private RightFragment mRightFragment;
     private DesktopFragment mDesktopFragment;
-    private NotificationsFragment mNotificationFragent;
+    //private NotificationsFragment mNotificationFragent;
+    private MenuListFragment mMenuListFragment;
     private OptionsLauncherFragment mOptionsLauncherFragment;
     private AppArrangeFragment mAppArrangeFragment;
     private ArrayList<DraggableItemApp> mListFavDraggables;
@@ -66,16 +70,11 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
 
     public final static String EXTRA_MESSAGE = "com.energysistem.energylauncher.MESSAGE";
 
-
     private ActionBarDrawerToggle drawerToggle;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
-
 
         if (savedInstanceState == null) {
             //Drawer derecho
@@ -91,15 +90,15 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
 
 
             //Drawer Izquierdo
-            mNotificationFragent = new NotificationsFragment() ;
+            mMenuListFragment = new MenuListFragment() ;
             getFragmentManager().beginTransaction()
-                    .add(R.id.left_drawer, mNotificationFragent, TAGFFRAGMENTNOTIFICATIONS)
+                    .add(R.id.left_drawer, mMenuListFragment, TAGFFRAGMENTNOTIFICATIONS)
                     .commit();
         } else {
 
             mDesktopFragment = (DesktopFragment) getFragmentManager().findFragmentByTag(TAGFFRAGMENTDESKTOP);
             mRightFragment = (RightFragment) getFragmentManager().findFragmentByTag(TAGFFRAGMENTRIGHT);
-            mNotificationFragent = (NotificationsFragment) getFragmentManager().findFragmentByTag(TAGFFRAGMENTNOTIFICATIONS);
+            mMenuListFragment = (MenuListFragment) getFragmentManager().findFragmentByTag(TAGFFRAGMENTNOTIFICATIONS);
             return;
         }
                                                                 /*int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
@@ -128,9 +127,7 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
                 R.string.drawer_close) {
 
             public void onDrawerClosed(View view) {
-//                getFragmentManager().beginTransaction()
-//                        .replace(R.id.left_drawer, new MenuListFragment()).commit();
-                //mDesktopFragment.getAppButton().requestFocus();
+                getFragmentManager().popBackStack();
             }
 
             public void onDrawerOpened(View drawerView) {
@@ -163,6 +160,7 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
     protected void onPause() {
         super.onPause();
         //statusBarAdmin.ShowStatusBar();
+        desktopLayout.closeDrawers();
     }
 
     @Override
@@ -231,14 +229,13 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
                      }
                      return true;*/
              }
-             return super.onKeyUp(keyCode, event);
+             return super.onKeyDown(keyCode, event);
          }
 
 
 
     @Override
          public boolean onKeyUp(int keyCode, KeyEvent event) {
-
              switch (keyCode) {
                  case KeyEvent.KEYCODE_CAPTIONS:
                      toggleDrawer(appLayout);
@@ -304,7 +301,7 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         mOptionsLauncherFragment =  new OptionsLauncherFragment();
 
-        ft.replace(R.id.tab3, mOptionsLauncherFragment);
+        ft.replace(R.id.menu_list_frame, mOptionsLauncherFragment);
         ft.addToBackStack("OptionsLauncherFragment");
         ft.commit();
     }
@@ -313,7 +310,7 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         mAppArrangeFragment =  new AppArrangeFragment();
 
-        ft.replace(R.id.tab3, mAppArrangeFragment);
+        ft.replace(R.id.menu_list_frame, mAppArrangeFragment);
         ft.addToBackStack("AppArrangeFragment");
         ft.commit();
     }

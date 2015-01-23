@@ -32,9 +32,10 @@ public class MenuListFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_menu_list, container, false);
 
         mMenuList = (ListView) view.findViewById(R.id.menu_list);
-        BasicImgText[] drawerItem = new BasicImgText[2];
-        drawerItem[0] = new BasicImgText(R.drawable.ereader, getResources().getString(R.string.launcher_settings));
-        drawerItem[1] = new BasicImgText(R.drawable.settings, getResources().getString(R.string.system_settings));
+        BasicImgText[] drawerItem = new BasicImgText[3];
+        drawerItem[0] = new BasicImgText(R.drawable.ic_launcher, getResources().getString(R.string.wallpaper));
+        drawerItem[1] = new BasicImgText(R.drawable.ic_launcher, getResources().getString(R.string.reordena_button));
+        drawerItem[2] = new BasicImgText(R.drawable.settings, getResources().getString(R.string.system_settings));
         mMenuList.setOnItemClickListener(new DrawerItemClickListener());
 
 
@@ -96,12 +97,12 @@ public class MenuListFragment extends Fragment {
 
             switch (position) {
                 case 0:
-                    assert ((LauncherActivity) getActivity()) != null;
-                    ((LauncherActivity) getActivity()).ShowOptionsLauncherMenuFragment();
-//                    optionsLauncherFragment = new OptionsLauncherFragment();
-//                    getFragmentManager().beginTransaction().replace(R.id.tab3, optionsLauncherFragment).commit();
+                    ((LauncherActivity)getActivity()).ShowPickWallpaperFragment();
                     break;
                 case 1:
+                    ((LauncherActivity)getActivity()).ShowReordenaDesktopAppsFragment();
+                    break;
+                case 2:
                     startActivity(new Intent(Settings.ACTION_SETTINGS));
                     break;
                 default:
