@@ -1,15 +1,50 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/grisOSCURO">
+    android:layout_height="match_parent">
 
-    <ListView
-            android:id="@+id/menu_list"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp">
-
-    </ListView>
-
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:background="@color/verdeCLARO"
+            android:layout_height="75dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textColor="@color/blanco"
+                android:textSize="18dp"
+                android:layout_marginLeft="20dp"
+                android:text="@string/panel_notificaciones"
+                android:gravity="center_vertical" />
+        </LinearLayout>
+        <FrameLayout
+            android:id="@+id/menu_list_frame"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <ListView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:dividerHeight="1dp"
+                    android:id="@+id/menu_list"/>
+            </LinearLayout>
+        </FrameLayout>
+    </LinearLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/tamano_icono_not">
+        <ImageView
+            android:src="@drawable/notification_bell_red_static"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:contentDescription="@string/descr_icono_not" />
+    </RelativeLayout>
 </RelativeLayout>

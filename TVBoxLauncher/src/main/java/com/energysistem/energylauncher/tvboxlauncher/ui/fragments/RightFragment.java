@@ -160,7 +160,6 @@ public View onCreateView(LayoutInflater inflater, ViewGroup container, final Bun
         //añadimos los tabs
         mTabHost.addTab(spec1);
         mTabHost.addTab(spec2);
-        mTabHost.addTab(spec3);
 
         estadoVariables();
         /*mTabHost.setCurrentTab(0);

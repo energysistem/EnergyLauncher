@@ -26,7 +26,7 @@
     <string name="bookmark_duplicado">Marcador duplicado</string>
     <string name="titulo_vacio">Título vacío</string>
     <string name="url_vacia">Url vacia</string>
-    <string name="panel_notificaciones">PANEL DE NOTIFICACIONES</string>
+    <string name="panel_notificaciones">Ajustes</string>
     <string name="descr_icono_not">icono notificaciones</string>
 
 </resources>
