@@ -21,7 +21,8 @@
             android:textColor="@android:color/white"
             android:text="00:00am"
             android:paddingRight="5dip"
-            android:textSize="40sp"/>
+            android:textSize="70sp"
+            android:layout_gravity="center_horizontal" />
             
         <ImageView
             android:layout_width="wrap_content"
@@ -45,7 +46,8 @@
             android:id="@+id/date"
             android:textColor="@android:color/white"
             android:text="Jueves, 15 de Mayo de 2014"
-            android:textSize="17sp"/>
+            android:textSize="17sp"
+            android:layout_gravity="center_horizontal" />
 
     </LinearLayout>
 </merge>
