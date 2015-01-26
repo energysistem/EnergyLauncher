@@ -251,6 +251,7 @@ public class AppListFragment extends Fragment
             mAppAdapter.setSelectedItem(mListViewApps.getSelectedItemPosition());
             updateView();
             mAppAdapter.notifyDataSetChanged();
+            //asdasdas
         }
     }
 
