@@ -17,7 +17,7 @@
                 android:textColor="@color/blanco"
                 android:textSize="18dp"
                 android:layout_marginLeft="20dp"
-                android:text="@string/panel_notificaciones"
+                android:text="@string/settings_panel_title"
                 android:gravity="center_vertical" />
             </LinearLayout>
         <ListView
@@ -30,7 +30,7 @@
     </LinearLayout>
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/tamano_icono_not">
+        android:layout_height="@dimen/floating_settings_icon_margin_top">
         <ImageView
             android:src="@drawable/notification_bell_red_static"
             android:layout_alignParentEnd="true"
@@ -39,6 +39,6 @@
             android:layout_marginRight="20dp"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:contentDescription="@string/descr_icono_not" />
+            android:contentDescription="@string/floating_settings_icon_description" />
         </RelativeLayout>
 </RelativeLayout>

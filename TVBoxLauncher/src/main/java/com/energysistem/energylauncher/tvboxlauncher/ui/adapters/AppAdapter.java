@@ -2,10 +2,7 @@ package com.energysistem.energylauncher.tvboxlauncher.ui.adapters;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,15 +11,11 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.energysistem.energylauncher.tvboxlauncher.R;
 import com.energysistem.energylauncher.tvboxlauncher.modelo.AppInfo;
 
-import java.util.EventListener;
 import java.util.List;
 
 /**
@@ -51,9 +44,9 @@ public class AppAdapter extends ArrayAdapter<AppInfo> {
             view = mLayoutInflater.inflate(R.layout.row_app, parent, false);
             holder = new ViewHolder();
 
-            holder.image = (ImageView) view.findViewById(R.id.image_app);
-            holder.title = (TextView) view.findViewById(R.id.title_app);
-            holder.frameLayout = (FrameLayout) view.findViewById(R.id.frame_checkbox);
+            holder.image = (ImageView) view.findViewById(R.id.icon_image_view);
+            holder.title = (TextView) view.findViewById(R.id.title_text_view);
+            holder.checkBox = (CheckBox) view.findViewById(R.id.frame_checkbox);
             //holder.checkBox = (CheckBox) view.findViewById(R.id.checkBoxApp);
 
             view.setTag(holder);
@@ -67,17 +60,17 @@ public class AppAdapter extends ArrayAdapter<AppInfo> {
         holder.title.setText(info.getTitle());
 
         if (checkBoxSelected)
-            holder.frameLayout.setVisibility(View.VISIBLE);
+            holder.checkBox.setVisibility(View.VISIBLE);
         else
-            holder.frameLayout.setVisibility(View.INVISIBLE);
+            holder.checkBox.setVisibility(View.INVISIBLE);
 
         Log.e("-------------AppAdapter", "----holder Time-----");
-        holder.frameLayout.setBackgroundColor(getFrameCheckBoxView(info.checked));
+        holder.checkBox.setChecked(info.checked);
 
 
-        holder.frameLayout.setOnClickListener(this.onCkeckBoxClickListener);
+        holder.checkBox.setOnClickListener(this.onCkeckBoxClickListener);
 
-        holder.frameLayout.setOnClickListener(new View.OnClickListener() {
+        holder.checkBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.i("onclickListener", "framelayout " + position);
@@ -145,7 +138,7 @@ public class AppAdapter extends ArrayAdapter<AppInfo> {
     class ViewHolder {
         ImageView image;
         TextView title;
-        FrameLayout frameLayout;
+        CheckBox checkBox;
 
     }
 }

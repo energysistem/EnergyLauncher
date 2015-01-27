@@ -1,44 +1,26 @@
 package com.energysistem.energylauncher.tvboxlauncher.ui.fragments;
 
 import android.app.ActionBar;
-import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
-import android.app.LoaderManager;
-import android.app.Notification;
-import android.content.Intent;
-import android.content.Loader;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.view.ViewPager;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.AdapterView;
-import android.widget.FrameLayout;
-import android.widget.GridView;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TabHost;
-import android.widget.TabWidget;
-import android.widget.TextView;
 
-import com.energysistem.energylauncher.tvboxlauncher.LauncherAppState;
-import com.energysistem.energylauncher.tvboxlauncher.Loader.AppLoader;
 import com.energysistem.energylauncher.tvboxlauncher.R;
 import com.energysistem.energylauncher.tvboxlauncher.modelo.AppInfo;
-import com.energysistem.energylauncher.tvboxlauncher.modelo.DraggableItemApp;
 import com.energysistem.energylauncher.tvboxlauncher.modelo.SaveLoadAppsPreferences;
 import com.energysistem.energylauncher.tvboxlauncher.modelo.ShortcutInfo;
 import com.energysistem.energylauncher.tvboxlauncher.modelo.WebPageInfo;
 import com.energysistem.energylauncher.tvboxlauncher.ui.LauncherActivity;
-import com.energysistem.energylauncher.tvboxlauncher.ui.adapters.AppAdapter;
 import com.energysistem.energylauncher.tvboxlauncher.ui.adapters.TabsAdapter;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -148,13 +130,13 @@ public View onCreateView(LayoutInflater inflater, ViewGroup container, final Bun
 
 
         //********Tab 3*******
-        TabHost.TabSpec spec3 = mTabHost.newTabSpec("SETTINGS");
+       /* TabHost.TabSpec spec3 = mTabHost.newTabSpec("SETTINGS");
         spec3.setContent(R.id.tab3);
         spec3.setIndicator(getResources().getText(R.string.tab3));
 
         mMenuListViewFragment = new MenuListFragment();
         getFragmentManager().beginTransaction().replace(R.id.tab3,
-                mMenuListViewFragment).commit();
+                mMenuListViewFragment).commit();*/
 
 
         //añadimos los tabs

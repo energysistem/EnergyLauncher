@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.TransitionDrawable;
 import android.net.ConnectivityManager;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
@@ -255,20 +256,28 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
 
     private void deseleccionarView(View vista)
     {
-        if(vista!=null) {
+        if(vista == null)
+            return;
+        TransitionDrawable transition = (TransitionDrawable) vista.getBackground();
+        transition.reverseTransition(500);
+        /*if(vista!=null) {
             final ObjectAnimator backgroundColorAnimator = ObjectAnimator.ofObject(vista,
                     "backgroundColor",
                     new ArgbEvaluator(),
-                    getResources().getColor(R.color.desktop_icon_background_selected),
-                    getResources().getColor(R.color.desktop_icon_background));
+                    getResources().getColor(R.color.desktop_icon_background),
+                    getResources().getDrawable(R.drawable.shortcut_unselect_shape));
             backgroundColorAnimator.setDuration(500);
             backgroundColorAnimator.start();
-        }
+        }*/
     }
 
     private void seleccionarView(View vista)
     {
-        if(vista!=null)
+        if(vista == null)
+            return;
+        TransitionDrawable transition = (TransitionDrawable) vista.getBackground();
+        transition.startTransition(500);
+        /*if(vista!=null)
         {
             final ObjectAnimator backgroundColorAnimator = ObjectAnimator.ofObject(vista,
                     "backgroundColor",
@@ -277,7 +286,7 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
                     getResources().getColor(R.color.desktop_icon_background_selected));
             backgroundColorAnimator.setDuration(500);
             backgroundColorAnimator.start();
-        }
+        }*/
     }
 
     /***************************************/

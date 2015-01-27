@@ -33,9 +33,9 @@ public class MenuListFragment extends Fragment {
 
         mMenuList = (ListView) view.findViewById(R.id.menu_list);
         BasicImgText[] drawerItem = new BasicImgText[3];
-        drawerItem[0] = new BasicImgText(R.drawable.ic_launcher, getResources().getString(R.string.wallpaper));
+        drawerItem[0] = new BasicImgText(R.drawable.ic_launcher, getResources().getString(R.string.change_wallpaper_label));
         drawerItem[1] = new BasicImgText(R.drawable.ic_launcher, getResources().getString(R.string.reordena_button));
-        drawerItem[2] = new BasicImgText(R.drawable.settings, getResources().getString(R.string.system_settings));
+        drawerItem[2] = new BasicImgText(R.drawable.settings, getResources().getString(R.string.system_settings_label));
         mMenuList.setOnItemClickListener(new DrawerItemClickListener());
 
 

@@ -5,7 +5,7 @@
 
 
     <ImageView
-        android:id="@+id/imageDraggableIcon"
+        android:id="@+id/icon_image_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/default_app_icon"
@@ -15,13 +15,13 @@
 
 
     <TextView
-        android:id="@+id/textAppDraggable"
+        android:id="@+id/title_text_view"
         android:text="algo sdf,mb sdkf s"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center_vertical"
         android:layout_alignParentStart="false"
-        android:layout_toRightOf="@+id/imageDraggableIcon"
+        android:layout_toRightOf="@+id/icon_image_view"
         />
 
 

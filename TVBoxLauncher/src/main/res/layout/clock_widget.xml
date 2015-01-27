@@ -4,9 +4,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:padding="20dip"
-        android:focusable="false"
+        android:layout_marginTop="50dip"
         android:descendantFocusability="blocksDescendants"
+        android:focusable="false"
         android:orientation="vertical">
 
         <LinearLayout
@@ -14,40 +14,39 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/clock"
-            android:textColor="@android:color/white"
-            android:text="00:00am"
-            android:paddingRight="5dip"
-            android:textSize="70sp"
-            android:layout_gravity="center_horizontal" />
-            
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:contentDescription="Wifi"
-            android:id="@+id/wifi_icon"
-            android:src="@drawable/stat_sys_tether_wifi_0"/>
+            <TextView
+                android:id="@+id/clock"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/clock_default_time"
+                android:textColor="@color/blanco"
+                android:textSize="@dimen/clock_time_text_size" />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:contentDescription="Ethernet"
-            android:id="@+id/ethernet_icon"
-            android:src="@android:drawable/stat_notify_error"/>
+            <ImageView
+                android:id="@+id/wifi_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/clock_wifi_icon_description"
+                android:src="@drawable/stat_sys_tether_wifi_0" />
+
+            <ImageView
+                android:id="@+id/ethernet_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/clock_ethernet_icon_description"
+                android:src="@android:drawable/stat_notify_error" />
 
         </LinearLayout>
 
         <TextView
+            android:id="@+id/date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/date"
-            android:textColor="@android:color/white"
-            android:text="Jueves, 15 de Mayo de 2014"
-            android:textSize="17sp"
-            android:layout_gravity="center_horizontal" />
+            android:layout_gravity="center_horizontal"
+            android:text="@string/clock_default_date"
+            android:textColor="@color/blanco"
+            android:textSize="@dimen/clock_date_text_size" />
 
     </LinearLayout>
 </merge>

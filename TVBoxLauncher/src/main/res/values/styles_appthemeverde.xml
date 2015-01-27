@@ -3,75 +3,105 @@
 <!-- Generated with http://android-holo-colors.com -->
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-  <style name="AutoCompleteTextViewAppThemeVerde" parent="android:Widget.Holo.Light.AutoCompleteTextView">
-      <item name="android:dropDownSelector">@drawable/appthemeverde_list_selector_holo_light</item>
-	    <item name="android:background">@drawable/appthemeverde_edit_text_holo_light</item>
-  </style>
+    <style name="AutoCompleteTextViewAppThemeVerde" parent="android:Widget.Holo.Light.AutoCompleteTextView">
+        <item name="android:dropDownSelector">@drawable/appthemeverde_list_selector_holo_light</item>
+        <item name="android:background">@drawable/appthemeverde_edit_text_holo_light</item>
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:textColor">@color/blanco</item>
+    </style>
 
-  <style name="ButtonAppThemeVerde" parent="android:Widget.Holo.Light.Button">
-	  <item name="android:background">@drawable/appthemeverde_btn_default_holo_light</item>
-  </style>
+    <style name="TextViewAppThemeVerde" parent="android:Widget.TextView">
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:textColor">@color/blanco</item>
+    </style>
 
-  <style name="ImageButtonAppThemeVerde" parent="android:Widget.Holo.Light.ImageButton">
-	  <item name="android:background">@drawable/appthemeverde_btn_default_holo_light</item>
-  </style>
+    <style name="ButtonAppThemeVerde" parent="android:Widget.Holo.Light.Button">
+        <item name="android:textColor">@color/blanco</item>
+        <item name="android:background">@drawable/appthemeverde_btn_default_holo_light</item>
+        <item name="android:fontFamily">sans-serif-condensed</item>
+        <item name="android:textSize">@dimen/button_text_size</item>
+        <item name="android:minWidth">@dimen/button_min_width</item>
+    </style>
 
-  <style name="SpinnerAppThemeVerde" parent="android:Widget.Holo.Light.Spinner">
-      <item name="android:background">@drawable/appthemeverde_spinner_background_holo_light</item>
-      <item name="android:dropDownSelector">@drawable/appthemeverde_list_selector_holo_light</item>
-  </style>
+    <style name="ImageButtonAppThemeVerde" parent="android:Widget.Holo.Light.ImageButton">
+        <item name="android:background">@drawable/appthemeverde_btn_default_holo_light</item>
+    </style>
 
-  <style name="AppThemeVerde.TabView" parent="@android:style/Widget.Holo.ActionBar.TabView">
-      <item name="android:background">@drawable/apptheme_tab_indicator_holo</item>
-      <item name="android:layout_weight">1</item>
-     <item name="android:minWidth">80dip</item>
+    <style name="SpinnerAppThemeVerde" parent="android:Widget.Holo.Light.Spinner">
+        <item name="android:background">@drawable/appthemeverde_spinner_background_holo_light</item>
+        <item name="android:dropDownSelector">@drawable/appthemeverde_list_selector_holo_light
+        </item>
+    </style>
 
-  </style>
+    <style name="AppThemeVerde.TabView" parent="@android:style/Widget.Holo.ActionBar.TabView">
+        <item name="android:background">@drawable/apptheme_tab_indicator_holo</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:minWidth">80dip</item>
+    </style>
 
-  <style name="AppThemeVerde.TabWidget" parent="android:Widget.Holo.Light.TabWidget">
-      <item name="android:background">@color/verdeCLARO</item>
-      <item name="*android:tabLayout">@layout/appthemeverde_tab_indicator_holo</item>
-      <item name="android:showDividers">none</item>
-  </style>
+    <style name="AppThemeVerde.TabWidget" parent="android:Widget.Holo.Light.TabWidget">
+        <item name="android:background">@color/verdeCLARO</item>
+        <item name="*android:tabLayout">@layout/appthemeverde_tab_indicator_holo</item>
+        <item name="android:showDividers">none</item>
+    </style>
 
-  <style name="TabTextAppThemeVerde">
-	  <item name="android:textColor">@drawable/tab_selector</item>
-      <item name="android:textSize">12sp</item>
-      <item name="android:textStyle">bold</item>
-      <!-- v14 <item name="android:textAllCaps">true</item> -->
-      <item name="android:ellipsize">marquee</item>
-      <item name="android:maxLines">2</item>
-      <item name="android:maxWidth">180dip</item>
-  </style>
+    <style name="AppThemeVerde.EditText" parent="android:Widget.Holo.Light.EditText">
+        <item name="android:textColor">@color/blanco</item>
+    </style>
 
-  <style name="ProgressBarAppThemeVerde" parent="android:Widget.Holo.Light.ProgressBar.Horizontal">
-      <item name="android:progressDrawable">@drawable/appthemeverde_progress_horizontal_holo_light</item>
-      <item name="android:indeterminateDrawable">@drawable/appthemeverde_progress_indeterminate_horizontal_holo_light</item>
-  </style>
+    <style name="TabTextAppThemeVerde">
+        <item name="android:textColor">@drawable/tab_selector</item>
+        <item name="android:textSize">@dimen/right_panel_header_text_size</item>
+        <!-- v14 <item name="android:textAllCaps">true</item> -->
+        <item name="android:ellipsize">marquee</item>
+        <item name="android:maxLines">2</item>
+        <item name="android:maxWidth">180dip</item>
+    </style>
 
-  <style name="SeekBarAppThemeVerde" parent="android:Widget.Holo.Light.SeekBar">
-      <item name="android:progressDrawable">@drawable/appthemeverde_scrubber_progress_horizontal_holo_light</item>
-      <item name="android:indeterminateDrawable">@drawable/appthemeverde_scrubber_progress_horizontal_holo_light</item>
-      <item name="android:thumb">@drawable/appthemeverde_scrubber_control_selector_holo_light</item>
-  </style>
+    <style name="ProgressBarAppThemeVerde" parent="android:Widget.Holo.Light.ProgressBar.Horizontal">
+        <item name="android:progressDrawable">
+            @drawable/appthemeverde_progress_horizontal_holo_light
+        </item>
+        <item name="android:indeterminateDrawable">
+            @drawable/appthemeverde_progress_indeterminate_horizontal_holo_light
+        </item>
+    </style>
 
-  <style name="RatingBarAppThemeVerde" parent="android:Widget.Holo.Light.RatingBar">
-      <item name="android:progressDrawable">@drawable/appthemeverde_ratingbar_full_holo_light</item>
-      <item name="android:indeterminateDrawable">@drawable/appthemeverde_ratingbar_full_holo_light</item>
-  </style>
+    <style name="SeekBarAppThemeVerde" parent="android:Widget.Holo.Light.SeekBar">
+        <item name="android:progressDrawable">
+            @drawable/appthemeverde_scrubber_progress_horizontal_holo_light
+        </item>
+        <item name="android:indeterminateDrawable">
+            @drawable/appthemeverde_scrubber_progress_horizontal_holo_light
+        </item>
+        <item name="android:thumb">@drawable/appthemeverde_scrubber_control_selector_holo_light
+        </item>
+    </style>
 
-  <style name="RatingBarBigAppThemeVerde" parent="android:Widget.Holo.Light.RatingBar.Indicator">
-      <item name="android:progressDrawable">@drawable/appthemeverde_ratingbar_holo_light</item>
-      <item name="android:indeterminateDrawable">@drawable/appthemeverde_ratingbar_holo_light</item>
-  </style>
+    <style name="RatingBarAppThemeVerde" parent="android:Widget.Holo.Light.RatingBar">
+        <item name="android:progressDrawable">@drawable/appthemeverde_ratingbar_full_holo_light
+        </item>
+        <item name="android:indeterminateDrawable">
+            @drawable/appthemeverde_ratingbar_full_holo_light
+        </item>
+    </style>
 
-  <style name="RatingBarSmallAppThemeVerde" parent="android:Widget.Holo.Light.RatingBar.Small">
-      <item name="android:progressDrawable">@drawable/appthemeverde_ratingbar_small_holo_light</item>
-      <item name="android:indeterminateDrawable">@drawable/appthemeverde_ratingbar_small_holo_light</item>
-  </style>
+    <style name="RatingBarBigAppThemeVerde" parent="android:Widget.Holo.Light.RatingBar.Indicator">
+        <item name="android:progressDrawable">@drawable/appthemeverde_ratingbar_holo_light</item>
+        <item name="android:indeterminateDrawable">@drawable/appthemeverde_ratingbar_holo_light
+        </item>
+    </style>
 
-  <style name="ToggleAppThemeVerde" parent="android:Widget.Holo.Light.Button.Toggle">
-      <item name="android:background">@drawable/appthemeverde_btn_toggle_holo_light</item>
-  </style>
+    <style name="RatingBarSmallAppThemeVerde" parent="android:Widget.Holo.Light.RatingBar.Small">
+        <item name="android:progressDrawable">@drawable/appthemeverde_ratingbar_small_holo_light
+        </item>
+        <item name="android:indeterminateDrawable">
+            @drawable/appthemeverde_ratingbar_small_holo_light
+        </item>
+    </style>
+
+    <style name="ToggleAppThemeVerde" parent="android:Widget.Holo.Light.Button.Toggle">
+        <item name="android:background">@drawable/appthemeverde_btn_toggle_holo_light</item>
+    </style>
 
 </resources>

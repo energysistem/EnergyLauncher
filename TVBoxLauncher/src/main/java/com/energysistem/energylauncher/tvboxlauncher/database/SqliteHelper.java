@@ -6,7 +6,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 public class SqliteHelper extends SQLiteOpenHelper {
-    //ss
 
     public static final String TABLE_BOOKMARKS = "bookmarks";
     public static final String COLUMN_ID = "id";
