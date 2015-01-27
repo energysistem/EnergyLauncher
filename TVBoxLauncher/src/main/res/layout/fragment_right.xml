@@ -72,25 +72,6 @@
                                 android:text="TAB 2"/>
                         </LinearLayout>
 
-                        <LinearLayout
-                            android:id="@+id/tab3"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:contentDescription="HOME"
-                            android:nextFocusUp="@+id/tab3"
-                            android:nextFocusDown="@+id/fragment_menu_list"
-                            android:nextFocusLeft="@+id/tab2"
-                            android:nextFocusRight="@+id/tab1">
-
-                            <TextView
-                                android:id="@+id/textView3"
-                                android:layout_width="204dp"
-                                android:layout_height="match_parent"
-                                android:paddingLeft="10dp"
-                                android:text="TAB 3"
-                                android:visibility="gone" />
-                         </LinearLayout>
-
                      </FrameLayout>
 
 

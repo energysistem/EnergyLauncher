@@ -6,10 +6,12 @@
     android:padding="@dimen/menu_list_row_padding" >
 
     <CheckBox
-        android:layout_width="@dimen/row_icon_width"
-        android:layout_height="@dimen/row_icon_width"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:id="@+id/frame_checkbox"
-        android:layout_alignParentEnd="true"
+        android:clickable="false"
+        android:layout_toStartOf="@+id/arrow_image_view"
+        android:layout_centerVertical="true"
         android:focusable="false" />
 
     <ImageView
@@ -30,6 +32,26 @@
         android:textSize="@dimen/normal_text_size"
         android:layout_marginStart="@dimen/menu_list_row_start_padding"
         android:text="" />
+
+    <FrameLayout
+        android:id="@+id/arrow_image_view"
+        android:background="@drawable/row_selector_app_arrow"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginEnd="5dp"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:focusable="false"/>
+
+    <FrameLayout
+        android:id="@+id/arrow2_image_view"
+        android:background="@drawable/row_selector_app_arrow2"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginEnd="5dp"
+        android:layout_toStartOf="@+id/frame_checkbox"
+        android:layout_centerVertical="true"
+        android:focusable="false"/>
 
 </RelativeLayout >
 

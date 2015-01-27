@@ -9,7 +9,7 @@
 
     <!-- Clock -->
     <dimen name="clock_time_text_size">90sp</dimen>
-    <dimen name="clock_date_text_size">18sp</dimen>
+    <dimen name="clock_date_text_size">22sp</dimen>
 
     <!-- Notification Floating Icon -->
     <dimen name="floating_settings_icon_margin_top">60dp</dimen>

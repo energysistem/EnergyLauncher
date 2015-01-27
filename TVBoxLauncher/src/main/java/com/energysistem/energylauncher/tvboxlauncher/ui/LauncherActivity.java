@@ -1,25 +1,26 @@
 package com.energysistem.energylauncher.tvboxlauncher.ui;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
-
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.GridView;
 
 import com.energysistem.energylauncher.tvboxlauncher.LauncherAppState;
 import com.energysistem.energylauncher.tvboxlauncher.R;
+import com.energysistem.energylauncher.tvboxlauncher.broadcastreceiver.AppMenuReceiver;
+import com.energysistem.energylauncher.tvboxlauncher.broadcastreceiver.SettingsMenuReceiver;
 import com.energysistem.energylauncher.tvboxlauncher.database.BookmarkDAO;
 import com.energysistem.energylauncher.tvboxlauncher.modelo.AppInfo;
 import com.energysistem.energylauncher.tvboxlauncher.modelo.DraggableItemApp;
@@ -31,10 +32,8 @@ import com.energysistem.energylauncher.tvboxlauncher.ui.fragments.AppArrangeFrag
 import com.energysistem.energylauncher.tvboxlauncher.ui.fragments.AppListFragment;
 import com.energysistem.energylauncher.tvboxlauncher.ui.fragments.DesktopFragment;
 import com.energysistem.energylauncher.tvboxlauncher.ui.fragments.MenuListFragment;
-import com.energysistem.energylauncher.tvboxlauncher.ui.fragments.NotificationsFragment;
 import com.energysistem.energylauncher.tvboxlauncher.ui.fragments.OptionsLauncherFragment;
 import com.energysistem.energylauncher.tvboxlauncher.ui.fragments.RightFragment;
-import com.energysistem.energylauncher.tvboxlauncher.ui.views.StatusBarAdmin;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -150,17 +149,26 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
     }
 
     @Override
-         protected void onResume() {
-             super.onResume();
-           // statusBarAdmin.HideStatusBar();
-
-         }
+     protected void onResume() {
+        IntentFilter filterSettingsMenu = new IntentFilter();
+        filterSettingsMenu.setPriority(2147483647);
+        filterSettingsMenu.addAction(SettingsMenuReceiver.INTENT);
+        registerReceiver(mSettingsMenuReceiver, filterSettingsMenu);
+        IntentFilter filterAppMenu = new IntentFilter();
+        filterAppMenu.setPriority(2147483647);
+        filterAppMenu.addAction(AppMenuReceiver.INTENT);
+        registerReceiver(mAppMenuReceiver, filterAppMenu);
+         super.onResume();
+       // statusBarAdmin.HideStatusBar();
+     }
 
     @Override
     protected void onPause() {
+        unregisterReceiver(mAppMenuReceiver);
+        unregisterReceiver(mSettingsMenuReceiver);
+        desktopLayout.closeDrawers();
         super.onPause();
         //statusBarAdmin.ShowStatusBar();
-        desktopLayout.closeDrawers();
     }
 
     @Override
@@ -667,6 +675,24 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
             return new ArrayList<WebPageInfo>();
         }
     }
+
+    public BroadcastReceiver mAppMenuReceiver = new BroadcastReceiver() {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            toggleDrawer(appLayout);
+            setResultData("Stop");
+        }
+    };
+
+    public BroadcastReceiver mSettingsMenuReceiver = new BroadcastReceiver() {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            toggleDrawer(notificationLayout);
+            setResultData("Stop");
+        }
+    };
 
 
 

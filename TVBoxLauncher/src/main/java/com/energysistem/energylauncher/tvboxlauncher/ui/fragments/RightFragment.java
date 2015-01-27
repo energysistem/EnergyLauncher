@@ -458,8 +458,8 @@ public View onCreateView(LayoutInflater inflater, ViewGroup container, final Bun
 
 
     public void resetTab3() {
-        getFragmentManager().beginTransaction().replace(R.id.tab3,
-                mMenuListViewFragment).commit();
+//        getFragmentManager().beginTransaction().replace(R.id.tab3,
+//                mMenuListViewFragment).commit();
     }
 
     public List<AppInfo> getmAppInfosListAx(){

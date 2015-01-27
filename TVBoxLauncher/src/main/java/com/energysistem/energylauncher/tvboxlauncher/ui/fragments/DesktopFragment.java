@@ -14,6 +14,7 @@ import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.text.format.Time;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -69,8 +70,8 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
         View view = inflater.inflate(R.layout.fragment_desktop, container, false);
 
         //Margins
-        mMarginDesktopIcons = (int)getResources().getDimension(R.dimen.desktop_grid_margins);
-        mDesktopIconHeight = (int)getResources().getDimension(R.dimen.altura_desktop_icon);
+        mMarginDesktopIcons = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, getResources().getDimension(R.dimen.desktop_grid_margins), getResources().getDisplayMetrics());
+        mDesktopIconHeight = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, getResources().getDimension(R.dimen.altura_desktop_icon), getResources().getDisplayMetrics());
         mColumnsDesktop = getResources().getInteger(R.integer.num_columns_desktop);
 
         //GridWebShortcut desktop icons
@@ -85,6 +86,7 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
         gridAdapter = ((LauncherActivity) getActivity()).getGridDesktop();
         mFavoritesGrid = (GridView) view.findViewById(R.id.app_grid);
         mFavoritesGrid.setAdapter(gridAdapter);
+        mFavoritesGrid.setSmoothScrollbarEnabled(true);
         mFavoritesGrid.setOnItemClickListener(this);
         mFavoritesGrid.setOnItemSelectedListener(itemSelected);
         mFavoritesGrid.setOnFocusChangeListener(onAppgridSelecctionchange);
@@ -166,7 +168,7 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
         private void scrolleaGridView(int posicion, View v) {
             float posView = v.getY();
 
-            if (posView < (mDesktopIconHeight)) {
+            if (posView < mDesktopIconHeight) {
                 mFavoritesGrid.smoothScrollBy(-mDesktopIconHeight, 500);
             }
 
@@ -234,6 +236,7 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
         Metodos OnFocus de un ShortCutFavorito
     */
     private View vistaAnterior;
+    private int posicionAnterior = -1;
     private boolean recuperamosFoco;
     AdapterView.OnItemSelectedListener itemSelected = new AdapterView.OnItemSelectedListener() {
         @Override
@@ -244,10 +247,13 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
 
             deseleccionarView(vistaAnterior);
 
-            vistaAnterior =view;
+            vistaAnterior = view;
             seleccionarView(view);
 
-            scrolleaGridView(position, view);
+            if(posicionAnterior !=  position-1 && posicionAnterior != position+1)
+                //scrolleaGridView(position, view);
+
+            posicionAnterior = position;
         }
         @Override
         public void onNothingSelected(AdapterView<?> parent) {
@@ -276,7 +282,7 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
         if(vista == null)
             return;
         TransitionDrawable transition = (TransitionDrawable) vista.getBackground();
-        transition.startTransition(500);
+        transition.startTransition(250);
         /*if(vista!=null)
         {
             final ObjectAnimator backgroundColorAnimator = ObjectAnimator.ofObject(vista,

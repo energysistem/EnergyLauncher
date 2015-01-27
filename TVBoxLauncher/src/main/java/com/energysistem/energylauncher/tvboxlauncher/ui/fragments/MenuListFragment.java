@@ -14,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.energysistem.energylauncher.tvboxlauncher.R;
+import com.energysistem.energylauncher.tvboxlauncher.broadcastreceiver.SettingsMenuReceiver;
 import com.energysistem.energylauncher.tvboxlauncher.modelo.BasicImgText;
 import com.energysistem.energylauncher.tvboxlauncher.ui.LauncherActivity;
 import com.energysistem.energylauncher.tvboxlauncher.ui.adapters.BasicITAdapter;
@@ -103,7 +104,9 @@ public class MenuListFragment extends Fragment {
                     ((LauncherActivity)getActivity()).ShowReordenaDesktopAppsFragment();
                     break;
                 case 2:
-                    startActivity(new Intent(Settings.ACTION_SETTINGS));
+                    Intent newIntent = new Intent(Settings.ACTION_SETTINGS);
+                    newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    getActivity().startActivity(newIntent);
                     break;
                 default:
                     break;
