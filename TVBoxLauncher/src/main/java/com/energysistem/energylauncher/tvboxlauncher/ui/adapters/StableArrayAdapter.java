@@ -53,8 +53,8 @@ public class StableArrayAdapter extends ArrayAdapter<DraggableItemApp> {
         LayoutInflater inflater = ((Activity) mContext).getLayoutInflater();
         listItem = inflater.inflate(layoutResourceId, parent, false);
 
-        ImageView imageViewIcon = (ImageView) listItem.findViewById(R.id.imageDraggableIcon);
-        TextView textViewName = (TextView) listItem.findViewById(R.id.textAppDraggable);
+        ImageView imageViewIcon = (ImageView) listItem.findViewById(R.id.icon_image_view);
+        TextView textViewName = (TextView) listItem.findViewById(R.id.title_text_view);
 
         DraggableItemApp item = mListaApps.get(position);
 

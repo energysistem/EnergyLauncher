@@ -36,8 +36,8 @@ public class BasicITAdapter extends ArrayAdapter<BasicImgText> {
         LayoutInflater inflater = ((Activity) mContext).getLayoutInflater();
         listItem = inflater.inflate(layoutResourceId, parent, false);
 
-        ImageView imageViewIcon = (ImageView) listItem.findViewById(R.id.imageMenuIcon);
-        TextView textViewName = (TextView) listItem.findViewById(R.id.textMenuName);
+        ImageView imageViewIcon = (ImageView) listItem.findViewById(R.id.icon_image_view);
+        TextView textViewName = (TextView) listItem.findViewById(R.id.title_text_view);
 
         BasicImgText folder = data[position];
 

@@ -17,7 +17,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/AppThemeVerde.TabView"
     android:layout_width="0dp"
-    android:layout_height="?android:attr/actionBarSize"
+    android:layout_height="@dimen/altura_header_panel"
     android:orientation="horizontal"
     android:gravity="center">
 

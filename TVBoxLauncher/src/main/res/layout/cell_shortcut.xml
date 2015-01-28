@@ -1,11 +1,10 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/cell_shortcut_container"
     android:layout_width="fill_parent"
-
     android:padding="10dp"
     android:paddingBottom="5dp"
     android:orientation="vertical"
-    android:background="@color/desktop_icon_background"
+    android:background="@drawable/shorcut_background_transition"
     android:minHeight="@dimen/altura_desktop_icon"
     android:layout_height="@dimen/altura_desktop_icon">
 
@@ -23,13 +22,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:singleLine="true"
-        android:text="New Text"
+        android:text=""
         android:textSize="16sp"
         android:id="@+id/title"
         android:layout_alignParentBottom="true"
-        android:layout_gravity="left|bottom"
+        android:layout_gravity="start|bottom"
         android:focusable="false"
-        android:textColor="@color/grey"
+        android:textColor="@drawable/shortcut_text_color_selector"
+        android:textColorHint="@color/grey"
 />
 
 </RelativeLayout>

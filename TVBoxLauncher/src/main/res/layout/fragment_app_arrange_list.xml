@@ -21,9 +21,11 @@
 
     <com.energysistem.energylauncher.tvboxlauncher.ui.views.DynamicDraggingListView
         android:id="@+id/draggable_listview"
-        android:background="#0000"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:verticalSpacing="@dimen/menu_list_vertical_spacing"
+        android:dividerHeight="@dimen/menu_list_divider_height"
+        android:background="@color/black_grey"
         android:layout_below="@+id/btnGuardaCambios" />
 
 

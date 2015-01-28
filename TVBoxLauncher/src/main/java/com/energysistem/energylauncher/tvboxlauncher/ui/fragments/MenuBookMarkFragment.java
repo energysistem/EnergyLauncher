@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ListView;
@@ -200,7 +201,7 @@ public class MenuBookMarkFragment  extends Fragment
 
         //Colocamos el listItem anterior como estaba
         View viewOld = mlistViewWebshorts.getChildAt(mAdapter.getLastSelectedItem()- mlistViewWebshorts.getFirstVisiblePosition());
-        FrameLayout frameOld = (FrameLayout) viewOld.findViewById(R.id.frame_checkboxWeb);
+        CheckBox frameOld = (CheckBox) viewOld.findViewById(R.id.frame_checkboxWeb);
         Log.e("-------------updateView()", "-----------listItem anterior---");
 
         if(mListWebPage.get(mAdapter.getLastSelectedItem()).checked){Log.e("IF 1", "----------TRUE---");}else{Log.e("IF 1", "----------FALSE---");}
@@ -210,14 +211,14 @@ public class MenuBookMarkFragment  extends Fragment
         Log.e("Color capturado",Integer.toString(mAdapter.getFrameCheckBoxView(mListWebPage.get(mAdapter.getLastSelectedItem()).checked)));
         if(mAdapter.getFrameCheckBoxView(mListWebPage.get(mAdapter.getLastSelectedItem()).checked)==R.color.black_overlay){Log.e("IF 2", "----------TRUE- colorblacK--");}else{Log.e("IF 1", "----------FALSE---"+mAdapter.getFrameCheckBoxView(mListWebPage.get(mAdapter.getLastSelectedItem()).checked));}
 
-        frameOld.setBackgroundColor(mAdapter.getFrameCheckBoxView(mListWebPage.get(mAdapter.getLastSelectedItem()).checked));
+        frameOld.setChecked(mListWebPage.get(mAdapter.getLastSelectedItem()).checked);
 
         //En caso que dejemos el modo seleccion colocamos el check como estaba
         if (!mAdapter.getModeCheckBoxSelection()){
             View v = mlistViewWebshorts.getChildAt(mlistViewWebshorts.getSelectedItemPosition() - mlistViewWebshorts.getFirstVisiblePosition());
-            FrameLayout frame = (FrameLayout) v.findViewById(R.id.frame_checkboxWeb);
+            CheckBox frame = (CheckBox) v.findViewById(R.id.frame_checkboxWeb);
             Log.e("-------------updateView()", "----------el check como estaba---");
-            frame.setBackgroundColor(mAdapter.getFrameCheckBoxView(mListWebPage.get(mAdapter.getSelectedItem()).checked));
+            frame.setChecked(mListWebPage.get(mAdapter.getSelectedItem()).checked);
             return;
         }
 
@@ -227,9 +228,9 @@ public class MenuBookMarkFragment  extends Fragment
         if (v == null)
             return;
 
-        FrameLayout frame = (FrameLayout) v.findViewById(R.id.frame_checkboxWeb);
+        CheckBox frame = (CheckBox) v.findViewById(R.id.frame_checkboxWeb);
         Log.e("-------------updateView()", "-----------ChekBox ACTUAL---");
-        frame.setBackgroundColor(mAdapter.getFrameCheckBoxView(false));
+        frame.setChecked(false);
 
     }
 
