@@ -1,5 +1,4 @@
 <resources>
-
     <color name="black_overlay">#66000000</color>
     <color name="black_grey">#ff262626</color>
     <color name="grey">#ff4e4e4e</color>
@@ -13,5 +12,7 @@
     <color name="grisMEDIO">#777777</color>
     <color name="grisCLARO">#aaaaaa</color>
     <color name="rojo">#cc0000</color>
-    <color name="blanco">#eeeeee</color>
+    <color name="blanco">#ffeeeeee</color>
+    <color name="transparent">#00ffffff</color>
+    <color name="translucent_white">#49ffffff</color>
 </resources>

@@ -14,10 +14,6 @@
 
     <string name="tab1">APPS</string>
     <string name="tab2">BOOKMARKS</string>
-    <string name="tab3">SETTINGS</string>
-    <string name="system_settings">"System Settings"</string>
-    <string name="launcher_settings">"Launcher Settings"</string>
-    <string name="wallpaper">"Change Wallpaper"</string>
     <string name="back">"Back"</string>
     <string name="busca_imagen">"Selecciona foto"</string>
     <string name="cancel">"Cancelar"</string>
@@ -26,7 +22,23 @@
     <string name="bookmark_duplicado">Marcador duplicado</string>
     <string name="titulo_vacio">Título vacío</string>
     <string name="url_vacia">Url vacia</string>
-    <string name="panel_notificaciones">Ajustes</string>
-    <string name="descr_icono_not">icono notificaciones</string>
+
+    <!-- Clock -->
+    <string name="clock_default_time">00:00am</string>
+    <string name="clock_wifi_icon_description">WiFi</string>
+    <string name="clock_ethernet_icon_description">Ethernet</string>
+    <string name="clock_default_date">Jueves, 15 de Mayo de 2014</string>
+
+    <!-- Settings Panel -->
+    <string name="settings_panel_title">SETTINGS</string>
+    <string name="floating_settings_icon_description">Settings Icon</string>
+    <string name="system_settings_label">System Settings</string>
+    <string name="launcher_settings_label">Launcher Settings</string>
+    <string name="change_wallpaper_label">Change Wallpaper</string>
+
+    <!-- Bookmarks Panel -->
+    <string name="save_button">Save</string>
+    <string name="name_form_tag">Name</string>
+    <string name="url_form_tag">Url</string>
 
 </resources>

@@ -28,6 +28,7 @@
         import android.widget.BaseAdapter;
         import android.widget.ListView;
 
+        import com.energysistem.energylauncher.tvboxlauncher.R;
         import com.energysistem.energylauncher.tvboxlauncher.modelo.DraggableItemApp;
         import com.energysistem.energylauncher.tvboxlauncher.ui.adapters.StableArrayAdapter;
 
@@ -393,7 +394,7 @@ public class DynamicDraggingListView extends ListView {
         Paint paint = new Paint();
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeWidth(LINE_THICKNESS);
-        paint.setColor(Color.BLACK);
+        paint.setColor(getResources().getColor(R.color.verdeCLARO));
 
         can.drawBitmap(bitmap, 0, 0, null);
         can.drawRect(rect, paint);

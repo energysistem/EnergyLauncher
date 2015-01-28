@@ -9,14 +9,13 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:background="@color/verdeCLARO"
-            android:layout_height="75dp">
+            android:layout_height="@dimen/altura_header_panel">
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:textColor="@color/blanco"
-                android:textSize="18dp"
-                android:layout_marginLeft="20dp"
-                android:text="@string/panel_notificaciones"
+                android:textSize="@dimen/right_panel_header_text_size"
+                android:layout_marginStart="@dimen/panel_header_margin_start"
+                android:text="@string/settings_panel_title"
                 android:gravity="center_vertical" />
         </LinearLayout>
         <FrameLayout
@@ -25,26 +24,27 @@
             android:layout_height="wrap_content">
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content">
                 <ListView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:dividerHeight="1dp"
+                    android:verticalSpacing="@dimen/menu_list_vertical_spacing"
+                    android:dividerHeight="@dimen/menu_list_divider_height"
+                    android:background="@color/black_grey"
                     android:id="@+id/menu_list"/>
             </LinearLayout>
         </FrameLayout>
     </LinearLayout>
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/tamano_icono_not">
+        android:layout_height="wrap_content">
         <ImageView
-            android:src="@drawable/notification_bell_red_static"
+            android:src="@drawable/ic_settings"
             android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:contentDescription="@string/descr_icono_not" />
+            android:layout_marginTop="@dimen/floating_settings_icon_margin_top"
+            android:layout_marginEnd="@dimen/floating_settings_icon_margin_end"
+            android:layout_width="@dimen/floating_settings_icon_width"
+            android:layout_height="@dimen/floating_settings_icon_width"
+            android:contentDescription="@string/floating_settings_icon_description" />
     </RelativeLayout>
 </RelativeLayout>

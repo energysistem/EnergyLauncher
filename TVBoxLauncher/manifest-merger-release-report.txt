@@ -40,75 +40,107 @@ MERGED from com.android.support:appcompat-v7:19.1.0:19:5
 	android:theme
 		ADDED from AndroidManifest.xml:14:9
 activity#com.energysistem.energylauncher.tvboxlauncher.ui.LauncherActivity
-ADDED from AndroidManifest.xml:16:9
+ADDED from AndroidManifest.xml:15:9
 	android:screenOrientation
-		ADDED from AndroidManifest.xml:24:13
-	android:label
-		ADDED from AndroidManifest.xml:20:13
-	android:configChanges
-		ADDED from AndroidManifest.xml:19:13
-	android:theme
-		ADDED from AndroidManifest.xml:17:13
-	android:stateNotNeeded
-		ADDED from AndroidManifest.xml:23:13
-	android:clearTaskOnLaunch
-		ADDED from AndroidManifest.xml:22:13
-	android:name
-		ADDED from AndroidManifest.xml:18:13
-	android:launchMode
 		ADDED from AndroidManifest.xml:21:13
+	android:label
+		ADDED from AndroidManifest.xml:19:13
+	android:configChanges
+		ADDED from AndroidManifest.xml:18:13
+	android:theme
+		ADDED from AndroidManifest.xml:23:13
+	android:stateNotNeeded
+		ADDED from AndroidManifest.xml:22:13
+	android:clearTaskOnLaunch
+		ADDED from AndroidManifest.xml:17:13
+	android:name
+		ADDED from AndroidManifest.xml:16:13
+	android:launchMode
+		ADDED from AndroidManifest.xml:20:13
 intent-filter#android.intent.action.MAIN+android.intent.category.LAUNCHER
-ADDED from AndroidManifest.xml:26:13
+ADDED from AndroidManifest.xml:24:13
 action#android.intent.action.MAIN
+ADDED from AndroidManifest.xml:25:17
+	android:name
+		ADDED from AndroidManifest.xml:25:25
+category#android.intent.category.LAUNCHER
 ADDED from AndroidManifest.xml:27:17
 	android:name
-		ADDED from AndroidManifest.xml:27:25
-category#android.intent.category.LAUNCHER
-ADDED from AndroidManifest.xml:28:17
-	android:name
-		ADDED from AndroidManifest.xml:28:27
+		ADDED from AndroidManifest.xml:27:27
 intent-filter#android.intent.action.MAIN+android.intent.category.DEFAULT+android.intent.category.HOME
-ADDED from AndroidManifest.xml:31:13
+ADDED from AndroidManifest.xml:29:13
 category#android.intent.category.HOME
+ADDED from AndroidManifest.xml:32:17
+	android:name
+		ADDED from AndroidManifest.xml:32:27
+category#android.intent.category.DEFAULT
 ADDED from AndroidManifest.xml:33:17
 	android:name
 		ADDED from AndroidManifest.xml:33:27
-category#android.intent.category.DEFAULT
-ADDED from AndroidManifest.xml:34:17
-	android:name
-		ADDED from AndroidManifest.xml:34:27
 activity#com.energysistem.energylauncher.tvboxlauncher.ui.ImagePickerActivity
-ADDED from AndroidManifest.xml:37:9
+ADDED from AndroidManifest.xml:36:9
 	android:screenOrientation
-		ADDED from AndroidManifest.xml:45:13
-	android:label
-		ADDED from AndroidManifest.xml:41:13
-	android:configChanges
-		ADDED from AndroidManifest.xml:40:13
-	android:theme
-		ADDED from AndroidManifest.xml:38:13
-	android:stateNotNeeded
-		ADDED from AndroidManifest.xml:44:13
-	android:clearTaskOnLaunch
-		ADDED from AndroidManifest.xml:43:13
-	android:name
-		ADDED from AndroidManifest.xml:39:13
-	android:launchMode
 		ADDED from AndroidManifest.xml:42:13
-service#com.energysistem.energylauncher.tvboxlauncher.util.NLService
-ADDED from AndroidManifest.xml:49:9
 	android:label
-		ADDED from AndroidManifest.xml:50:13
+		ADDED from AndroidManifest.xml:40:13
+	android:configChanges
+		ADDED from AndroidManifest.xml:39:13
+	android:theme
+		ADDED from AndroidManifest.xml:44:13
+	android:stateNotNeeded
+		ADDED from AndroidManifest.xml:43:13
+	android:clearTaskOnLaunch
+		ADDED from AndroidManifest.xml:38:13
+	android:name
+		ADDED from AndroidManifest.xml:37:13
+	android:launchMode
+		ADDED from AndroidManifest.xml:41:13
+service#com.energysistem.energylauncher.tvboxlauncher.util.NLService
+ADDED from AndroidManifest.xml:47:9
+	android:label
+		ADDED from AndroidManifest.xml:49:13
 	android:permission
-		ADDED from AndroidManifest.xml:51:13
+		ADDED from AndroidManifest.xml:50:13
 	android:name
-		ADDED from AndroidManifest.xml:49:18
+		ADDED from AndroidManifest.xml:48:13
 intent-filter#android.service.notification.NotificationListenerService
-ADDED from AndroidManifest.xml:52:13
+ADDED from AndroidManifest.xml:51:13
 action#android.service.notification.NotificationListenerService
-ADDED from AndroidManifest.xml:53:17
+ADDED from AndroidManifest.xml:52:17
 	android:name
-		ADDED from AndroidManifest.xml:53:25
+		ADDED from AndroidManifest.xml:52:25
+receiver#com.energysistem.energylauncher.tvboxlauncher.broadcastreceiver.SettingsMenuReceiver
+ADDED from AndroidManifest.xml:56:9
+	android:exported
+		ADDED from AndroidManifest.xml:59:13
+	android:enabled
+		ADDED from AndroidManifest.xml:58:13
+	android:name
+		ADDED from AndroidManifest.xml:57:13
+intent-filter#com.energysistem.energylauncher.tvboxlauncher.SETTINGS
+ADDED from AndroidManifest.xml:60:13
+	android:priority
+		ADDED from AndroidManifest.xml:60:28
+action#com.energysistem.energylauncher.tvboxlauncher.SETTINGS
+ADDED from AndroidManifest.xml:61:17
+	android:name
+		ADDED from AndroidManifest.xml:61:25
+receiver#com.energysistem.energylauncher.tvboxlauncher.broadcastreceiver.AppMenuReceiver
+ADDED from AndroidManifest.xml:64:9
+	android:exported
+		ADDED from AndroidManifest.xml:67:13
+	android:enabled
+		ADDED from AndroidManifest.xml:66:13
+	android:name
+		ADDED from AndroidManifest.xml:65:13
+intent-filter#com.energysistem.energylauncher.tvboxlauncher.APPS
+ADDED from AndroidManifest.xml:68:13
+	android:priority
+		ADDED from AndroidManifest.xml:68:28
+action#com.energysistem.energylauncher.tvboxlauncher.APPS
+ADDED from AndroidManifest.xml:69:17
+	android:name
+		ADDED from AndroidManifest.xml:69:25
 uses-sdk
 INJECTED from AndroidManifest.xml:0:0 reason: use-sdk injection requested
 MERGED from com.android.support:gridlayout-v7:19.1.0:18:5

@@ -1,26 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:background="@drawable/row_selector_notification"
     android:layout_height="wrap_content"
-    android:padding="10dp" >
+    android:padding="@dimen/menu_list_row_padding" >
 
     <ImageView
-        android:id="@+id/imageMenuIcon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
+        android:id="@+id/icon_image_view"
+        android:layout_width="@dimen/row_icon_width"
+        android:layout_height="@dimen/row_icon_width"
+        android:scaleType="fitXY"
+        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:paddingRight="10dp" />
+        android:layout_marginStart="@dimen/menu_list_row_start_padding"/>
 
     <TextView
-        android:id="@+id/textMenuName"
+        android:id="@+id/title_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_toRightOf="@+id/imageMenuIcon"
-        android:textSize="22dp"
-        android:paddingRight="10dp"
-        android:text="Folder name here."
-        android:textColor="#ffffff" />
+        android:layout_toEndOf="@+id/icon_image_view"
+        android:textSize="@dimen/normal_text_size"
+        android:layout_marginStart="@dimen/menu_list_row_start_padding"
+        android:text=""
+        android:textColor="@drawable/shortcut_text_color_selector"/>
 
 </RelativeLayout>

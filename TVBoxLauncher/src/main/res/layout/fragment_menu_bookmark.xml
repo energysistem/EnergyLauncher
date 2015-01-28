@@ -1,58 +1,57 @@
-<LinearLayout
-    android:orientation="vertical"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/lol"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@color/grisOSCURO"
-    android:padding="10dp"
-    android:id="@+id/lol"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:orientation="vertical"
+    android:padding="10dp">
 
 
-          <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Name"
-            android:textColor="#ffffff"
-            android:textSize="22sp"
-            android:id="@+id/menuBookmarkLblName"
-            android:focusable="false"/>
-        <EditText
-            android:id="@+id/menuBookmarkTxtName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="#ffffff"
-            android:textSize="22sp"
-            android:nextFocusUp="@+id/tab2"
-            android:nextFocusDown="@+id/menuBookmarkTxtUri"/>
+    <TextView
+        android:id="@+id/menuBookmarkLblName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:focusable="false"
+        android:text="@string/name_form_tag"
+        android:textSize="@dimen/normal_text_size" />
 
+    <EditText
+        android:id="@+id/menuBookmarkTxtName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:nextFocusDown="@+id/menuBookmarkTxtUri"
+        android:nextFocusUp="@+id/tab2"
+        android:textSize="@dimen/normal_text_size"
+        android:textColor="@color/blanco"/>
 
-        <TextView
-            android:id="@+id/menuBookmarklblUri"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Uri:"
-            android:textColor="#ffffff"
-            android:textSize="22sp"
-            android:focusable="false"/>
-        <EditText
-            android:id="@+id/menuBookmarkTxtUri"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="http://"
-            android:textColor="#ffffff"
-            android:textSize="22sp"
-            android:inputType="textUri"
-            android:nextFocusUp="@+id/menuBookmarkTxtName"
-            android:nextFocusDown="@+id/menuBookmarkBtn"/>
+    <TextView
+        android:id="@+id/menuBookmarklblUri"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/form_section_padding"
+        android:focusable="false"
+        android:text="@string/url_form_tag"
+        android:textSize="22sp" />
 
-        <Button
-            android:id="@+id/menuBookmarkBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Save"
-            android:textSize="22sp"
-            android:layout_gravity="right"
-            android:nextFocusDown="@+id/listViewLinks"/>
+    <EditText
+        android:id="@+id/menuBookmarkTxtUri"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textUri"
+        android:nextFocusDown="@+id/menuBookmarkBtn"
+        android:nextFocusUp="@+id/menuBookmarkTxtName"
+        android:text="http://"
+        android:textSize="22sp"
+        android:textColor="@color/blanco"/>
+
+    <Button
+        android:id="@+id/menuBookmarkBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/form_section_padding"
+        android:layout_gravity="end"
+        android:nextFocusDown="@+id/listViewLinks"
+        android:text="@string/save_button" />
 
     <ListView
         android:id="@+id/listViewLinks"
@@ -60,7 +59,7 @@
         android:layout_height="fill_parent"
         android:layout_gravity="center_horizontal"
         android:nextFocusDown="@+id/menuBookmarkList"
-        android:nextFocusRight="@+id/listViewLinks"/>
+        android:nextFocusRight="@+id/listViewLinks" />
 
 
 </LinearLayout>

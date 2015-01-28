@@ -41,7 +41,7 @@ public class AppCheckBoxAdapter extends ArrayAdapter {
             v = mLayoutInflater.inflate(R.layout.row_app_checkbox, parent, false);
             holder = new ViewHolder();
 
-            holder.frame = (FrameLayout) v.findViewById(R.id.frame_checkbox);
+            //holder.frame = (FrameLayout) v.findViewById(R.id.frame_checkbox);
             holder.checkBox = (CheckBox) v.findViewById(R.id.checkBoxApp);
 
             v.setTag(holder);

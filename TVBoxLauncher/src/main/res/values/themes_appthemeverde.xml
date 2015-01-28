@@ -46,6 +46,8 @@
 
     <item name="android:fastScrollThumbDrawable">@drawable/appthemeverde_fastscroll_thumb_holo</item>
 
+    <item name="android:textViewStyle">@style/TextViewAppThemeVerde</item>
+
   </style>
 
     <style name="_AppThemeVerde.NoTitleBar" parent="android:Theme.Wallpaper.NoTitleBar.Fullscreen">
@@ -86,6 +88,8 @@
         <item name="android:activatedBackgroundIndicator">@drawable/appthemeverde_activated_background_holo_light</item>
 
         <item name="android:fastScrollThumbDrawable">@drawable/appthemeverde_fastscroll_thumb_holo</item>
+
+        <item name="android:textViewStyle">@style/TextViewAppThemeVerde</item>
 
     </style>
 

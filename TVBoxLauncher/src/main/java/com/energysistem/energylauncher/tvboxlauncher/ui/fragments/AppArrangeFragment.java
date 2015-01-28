@@ -53,7 +53,7 @@ public class AppArrangeFragment extends Fragment {
         CreaListaFiltradaOrdenada();
 
         mAdapter = new StableArrayAdapter(view.getContext(),
-                R.layout.row_app_draggable, mListAppsDragablesOrdenada);
+                R.layout.row_menu, mListAppsDragablesOrdenada);
         mListView = (DynamicDraggingListView) view.findViewById(R.id.draggable_listview);
         mBtnGuardar = (Button) view.findViewById(R.id.btnGuardaCambios);
 

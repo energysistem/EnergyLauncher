@@ -2,9 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.energysistem.energylauncher.tvboxlauncher" >
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.SET_WALLPAPER"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.SET_WALLPAPER" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
     <application
@@ -12,48 +12,63 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppThemeVerde" >
-
         <activity
-            android:theme="@style/AppThemeVerde.NoTitleBar"
-            android:name=".ui.LauncherActivity"
+            android:name="com.energysistem.energylauncher.tvboxlauncher.ui.LauncherActivity"
+            android:clearTaskOnLaunch="true"
             android:configChanges="mcc|mnc|locale|touchscreen|navigation|screenLayout|screenLayout|uiMode|keyboard|keyboardHidden|orientation|screenSize|smallestScreenSize"
             android:label="@string/app_name"
             android:launchMode="singleTask"
-            android:clearTaskOnLaunch="true"
+            android:screenOrientation="landscape"
             android:stateNotNeeded="true"
-            android:screenOrientation="landscape">
-
+            android:theme="@style/AppThemeVerde.NoTitleBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.HOME" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <activity
-            android:theme="@style/AppThemeVerde.NoTitleBar"
-            android:name=".ui.ImagePickerActivity"
+            android:name="com.energysistem.energylauncher.tvboxlauncher.ui.ImagePickerActivity"
+            android:clearTaskOnLaunch="true"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/app_name"
             android:launchMode="singleTask"
-            android:clearTaskOnLaunch="true"
+            android:screenOrientation="landscape"
             android:stateNotNeeded="true"
-            android:screenOrientation="landscape">
-
+            android:theme="@style/AppThemeVerde.NoTitleBar" >
         </activity>
 
-        <service android:name="com.energysistem.energylauncher.tvboxlauncher.util.NLService"
+        <service
+            android:name="com.energysistem.energylauncher.tvboxlauncher.util.NLService"
             android:label="@string/app_name"
-            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
+            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE" >
             <intent-filter>
                 <action android:name="android.service.notification.NotificationListenerService" />
             </intent-filter>
         </service>
 
+        <receiver
+            android:name="com.energysistem.energylauncher.tvboxlauncher.broadcastreceiver.SettingsMenuReceiver"
+            android:enabled="true"
+            android:exported="true" >
+            <intent-filter android:priority="1">
+                <action android:name="com.energysistem.energylauncher.tvboxlauncher.SETTINGS" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name="com.energysistem.energylauncher.tvboxlauncher.broadcastreceiver.AppMenuReceiver"
+            android:enabled="true"
+            android:exported="true" >
+            <intent-filter android:priority="1">
+                <action android:name="com.energysistem.energylauncher.tvboxlauncher.APPS" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

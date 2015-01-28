@@ -1,6 +1,5 @@
 package com.energysistem.energylauncher.tvboxlauncher.ui.adapters;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.drawable.BitmapDrawable;
@@ -9,16 +8,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
+import android.widget.CheckBox;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.energysistem.energylauncher.tvboxlauncher.R;
-import com.energysistem.energylauncher.tvboxlauncher.modelo.ShortcutInfo;
 import com.energysistem.energylauncher.tvboxlauncher.modelo.WebPageInfo;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -93,11 +90,12 @@ public class WebShortcutAdapter extends ArrayAdapter<WebPageInfo>{
             view = mLayoutInflater.inflate(R.layout.row_web_shortcut, parent, false);
             holder = new ViewHolder();
 
-            holder.image = (ImageView) view.findViewById(R.id.webImage);
+            holder.image = (ImageView) view.findViewById(R.id.icon_image_view);
             holder.title = (TextView) view.findViewById(R.id.webTitulo);
             holder.url = (TextView) view.findViewById(R.id.webUrl);
-            //hola, adri
-            holder.frameLayout = (FrameLayout) view.findViewById(R.id.frame_checkboxWeb);
+            holder.checkBox = (CheckBox) view.findViewById(R.id.frame_checkboxWeb);
+            holder.arrow = (FrameLayout) view.findViewById(R.id.arrow_image_view);
+            holder.arrow2 = (FrameLayout) view.findViewById(R.id.arrow2_image_view);
 
             view.setTag(holder);
         } else {
@@ -111,18 +109,23 @@ public class WebShortcutAdapter extends ArrayAdapter<WebPageInfo>{
         holder.title.setText(info.getTitle());
         holder.url.setText(info.getPageUrl().toString());
 
-        if (checkBoxSelected)
-            holder.frameLayout.setVisibility(View.VISIBLE);
-        else
-            holder.frameLayout.setVisibility(View.INVISIBLE);
+        if (checkBoxSelected) {
+            holder.checkBox.setVisibility(View.VISIBLE);
+            holder.arrow.setVisibility(View.INVISIBLE);
+            holder.arrow2.setVisibility(View.VISIBLE);
+        } else {
+            holder.checkBox.setVisibility(View.INVISIBLE);
+            holder.arrow.setVisibility(View.VISIBLE);
+            holder.arrow2.setVisibility(View.INVISIBLE);
+        }
 
         Log.e("-------------AppAdapter", "----holder Time-----");
-        holder.frameLayout.setBackgroundColor(getFrameCheckBoxView(info.checked));
+        holder.checkBox.setChecked(info.checked);
 
 
-        holder.frameLayout.setOnClickListener(this.onCkeckBoxClickListener);
+        holder.checkBox.setOnClickListener(this.onCkeckBoxClickListener);
 
-        holder.frameLayout.setOnClickListener(new View.OnClickListener() {
+        holder.checkBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.i("onclickListener", "framelayout " + position);
@@ -184,8 +187,9 @@ public class WebShortcutAdapter extends ArrayAdapter<WebPageInfo>{
         ImageView image;
         TextView title;
         TextView url;
-
-        FrameLayout frameLayout;
+        CheckBox checkBox;
+        FrameLayout arrow;
+        FrameLayout arrow2;
     }
 
 
