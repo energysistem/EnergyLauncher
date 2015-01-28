@@ -30,6 +30,7 @@
         android:layout_centerVertical="true"
         android:layout_toEndOf="@+id/icon_image_view"
         android:textSize="@dimen/normal_text_size"
+        android:textColor="@drawable/shortcut_text_color_selector"
         android:layout_marginStart="@dimen/menu_list_row_start_padding"
         android:text="" />
 
