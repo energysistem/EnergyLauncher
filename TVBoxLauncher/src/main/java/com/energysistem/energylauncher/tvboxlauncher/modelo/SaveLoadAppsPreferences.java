@@ -163,7 +163,7 @@ public class SaveLoadAppsPreferences {
             //La qutamos de la lista global
             listaFavoritos.remove(nombre);
             Log.e("Despues",listaFavoritos.toString());
-            //Volvemos a alamacenar la lista
+            //Volvemos a alamacenar la listaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
             guardaFavArray(listaFavoritos);
             return true;
         }
