@@ -31,6 +31,35 @@ public class AppInfo extends ShortcutInfo {
     private long firstInstallTime;
     private int flags = 0;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        AppInfo appInfo = (AppInfo) o;
+
+        if (firstInstallTime != appInfo.firstInstallTime) return false;
+        if (flags != appInfo.flags) return false;
+        if (checked != null ? !checked.equals(appInfo.checked) : appInfo.checked != null)
+            return false;
+        if (componentName != null ? !componentName.equals(appInfo.componentName) : appInfo.componentName != null)
+            return false;
+        if (packageName != null ? !packageName.equals(appInfo.packageName) : appInfo.packageName != null)
+            return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = packageName != null ? packageName.hashCode() : 0;
+        result = 31 * result + (componentName != null ? componentName.hashCode() : 0);
+        result = 31 * result + (checked != null ? checked.hashCode() : 0);
+        result = 31 * result + (int) (firstInstallTime ^ (firstInstallTime >>> 32));
+        result = 31 * result + flags;
+        return result;
+    }
+
     public AppInfo(PackageManager pm, ResolveInfo info, IconCache iconCache,
                    HashMap<Object, CharSequence> labelCache) {
         this.packageName = info.activityInfo.applicationInfo.packageName;

@@ -41,7 +41,10 @@ public class WebPageInfo extends ShortcutInfo {
 
     @Override
     public boolean equals(Object o) {
-        return this.getTitle().equals(((WebPageInfo) o).getTitle());
+        if(!(o instanceof WebPageInfo))
+            return false;
+        else
+            return this.getName().equals(((WebPageInfo) o).getName());
     }
 
     @Override

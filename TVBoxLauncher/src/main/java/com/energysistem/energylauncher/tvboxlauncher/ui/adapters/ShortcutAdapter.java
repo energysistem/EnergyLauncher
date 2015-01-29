@@ -61,23 +61,50 @@ public class ShortcutAdapter extends BaseAdapter  {
         return -1;
     }
 
-    public void addItem(ShortcutInfo i) {
-        if (i instanceof WebPageInfo) {
-                Log.e("metemos",i.toString());
-                if(data.size() < ((WebPageInfo) i).getPosi()-1)
+    public void addItem(ShortcutInfo app) {
+        if (app instanceof WebPageInfo) {
+            boolean contiene = false;
+            for(int i = 0; i < data.size(); i++)
+            {
+                Log.i((data.get(i)).getTitle(),(app).getTitle());
+                if( ( data.get(i)).getTitle().equals((app).getTitle()) )
                 {
-                    data.add(i);
+                    contiene = true;
+                    Log.e("ContieneEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE","");
                 }
-                else
-                {
-                    data.add(((WebPageInfo) i).getPosi()-1, i);
+            }
+
+            if(!contiene) {
+                if (data.size() < ((WebPageInfo) app).getPosi() - 1) {
+
+                    data.add(app);
+                } else {
+                    data.add(((WebPageInfo) app).getPosi() - 1, app);
                 }
+            }
+
 
         }
-        else if(i instanceof AppInfo) {
-            Log.e("metemos",i.toString());
-            data.add(i);
+        else if(app instanceof AppInfo) {
+            boolean contiene = false;
+            for(int i = 0; i < data.size(); i++)
+            {
+                if(data.get(i) instanceof AppInfo) {
+                    Log.i((data.get(i)).getTitle(), (app).getTitle());
+                    if (((AppInfo) data.get(i)).getPackageName().equals(((AppInfo) app).getPackageName())) {
+                        contiene = true;
+                        Log.e("ContieneEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE", "");
+                    }
+                }
+            }
+            Log.e("metemos",app.toString());
+            if(!contiene)
+                data.add(app);
+
+            contiene = false;
+
         }
+
     }
 
     public void addItemPos(ShortcutInfo i) {
@@ -86,7 +113,8 @@ public class ShortcutAdapter extends BaseAdapter  {
     }
 
     public void removeItem(ShortcutInfo i) {
-        data.remove(i);
+
+           data.remove(i);
     }
 
     public void clearItems(){

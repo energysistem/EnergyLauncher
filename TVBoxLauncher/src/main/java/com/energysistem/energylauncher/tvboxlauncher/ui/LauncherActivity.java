@@ -11,6 +11,7 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -425,14 +426,29 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
 
         //preferencesListadoApps.addInfoDesktop(shortcutInfo);
         if (shortcutInfo instanceof AppInfo) {
-            mDesktopFragment.addShortcut(shortcutInfo);
-            preferencesListadoApps.addAppInfo((AppInfo) shortcutInfo);
-            fillDraggableList(shortcutInfo);
-            resetArrangeAppsFragment();
+            boolean contiene = false;
+            Log.i("Tamaño lista preferencesListadoApps:",preferencesListadoApps.getListaApp().size()+"");
+            Log.e("Lista FavsStrings", preferencesListadoApps.getListaFavsString().toString());
+            Log.e("Lista ListaApp", preferencesListadoApps.getListaApp().toString());
+            for(int i=0;i < preferencesListadoApps.getListaFavsString().size();i++)
+            {
+                Log.d("Comparamos","");
+                Log.d(preferencesListadoApps.getListaFavsString()+ "HUEHUHHEHEHUEHUEHUEHUEHUEHUE",((AppInfo) shortcutInfo).getPackageName());
+                contiene = preferencesListadoApps.getListaFavsString().get(i)==((AppInfo) shortcutInfo).getPackageName();
+            }
+            if(!contiene) {
+                Log.e("Entramos aquí","as");
+                mDesktopFragment.addShortcut(shortcutInfo); //ESTO ES LO QUE FINALMENTE METE EL SHORTCUT
+
+                preferencesListadoApps.addAppInfo((AppInfo) shortcutInfo);
+                fillDraggableList(shortcutInfo);
+                resetArrangeAppsFragment();
+            }
            // reloadDesktop();
         } else if (shortcutInfo instanceof WebPageInfo) {
             mDesktopFragment.addShortcut(shortcutInfo);
             preferencesListadoApps.addWebPageInfo((WebPageInfo) shortcutInfo);
+
             fillDraggableList(shortcutInfo);
             resetArrangeAppsFragment();
            // reloadDesktop();
@@ -444,6 +460,7 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
 
         //preferencesListadoApps.removeInfoDesktop(shortcutInfo);
         if (shortcutInfo instanceof AppInfo) {
+
             mDesktopFragment.removeShortcut(shortcutInfo);
            preferencesListadoApps.removeFavInfo(shortcutInfo);
             removeDraggableList(shortcutInfo);

@@ -86,6 +86,7 @@ public class AppListFragment extends Fragment
         if (mAppAdapter.getModeCheckBoxSelection()) {
             if (info.checked) {
                 assert (getActivity()) != null;
+                Log.i("Eliminamos app","");
                 ((LauncherActivity) getActivity()).removeShortcutApp(info);
                 info.checked = false;
             } else {
@@ -134,6 +135,7 @@ public class AppListFragment extends Fragment
             throw new IllegalArgumentException("Parent activity must implement Callbacks.");
         }
         mCallbacks = (Callbacks) activity;
+
     }
 
     @Override
@@ -161,7 +163,6 @@ public class AppListFragment extends Fragment
             @Override
             public void onClick(View v) {
 
-                Log.i("Onclicklistener", "OncheckboxClickListener posicion: " + v.getId());
                 //La posicion está en el id del view
                 AppInfo info = mAppInfosList.get(v.getId());
 
@@ -183,8 +184,10 @@ public class AppListFragment extends Fragment
         assert (getActivity()) != null;
         //((LauncherActivity)getActivity()).actualizaArrayAppsPreferencias();
 
-        Log.e("HUEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE?-.---------","HEMOS LLEGADOOOOOOOOOOO!");
-        //cargaListaApps();
+        cargaListaApps();
+
+
+
     }
 
 
@@ -290,7 +293,6 @@ public class AppListFragment extends Fragment
         View viewOld = mListViewApps.getChildAt(mAppAdapter.getLastSelectedItem()- mListViewApps.getFirstVisiblePosition());
         if(viewOld!=null) {
             CheckBox frameOld = (CheckBox) viewOld.findViewById(R.id.frame_checkbox);
-            Log.e("-------------updateView()", "-----------listItem anterior---");
             frameOld.setChecked(mAppInfosList.get(mAppAdapter.getLastSelectedItem()).checked);
 
             //En caso que dejemos el modo seleccion colocamos el check como estaba
@@ -298,10 +300,10 @@ public class AppListFragment extends Fragment
                 View v = mListViewApps.getChildAt(mListViewApps.getSelectedItemPosition() - mListViewApps.getFirstVisiblePosition());
                 if (v != null) {
                     CheckBox frame = (CheckBox) v.findViewById(R.id.frame_checkbox);
-                    Log.e("-------------updateView()", "----------el check como estaba---");
+                    //Log.e("-------------updateView()", "----------el check como estaba---");
                     frame.setChecked(mAppInfosList.get(mAppAdapter.getSelectedItem()).checked);
                 } else {
-                    Log.d("entramos en view del fragment es NULL", "NULL");
+                    //Log.d("entramos en view del fragment es NULL", "NULL");
                 }
                 return;
             }
@@ -313,7 +315,7 @@ public class AppListFragment extends Fragment
                 return;
 
             CheckBox frame = (CheckBox) v.findViewById(R.id.frame_checkbox);
-            Log.e("-------------updateView()", "-----------ChekBox ACTUAL---");
+           // Log.e("-------------updateView()", "-----------ChekBox ACTUAL---");
             frame.setChecked(false);
         }
     }
@@ -340,9 +342,6 @@ public class AppListFragment extends Fragment
     }
 
 
-
-
-
            public void cargaListaApps() {
 
              //Limpiamos los shortcuts primero
@@ -353,14 +352,16 @@ public class AppListFragment extends Fragment
 
              ArrayList<WebPageInfo> liWeb = ((LauncherActivity) getActivity()).listaWebsDB;
 
-
+               // Log.i("Tamaño Lista app favoritas", mAppInfosList.size()+"");
              for (int i = 0; i< listaApps.size(); i++) {
                  String nombreApp = listaApps.get(i);
                  for (int j = 0; j < mAppInfosList.size(); j++) {
 
                      AppInfo appInfoTemp =  mAppInfosList.get(j);
                      if (SaveLoadAppsPreferences.ComparaNombreFavInfo(appInfoTemp.getPackageName(), nombreApp)){
+                         //Log.e("Entramos" +appInfoTemp.getPackageName(), nombreApp );
                          assert (getActivity()) != null;
+
                          ((LauncherActivity)getActivity()).addShortcutApp(appInfoTemp);
                          appInfoTemp.checked = true;
                          break;

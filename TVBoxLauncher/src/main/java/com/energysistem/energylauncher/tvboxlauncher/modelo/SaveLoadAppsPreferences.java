@@ -152,15 +152,17 @@ public class SaveLoadAppsPreferences {
     }
 
     public boolean removeFavInfoByName(String nombre){
-
+        Log.e("Lista INICIAL",listaFavoritos.toString());
+        Log.i("Eliminamos AppInfo (Tamaño lista fav: "+listaFavoritos.size(),nombre);
         if (listaFavoritos.contains(nombre)) {
             //Pasando de gestionar los indices de la lista de las preferencias - jajajajaja
-
+            Log.i("Encontrada, borramos","");
             //Está la app. Borramos la lista entera y la volvemos a crear.
             removeAppsArray();
 
             //La qutamos de la lista global
             listaFavoritos.remove(nombre);
+            Log.e("Despues",listaFavoritos.toString());
             //Volvemos a alamacenar la lista
             guardaFavArray(listaFavoritos);
             return true;
@@ -417,8 +419,9 @@ public class SaveLoadAppsPreferences {
 
     public boolean addAppInfo(AppInfo app) {
         String nombre = getNombreFav(app);
-
+        Log.i("Tamaño ListaFavoritos",listaFavoritos.size()+"");
         if (listaFavoritos.contains(nombre)) {//
+            Log.e("Ya está metida","");
             //Ya está metida
             return false;
         } else {

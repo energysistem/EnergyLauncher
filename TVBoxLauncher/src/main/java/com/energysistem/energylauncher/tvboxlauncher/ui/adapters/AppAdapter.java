@@ -74,7 +74,7 @@ public class AppAdapter extends ArrayAdapter<AppInfo> {
             holder.arrow2.setVisibility(View.INVISIBLE);
         }
 
-        Log.e("-------------AppAdapter", "----holder Time-----");
+        //Log.e("-------------AppAdapter", "----holder Time-----");
         holder.checkBox.setChecked(info.checked);
 
 
@@ -83,9 +83,9 @@ public class AppAdapter extends ArrayAdapter<AppInfo> {
         holder.checkBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i("onclickListener", "framelayout " + position);
+               // Log.i("onclickListener", "framelayout " + position);
                 info.checked = !info.checked;
-                Log.e("-------------AppAdapter", "----ClikListener-----");
+               // Log.e("-------------AppAdapter", "----ClikListener-----");
                 v.setBackgroundColor(getFrameCheckBoxView(info.checked));
                 v.setId(position);
                 onCkeckBoxClickListener.onClick(v);
@@ -126,7 +126,7 @@ public class AppAdapter extends ArrayAdapter<AppInfo> {
 
 
     public void setSelectedCheckBoxMode(boolean valor){
-        Log.d("onclickListener", "Seleccionados checkBoxes");
+       // Log.d("onclickListener", "Seleccionados checkBoxes");
         checkBoxSelected = valor;
 
     }
