@@ -38,7 +38,7 @@
                             android:id="@+id/tab1"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:contentDescription="HOME"
+                            android:contentDescription="@string/Home"
                             android:nextFocusUp="@+id/tab1"
                             android:nextFocusDown="@+id/app_grid"
                             android:nextFocusRight="@+id/tab2">
@@ -48,7 +48,6 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
                                 android:paddingLeft="10dp"
-                                android:text="TAB 1"
                                 android:visibility="gone" />
                             <requestFocus/>
                         </LinearLayout>
@@ -57,7 +56,7 @@
                             android:id="@+id/tab2"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:contentDescription="HOME"
+                            android:contentDescription="@string/Home"
                             android:nextFocusUp="@+id/tab2"
                             android:nextFocusDown="@+id/tabcontent"
                             android:nextFocusLeft="@+id/tab1"
@@ -68,8 +67,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:paddingLeft="1dp"
-                                android:visibility="gone"
-                                android:text="TAB 2"/>
+                                android:visibility="gone"/>
                         </LinearLayout>
 
                      </FrameLayout>

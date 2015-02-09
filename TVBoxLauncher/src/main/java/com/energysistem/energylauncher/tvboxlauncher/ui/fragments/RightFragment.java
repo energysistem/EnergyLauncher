@@ -104,9 +104,9 @@ public View onCreateView(LayoutInflater inflater, ViewGroup container, final Bun
 
 
         // *******Tab 1*******
-        TabHost.TabSpec spec1 = mTabHost.newTabSpec("APPS");
+        TabHost.TabSpec spec1 = mTabHost.newTabSpec(getActivity().getString(R.string.tab_aplicaciones));
         spec1.setContent(R.id.tab1);
-        spec1.setIndicator(getResources().getText(R.string.tab1));
+        spec1.setIndicator(getResources().getText(R.string.tab_aplicaciones));
 
         /*
         TabHost.TabSpec calculatorTab = tabs.newTabSpec("calculator");
@@ -120,9 +120,9 @@ public View onCreateView(LayoutInflater inflater, ViewGroup container, final Bun
 
 
         //********Tab 2*******
-        TabHost.TabSpec spec2 = mTabHost.newTabSpec("BOOKMARKS");
+        TabHost.TabSpec spec2 = mTabHost.newTabSpec(getActivity().getString(R.string.tab_bookmarks));
         spec2.setContent(R.id.tab2);
-        spec2.setIndicator(getResources().getText(R.string.tab2));
+        spec2.setIndicator(getResources().getText(R.string.tab_bookmarks));
 
         mMenuBookMarkFragment = new MenuBookMarkFragment();
         getFragmentManager().beginTransaction().replace(R.id.tab2,
@@ -150,7 +150,7 @@ public View onCreateView(LayoutInflater inflater, ViewGroup container, final Bun
         //mTabHost.setOnTabChangedListener(tabChangeListener);
     mTabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener(){
         public void onTabChanged(String tabID) {
-            if(tabID.equals("BOOKMARKS")) {
+            if(tabID.equals(getActivity().getString(R.string.tab_bookmarks))) {
                 mTabHost.setCurrentTab(1);
             }
             fueraDeBookmarks = true;
@@ -444,11 +444,11 @@ public View onCreateView(LayoutInflater inflater, ViewGroup container, final Bun
         Log.d("Tab 1",String.valueOf(mTabHost.getCurrentTab()));
         mTabHost.setCurrentTab(2);
         Log.d("Tab 2",String.valueOf(mTabHost.getCurrentTab()));
-        mTabHost.setCurrentTabByTag("APPS");
+        mTabHost.setCurrentTabByTag(getActivity().getString(R.string.tab_aplicaciones));
         Log.d("Tab APPS (byTag)",String.valueOf(mTabHost.getCurrentTab()));
-        mTabHost.setCurrentTabByTag("BOOKMARKS");
+        mTabHost.setCurrentTabByTag(getActivity().getString(R.string.tab_bookmarks));
         Log.d("Tab BOOKMARKS (byTag)",String.valueOf(mTabHost.getCurrentTab()));
-        mTabHost.setCurrentTabByTag("SETTINGS");
+        mTabHost.setCurrentTabByTag(getActivity().getString(R.string.tab_settings));
         Log.d("Tab SETTINGS (byTag)",String.valueOf(mTabHost.getCurrentTab()));
         Log.d("Fin Pestañas","VARIABLES-----------------------------------");
         Log.d("Menu", String.valueOf(menu));

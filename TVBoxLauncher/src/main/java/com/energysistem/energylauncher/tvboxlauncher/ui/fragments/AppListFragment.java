@@ -132,7 +132,7 @@ public class AppListFragment extends Fragment
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         if (!(activity instanceof Callbacks)) {
-            throw new IllegalArgumentException("Parent activity must implement Callbacks.");
+            throw new IllegalArgumentException(activity.getString(R.string.parent_callback_error));
         }
         mCallbacks = (Callbacks) activity;
 
@@ -179,7 +179,7 @@ public class AppListFragment extends Fragment
             }
         });
 
-        //((LauncherActivity) getActivity()).reloadDesktop();
+        ((LauncherActivity) getActivity()).reloadDesktop();
 
         assert (getActivity()) != null;
         //((LauncherActivity)getActivity()).actualizaArrayAppsPreferencias();

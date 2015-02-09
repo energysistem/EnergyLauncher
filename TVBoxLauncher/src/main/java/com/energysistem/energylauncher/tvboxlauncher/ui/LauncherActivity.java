@@ -630,6 +630,8 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
     }
 
     public ShortcutAdapter getGridDesktop(){
+        if(preferencesListadoApps==null)
+            preferencesListadoApps = new SaveLoadAppsPreferences(this);
         return preferencesListadoApps.getListaDesktop();
     }
 

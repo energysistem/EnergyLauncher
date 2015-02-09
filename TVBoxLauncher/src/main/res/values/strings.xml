@@ -11,9 +11,6 @@
 
     <!--Shortcut-->
     <string name="default_example_string">Hola</string>
-
-    <string name="tab1">APPS</string>
-    <string name="tab2">BOOKMARKS</string>
     <string name="back">"Back"</string>
     <string name="busca_imagen">"Selecciona foto"</string>
     <string name="cancel">"Cancelar"</string>
@@ -40,5 +37,12 @@
     <string name="save_button">Save</string>
     <string name="name_form_tag">Name</string>
     <string name="url_form_tag">Url</string>
+    <string name="apply_changes">Aplicar cambios</string>
+    <string name="Home">HOME</string>
+    <string name="launcherAppState_error">LauncherAppState inited before app context set.</string>
+    <string name="parent_callback_error">Parent activity must implement Callbacks.</string>
+    <string name="tab_aplicaciones">APPS</string>
+    <string name="tab_bookmarks">BOOKMARKSs</string>
+    <string name="tab_settings">SETTINGS</string>
 
 </resources>

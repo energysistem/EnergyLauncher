@@ -2,7 +2,7 @@
 
     <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="160dp"
+        android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:layout_marginTop="50dip"
         android:descendantFocusability="blocksDescendants"
@@ -17,11 +17,12 @@
 
             <ImageView
                 android:id="@+id/wifi_icon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:paddingStart="20dp"
                 android:contentDescription="@string/clock_wifi_icon_description"
-                android:src="@drawable/stat_sys_tether_wifi_0" />
+                android:src="@drawable/stat_sys_tether_wifi_0"
+                android:layout_marginRight="5dp" />
 
             <ImageView
                 android:id="@+id/ethernet_icon"
@@ -36,13 +37,13 @@
         <FrameLayout
             android:layout_width="2dp"
             android:layout_height="match_parent"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
             android:background="@color/blanco"/>
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:orientation="vertical">
 
@@ -50,7 +51,8 @@
                 android:id="@+id/clock"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="start|center_vertical"
+                android:layout_gravity="center_horizontal"
+                android:fontFamily="sans-serif-thin"
                 android:text="@string/clock_default_time"
                 android:textColor="@color/blanco"
                 android:textSize="@dimen/clock_time_text_size" />

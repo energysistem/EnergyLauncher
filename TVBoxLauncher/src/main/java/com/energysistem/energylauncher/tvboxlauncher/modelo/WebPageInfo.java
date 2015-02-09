@@ -44,7 +44,13 @@ public class WebPageInfo extends ShortcutInfo {
         if(!(o instanceof WebPageInfo))
             return false;
         else
-            return this.getName().equals(((WebPageInfo) o).getName());
+        {
+            //Log.e("Nombre:"+this.getName(),((WebPageInfo) o).getName());
+
+            //Compara ignorando mayus/minus
+            return this.getName().trim().equalsIgnoreCase(((WebPageInfo) o).getName().trim());
+        }
+
     }
 
     @Override
@@ -82,7 +88,7 @@ public class WebPageInfo extends ShortcutInfo {
 
 
     public String getName() {
-        return String.valueOf(pageUrl);
+        return String.valueOf(getTitle());
     }
 
     public int getId() {
