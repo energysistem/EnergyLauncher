@@ -9,6 +9,7 @@ import com.energysistem.energylauncher.tvboxlauncher.ui.LauncherActivity;
 import com.energysistem.energylauncher.tvboxlauncher.ui.adapters.ShortcutAdapter;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -413,7 +414,11 @@ public class SaveLoadAppsPreferences {
 
     public void addInfoDesktop (ShortcutInfo info){
         if(listaDesktop==null){ listaDesktop = new ShortcutAdapter(mContext);}
-        listaDesktop.addItem(info);
+        try {
+            listaDesktop.addItem(info, mContext);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
         listaDesktop.notifyDataSetChanged();
     }
 

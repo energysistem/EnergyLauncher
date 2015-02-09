@@ -1,6 +1,8 @@
 package com.energysistem.energylauncher.tvboxlauncher.ui.adapters;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -16,7 +18,11 @@ import com.energysistem.energylauncher.tvboxlauncher.modelo.AppInfo;
 import com.energysistem.energylauncher.tvboxlauncher.modelo.ShortcutInfo;
 import com.energysistem.energylauncher.tvboxlauncher.R;
 import com.energysistem.energylauncher.tvboxlauncher.modelo.WebPageInfo;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,7 +67,7 @@ public class ShortcutAdapter extends BaseAdapter  {
         return -1;
     }
 
-    public void addItem(ShortcutInfo app) {
+    public void addItem(final ShortcutInfo app, Context context) throws MalformedURLException {
         if (app instanceof WebPageInfo) {
             boolean contiene = false;
             for(int i = 0; i < data.size(); i++)
@@ -75,12 +81,36 @@ public class ShortcutAdapter extends BaseAdapter  {
             }
 
             if(!contiene) {
-                if (data.size() < ((WebPageInfo) app).getPosi() - 1) {
 
-                    data.add(app);
-                } else {
-                    data.add(((WebPageInfo) app).getPosi() - 1, app);
-                }
+                URL url = new URL("http://www.google.com/s2/favicons?domain="+((WebPageInfo) app).getPageUrl());
+                Picasso.with(context).load(url.toString()).into(new Target() {
+
+                    @Override
+                    public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                        app.setBitmap(bitmap);
+
+                        if (data.size() < ((WebPageInfo) app).getPosi() - 1) {
+                            Log.e("TAG","ENTRAMOS->"+((WebPageInfo) app).getPageUrl());
+                            data.add(app);
+                        } else {
+                            Log.e("TAG","ENTRAMOS->"+((WebPageInfo) app).getPageUrl());
+                            data.add(((WebPageInfo) app).getPosi() - 1, app);
+                        }
+                        notifyDataSetChanged();
+                    }
+
+                    @Override
+                    public void onBitmapFailed(final Drawable errorDrawable) {
+                        Log.d("TAG", "FAILED");
+                    }
+
+                    @Override
+                    public void onPrepareLoad(final Drawable placeHolderDrawable) {
+                        Log.d("TAG", "Prepare Load");
+                    }
+                });
+
+
             }
 
 

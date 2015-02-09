@@ -2,7 +2,9 @@ package com.energysistem.energylauncher.tvboxlauncher.ui.adapters;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +17,11 @@ import android.widget.TextView;
 
 import com.energysistem.energylauncher.tvboxlauncher.R;
 import com.energysistem.energylauncher.tvboxlauncher.modelo.WebPageInfo;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 
 /**
@@ -84,6 +90,10 @@ public class WebShortcutAdapter extends ArrayAdapter<WebPageInfo>{
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
 
+        final WebPageInfo info = getItem(position);
+
+
+
         View view = convertView;
         final ViewHolder holder;
         if (view == null) {
@@ -102,10 +112,12 @@ public class WebShortcutAdapter extends ArrayAdapter<WebPageInfo>{
             holder = (ViewHolder) view.getTag();
         }
 
-        final WebPageInfo info = getItem(position);
 
-        if (info.getBitmap() != null)
+
+
+        if (info.getBitmap() != null) {
             holder.image.setImageDrawable(new BitmapDrawable(mResources, info.getBitmap()));
+        }
         holder.title.setText(info.getTitle());
         holder.url.setText(info.getPageUrl().toString());
 
@@ -135,6 +147,33 @@ public class WebShortcutAdapter extends ArrayAdapter<WebPageInfo>{
 
                 v.setId(position);
                 onCkeckBoxClickListener.onClick(v);
+            }
+        });
+
+        URL url = null;
+        try {
+            url = new URL("http://www.google.com/s2/favicons?domain="+((WebPageInfo) info).getPageUrl());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        Picasso.with(getContext()).load(url.toString()).into(new Target() {
+
+            @Override
+            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+
+                holder.image.setImageBitmap(bitmap);
+
+
+            }
+
+            @Override
+            public void onBitmapFailed(final Drawable errorDrawable) {
+                Log.d("TAG", "FAILED");
+            }
+
+            @Override
+            public void onPrepareLoad(final Drawable placeHolderDrawable) {
+                holder.image.setImageResource(R.drawable.ic_launcher);
             }
         });
 

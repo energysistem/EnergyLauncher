@@ -8,6 +8,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
@@ -35,7 +37,11 @@ import com.energysistem.energylauncher.tvboxlauncher.ui.fragments.DesktopFragmen
 import com.energysistem.energylauncher.tvboxlauncher.ui.fragments.MenuListFragment;
 import com.energysistem.energylauncher.tvboxlauncher.ui.fragments.OptionsLauncherFragment;
 import com.energysistem.energylauncher.tvboxlauncher.ui.fragments.RightFragment;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -422,7 +428,7 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
      * ************************************************************
      */
 
-    public void addShortcutApp(ShortcutInfo shortcutInfo) { //Añade Apps y Accesos directos Web
+    public void addShortcutApp(final ShortcutInfo shortcutInfo) throws MalformedURLException { //Añade Apps y Accesos directos Web
 
         //preferencesListadoApps.addInfoDesktop(shortcutInfo);
         if (shortcutInfo instanceof AppInfo) {
@@ -439,6 +445,8 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
             if(!contiene) {
                 Log.e("Entramos aquí","as");
                 mDesktopFragment.addShortcut(shortcutInfo); //ESTO ES LO QUE FINALMENTE METE EL SHORTCUT
+                mDesktopFragment.notifyAll();
+                mDesktopFragment.notify();
 
                 preferencesListadoApps.addAppInfo((AppInfo) shortcutInfo);
                 fillDraggableList(shortcutInfo);
@@ -446,11 +454,36 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
             }
            // reloadDesktop();
         } else if (shortcutInfo instanceof WebPageInfo) {
-            mDesktopFragment.addShortcut(shortcutInfo);
-            preferencesListadoApps.addWebPageInfo((WebPageInfo) shortcutInfo);
+            URL url = new URL("http://www.google.com/s2/favicons?domain="+((WebPageInfo) shortcutInfo).getPageUrl());
+            Picasso.with(this).load(url.toString()).into(new Target() {
 
-            fillDraggableList(shortcutInfo);
-            resetArrangeAppsFragment();
+                @Override
+                public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                    shortcutInfo.setBitmap(bitmap);
+                    try {
+                        mDesktopFragment.addShortcut(shortcutInfo);
+                    } catch (MalformedURLException e) {
+                        e.printStackTrace();
+                    }
+                    preferencesListadoApps.addWebPageInfo((WebPageInfo) shortcutInfo);
+
+                    fillDraggableList(shortcutInfo);
+                    resetArrangeAppsFragment();
+
+
+                }
+
+                @Override
+                public void onBitmapFailed(final Drawable errorDrawable) {
+                    Log.d("TAG", "FAILED");
+                }
+
+                @Override
+                public void onPrepareLoad(final Drawable placeHolderDrawable) {
+                    Log.d("TAG", "Prepare Load");
+                }
+            });
+
            // reloadDesktop();
         }
     }
@@ -545,7 +578,11 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
                     datasource.updateBookmark((WebPageInfo)shortcutinfo);
                     datasource.close(); //Intento de actualizar la DB. Comprobar que así sea.
                 }
-                shortcutAdapter.addItem(shortcutinfo);
+                try {
+                    shortcutAdapter.addItem(shortcutinfo, this);
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                }
             }
         }
 

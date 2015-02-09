@@ -22,5 +22,12 @@
         sha1="af4cc326e6cd92f88db12298767e521743aedd36">
         <dex dex="C:\Users\pgc\Android studioProjects\EnergyLauncher\TVBoxLauncher\build\intermediates\pre-dexed\release\classes-90695f348c7b010b742af8c76f3e831795b8c831.jar" />
     </item>
+    <item
+        jar="C:\Users\pgc\.gradle\caches\modules-2\files-2.1\com.squareup.picasso\picasso\2.5.0\7ff0e000d1e27e356567f56c92af3b8ab912636f\picasso-2.5.0.jar"
+        jumboMode="false"
+        revision="19.1.0"
+        sha1="7ff0e000d1e27e356567f56c92af3b8ab912636f">
+        <dex dex="C:\Users\pgc\Android studioProjects\EnergyLauncher\TVBoxLauncher\build\intermediates\pre-dexed\debug\picasso-2.5.0-869d0e811997a798efc3bb762af45f4575a61ea2.jar" />
+    </item>
 
 </items>
