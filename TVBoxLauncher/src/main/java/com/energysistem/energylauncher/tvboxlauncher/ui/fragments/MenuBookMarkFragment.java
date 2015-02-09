@@ -114,11 +114,14 @@ public class MenuBookMarkFragment  extends Fragment
                                 datasource.open();
                                 datasource.createBookmark(info);
                                 datasource.close();
+                                mTxtName.setText("");
+                                mTxtUri.setText("");
                                 //mListWebPage.add(info);
                             }
     
                             }
                         mAdapter.notifyDataSetChanged();
+
                     }
                 } catch (MalformedURLException e) {
                     e.printStackTrace();

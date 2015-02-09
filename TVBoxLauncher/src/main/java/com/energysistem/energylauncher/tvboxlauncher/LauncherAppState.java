@@ -38,7 +38,7 @@ public class LauncherAppState {
 
     private LauncherAppState() {
         if (sContext == null) {
-            throw new IllegalStateException("LauncherAppState inited before app context set.");
+            throw new IllegalStateException(sContext.getString(R.string.launcherAppState_error));
         }
 
         mIconCache = new IconCache(sContext);

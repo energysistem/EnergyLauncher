@@ -12,7 +12,7 @@
     <Button
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Aplicar cambios"
+        android:text="@string/apply_changes"
         android:id="@+id/btnGuardaCambios"
         android:enabled="false"
         android:clickable="false"
