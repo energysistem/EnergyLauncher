@@ -711,7 +711,7 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
         //mAppArrangeFragment.setmListAppsDragablesOrdenada(listAppsString);
         //Log.d("----setmListFavDraggables ACTIVITY: cambio a",Integer.toString(mListFavDraggables.size()));
     }
-
+    //Borrar
     /*
     public void reloadDesktop(ArrayList<DraggableItemApp> mDragablesOrdenada) {
         mDesktopFragment.setGridAdapter(draggableTOshortcutAdapter(mDragablesOrdenada));
