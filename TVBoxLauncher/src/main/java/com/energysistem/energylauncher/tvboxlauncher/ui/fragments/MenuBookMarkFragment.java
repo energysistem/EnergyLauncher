@@ -276,7 +276,11 @@ public class MenuBookMarkFragment  extends Fragment
                 info.setFav(1);
                 info.setPosi(((LauncherActivity) getActivity()).getGridDesktop().getCount()+1);
                 datasource.updateBookmark(info);
-                ((LauncherActivity) getActivity()).addShortcutApp(info);
+                try {
+                    ((LauncherActivity) getActivity()).addShortcutApp(info);
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                }
             }
             mAdapter.notifyDataSetChanged();
             datasource.close();
@@ -319,7 +323,11 @@ public class MenuBookMarkFragment  extends Fragment
                     Log.e("Entramos fav = 1","onLoadFinished");
 
 
-                    ((LauncherActivity) getActivity()).addShortcutApp(info);
+                    try {
+                        ((LauncherActivity) getActivity()).addShortcutApp(info);
+                    } catch (MalformedURLException e) {
+                        e.printStackTrace();
+                    }
 
                 }
                 else

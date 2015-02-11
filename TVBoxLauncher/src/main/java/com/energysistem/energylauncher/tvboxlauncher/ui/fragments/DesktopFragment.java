@@ -7,7 +7,9 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.graphics.drawable.TransitionDrawable;
 import android.net.ConnectivityManager;
 import android.net.wifi.WifiManager;
@@ -32,10 +34,13 @@ import com.energysistem.energylauncher.tvboxlauncher.ui.LauncherActivity;
 import com.energysistem.energylauncher.tvboxlauncher.ui.adapters.ShortcutAdapter;
 import com.energysistem.energylauncher.tvboxlauncher.util.Clock;
 import com.energysistem.energylauncher.tvboxlauncher.util.ConnectionIndicator;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 import java.util.Locale;
@@ -83,7 +88,7 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
 
         //GridApp desktop icons
         gridAdapter = new ShortcutAdapter(getActivity());
-        gridAdapter = ((LauncherActivity) getActivity()).getGridDesktop();
+        //gridAdapter = ((LauncherActivity) getActivity()).getGridDesktop();
         mFavoritesGrid = (GridView) view.findViewById(R.id.app_grid);
         mFavoritesGrid.setAdapter(gridAdapter);
         mFavoritesGrid.setSmoothScrollbarEnabled(true);
@@ -196,6 +201,7 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
         @Override
         public void onResume() {
         super.onResume();
+            Log.e("onResume","DesktopFragment");
         Time time = new Time();
         time.setToNow();
         updateClockWidget(time);
@@ -300,36 +306,46 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
     /*
     Maneja accesos directos AÑADIR-QUITAR
      */
-    public void addShortcut(final ShortcutInfo shortcutInfo) {
+    public void addShortcut(final ShortcutInfo shortcutInfo) throws MalformedURLException {
         Log.i("Add on desktop -->", shortcutInfo.getTitle());
 
         if (shortcutInfo instanceof WebPageInfo) {
-            Thread thread = new Thread(new Runnable() {
-                public void run() {
+
+            URL url = new URL("http://www.google.com/s2/favicons?domain="+((WebPageInfo) shortcutInfo).getPageUrl());
+            Picasso.with(getActivity()).load(url.toString()).into(new Target() {
+
+                @Override
+                public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                    shortcutInfo.setBitmap(bitmap);
+
                     try {
-                        URL url = new URL(((WebPageInfo) shortcutInfo).getPageUrl().toString() + "/favicon.ico");
-                        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-                        connection.setDoInput(true);
-                        connection.connect();
-
-                        InputStream input = connection.getInputStream();
-                        shortcutInfo.setBitmap(BitmapFactory.decodeStream(input));
-
-                    } catch (IOException e) {
-                        shortcutInfo.setBitmap(null);
+                        gridAdapter.addItem(shortcutInfo, getActivity());
+                        gridAdapter.notifyDataSetChanged();
+                    } catch (MalformedURLException e) {
+                        e.printStackTrace();
                     }
+
+                }
+
+                @Override
+                public void onBitmapFailed(final Drawable errorDrawable) {
+                    Log.d("TAG", "FAILED");
+                }
+
+                @Override
+                public void onPrepareLoad(final Drawable placeHolderDrawable) {
+                    Log.d("TAG", "Prepare Load");
                 }
             });
-            thread.start();
-
-            gridAdapter.addItem(shortcutInfo);
-            gridAdapter.notifyDataSetChanged();
             //((LauncherActivity) getActivity()).preferencesListadoApps.ActualizaListaApps(gridAdapter.getListInfo());
             //setGridAdapter(((LauncherActivity) getActivity()).getGridDesktop());
-
         } else {
 
-            gridAdapter.addItem(shortcutInfo);
+            try {
+                gridAdapter.addItem(shortcutInfo,getActivity());
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
             gridAdapter.notifyDataSetChanged();
             //((LauncherActivity) getActivity()).preferencesListadoApps.ActualizaListaApps(gridAdapter.getListInfo());
             //setGridAdapter(((LauncherActivity) getActivity()).getGridDesktop());

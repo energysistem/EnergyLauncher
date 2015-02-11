@@ -30,6 +30,7 @@ import com.energysistem.energylauncher.tvboxlauncher.modelo.WebPageInfo;
 import com.energysistem.energylauncher.tvboxlauncher.ui.LauncherActivity;
 import com.energysistem.energylauncher.tvboxlauncher.ui.adapters.AppAdapter;
 
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -70,7 +71,7 @@ public class AppListFragment extends Fragment
         super.onCreateView(inflater, container, savedInstanceState);
         View v = inflater.inflate(R.layout.fragment_app_list, container, false);
 
-        mListViewApps = (ListView) v.findViewById(R.id.app_grid_list);
+        mListViewApps = (ListView) v.findViewById(R.id.app_grid_list_app);
         mListViewApps.setOnItemClickListener(this);
         mListViewApps.setOnItemLongClickListener(this);
 
@@ -91,7 +92,11 @@ public class AppListFragment extends Fragment
                 info.checked = false;
             } else {
                 assert (getActivity()) != null;
-                ((LauncherActivity) getActivity()).addShortcutApp(info);
+                try {
+                    ((LauncherActivity) getActivity()).addShortcutApp(info);
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                }
                 info.checked = true;
             }
             mAppAdapter.notifyDataSetChanged();
@@ -110,7 +115,11 @@ public class AppListFragment extends Fragment
             info.checked = false;
         } else {
             assert (getActivity()) != null;
-            ((LauncherActivity) getActivity()).addShortcutApp(info);
+            try {
+                ((LauncherActivity) getActivity()).addShortcutApp(info);
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
             info.checked = true;
         }
         mAppAdapter.notifyDataSetChanged();
@@ -184,8 +193,11 @@ public class AppListFragment extends Fragment
         assert (getActivity()) != null;
         //((LauncherActivity)getActivity()).actualizaArrayAppsPreferencias();
 
-        cargaListaApps();
-
+        try {
+            cargaListaApps();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
 
 
     }
@@ -342,7 +354,7 @@ public class AppListFragment extends Fragment
     }
 
 
-           public void cargaListaApps() {
+           public void cargaListaApps() throws MalformedURLException {
 
              //Limpiamos los shortcuts primero
 

@@ -10,6 +10,6 @@
         android:verticalSpacing="@dimen/menu_list_vertical_spacing"
         android:dividerHeight="@dimen/menu_list_divider_height"
         android:background="@color/black_grey"
-        android:id="@+id/app_grid_list"/>
+        android:id="@+id/app_grid_list_app"/>
 
 </LinearLayout>
