@@ -7,10 +7,10 @@
 
   <style name="AppThemeVerde.NoTitleBar" parent="@style/_AppThemeVerde.NoTitleBar"/>
 
-  <style name="_AppThemeVerde" parent="android:Theme.Holo.Light">
+  <style name="_AppThemeVerde" parent="android:Widget.Holo.Light">
 
     <item name="android:editTextBackground">@drawable/appthemeverde_edit_text_holo_light</item>
-      <item name="android:tabWidgetStyle">@style/AppThemeVerde.TabWidget</item>
+    <item name="android:tabWidgetStyle">@style/AppThemeVerde.TabWidget</item>
     <item name="android:textColorHighlight">#99669900</item>
     <item name="android:textSelectHandleLeft">@drawable/appthemeverde_text_select_handle_left</item>
     <item name="android:textSelectHandleRight">@drawable/appthemeverde_text_select_handle_right</item>

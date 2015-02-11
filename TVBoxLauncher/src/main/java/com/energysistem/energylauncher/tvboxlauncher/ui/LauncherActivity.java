@@ -7,7 +7,9 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -44,6 +46,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 
 public class LauncherActivity extends Activity implements AppListFragment.Callbacks {
@@ -81,8 +84,9 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
-        if (savedInstanceState == null) {
+        /*if (savedInstanceState == null) {
             //Drawer derecho
             mRightFragment = new RightFragment();
             getFragmentManager().beginTransaction()
@@ -100,18 +104,18 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
             getFragmentManager().beginTransaction()
                     .add(R.id.left_drawer, mMenuListFragment, TAGFFRAGMENTNOTIFICATIONS)
                     .commit();
-        } else {
+        } else */
 
-            mDesktopFragment = (DesktopFragment) getFragmentManager().findFragmentByTag(TAGFFRAGMENTDESKTOP);
-            mRightFragment = (RightFragment) getFragmentManager().findFragmentByTag(TAGFFRAGMENTRIGHT);
-            mMenuListFragment = (MenuListFragment) getFragmentManager().findFragmentByTag(TAGFFRAGMENTNOTIFICATIONS);
-            return;
-        }
+            mDesktopFragment = (DesktopFragment) getFragmentManager().findFragmentById(R.id.content_frame);
+            mRightFragment = (RightFragment) getFragmentManager().findFragmentById(R.id.right_drawer);
+            mMenuListFragment = (MenuListFragment) getFragmentManager().findFragmentById(R.id.left_drawer);
+
+
                                                                 /*int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
                                                                 View decorView = getWindow().getDecorView();
                                                                 decorView.setSystemUiVisibility(uiOptions);*/
-        setContentView(R.layout.activity_main);
         desktopLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+
         appLayout = (FrameLayout) findViewById(R.id.right_drawer);
         notificationLayout = (FrameLayout) findViewById(R.id.left_drawer);
 
@@ -152,11 +156,60 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
         //carga el desktop guardado
         //Log.e("APPS SISTEMA",mRightFragment.mAppListFragment.getAppsInfos().size()+"");
 
+        //saveLocale();
+    }
+    /*
+        Guardamos el actual locale
+     */
+    public void saveLocale()
+    {
+        Log.e("entramos","guardamosLocale   "+Locale.getDefault().toString());
+        SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString(getString(R.string.tag_sharedPreferences_locale), Locale.getDefault().toString());
+        editor.commit();
+    }
+
+    /*
+     *  Devuelve true si se comprueba que el locale ha cambiado
+     */
+    public boolean localeChanged()
+    {
+        SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+        String localeGuardado = sharedPref.getString(getString(R.string.tag_sharedPreferences_locale), "");
+        Log.e("entramos","localeChanged Actual:"+ Locale.getDefault().toString()+" Guardada: "+localeGuardado+(!localeGuardado.equals(Locale.getDefault().toString())));
+        if(localeGuardado.isEmpty())
+            return false;
+        else
+            return !localeGuardado.equals(Locale.getDefault().toString());
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        Log.e("entramos","OnConfigurationChanged");
+        restartApplication();
+        super.onConfigurationChanged(newConfig);
+
 
     }
 
     @Override
+    protected void onStop() {
+        super.onStop();
+        saveLocale();
+    }
+
+    @Override
      protected void onResume() {
+        Log.e("onResume","LauncherActivity");
+        Log.e("localeChanged","reiniciamos  "+ localeChanged());
+        if(localeChanged()) {
+            saveLocale();
+            restartApplication();
+
+
+        }
+
         IntentFilter filterSettingsMenu = new IntentFilter();
         filterSettingsMenu.setPriority(2147483647);
         filterSettingsMenu.addAction(SettingsMenuReceiver.INTENT);
@@ -171,12 +224,15 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
 
     @Override
     protected void onPause() {
+
         unregisterReceiver(mAppMenuReceiver);
         unregisterReceiver(mSettingsMenuReceiver);
         desktopLayout.closeDrawers();
         super.onPause();
         //statusBarAdmin.ShowStatusBar();
     }
+
+
 
     @Override
     protected void onStart() {
@@ -445,8 +501,8 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
             if(!contiene) {
                 Log.e("Entramos aquí","as");
                 mDesktopFragment.addShortcut(shortcutInfo); //ESTO ES LO QUE FINALMENTE METE EL SHORTCUT
-                mDesktopFragment.notifyAll();
-                mDesktopFragment.notify();
+                //mDesktopFragment.notifyAll();
+
 
                 preferencesListadoApps.addAppInfo((AppInfo) shortcutInfo);
                 fillDraggableList(shortcutInfo);
@@ -662,14 +718,17 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
     }*/
 
     public void reloadDesktop() {
-
         mDesktopFragment.setGridAdapter(preferencesListadoApps.getListaDesktop());
     }
 
     public ShortcutAdapter getGridDesktop(){
-        if(preferencesListadoApps==null)
-            preferencesListadoApps = new SaveLoadAppsPreferences(this);
-        return preferencesListadoApps.getListaDesktop();
+            return preferencesListadoApps.getListaDesktop();
+    }
+
+    private void restartApplication() {
+        //Esto es feo
+        System.exit(0);
+
     }
 
 

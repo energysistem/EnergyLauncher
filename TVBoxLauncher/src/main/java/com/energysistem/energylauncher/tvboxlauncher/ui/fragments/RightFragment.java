@@ -92,20 +92,35 @@ public View onCreateView(LayoutInflater inflater, ViewGroup container, final Bun
        /* vPager = (LinearLayout)findViewById(R.id.tabLL2);
         vPager.setAdapter(tAdapter);*/
 
+        mTabHost = (TabHost) v.findViewById(R.id.tabHost_right);
+        if(mTabHost==null)
+            Log.e("mTabHost","Soy Null");
+        mTabHost.setup();
+
+
+        return v;
+    }
+
+    public void onActivityCreated (Bundle savedInstanceState){
+        super.onActivityCreated(savedInstanceState);
+        //estadoVariables();
+
+
         tAdapter = new TabsAdapter();
 
         preferencesListadoApps = new SaveLoadAppsPreferences(getActivity());
 
         //aBar = getActivity().getActionBar();
 
-
-        mTabHost = (TabHost) v.findViewById(R.id.tabHost);
-        mTabHost.setup();
+//        mTabHost = (TabHost) getActivity().findViewById(R.id.tabHost_right);
+//        if(mTabHost==null)
+//            Log.e("mTabHost","Soy Null");
+//        mTabHost.setup();
 
 
         // *******Tab 1*******
         TabHost.TabSpec spec1 = mTabHost.newTabSpec(getActivity().getString(R.string.tab_aplicaciones));
-        spec1.setContent(R.id.tab1);
+        spec1.setContent(R.id.tab11);
         spec1.setIndicator(getResources().getText(R.string.tab_aplicaciones));
 
         /*
@@ -115,17 +130,17 @@ public View onCreateView(LayoutInflater inflater, ViewGroup container, final Bun
         tabs.addTab(calculatorTab);*/
 
         mAppListFragment = new AppListFragment();
-        getFragmentManager().beginTransaction().replace(R.id.tab1,
+        getFragmentManager().beginTransaction().replace(R.id.tab11,
                 mAppListFragment).commit();
 
 
         //********Tab 2*******
         TabHost.TabSpec spec2 = mTabHost.newTabSpec(getActivity().getString(R.string.tab_bookmarks));
-        spec2.setContent(R.id.tab2);
+        spec2.setContent(R.id.tab22);
         spec2.setIndicator(getResources().getText(R.string.tab_bookmarks));
 
         mMenuBookMarkFragment = new MenuBookMarkFragment();
-        getFragmentManager().beginTransaction().replace(R.id.tab2,
+        getFragmentManager().beginTransaction().replace(R.id.tab22,
                 mMenuBookMarkFragment).commit();
 
 
@@ -148,33 +163,37 @@ public View onCreateView(LayoutInflater inflater, ViewGroup container, final Bun
         menu=true;
 */
         //mTabHost.setOnTabChangedListener(tabChangeListener);
-    mTabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener(){
-        public void onTabChanged(String tabID) {
-            if(tabID.equals(getActivity().getString(R.string.tab_bookmarks))) {
-                mTabHost.setCurrentTab(1);
+        mTabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener(){
+            public void onTabChanged(String tabID) {
+                if(tabID.equals(getActivity().getString(R.string.tab_bookmarks))) {
+                    mTabHost.setCurrentTab(1);
+                }
+                fueraDeBookmarks = true;
             }
-            fueraDeBookmarks = true;
-        }
-    });
+        });
 
-    mTabHost.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
+        mTabHost.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
 
-        @Override
-        public void onViewDetachedFromWindow(View v) {}
+            @Override
+            public void onViewDetachedFromWindow(View v) {}
 
-        @Override
-        public void onViewAttachedToWindow(View v) {
-            mTabHost.getViewTreeObserver().removeOnTouchModeChangeListener(mTabHost);
-        }
-    });
-        return v;
-    }
+            @Override
+            public void onViewAttachedToWindow(View v) {
+                mTabHost.getViewTreeObserver().removeOnTouchModeChangeListener(mTabHost);
+            }
+        });
 
-    public void onActivityCreated (Bundle savedInstanceState){
-        super.onActivityCreated(savedInstanceState);
-        //estadoVariables();
+
         mTabHost.setCurrentTab(0);
 
+
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.e("onResume","RightFragment");
     }
 
     public void testFunction(Bundle savedInstanceState){

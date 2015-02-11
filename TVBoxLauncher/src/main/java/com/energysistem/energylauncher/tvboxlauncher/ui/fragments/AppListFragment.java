@@ -71,7 +71,7 @@ public class AppListFragment extends Fragment
         super.onCreateView(inflater, container, savedInstanceState);
         View v = inflater.inflate(R.layout.fragment_app_list, container, false);
 
-        mListViewApps = (ListView) v.findViewById(R.id.app_grid_list);
+        mListViewApps = (ListView) v.findViewById(R.id.app_grid_list_app);
         mListViewApps.setOnItemClickListener(this);
         mListViewApps.setOnItemLongClickListener(this);
 

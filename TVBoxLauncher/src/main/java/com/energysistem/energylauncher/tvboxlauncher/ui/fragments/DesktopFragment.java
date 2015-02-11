@@ -88,7 +88,7 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
 
         //GridApp desktop icons
         gridAdapter = new ShortcutAdapter(getActivity());
-        gridAdapter = ((LauncherActivity) getActivity()).getGridDesktop();
+        //gridAdapter = ((LauncherActivity) getActivity()).getGridDesktop();
         mFavoritesGrid = (GridView) view.findViewById(R.id.app_grid);
         mFavoritesGrid.setAdapter(gridAdapter);
         mFavoritesGrid.setSmoothScrollbarEnabled(true);
@@ -201,6 +201,7 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
         @Override
         public void onResume() {
         super.onResume();
+            Log.e("onResume","DesktopFragment");
         Time time = new Time();
         time.setToNow();
         updateClockWidget(time);
