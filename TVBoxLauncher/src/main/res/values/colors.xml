@@ -11,8 +11,11 @@
     <color name="grisOSCURO">#555555</color>
     <color name="grisMEDIO">#777777</color>
     <color name="grisCLARO">#aaaaaa</color>
+    <color name="grisCLAROTransparenteFondo">#3a9a9a9a</color>
+    <color name="grisCLAROTransparente">#43eeeeee</color>
     <color name="rojo">#cc0000</color>
     <color name="blanco">#ffeeeeee</color>
+    <color name="blancoTransparente">#e5eeeeee</color>
     <color name="transparent">#00ffffff</color>
-    <color name="translucent_white">#49ffffff</color>
+    <color name="translucent_white">#2affffff</color>
 </resources>

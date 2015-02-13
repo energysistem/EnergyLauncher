@@ -270,8 +270,9 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
     {
         if(vista == null)
             return;
-        TransitionDrawable transition = (TransitionDrawable) vista.getBackground();
-        transition.reverseTransition(500);
+        /*TransitionDrawable transition = (TransitionDrawable) vista.getBackground();
+        transition.reverseTransition(500);*/
+        vista.setBackgroundResource(R.drawable.shortcut_select_shape);
         /*if(vista!=null) {
             final ObjectAnimator backgroundColorAnimator = ObjectAnimator.ofObject(vista,
                     "backgroundColor",
@@ -287,8 +288,9 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
     {
         if(vista == null)
             return;
-        TransitionDrawable transition = (TransitionDrawable) vista.getBackground();
-        transition.startTransition(250);
+        /*TransitionDrawable transition = (TransitionDrawable) vista.getBackground();
+        transition.startTransition(150);*/
+        vista.setBackgroundResource(R.drawable.shortcut_unselect_shape);
         /*if(vista!=null)
         {
             final ObjectAnimator backgroundColorAnimator = ObjectAnimator.ofObject(vista,

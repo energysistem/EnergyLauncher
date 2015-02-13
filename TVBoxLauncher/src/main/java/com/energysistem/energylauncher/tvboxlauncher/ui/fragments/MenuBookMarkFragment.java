@@ -1,11 +1,15 @@
 package com.energysistem.energylauncher.tvboxlauncher.ui.fragments;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.LoaderManager;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.Loader;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +21,7 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.energysistem.energylauncher.tvboxlauncher.R;
 import com.energysistem.energylauncher.tvboxlauncher.database.BookmarkDAO;
@@ -285,11 +290,15 @@ public class MenuBookMarkFragment  extends Fragment
             mAdapter.notifyDataSetChanged();
             datasource.close();
         } else {
-            startActivity(info.getIntent());
+            openAlert(info, position);
+            //getActivity().startActivity(info.getIntent());
         }
 
 
     }
+
+
+
 
     @Override
     public Loader<List<WebPageInfo>> onCreateLoader(int id, Bundle bundle) {
@@ -347,6 +356,45 @@ public class MenuBookMarkFragment  extends Fragment
         assert (getActivity()) != null;
 
 
+    }
+
+    private void openAlert(final WebPageInfo info, final int position) {
+        ContextThemeWrapper themedContext = new ContextThemeWrapper( getActivity(), android.R.style.Theme_Holo_Light );
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(themedContext);
+
+        alertDialogBuilder.setTitle(info.getTitle());
+        // set positive button: Yes message
+        alertDialogBuilder.setPositiveButton(themedContext.getString(R.string.bookmark_button_delete),new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog,int id) {
+                mListWebPage.remove(position);
+                mAdapter.notifyDataSetChanged();
+                datasource.open();
+                datasource.deleteBookmark(info);
+                datasource.close();
+                
+            }
+        });
+        // set negative button: No message
+        alertDialogBuilder.setNegativeButton(themedContext.getString(R.string.bookmark_button_go),new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog,int id) {
+                getActivity().startActivity(info.getIntent());
+                //
+
+
+            }
+        });
+        /*// set neutral button: Exit the app message
+        alertDialogBuilder.setNeutralButton("Editar",new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog,int id) {
+
+
+            }
+        });*/
+
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        // show alert
+        alertDialog.show();
     }
 
 

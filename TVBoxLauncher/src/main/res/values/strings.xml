@@ -45,5 +45,7 @@
     <string name="tab_bookmarks">BOOKMARKSs</string>
     <string name="tab_settings">SETTINGS</string>
     <string name="tag_sharedPreferences_locale">localeSystem</string>
+    <string name="bookmark_button_go">Ir</string>
+    <string name="bookmark_button_delete">Borrar</string>
 
 </resources>

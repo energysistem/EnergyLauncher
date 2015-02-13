@@ -7,7 +7,7 @@
 
   <style name="AppThemeVerde.NoTitleBar" parent="@style/_AppThemeVerde.NoTitleBar"/>
 
-  <style name="_AppThemeVerde" parent="android:Widget.Holo.Light">
+  <style name="_AppThemeVerde" parent="Theme.AppCompat.Light">
 
     <item name="android:editTextBackground">@drawable/appthemeverde_edit_text_holo_light</item>
     <item name="android:tabWidgetStyle">@style/AppThemeVerde.TabWidget</item>
