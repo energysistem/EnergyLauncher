@@ -13,7 +13,7 @@
     <Button
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="@string/apply_changes"
+        android:text="@string/arrange_list_mensajeInicial"
         android:id="@+id/btnGuardaCambios"
         android:enabled="false"
         android:clickable="false"

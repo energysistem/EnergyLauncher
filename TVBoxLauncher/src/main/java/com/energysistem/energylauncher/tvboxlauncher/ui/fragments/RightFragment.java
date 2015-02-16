@@ -121,6 +121,7 @@ public View onCreateView(LayoutInflater inflater, ViewGroup container, final Bun
         // *******Tab 1*******
         TabHost.TabSpec spec1 = mTabHost.newTabSpec(getActivity().getString(R.string.tab_aplicaciones));
         spec1.setContent(R.id.tab11);
+
         spec1.setIndicator(getResources().getText(R.string.tab_aplicaciones));
 
         /*
@@ -185,6 +186,10 @@ public View onCreateView(LayoutInflater inflater, ViewGroup container, final Bun
 
 
         mTabHost.setCurrentTab(0);
+
+
+       /* mTabHost.getTabWidget().setRightStripDrawable(R.drawable.appthemeverde_tab_indicator_holo);
+        mTabHost.getTabWidget().setLeftStripDrawable(R.drawable.appthemeverde_tab_indicator_holo);*/
 
 
 

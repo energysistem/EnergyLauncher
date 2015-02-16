@@ -31,6 +31,7 @@
         import com.energysistem.energylauncher.tvboxlauncher.R;
         import com.energysistem.energylauncher.tvboxlauncher.modelo.DraggableItemApp;
         import com.energysistem.energylauncher.tvboxlauncher.ui.adapters.StableArrayAdapter;
+        import com.energysistem.energylauncher.tvboxlauncher.ui.fragments.AppArrangeFragment;
 
         import java.util.ArrayList;
         import java.util.List;
@@ -60,6 +61,11 @@
 
 
 public class DynamicDraggingListView extends ListView {
+
+    private AppArrangeFragment clase;
+    public void setClase(AppArrangeFragment clase) {
+        this.clase = clase;
+    }
 
     public interface OnListChangeListener {
         void onListChanged(View v, boolean cambiado);
@@ -286,7 +292,9 @@ public class DynamicDraggingListView extends ListView {
                     metaState
             );
             // Dispatch touch event to view
+
             this.dispatchTouchEvent(motionEvent);
+            clase.aplicaCambios();
         }
 
 
@@ -328,27 +336,26 @@ public class DynamicDraggingListView extends ListView {
     private OnItemLongClickListener mOnItemLongClickListener =
             new OnItemLongClickListener() {
                 public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int pos, long id) {
-//                    mTotalOffset = 0;
-//
-//                    int position = pointToPosition(mDownX, mDownY);
-//                    int itemNum = position - getFirstVisiblePosition();
-//
-////                    if (position == -1){
-//                    position = itemNum = pos;
-////                    }
-//
-//                    View selectedView = getChildAt(itemNum);
-//                    mMobileItemId = getAdapter().getItemId(position);
-//                    mHoverCell = getAndAddHoverView(selectedView);
-//                    selectedView.setVisibility(INVISIBLE);
-//
-//                    LanzaMotionEvent(mDireccionMotionEvent.DOWN, MotionEvent.ACTION_DOWN );
-//
-//                    mCellIsMobile = true;
-//
-//                    updateNeighborViewsForID(mMobileItemId);
+                    mTotalOffset = 0;
 
-                    return true;
+                    int position = pointToPosition(mDownX, mDownY);
+                    int itemNum = position - getFirstVisiblePosition();
+
+                    if (position == -1){
+                    position = itemNum = pos;
+                    }
+                    View selectedView = getChildAt(itemNum);
+                    mMobileItemId = getAdapter().getItemId(position);
+                    mHoverCell = getAndAddHoverView(selectedView);
+                    selectedView.setVisibility(INVISIBLE);
+
+                    LanzaMotionEvent(mDireccionMotionEvent.DOWN, MotionEvent.ACTION_DOWN );
+
+                    mCellIsMobile = true;
+
+                   updateNeighborViewsForID(mMobileItemId);
+
+                    return false;
                 }
             };
 
@@ -500,6 +507,7 @@ public class DynamicDraggingListView extends ListView {
 
         switch (event.getAction() & MotionEvent.ACTION_MASK) {
             case MotionEvent.ACTION_DOWN:
+
                 mDownX = (int)event.getX();
                 mDownY = (int)event.getY();
                 mActivePointerId = event.getPointerId(0);
@@ -531,6 +539,7 @@ public class DynamicDraggingListView extends ListView {
                     handleCellSwitch();
 
                     mIsMobileScrolling = false;
+                    Log.e("Dejamos de mover?","SI");
                     handleMobileCellScroll();
 
                     return false;

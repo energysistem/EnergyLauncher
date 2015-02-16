@@ -41,7 +41,7 @@
 
     <style name="AppThemeVerde.TabWidget" parent="android:Widget.Holo.Light.TabWidget">
         <item name="android:background">@color/verdeCLARO</item>
-        <item name="*android:tabLayout">@layout/appthemeverde_tab_indicator_holo</item>
+        <item name="android:tabWidgetStyle">@drawable/appthemeverde_tab_indicator_holo</item>
         <item name="android:showDividers">none</item>
     </style>
 

@@ -61,14 +61,18 @@ public class AppArrangeFragment extends Fragment {
         mListView.setAppsList(mListAppsDragablesOrdenada);
         mListView.setAdapter(mAdapter);
         mListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+        mListView.setClase(this);
+
 
         mListView.setOnListChangeListener(new DynamicDraggingListView.OnListChangeListener() {
             @Override
             public void onListChanged(View v, boolean cambiado) {
                 if (cambiado) {
+                    Log.e("Cambiado","ArrangeFragment");
                     mBtnGuardar.setEnabled(true);
                     mBtnGuardar.setFocusable(true);
-                    mBtnGuardar.setFocusableInTouchMode(true);
+                    //mBtnGuardar.setFocusableInTouchMode(true);
+                    mBtnGuardar.setText(getActivity().getString(R.string.arrange_list_mensajeFinal));
 
                 }
             }
@@ -77,7 +81,7 @@ public class AppArrangeFragment extends Fragment {
         mBtnGuardar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                aplicaCambios();
+               // aplicaCambios();
             }
         });
 
@@ -122,7 +126,7 @@ public class AppArrangeFragment extends Fragment {
     }
 
 
-    private void aplicaCambios() {
+    public void aplicaCambios() {
         assert (getActivity()) != null;
 
 
@@ -131,6 +135,7 @@ public class AppArrangeFragment extends Fragment {
         mListAppsDragablesOrdenada=getDraggableListActualizada();
         resetFragment();
         mListView.requestFocus();
+        mBtnGuardar.setText(getActivity().getString(R.string.arrange_list_mensajeInicial));
     }
 
 

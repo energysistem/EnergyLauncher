@@ -399,9 +399,11 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         mAppArrangeFragment =  new AppArrangeFragment();
         desktopLayout.setFocusable(false);
+
         ft.replace(R.id.menu_list_frame, mAppArrangeFragment);
         ft.addToBackStack("AppArrangeFragment");
         ft.commit();
+        //mAppArrangeFragment.setFocus();
     }
 
     public void resetTab3(){
