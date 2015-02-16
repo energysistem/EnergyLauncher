@@ -44,7 +44,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:contentDescription="@string/Home"
-                            android:nextFocusUp="@+id/tab1"
+                            android:nextFocusUp="@+id/tab11"
                             android:nextFocusDown="@+id/app_grid"
                             android:nextFocusRight="@+id/tab2">
 
@@ -62,7 +62,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:contentDescription="@string/Home"
-                            android:nextFocusUp="@+id/tab2"
+                            android:nextFocusUp="@+id/tab22"
                             android:nextFocusDown="@+id/tabcontent"
                             android:nextFocusLeft="@+id/tab1"
                             android:nextFocusRight="@+id/tab2">

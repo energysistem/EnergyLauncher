@@ -15,6 +15,7 @@
         android:nextFocusDown="@+id/menuBookmarkTxtUri"
         android:nextFocusUp="@+id/tab2"
         android:textSize="@dimen/normal_text_size"
+        android:singleLine="true"
         android:textColor="@color/blanco"/>
 
 

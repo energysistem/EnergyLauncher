@@ -371,7 +371,6 @@ public class MenuBookMarkFragment  extends Fragment
                 datasource.open();
                 datasource.deleteBookmark(info);
                 datasource.close();
-                
             }
         });
         // set negative button: No message
@@ -383,14 +382,6 @@ public class MenuBookMarkFragment  extends Fragment
 
             }
         });
-        /*// set neutral button: Exit the app message
-        alertDialogBuilder.setNeutralButton("Editar",new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog,int id) {
-
-
-            }
-        });*/
-
 
         AlertDialog alertDialog = alertDialogBuilder.create();
         // show alert

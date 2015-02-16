@@ -69,6 +69,7 @@ public class AppArrangeFragment extends Fragment {
                     mBtnGuardar.setEnabled(true);
                     mBtnGuardar.setFocusable(true);
                     mBtnGuardar.setFocusableInTouchMode(true);
+
                 }
             }
         });
@@ -89,6 +90,8 @@ public class AppArrangeFragment extends Fragment {
     public void setFocus() {
         mListView.requestFocus();
     }
+
+
 
 
     private void CreaListaFiltradaOrdenada() {

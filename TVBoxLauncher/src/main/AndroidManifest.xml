@@ -69,6 +69,12 @@
                 <action android:name="com.energysistem.energylauncher.tvboxlauncher.APPS" />
             </intent-filter>
         </receiver>
+
+        <receiver android:name="com.energysistem.energylauncher.tvboxlauncher.broadcastreceiver.TimeChangedReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.TIME_SET" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

@@ -252,7 +252,17 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
         FragmentManager fm = getFragmentManager();
         if (fm.getBackStackEntryCount() > 0) {
 
+            if(mAppArrangeFragment.isVisible())
+            {
+                //desktopLayout.setFocusable(false);
+                //notificationLayout.setFocusable(true);
+                //notificationLayout.requestFocus();
+                mMenuListFragment.setFocus();
+            }
+
+
             fm.popBackStack();
+
             return;
         } else {
 
@@ -269,7 +279,7 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
                  case KeyEvent.KEYCODE_DPAD_RIGHT:
                      if (appLayout.isShown()) {
                          desktopLayout.setFocusable(false);
-
+                         notificationLayout.setFocusable(false);
                          mRightFragment.onKeyRightD();
                      } else if (notificationLayout.isShown()) {
                          //mOptionsLauncherFragment.onKeyRightAndLeft();
@@ -287,7 +297,8 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
                      if (appLayout.isShown()) {
                          mRightFragment.onKeyLeftD();
                      } else if (notificationLayout.isShown()) {
-
+                         desktopLayout.setFocusable(false);
+                         appLayout.setFocusable(false);
                      } else if (desktopLayout.isShown()) {
                          mDesktopFragment.onKeyRightAndLeft(KeyEvent.KEYCODE_DPAD_LEFT);
                      }
@@ -300,6 +311,12 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
                      }
                      return true;*/
              }
+            if(notificationLayout.isShown())
+            {
+                desktopLayout.setFocusable(false);
+                return true;
+            }
+            else
              return super.onKeyDown(keyCode, event);
          }
 
@@ -334,6 +351,7 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
                      if (appLayout.isShown()) {
                          mRightFragment.onKeyDownU();
                      } else if (notificationLayout.isShown()) {
+                         desktopLayout.setFocusable(false);
                          //mNotificationFragent.onKeyUpAndDown(KeyEvent.KEYCODE_DPAD_DOWN);
                      }
                      return true;
@@ -380,7 +398,7 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
     public void ShowReordenaDesktopAppsFragment(){
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         mAppArrangeFragment =  new AppArrangeFragment();
-
+        desktopLayout.setFocusable(false);
         ft.replace(R.id.menu_list_frame, mAppArrangeFragment);
         ft.addToBackStack("AppArrangeFragment");
         ft.commit();

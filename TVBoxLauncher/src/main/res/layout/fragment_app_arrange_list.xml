@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:clickable="true"
+    android:focusable="true"
     android:layout_height="match_parent"
     android:background="@color/black_grey"
     tools:context=".ListViewAnimations" >
@@ -17,12 +18,14 @@
         android:enabled="false"
         android:clickable="false"
         android:focusable="false"
+        android:nextFocusDown="@+id/draggable_listview"
         android:focusableInTouchMode="false" />
 
     <com.energysistem.energylauncher.tvboxlauncher.ui.views.DynamicDraggingListView
         android:id="@+id/draggable_listview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:nextFocusUp="@id/btnGuardaCambios"
         android:verticalSpacing="@dimen/menu_list_vertical_spacing"
         android:dividerHeight="@dimen/menu_list_divider_height"
         android:background="@color/black_grey"

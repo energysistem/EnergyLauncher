@@ -162,7 +162,7 @@ public class WebShortcutAdapter extends ArrayAdapter<WebPageInfo>{
             public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
 
                 holder.image.setImageBitmap(bitmap);
-
+                notifyDataSetChanged();
 
             }
 
