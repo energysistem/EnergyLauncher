@@ -33,15 +33,15 @@
         </item>
     </style>
 
-    <style name="AppThemeVerde.TabView" parent="@android:style/Widget.Holo.ActionBar.TabView">
+    <style name="AppThemeVerde.TabView" parent="@android:style/Widget.Holo.Light.ActionBar.TabView">
         <item name="android:background">@drawable/apptheme_tab_indicator_holo</item>
         <item name="android:layout_weight">1</item>
         <item name="android:minWidth">80dip</item>
     </style>
 
-    <style name="AppThemeVerde.TabWidget" parent="android:Widget.Holo.TabWidget">
+    <style name="AppThemeVerde.TabWidget" parent="android:Widget.Holo.Light.TabWidget">
         <item name="android:background">@color/verdeCLARO</item>
-        <item name="*android:tabLayout">@layout/appthemeverde_tab_indicator_holo</item>
+        <item name="android:tabWidgetStyle">@drawable/appthemeverde_tab_indicator_holo</item>
         <item name="android:showDividers">none</item>
     </style>
 

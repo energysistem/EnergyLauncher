@@ -8,8 +8,8 @@
     <dimen name="desktop_grid_margins">18dp</dimen>
 
     <!-- Clock -->
-    <dimen name="clock_time_text_size">90sp</dimen>
-    <dimen name="clock_date_text_size">22sp</dimen>
+    <dimen name="clock_time_text_size">70sp</dimen>
+    <dimen name="clock_date_text_size">18sp</dimen>
 
     <!-- Notification Floating Icon -->
     <dimen name="floating_settings_icon_margin_top">60dp</dimen>
@@ -26,11 +26,13 @@
     <dimen name="menu_list_row_padding">10dp</dimen>
     <dimen name="menu_list_row_start_padding">10dp</dimen>
     <dimen name="row_icon_width">55dp</dimen>
+    <dimen name="row_icon_Web_width">40dp</dimen>
 
     <!-- TextSizes. -->
     <dimen name="small_text_size">10sp</dimen>
     <dimen name="normal_text_size">18sp</dimen>
     <dimen name="button_text_size">15sp</dimen>
     <dimen name="right_panel_header_text_size">17sp</dimen>
+    <dimen name="text_shortcut_margin_left">15dp</dimen>
 
 </resources>

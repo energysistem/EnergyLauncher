@@ -28,6 +28,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.energysistem.energylauncher.tvboxlauncher.R;
+import com.energysistem.energylauncher.tvboxlauncher.broadcastreceiver.SettingsMenuReceiver;
+import com.energysistem.energylauncher.tvboxlauncher.broadcastreceiver.TimeChangedReceiver;
 import com.energysistem.energylauncher.tvboxlauncher.modelo.ShortcutInfo;
 import com.energysistem.energylauncher.tvboxlauncher.modelo.WebPageInfo;
 import com.energysistem.energylauncher.tvboxlauncher.ui.LauncherActivity;
@@ -60,6 +62,7 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
     private ImageView wifiIcon;
     private ImageView ethernetIcon;
     private ConnectionIndicator connectionIndicator;
+    private TimeChangedReceiver BR_TimeChangedreceiver = null;
 
 
     //Propiedades elementos gridview para el scroll
@@ -196,6 +199,8 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
         public void onActivityCreated(Bundle savedInstanceState) {
 
             super.onActivityCreated(savedInstanceState);
+            BR_TimeChangedreceiver = new TimeChangedReceiver();
+            BR_TimeChangedreceiver.setMainActivityHandler(this);
         }
 
         @Override
@@ -207,7 +212,12 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
         updateClockWidget(time);
         connectionIndicator.update();
 
-        IntentFilter intentFilter = new IntentFilter();
+
+            IntentFilter filterSettingsMenu = new IntentFilter();
+            filterSettingsMenu.addAction(TimeChangedReceiver.INTENT);
+            getActivity().registerReceiver(BR_TimeChangedreceiver, filterSettingsMenu);
+
+            IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
         intentFilter.addAction(WifiManager.RSSI_CHANGED_ACTION);
         BroadcastReceiver connectivityReceiver = new BroadcastReceiver() {
@@ -223,6 +233,10 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
     @Override
     public void onPause() {
         super.onPause();
+        Time time = new Time();
+        time.setToNow();
+        updateClockWidget(time);
+       getActivity().unregisterReceiver(BR_TimeChangedreceiver);
     }
 
     /*******************************/
@@ -270,8 +284,9 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
     {
         if(vista == null)
             return;
-        TransitionDrawable transition = (TransitionDrawable) vista.getBackground();
-        transition.reverseTransition(500);
+        /*TransitionDrawable transition = (TransitionDrawable) vista.getBackground();
+        transition.reverseTransition(500);*/
+        vista.setBackgroundResource(R.drawable.shortcut_select_shape);
         /*if(vista!=null) {
             final ObjectAnimator backgroundColorAnimator = ObjectAnimator.ofObject(vista,
                     "backgroundColor",
@@ -287,8 +302,9 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
     {
         if(vista == null)
             return;
-        TransitionDrawable transition = (TransitionDrawable) vista.getBackground();
-        transition.startTransition(250);
+        /*TransitionDrawable transition = (TransitionDrawable) vista.getBackground();
+        transition.startTransition(150);*/
+        vista.setBackgroundResource(R.drawable.shortcut_unselect_shape);
         /*if(vista!=null)
         {
             final ObjectAnimator backgroundColorAnimator = ObjectAnimator.ofObject(vista,
@@ -439,7 +455,7 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
    /*
     Wichet reloj
      */
-    private void updateClockWidget(Time dateTime) {
+   public void updateClockWidget(Time dateTime) {
         if (timeTextView != null) {
             timeTextView.setText(android.text.format.DateFormat.getTimeFormat(getActivity().getApplicationContext()).format(dateTime.toMillis(true)).toString());
         }
