@@ -136,6 +136,7 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
         ethernetIcon = (ImageView) view.findViewById(R.id.ethernet_icon);
         connectionIndicator = new ConnectionIndicator(getActivity(), wifiIcon, ethernetIcon);
 
+
         Log.d("-------------onCreateView() Desktop Fragment", Integer.toString((gridAdapter.getCount())));
         return view;
 
@@ -201,6 +202,8 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
             super.onActivityCreated(savedInstanceState);
             BR_TimeChangedreceiver = new TimeChangedReceiver();
             BR_TimeChangedreceiver.setMainActivityHandler(this);
+            Log.e("Creamos TikmeChangedReceiver","-----------------------------");
+
         }
 
         @Override
@@ -224,7 +227,11 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
 
             @Override
             public void onReceive(Context arg0, Intent arg1) {
+                Time time = new Time();
+                time.setToNow();
+                updateClockWidget(time);
                 connectionIndicator.update();
+                Log.e("Maquepatxa","");
             }
         };
         getActivity().registerReceiver(connectivityReceiver, intentFilter);
@@ -334,12 +341,7 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
                 public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
                     shortcutInfo.setBitmap(bitmap);
 
-                    try {
-                        gridAdapter.addItem(shortcutInfo, getActivity());
-                        gridAdapter.notifyDataSetChanged();
-                    } catch (MalformedURLException e) {
-                        e.printStackTrace();
-                    }
+
 
                 }
 
@@ -353,6 +355,10 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
                     Log.d("TAG", "Prepare Load");
                 }
             });
+
+                gridAdapter.addItem(shortcutInfo, getActivity());
+                gridAdapter.notifyDataSetChanged();
+
             //((LauncherActivity) getActivity()).preferencesListadoApps.ActualizaListaApps(gridAdapter.getListInfo());
             //setGridAdapter(((LauncherActivity) getActivity()).getGridDesktop());
         } else {

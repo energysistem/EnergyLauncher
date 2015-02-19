@@ -530,35 +530,14 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
             }
            // reloadDesktop();
         } else if (shortcutInfo instanceof WebPageInfo) {
-            URL url = new URL("http://www.google.com/s2/favicons?domain="+((WebPageInfo) shortcutInfo).getPageUrl());
-            Picasso.with(this).load(url.toString()).into(new Target() {
+            Log.e("VAMO A VER KE HENTRA",((WebPageInfo) shortcutInfo).getName());
+            mDesktopFragment.addShortcut(shortcutInfo);
+            preferencesListadoApps.addWebPageInfo((WebPageInfo) shortcutInfo); //NOHACENADA
 
-                @Override
-                public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                    shortcutInfo.setBitmap(bitmap);
-                    try {
-                        mDesktopFragment.addShortcut(shortcutInfo);
-                    } catch (MalformedURLException e) {
-                        e.printStackTrace();
-                    }
-                    preferencesListadoApps.addWebPageInfo((WebPageInfo) shortcutInfo);
-
-                    fillDraggableList(shortcutInfo);
-                    resetArrangeAppsFragment();
+            fillDraggableList(shortcutInfo);
+            resetArrangeAppsFragment();
 
 
-                }
-
-                @Override
-                public void onBitmapFailed(final Drawable errorDrawable) {
-                    Log.d("TAG", "FAILED");
-                }
-
-                @Override
-                public void onPrepareLoad(final Drawable placeHolderDrawable) {
-                    Log.d("TAG", "Prepare Load");
-                }
-            });
 
            // reloadDesktop();
         }
@@ -676,8 +655,6 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
                 mListFavDraggables = new ArrayList<DraggableItemApp>();
             }
 
-
-
              //creamos un nuevo draggable
              DraggableItemApp item = new DraggableItemApp(
                       mListFavDraggables.size(),
@@ -692,10 +669,12 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
 
             if(mListFavDraggables.size() < ((WebPageInfo) info).getPosi()-1)
             {
+                item.setPageUrl(((WebPageInfo) info).getPageUrl());
                 mListFavDraggables.add(item);
             }
             else
             {
+                item.setPageUrl(((WebPageInfo) info).getPageUrl());
                 mListFavDraggables.add(((WebPageInfo) info).getPosi()-1,item);
             }
 

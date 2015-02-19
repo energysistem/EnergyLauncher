@@ -141,6 +141,16 @@ action#com.energysistem.energylauncher.tvboxlauncher.APPS
 ADDED from AndroidManifest.xml:69:17
 	android:name
 		ADDED from AndroidManifest.xml:69:25
+receiver#com.energysistem.energylauncher.tvboxlauncher.broadcastreceiver.TimeChangedReceiver
+ADDED from AndroidManifest.xml:73:9
+	android:name
+		ADDED from AndroidManifest.xml:73:19
+intent-filter#android.intent.action.TIME_SET
+ADDED from AndroidManifest.xml:74:13
+action#android.intent.action.TIME_SET
+ADDED from AndroidManifest.xml:75:17
+	android:name
+		ADDED from AndroidManifest.xml:75:25
 uses-sdk
 INJECTED from AndroidManifest.xml:0:0 reason: use-sdk injection requested
 MERGED from com.android.support:gridlayout-v7:19.1.0:18:5

@@ -2,6 +2,8 @@ package com.energysistem.energylauncher.tvboxlauncher.ui.adapters;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -67,7 +69,9 @@ public class ShortcutAdapter extends BaseAdapter  {
         return -1;
     }
 
-    public void addItem(final ShortcutInfo app, Context context) throws MalformedURLException {
+    public void addItem(final ShortcutInfo app, final Context context) throws MalformedURLException {
+        Log.e("Entramos en addItem","ShortcutAdapter");
+        //
         if (app instanceof WebPageInfo) {
             boolean contiene = false;
             for(int i = 0; i < data.size(); i++)
@@ -81,39 +85,18 @@ public class ShortcutAdapter extends BaseAdapter  {
             }
 
             if(!contiene) {
-
-                URL url = new URL("http://www.google.com/s2/favicons?domain="+((WebPageInfo) app).getPageUrl());
-                Picasso.with(context).load(url.toString()).into(new Target() {
-
-                    @Override
-                    public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                        app.setBitmap(bitmap);
-
-                        if (data.size() < ((WebPageInfo) app).getPosi() - 1) {
-                            Log.e("TAG","ENTRAMOS->"+((WebPageInfo) app).getPageUrl());
-                            data.add(app);
-                        } else {
-                            Log.e("TAG","ENTRAMOS->"+((WebPageInfo) app).getPageUrl());
-                            data.add(((WebPageInfo) app).getPosi() - 1, app);
-                        }
-                        notifyDataSetChanged();
-                    }
-
-                    @Override
-                    public void onBitmapFailed(final Drawable errorDrawable) {
-                        Log.d("TAG", "FAILED");
-                    }
-
-                    @Override
-                    public void onPrepareLoad(final Drawable placeHolderDrawable) {
-                        Log.d("TAG", "Prepare Load");
-                    }
-                });
-
+                int num;
+                if (data.size() < ((WebPageInfo) app).getPosi() - 1) {
+                    Log.e("TAG","ENTRAMOS->"+((WebPageInfo) app).getPageUrl());
+                    num=data.size()+1;
+                    data.add(app);
+                } else {
+                    Log.e("TAG","ENTRAMOS->"+((WebPageInfo) app).getPageUrl());
+                    num=data.size()+1;
+                    data.add(((WebPageInfo) app).getPosi() - 1, app);
+                }
 
             }
-
-
         }
         else if(app instanceof AppInfo) {
             boolean contiene = false;
@@ -135,6 +118,44 @@ public class ShortcutAdapter extends BaseAdapter  {
 
         }
 
+    }
+
+
+    public Bitmap combineImages(Bitmap c, Bitmap browserBmp) { // can add a 3rd parameter 'String loc' if you want to save the new image - left some code to do that at the bottom
+        Bitmap cs = null;
+
+        int width, height = 0;
+
+       /* if(c.getWidth() > browserBmp.getWidth()) {
+            width = c.getWidth() + browserBmp.getWidth();
+            height = c.getHeight();
+        } else {
+            width = browserBmp.getWidth() + browserBmp.getWidth();
+            height = c.getHeight();
+        }*/
+
+        cs = Bitmap.createBitmap(browserBmp.getWidth(), browserBmp.getHeight(), Bitmap.Config.ARGB_8888);
+
+        Canvas comboImage = new Canvas(cs);
+        Bitmap favicon = Bitmap.createScaledBitmap(c,browserBmp.getWidth()/2, browserBmp.getHeight()/2, true);
+
+
+
+        comboImage.drawBitmap(browserBmp, 0f, 0f, null);
+        comboImage.drawBitmap(favicon, browserBmp.getWidth()/2, browserBmp.getHeight()/2, null);
+
+        // this is an extra bit I added, just incase you want to save the new image somewhere and then return the location
+    /*String tmpImg = String.valueOf(System.currentTimeMillis()) + ".png";
+
+    OutputStream os = null;
+    try {
+      os = new FileOutputStream(loc + tmpImg);
+      cs.compress(CompressFormat.PNG, 100, os);
+    } catch(IOException e) {
+      Log.e("combineImages", "problem combining images", e);
+    }*/
+        favicon.recycle();
+        return cs;
     }
 
     public void addItemPos(ShortcutInfo i) {
@@ -178,8 +199,44 @@ public class ShortcutAdapter extends BaseAdapter  {
         } else {
             holder = (ViewHolder) view.getTag();
         }
+        if(shortcut instanceof WebPageInfo) {
 
-        holder.icon.setImageBitmap(shortcut.getBitmap());
+            URL url = null;
+            try {
+                url = new URL("http://www.google.com/s2/favicons?domain=" + ((WebPageInfo) shortcut).getPageUrl());
+
+                
+
+                Picasso.with(context).load(url.toString()).into(new Target() {
+                    @Override
+                    public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                        Bitmap combi = combineImages(bitmap, BitmapFactory.decodeResource(context.getResources(), R.drawable.browser));
+                        holder.icon.setImageBitmap(combi);
+
+                        //holder.notify();
+                       notifyDataSetChanged();
+                    }
+
+                    @Override
+                    public void onBitmapFailed(final Drawable errorDrawable) {
+                        Log.d("TAG", "FAILED");
+                    }
+
+                    @Override
+                    public void onPrepareLoad(final Drawable placeHolderDrawable) {
+                        Log.d("TAG", "Prepare Load");
+                    }
+
+                });
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
+
+        }
+        else
+            holder.icon.setImageBitmap(shortcut.getBitmap());
+
+
         holder.title.setText(shortcut.getTitle());
 
         return view;

@@ -25,6 +25,9 @@ public class TimeChangedReceiver extends BroadcastReceiver {
         Log.e("onReceive","----------------------------------------------TimeChangedReceiver");
         Time time = new Time();
         time.setToNow();
-        main.updateClockWidget(time);
+        if(main!=null)
+            main.updateClockWidget(time);
+        else
+            Log.e("main","ES NULL");
     }
 }
