@@ -3,6 +3,8 @@ package com.energysistem.energylauncher.tvboxlauncher.ui.adapters;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
@@ -34,6 +36,7 @@ public class WebShortcutAdapter extends ArrayAdapter<WebPageInfo>{
     private Resources mResources;
     private View.OnClickListener onCkeckBoxClickListener;
     private boolean checkBoxSelected;
+    private Context mContext;
 
     /*
     private final Context context;
@@ -45,6 +48,7 @@ public class WebShortcutAdapter extends ArrayAdapter<WebPageInfo>{
         super(context, 0, objects);
        /* this.list = new ArrayList<WebPageInfo>();
         this.context = context;*/
+        mContext=context;
         this.mLayoutInflater = LayoutInflater.from(context);
         mResources = context.getResources();
     }
@@ -160,8 +164,8 @@ public class WebShortcutAdapter extends ArrayAdapter<WebPageInfo>{
 
             @Override
             public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-
-                holder.image.setImageBitmap(bitmap);
+                Bitmap combi = combineImages(bitmap, BitmapFactory.decodeResource(mResources, R.drawable.browser));
+                holder.image.setImageBitmap(combi);
                 notifyDataSetChanged();
 
             }
@@ -173,11 +177,48 @@ public class WebShortcutAdapter extends ArrayAdapter<WebPageInfo>{
 
             @Override
             public void onPrepareLoad(final Drawable placeHolderDrawable) {
-                holder.image.setImageResource(R.drawable.ic_launcher);
+                holder.image.setImageResource(R.drawable.browser);
             }
         });
 
         return view;
+    }
+
+    public Bitmap combineImages(Bitmap c, Bitmap browserBmp) { // can add a 3rd parameter 'String loc' if you want to save the new image - left some code to do that at the bottom
+        Bitmap cs = null;
+
+        int width, height = 0;
+
+       /* if(c.getWidth() > browserBmp.getWidth()) {
+            width = c.getWidth() + browserBmp.getWidth();
+            height = c.getHeight();
+        } else {
+            width = browserBmp.getWidth() + browserBmp.getWidth();
+            height = c.getHeight();
+        }*/
+
+        cs = Bitmap.createBitmap(browserBmp.getWidth(), browserBmp.getHeight(), Bitmap.Config.ARGB_8888);
+
+        Canvas comboImage = new Canvas(cs);
+        Bitmap favicon = Bitmap.createScaledBitmap(c,browserBmp.getWidth()/2, browserBmp.getHeight()/2, true);
+
+
+
+        comboImage.drawBitmap(browserBmp, 0f, 0f, null);
+        comboImage.drawBitmap(favicon, browserBmp.getWidth()/2, browserBmp.getHeight()/2, null);
+
+        // this is an extra bit I added, just incase you want to save the new image somewhere and then return the location
+    /*String tmpImg = String.valueOf(System.currentTimeMillis()) + ".png";
+
+    OutputStream os = null;
+    try {
+      os = new FileOutputStream(loc + tmpImg);
+      cs.compress(CompressFormat.PNG, 100, os);
+    } catch(IOException e) {
+      Log.e("combineImages", "problem combining images", e);
+    }*/
+        favicon.recycle();
+        return cs;
     }
 
 

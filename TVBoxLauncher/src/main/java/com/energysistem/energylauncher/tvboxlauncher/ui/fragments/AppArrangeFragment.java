@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.energysistem.energylauncher.tvboxlauncher.R;
@@ -52,6 +53,8 @@ public class AppArrangeFragment extends Fragment {
 
         CreaListaFiltradaOrdenada();
 
+
+
         mAdapter = new StableArrayAdapter(view.getContext(),
                 R.layout.row_menu, mListAppsDragablesOrdenada);
         mListView = (DynamicDraggingListView) view.findViewById(R.id.draggable_listview);
@@ -86,6 +89,7 @@ public class AppArrangeFragment extends Fragment {
         });
 
         mListView.requestFocus();
+
 
         return view;
     }
@@ -162,6 +166,25 @@ public class AppArrangeFragment extends Fragment {
 
     public void setmListAppsDragablesOrdenada(ArrayList<DraggableItemApp> neo){
         mListAppsDragablesOrdenada=neo;
+    }
+
+    @Override
+    public void onStop() {
+        TextView text = (TextView) getActivity().findViewById(R.id.title_left);
+        text.setText(getResources().getString(R.string.settings_panel_title));
+        super.onStop();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    public void onResume() {
+        TextView text = (TextView) getActivity().findViewById(R.id.title_left);
+        text.setText(getResources().getString(R.string.reordena_button));
+        super.onResume();
     }
 
     /*

@@ -14,17 +14,10 @@ import com.energysistem.energylauncher.tvboxlauncher.ui.fragments.DesktopFragmen
 public class TimeChangedReceiver extends BroadcastReceiver {
 
     public final static String INTENT = "com.energysistem.energylauncher.tvboxlauncher.broadcastreceiver.TimeChangedReceiver";
-    DesktopFragment main = null;
-    public void setMainActivityHandler(DesktopFragment main){
-        this.main=main;
-    }
 
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Log.e("onReceive","----------------------------------------------TimeChangedReceiver");
-        Time time = new Time();
-        time.setToNow();
-        main.updateClockWidget(time);
+
     }
 }

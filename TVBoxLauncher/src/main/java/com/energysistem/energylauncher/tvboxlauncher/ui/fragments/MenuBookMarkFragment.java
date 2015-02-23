@@ -172,7 +172,7 @@ public class MenuBookMarkFragment  extends Fragment
         super.onActivityCreated(savedInstanceState);
 
         if (savedInstanceState == null) {
-            getLoaderManager().restartLoader(0, null, this);
+            //getLoaderManager().restartLoader(0, null, this);
         }
         setFocus();
     }

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="arrange_list_mensajeInicial">Select an item</string>
+    <string name="arrange_list_mensajeFinal">Select new position</string>
+    <string name="bookmark_button_delete">Delete</string>
+    <string name="bookmark_button_go">Go</string>
+
+    <string name="app_name">"EnergyLauncher"</string>
+    <string name="dummy_button">"Dummy-Taste"</string>
+    <string name="dummy_content">"DUMMY\nCONTENT"</string>
+    <string name="activity_not_found">"Aktivität nicht gefunden"</string>
+
+    <string name="drawer_open">"Öffnen"</string>
+    <string name="drawer_close">"Schließen"</string>
+
+    <!--Shortcut-->
+    <string name="default_example_string">"Hallo"</string>
+    <string name="back">"Zurück"</string>
+    <string name="busca_imagen">"Bild auswählen"</string>
+    <string name="cancel">"Abbrechen"</string>
+    <string name="guarda_button">"\"Speichern"</string>
+    <string name="reordena_button">App-Symbole bewegen"</string>
+    <string name="bookmark_duplicado">"Doppelter Bookmark"</string>
+    <string name="titulo_vacio">"Empty title"</string>
+    <string name="url_vacia">"Leere URL"</string>
+
+    <!-- Clock -->
+    <string name="clock_default_time">"00:00am"</string>
+    <string name="clock_wifi_icon_description">"Wi-Fi"</string>
+    <string name="clock_ethernet_icon_description">"Ethernet"</string>
+    <string name="clock_default_date">"Donnerstag, den 15. Mai 2014"</string>
+
+    <!-- Settings Panel -->
+    <string name="settings_panel_title">"Einstellungen"</string>
+    <string name="floating_settings_icon_description">"Einstellungen Symbol"</string>
+    <string name="system_settings_label">"Systemeinstellungen"</string>
+    <string name="launcher_settings_label">"Launcher-Einstellungen"</string>
+    <string name="change_wallpaper_label">"Bildschirmhintergrund wechseln"</string>
+
+    <!-- Bookmarks Panel -->
+    <string name="save_button">"Speichern"</string>
+    <string name="name_form_tag">"Name"</string>
+    <string name="url_form_tag">"Url"</string>
+    <string name="apply_changes">"Änderungen übernehmen"</string>
+    <string name="Home">"Home"</string>
+    <string name="launcherAppState_error">"LauncherAppState gestartet bevor app context set."</string>
+    <string name="parent_callback_error">"Parent Tätigkeit muss Callbacks einführen."</string>
+    <string name="tab_aplicaciones">"Apps"</string>
+    <string name="tab_bookmarks">"Lesezeichen"</string>
+    <string name="tab_settings">"Einstellungen"</string>
+    <string name="tag_sharedPreferences_locale">LOC</string>
+</resources>

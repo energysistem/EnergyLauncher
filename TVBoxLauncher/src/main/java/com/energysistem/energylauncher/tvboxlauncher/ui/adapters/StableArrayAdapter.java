@@ -18,6 +18,11 @@ package com.energysistem.energylauncher.tvboxlauncher.ui.adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +32,12 @@ import android.widget.TextView;
 
 import com.energysistem.energylauncher.tvboxlauncher.R;
 import com.energysistem.energylauncher.tvboxlauncher.modelo.DraggableItemApp;
+import com.energysistem.energylauncher.tvboxlauncher.modelo.WebPageInfo;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 
 public class StableArrayAdapter extends ArrayAdapter<DraggableItemApp> {
@@ -53,15 +63,83 @@ public class StableArrayAdapter extends ArrayAdapter<DraggableItemApp> {
         LayoutInflater inflater = ((Activity) mContext).getLayoutInflater();
         listItem = inflater.inflate(layoutResourceId, parent, false);
 
-        ImageView imageViewIcon = (ImageView) listItem.findViewById(R.id.icon_image_view);
+        final ImageView imageViewIcon = (ImageView) listItem.findViewById(R.id.icon_image_view);
         TextView textViewName = (TextView) listItem.findViewById(R.id.title_text_view);
 
         DraggableItemApp item = mListaApps.get(position);
 
-        imageViewIcon.setImageBitmap(item.getIcono());
+        if(item.getIcono()==null) {
+            URL url = null;
+            try {
+                url = new URL("http://www.google.com/s2/favicons?domain=" + item.getPageUrl());
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
+            Picasso.with(getContext()).load(url.toString()).into(new Target() {
+
+                @Override
+                public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                    Bitmap combi = combineImages(bitmap, BitmapFactory.decodeResource(mContext.getResources(), R.drawable.browser));
+                    imageViewIcon.setImageBitmap(combi);
+                    notifyDataSetChanged();
+                    //
+
+                }
+
+                @Override
+                public void onBitmapFailed(final Drawable errorDrawable) {
+                    Log.d("TAG", "FAILED");
+                }
+
+                @Override
+                public void onPrepareLoad(final Drawable placeHolderDrawable) {
+                    imageViewIcon.setImageResource(R.drawable.browser);
+                }
+            });
+        }
+        else
+            imageViewIcon.setImageBitmap(item.getIcono());
+
         textViewName.setText(item.getTitle());
 
         return listItem;
+    }
+
+    public Bitmap combineImages(Bitmap c, Bitmap browserBmp) { // can add a 3rd parameter 'String loc' if you want to save the new image - left some code to do that at the bottom
+        Bitmap cs = null;
+
+        int width, height = 0;
+
+       /* if(c.getWidth() > browserBmp.getWidth()) {
+            width = c.getWidth() + browserBmp.getWidth();
+            height = c.getHeight();
+        } else {
+            width = browserBmp.getWidth() + browserBmp.getWidth();
+            height = c.getHeight();
+        }*/
+
+        cs = Bitmap.createBitmap(browserBmp.getWidth(), browserBmp.getHeight(), Bitmap.Config.ARGB_8888);
+
+        Canvas comboImage = new Canvas(cs);
+        Bitmap favicon = Bitmap.createScaledBitmap(c,browserBmp.getWidth()/2, browserBmp.getHeight()/2, true);
+
+
+
+        comboImage.drawBitmap(browserBmp, 0f, 0f, null);
+        comboImage.drawBitmap(favicon, browserBmp.getWidth()/2, browserBmp.getHeight()/2, null);
+
+        // this is an extra bit I added, just incase you want to save the new image somewhere and then return the location
+    /*String tmpImg = String.valueOf(System.currentTimeMillis()) + ".png";
+
+    OutputStream os = null;
+    try {
+      os = new FileOutputStream(loc + tmpImg);
+      cs.compress(CompressFormat.PNG, 100, os);
+    } catch(IOException e) {
+      Log.e("combineImages", "problem combining images", e);
+    }*/
+        favicon.recycle();
+        return cs;
     }
 
     @Override

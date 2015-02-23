@@ -13,6 +13,7 @@
     <Button
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:background="@color/verdeOSCURO"
         android:text="@string/arrange_list_mensajeInicial"
         android:id="@+id/btnGuardaCambios"
         android:enabled="false"
