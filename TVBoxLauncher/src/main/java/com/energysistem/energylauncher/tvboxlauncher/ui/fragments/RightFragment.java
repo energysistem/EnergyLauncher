@@ -132,6 +132,7 @@ public View onCreateView(LayoutInflater inflater, ViewGroup container, final Bun
         calculatorTab.setContent(R.id.calculator);
         calculatorTab.setIndicator("Calculator");
         tabs.addTab(calculatorTab);*/
+        //
 
         mAppListFragment = new AppListFragment();
         getFragmentManager().beginTransaction().replace(R.id.tab11,

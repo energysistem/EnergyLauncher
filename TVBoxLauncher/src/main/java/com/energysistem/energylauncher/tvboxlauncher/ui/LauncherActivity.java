@@ -21,6 +21,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.GridView;
+import android.widget.TextView;
 
 import com.energysistem.energylauncher.tvboxlauncher.LauncherAppState;
 import com.energysistem.energylauncher.tvboxlauncher.R;
@@ -137,6 +138,7 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
                 R.string.drawer_close) {
 
             public void onDrawerClosed(View view) {
+
                 getFragmentManager().popBackStack();
             }
 
@@ -398,12 +400,18 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
     public void ShowReordenaDesktopAppsFragment(){
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         mAppArrangeFragment =  new AppArrangeFragment();
+
         desktopLayout.setFocusable(false);
 
+
         ft.replace(R.id.menu_list_frame, mAppArrangeFragment);
+
+
+
         ft.addToBackStack("AppArrangeFragment");
         ft.commit();
         //mAppArrangeFragment.setFocus();
+
     }
 
     public void resetTab3(){
