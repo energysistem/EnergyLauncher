@@ -795,6 +795,7 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
         @Override
         public void onReceive(Context context, Intent intent) {
             toggleDrawer(appLayout);
+            mRightFragment.setFocus();
             setResultData("Stop");
         }
     };
@@ -804,6 +805,7 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
         @Override
         public void onReceive(Context context, Intent intent) {
             toggleDrawer(notificationLayout);
+            mMenuListFragment.setFocus();
             setResultData("Stop");
         }
     };

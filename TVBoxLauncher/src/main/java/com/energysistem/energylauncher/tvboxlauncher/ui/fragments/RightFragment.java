@@ -12,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TabHost;
+import android.widget.TextView;
 
 import com.energysistem.energylauncher.tvboxlauncher.R;
 import com.energysistem.energylauncher.tvboxlauncher.modelo.AppInfo;
@@ -122,7 +123,9 @@ public View onCreateView(LayoutInflater inflater, ViewGroup container, final Bun
         TabHost.TabSpec spec1 = mTabHost.newTabSpec(getActivity().getString(R.string.tab_aplicaciones));
         spec1.setContent(R.id.tab11);
 
-        spec1.setIndicator(getResources().getText(R.string.tab_aplicaciones));
+        View tab1Indicator = LayoutInflater.from(getActivity()).inflate(R.layout.appthemeverde_tab_indicator_holo, mTabHost.getTabWidget(), false);
+        TextView title1 = (TextView) tab1Indicator.findViewById(android.R.id.title); title1.setText(getResources().getText(R.string.tab_aplicaciones));
+        spec1.setIndicator(tab1Indicator);
 
         /*
         TabHost.TabSpec calculatorTab = tabs.newTabSpec("calculator");
@@ -138,7 +141,12 @@ public View onCreateView(LayoutInflater inflater, ViewGroup container, final Bun
         //********Tab 2*******
         TabHost.TabSpec spec2 = mTabHost.newTabSpec(getActivity().getString(R.string.tab_bookmarks));
         spec2.setContent(R.id.tab22);
-        spec2.setIndicator(getResources().getText(R.string.tab_bookmarks));
+
+        View tab2Indicator = LayoutInflater.from(getActivity()).inflate(R.layout.appthemeverde_tab_indicator_holo, mTabHost.getTabWidget(), false);
+        TextView title2 = (TextView) tab2Indicator.findViewById(android.R.id.title); title2.setText(getResources().getText(R.string.tab_bookmarks));
+        spec2.setIndicator(tab2Indicator);
+
+
 
         mMenuBookMarkFragment = new MenuBookMarkFragment();
         getFragmentManager().beginTransaction().replace(R.id.tab22,

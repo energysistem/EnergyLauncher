@@ -593,6 +593,8 @@ public class DynamicDraggingListView extends ListView {
         }
         else
         {
+            if(belowView==null) //Solucion temporal al problema del ratón
+                return;
             deltaYTotal =  belowView.getTop() +1;
         }
 

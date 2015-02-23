@@ -12,6 +12,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.TransitionDrawable;
 import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.text.format.Time;
@@ -62,7 +63,8 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
     private ImageView wifiIcon;
     private ImageView ethernetIcon;
     private ConnectionIndicator connectionIndicator;
-    private TimeChangedReceiver BR_TimeChangedreceiver = null;
+    //sadadas
+
 
 
     //Propiedades elementos gridview para el scroll
@@ -71,11 +73,17 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
     int mColumnsDesktop;
     int mMarginDesktopIcons;
     private boolean hasFocus;
+    private Time actualTime = new Time();
+    private boolean primeraVez;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_desktop, container, false);
+
+        //Para detectar el primer boot del sistema
+        primeraVez = true;
+        Log.e("primeraVez","true");
 
         //Margins
         mMarginDesktopIcons = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, getResources().getDimension(R.dimen.desktop_grid_margins), getResources().getDisplayMetrics());
@@ -118,17 +126,22 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
         currentLocale = getResources().getConfiguration().locale;
         timeTextView = (TextView) view.findViewById(R.id.clock);
         dateTextView = (TextView) view.findViewById(R.id.date);
+
         Clock clock = new Clock(getActivity());
         clock.AddClockTickListner(new Clock.OnClockTickListner() {
 
+
             @Override
             public void OnSecondTick(Time currentTime) {
+                ///Log.e("OnSecondTick",android.text.format.DateFormat.getTimeFormat(getActivity().getApplicationContext()).format(currentTime.toMillis(true)).toString());
+                //Log.e("Prueba","secondTick");
 
             }
 
             @Override
             public void OnMinuteTick(Time currentTime) {
-                updateClockWidget(currentTime);
+                actualTime.setToNow();
+                updateClockWidget(actualTime);
             }
         });
 
@@ -200,50 +213,65 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
         public void onActivityCreated(Bundle savedInstanceState) {
 
             super.onActivityCreated(savedInstanceState);
-            BR_TimeChangedreceiver = new TimeChangedReceiver();
-            BR_TimeChangedreceiver.setMainActivityHandler(this);
+
             Log.e("Creamos TikmeChangedReceiver","-----------------------------");
 
         }
 
+    public BroadcastReceiver BR_TimeChangedreceiver = new BroadcastReceiver() {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            actualTime.setToNow();
+            Log.e("Maquepatxa",actualTime.toString());
+            updateClockWidget(actualTime);
+
+        }
+    };
+
+    BroadcastReceiver connectivityReceiver = new BroadcastReceiver() {
+
+        @Override
+        public void onReceive(Context arg0, Intent arg1) {
+            Time time = new Time();
+            time.setToNow();
+            updateClockWidget(time);
+            connectionIndicator.update();
+            Log.e("WIFI","onReciver");
+        }
+    };
+
         @Override
         public void onResume() {
-        super.onResume();
+
             Log.e("onResume","DesktopFragment");
-        Time time = new Time();
-        time.setToNow();
-        updateClockWidget(time);
+
+            actualTime.setToNow();
+        updateClockWidget(actualTime);
         connectionIndicator.update();
 
-
-            IntentFilter filterSettingsMenu = new IntentFilter();
-            filterSettingsMenu.addAction(TimeChangedReceiver.INTENT);
-            getActivity().registerReceiver(BR_TimeChangedreceiver, filterSettingsMenu);
+            IntentFilter filterClockWidget = new IntentFilter();
+            filterClockWidget.setPriority(2147483647);
+            filterClockWidget.addAction(TimeChangedReceiver.INTENT);
+        getActivity().registerReceiver(BR_TimeChangedreceiver, filterClockWidget);
 
             IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
-        intentFilter.addAction(WifiManager.RSSI_CHANGED_ACTION);
-        BroadcastReceiver connectivityReceiver = new BroadcastReceiver() {
-
-            @Override
-            public void onReceive(Context arg0, Intent arg1) {
-                Time time = new Time();
-                time.setToNow();
-                updateClockWidget(time);
-                connectionIndicator.update();
-                Log.e("Maquepatxa","");
-            }
-        };
-        getActivity().registerReceiver(connectivityReceiver, intentFilter);
+            intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+            intentFilter.addAction(WifiManager.RSSI_CHANGED_ACTION);
+            getActivity().registerReceiver(connectivityReceiver, intentFilter);
+            super.onResume();
     }
 
     @Override
     public void onPause() {
+
+
+        actualTime.setToNow();
+        updateClockWidget(actualTime);
+        getActivity().unregisterReceiver(BR_TimeChangedreceiver);
+        getActivity().unregisterReceiver(connectivityReceiver);
         super.onPause();
-        Time time = new Time();
-        time.setToNow();
-        updateClockWidget(time);
-       getActivity().unregisterReceiver(BR_TimeChangedreceiver);
     }
 
     /*******************************/
@@ -462,6 +490,7 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
     Wichet reloj
      */
    public void updateClockWidget(Time dateTime) {
+       Log.e("UpdateClockWidget",android.text.format.DateFormat.getTimeFormat(getActivity().getApplicationContext()).format(dateTime.toMillis(true)).toString());
         if (timeTextView != null) {
             timeTextView.setText(android.text.format.DateFormat.getTimeFormat(getActivity().getApplicationContext()).format(dateTime.toMillis(true)).toString());
         }

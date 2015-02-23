@@ -2,7 +2,7 @@
 
     <resources>
 
-    <string name="app_name">"EnergyLauncher"</string>
+    <string name="app_name">"EnergyLauncherDEBUG"</string>
 
     <string name="dummy_button">"Dummy Button"</string>
 
