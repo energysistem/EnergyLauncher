@@ -93,6 +93,8 @@ public class ShortcutAdapter extends BaseAdapter  {
                 } else {
                     Log.e("TAG","ENTRAMOS->"+((WebPageInfo) app).getPageUrl());
                     num=data.size()+1;
+                    if(((WebPageInfo) app).getPosi() - 1 < 0)
+                        ((WebPageInfo) app).setPosi(1);
                     data.add(((WebPageInfo) app).getPosi() - 1, app);
                 }
 
@@ -201,35 +203,42 @@ public class ShortcutAdapter extends BaseAdapter  {
         }
         if(shortcut instanceof WebPageInfo) {
 
-            URL url = null;
-            try {
-                url = new URL("http://www.google.com/s2/favicons?domain=" + ((WebPageInfo) shortcut).getPageUrl());
 
-                
 
-                Picasso.with(context).load(url.toString()).into(new Target() {
-                    @Override
-                    public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                        Bitmap combi = combineImages(bitmap, BitmapFactory.decodeResource(context.getResources(), R.drawable.browser));
-                        holder.icon.setImageBitmap(combi);
+            if (((WebPageInfo) shortcut).getPageUrl().toString().toLowerCase().contains("energysistem.com")) {
+                    Log.e("watdafka", "entramos");
+                    holder.icon.setImageResource(R.drawable.corazon);
+                } else {
+                    URL url = null;
+                    try {
+                        url = new URL("http://www.google.com/s2/favicons?domain=" + ((WebPageInfo) shortcut).getPageUrl());
+                    Picasso.with(context).load(url.toString()).into(new Target() {
+                        @Override
+                        public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                            Bitmap combi = combineImages(bitmap, BitmapFactory.decodeResource(context.getResources(), R.drawable.browser));
+                            holder.icon.setImageBitmap(combi);
 
-                        //holder.notify();
-                       notifyDataSetChanged();
-                    }
+                            //holder.notify();
+                            notifyDataSetChanged();
+                        }
 
-                    @Override
-                    public void onBitmapFailed(final Drawable errorDrawable) {
-                        Log.d("TAG", "FAILED");
-                    }
+                        @Override
+                        public void onBitmapFailed(final Drawable errorDrawable) {
+                            Log.d("TAG", "FAILED");
+                        }
 
-                    @Override
-                    public void onPrepareLoad(final Drawable placeHolderDrawable) {
-                        Log.d("TAG", "Prepare Load");
-                    }
+                        @Override
+                        public void onPrepareLoad(final Drawable placeHolderDrawable) {
+                            Log.d("TAG", "Prepare Load");
 
-                });
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
+                            holder.icon.setImageResource(R.drawable.browser);
+                        }
+
+                    });
+
+                }catch(MalformedURLException e){
+                    e.printStackTrace();
+                }
             }
 
         }

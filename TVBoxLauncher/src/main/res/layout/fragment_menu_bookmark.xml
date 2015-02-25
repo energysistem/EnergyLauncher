@@ -11,6 +11,7 @@
         android:id="@+id/menuBookmarkTxtName"
         android:layout_width="match_parent"
         android:hint="@string/name_form_tag"
+        android:maxLength="35"
         android:layout_height="wrap_content"
         android:nextFocusDown="@+id/menuBookmarkTxtUri"
         android:nextFocusUp="@+id/tab2"

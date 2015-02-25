@@ -30,6 +30,9 @@ public class SqliteHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase database) {
         database.execSQL(DATABASE_CREATE);
+        database.execSQL("insert into " + TABLE_BOOKMARKS + "(" + COLUMN_ID + ","
+                + COLUMN_TITULO + "," + COLUMN_URL + ","+ COLUMN_POSI + ","+ COLUMN_FAVORITO +
+                ") values(1,'Energy Sistem','http://www.energysistem.com',2,1)");
     }
 
     @Override

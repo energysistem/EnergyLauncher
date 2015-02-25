@@ -86,5 +86,6 @@
     <string name="arrange_list_mensajeFinal">Select new position</string>
     <string name="bookmark_button_delete">Delete</string>
     <string name="bookmark_button_go">Go</string>
+    <string name="url_not_valid_error">Does not appear to be a valid URL</string>
 
 </resources>

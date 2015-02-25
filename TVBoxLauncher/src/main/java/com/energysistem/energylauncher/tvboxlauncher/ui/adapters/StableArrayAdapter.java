@@ -68,34 +68,42 @@ public class StableArrayAdapter extends ArrayAdapter<DraggableItemApp> {
 
         DraggableItemApp item = mListaApps.get(position);
 
+
+
         if(item.getIcono()==null) {
-            URL url = null;
-            try {
-                url = new URL("http://www.google.com/s2/favicons?domain=" + item.getPageUrl());
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
+
+            if (item.getPageUrl().toString().toLowerCase().contains("energysistem.com")) {
+                Log.e("watdafka", "entramos");
+                imageViewIcon.setImageResource(R.drawable.ic_launcher);
+            } else {
+                URL url = null;
+                try {
+                    url = new URL("http://www.google.com/s2/favicons?domain=" + item.getPageUrl());
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                }
+                Picasso.with(getContext()).load(url.toString()).into(new Target() {
+
+                    @Override
+                    public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                        Bitmap combi = combineImages(bitmap, BitmapFactory.decodeResource(mContext.getResources(), R.drawable.browser));
+                        imageViewIcon.setImageBitmap(combi);
+                        notifyDataSetChanged();
+                        //
+
+                    }
+
+                    @Override
+                    public void onBitmapFailed(final Drawable errorDrawable) {
+                        Log.d("TAG", "FAILED");
+                    }
+
+                    @Override
+                    public void onPrepareLoad(final Drawable placeHolderDrawable) {
+                        imageViewIcon.setImageResource(R.drawable.browser);
+                    }
+                });
             }
-            Picasso.with(getContext()).load(url.toString()).into(new Target() {
-
-                @Override
-                public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                    Bitmap combi = combineImages(bitmap, BitmapFactory.decodeResource(mContext.getResources(), R.drawable.browser));
-                    imageViewIcon.setImageBitmap(combi);
-                    notifyDataSetChanged();
-                    //
-
-                }
-
-                @Override
-                public void onBitmapFailed(final Drawable errorDrawable) {
-                    Log.d("TAG", "FAILED");
-                }
-
-                @Override
-                public void onPrepareLoad(final Drawable placeHolderDrawable) {
-                    imageViewIcon.setImageResource(R.drawable.browser);
-                }
-            });
         }
         else
             imageViewIcon.setImageBitmap(item.getIcono());
