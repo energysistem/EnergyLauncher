@@ -492,7 +492,10 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
    public void updateClockWidget(Time dateTime) {
        Log.e("UpdateClockWidget",android.text.format.DateFormat.getTimeFormat(getActivity().getApplicationContext()).format(dateTime.toMillis(true)).toString());
         if (timeTextView != null) {
-            timeTextView.setText(android.text.format.DateFormat.getTimeFormat(getActivity().getApplicationContext()).format(dateTime.toMillis(true)).toString());
+            //timeTextView.setText(android.text.format.DateFormat.getTimeFormat(getActivity().getApplicationContext()).format(dateTime.toMillis(true)).toString());
+            int hour = Integer.parseInt(dateTime.format("%H"));
+            String minutes = dateTime.format("%M");
+            timeTextView.setText(String.format("%02d",hour)+":"+minutes);
         }
 
         if (dateTextView != null) {

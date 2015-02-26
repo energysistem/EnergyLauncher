@@ -29,7 +29,7 @@
                 android:focusable="false"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentEnd="true"
-                android:src="@drawable/ic_app"
+                android:src="@drawable/ic_menu"
                 android:layout_marginStart="@dimen/floating_settings_icon_margin_end"
                 android:layout_marginEnd="@dimen/floating_settings_icon_margin_end"
                 android:layout_marginTop="@dimen/floating_settings_icon_margin_top" />
@@ -40,7 +40,7 @@
                 android:id="@+id/icon_notification"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentStart="true"
-                android:src="@drawable/ic_settings"
+                android:src="@drawable/ic_settings_opaque"
                 android:focusable="false"
                 android:layout_marginStart="@dimen/floating_settings_icon_margin_end"
                 android:layout_marginEnd="@dimen/floating_settings_icon_margin_end"
