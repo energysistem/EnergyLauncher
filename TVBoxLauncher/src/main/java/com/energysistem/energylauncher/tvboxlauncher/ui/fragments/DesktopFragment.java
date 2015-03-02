@@ -495,7 +495,12 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
             //timeTextView.setText(android.text.format.DateFormat.getTimeFormat(getActivity().getApplicationContext()).format(dateTime.toMillis(true)).toString());
             int hour = Integer.parseInt(dateTime.format("%H"));
             String minutes = dateTime.format("%M");
-            timeTextView.setText(String.format("%02d",hour)+":"+minutes);
+            //Este código no me representa. Negaré su existencia
+            if (hour <= 9)
+                timeTextView.setText(" " + hour + ":" + minutes);
+
+            else
+                timeTextView.setText(hour+":"+minutes);
         }
 
         if (dateTextView != null) {

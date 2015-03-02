@@ -74,9 +74,9 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
     private final String TAGFFRAGMENTDESKTOP = "FDEsktop";
 
 
+    private FrameLayout notificationLayout;
     private DrawerLayout desktopLayout;
     private FrameLayout appLayout;
-    private FrameLayout notificationLayout;
 
     public final static String EXTRA_MESSAGE = "com.energysistem.energylauncher.MESSAGE";
 
@@ -86,6 +86,7 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        datasource = new BookmarkDAO(this);
 
         /*if (savedInstanceState == null) {
             //Drawer derecho
@@ -116,7 +117,6 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
                                                                 View decorView = getWindow().getDecorView();
                                                                 decorView.setSystemUiVisibility(uiOptions);*/
         desktopLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-
         appLayout = (FrameLayout) findViewById(R.id.right_drawer);
         notificationLayout = (FrameLayout) findViewById(R.id.left_drawer);
 
@@ -152,7 +152,12 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
         };
         desktopLayout.setDrawerListener(drawerToggle);
         LauncherAppState.setApplicationContext(getApplicationContext());
-        datasource = new BookmarkDAO(this);
+
+        getGridDesktop().notifyDataSetChanged();
+        reloadDesktop();
+
+
+
 
 
         //carga el desktop guardado
@@ -726,6 +731,7 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
 
     public void reloadDesktop() {
         mDesktopFragment.setGridAdapter(preferencesListadoApps.getListaDesktop());
+        preferencesListadoApps.getListaDesktop().notify();
     }
 
     public ShortcutAdapter getGridDesktop(){

@@ -196,12 +196,13 @@ public class SaveLoadAppsPreferences {
             String appS = mSharedPrefs.getString(HEADLISTFAVS + i, "");
             listaStrings.add(appS);
         }
+        Log.e("getListaFavsString",listaStrings.toString());
         return listaStrings;
 
     }
 
 
-    private void insertItemEnd(String appName) {
+    public void insertItemEnd(String appName) {
         SharedPreferences.Editor editor = mSharedPrefs.edit();
 
         int size = mSharedPrefs.getInt(FAVS_LIST_SIZE, 0);

@@ -1,9 +1,13 @@
 package com.energysistem.energylauncher.tvboxlauncher.database;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+
+import com.energysistem.energylauncher.tvboxlauncher.modelo.SaveLoadAppsPreferences;
+import com.energysistem.energylauncher.tvboxlauncher.ui.LauncherActivity;
 
 public class SqliteHelper extends SQLiteOpenHelper {
 
@@ -13,18 +17,25 @@ public class SqliteHelper extends SQLiteOpenHelper {
     public static final String COLUMN_URL = "url";
     public static final String COLUMN_POSI = "posi";
     public static final String COLUMN_FAVORITO = "favorito";
+    private final String PREFS_LIST_APPS = "SelectedDesktopApps";
+    private static final String HEADLISTFAVS = "ListFav_";
+    private static final String FAVS_LIST_SIZE = "FavsListSize";
 
     private static final String DATABASE_NAME = "bookmarks.db";
     private static final int DATABASE_VERSION = 1;
+    private Context mContext;
 
     // Database creation sql statement
     private static final String DATABASE_CREATE = "CREATE TABLE "
             + TABLE_BOOKMARKS + "(" + COLUMN_ID
             + " integer primary key, " + COLUMN_TITULO
             + " text, "+COLUMN_URL+ " text, "+COLUMN_POSI+ " integer, "+COLUMN_FAVORITO+" integer);";
+    private SharedPreferences sharedPreferences;
 
     public SqliteHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        mContext=context;
+        sharedPreferences = mContext.getSharedPreferences(PREFS_LIST_APPS, 0);
     }
 
     @Override
@@ -33,6 +44,22 @@ public class SqliteHelper extends SQLiteOpenHelper {
         database.execSQL("insert into " + TABLE_BOOKMARKS + "(" + COLUMN_ID + ","
                 + COLUMN_TITULO + "," + COLUMN_URL + ","+ COLUMN_POSI + ","+ COLUMN_FAVORITO +
                 ") values(1,'Energy Sistem','http://www.energysistem.com',2,1)");
+
+        //insertItemEnd("com.android.vending");
+    }
+
+    public void insertItemEnd(String appName) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        int size = sharedPreferences.getInt(FAVS_LIST_SIZE, 0);
+        //El ultimo indice es el tamaño nuevo menos 1
+        editor.putString(HEADLISTFAVS + (size), appName);
+
+        size = size + 1;
+        editor.putInt(FAVS_LIST_SIZE, size);
+        Log.e("insertamos AppFav",appName);
+
+        editor.commit();
     }
 
     @Override
