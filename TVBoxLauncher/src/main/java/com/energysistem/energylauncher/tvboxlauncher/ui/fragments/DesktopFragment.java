@@ -107,21 +107,22 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
         mFavoritesGrid.setOnItemSelectedListener(itemSelected);
         mFavoritesGrid.setOnFocusChangeListener(onAppgridSelecctionchange);
 
-        appButton = (ImageView) view.findViewById(R.id.icon_drawer);
+
+        /*appButton = (ImageView) view.findViewById(R.id.icon_drawer);
         appButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 ((LauncherActivity) getActivity()).toggleDrawer(((LauncherActivity) getActivity()).getAppLayout());
             }
-        });
+        });*/
 
-        notificationButton = (ImageView) view.findViewById(R.id.icon_notification);
-        notificationButton.setOnClickListener(new View.OnClickListener() {
+        //notificationButton = (ImageView) view.findViewById(R.id.icon_notification);
+        /*notificationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 ((LauncherActivity) getActivity()).toggleDrawer(((LauncherActivity) getActivity()).getNotificationLayout());
             }
-        });
+        });*/
 
         currentLocale = getResources().getConfiguration().locale;
         timeTextView = (TextView) view.findViewById(R.id.clock);
@@ -299,6 +300,21 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
             if (mGridViewHeight == 0) {
                 mGridViewHeight = mFavoritesGrid.getHeight();
             }
+            ImageView lateralIzq = (ImageView) getActivity().findViewById(R.id.menu_izq);
+            ImageView lateralDer = (ImageView) getActivity().findViewById(R.id.menu_der);
+
+            Log.e("adapterDesktop","Selected: "+position);
+
+            if(position%(4)==0)
+                lateralIzq.setVisibility(View.VISIBLE);
+            else
+                lateralIzq.setVisibility(View.GONE);
+
+            if(((position+1)%4==0) || (position == gridAdapter.getCount()-1 && position<4))
+                lateralDer.setVisibility(View.VISIBLE);
+            else
+                lateralDer.setVisibility(View.GONE);
+
 
             deseleccionarView(vistaAnterior);
 
@@ -437,11 +453,18 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
     public boolean onKeyRightAndLeft( int key){
         int itemSelected = mFavoritesGrid.getSelectedItemPosition();
         int columns = mFavoritesGrid.getNumColumns();
-
         switch (key){
             case KeyEvent.KEYCODE_DPAD_RIGHT:
-                if (((itemSelected + 1 ) % columns) == 0){
+                if (((itemSelected + 1 ) % columns) == 0 || (gridAdapter.getCount()==1 || gridAdapter.getCount()==0)){
                     ((LauncherActivity) getActivity()).toggleDrawer(((LauncherActivity) getActivity()).getAppLayout());
+                } else if (itemSelected == gridAdapter.getCount()-1 ) {
+                    if(itemSelected+1>4) {
+                        int newPosition = itemSelected - ((itemSelected+1)%4);
+                        mFavoritesGrid.setSelection(newPosition);
+                       // mFavoritesGrid.getSelectedView().requestFocus();
+                    }
+                    else
+                        ((LauncherActivity) getActivity()).toggleDrawer(((LauncherActivity) getActivity()).getAppLayout());
                 }
                 break;
             case KeyEvent.KEYCODE_DPAD_LEFT:
@@ -452,9 +475,6 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
                 }
                 break;
         }
-
-
-
 
 
 

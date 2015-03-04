@@ -34,5 +34,7 @@
     <dimen name="button_text_size">15sp</dimen>
     <dimen name="right_panel_header_text_size">17sp</dimen>
     <dimen name="text_shortcut_margin_left">15dp</dimen>
+    <dimen name="ancho_barras_laterales">30dp</dimen>
+    <dimen name="padding_launcher_centro">25dp</dimen>
 
 </resources>

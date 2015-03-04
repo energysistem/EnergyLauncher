@@ -43,7 +43,7 @@ public class SqliteHelper extends SQLiteOpenHelper {
         database.execSQL(DATABASE_CREATE);
         database.execSQL("insert into " + TABLE_BOOKMARKS + "(" + COLUMN_ID + ","
                 + COLUMN_TITULO + "," + COLUMN_URL + ","+ COLUMN_POSI + ","+ COLUMN_FAVORITO +
-                ") values(1,'Energy Sistem','http://www.energysistem.com',2,1)");
+                ") values(0,'Energy Sistem','http://www.energysistem.com',10,1)");
 
         //insertItemEnd("com.android.vending");
     }

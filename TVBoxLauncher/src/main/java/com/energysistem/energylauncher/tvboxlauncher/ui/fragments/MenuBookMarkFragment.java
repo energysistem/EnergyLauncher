@@ -212,6 +212,8 @@ public class MenuBookMarkFragment  extends Fragment
 
         //Colocamos el listItem anterior como estaba
         View viewOld = mlistViewWebshorts.getChildAt(mAdapter.getLastSelectedItem()- mlistViewWebshorts.getFirstVisiblePosition());
+        if(viewOld==null)
+            return;
         CheckBox frameOld = (CheckBox) viewOld.findViewById(R.id.frame_checkboxWeb);
         Log.e("-------------updateView()", "-----------listItem anterior---");
 
@@ -226,7 +228,10 @@ public class MenuBookMarkFragment  extends Fragment
 
         //En caso que dejemos el modo seleccion colocamos el check como estaba
         if (!mAdapter.getModeCheckBoxSelection()){
+
             View v = mlistViewWebshorts.getChildAt(mlistViewWebshorts.getSelectedItemPosition() - mlistViewWebshorts.getFirstVisiblePosition());
+            if(v==null)
+                return;
             CheckBox frame = (CheckBox) v.findViewById(R.id.frame_checkboxWeb);
             Log.e("-------------updateView()", "----------el check como estaba---");
             frame.setChecked(mListWebPage.get(mAdapter.getSelectedItem()).checked);

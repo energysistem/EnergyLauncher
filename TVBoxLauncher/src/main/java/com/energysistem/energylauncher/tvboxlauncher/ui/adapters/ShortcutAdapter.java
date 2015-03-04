@@ -187,6 +187,7 @@ public class ShortcutAdapter extends BaseAdapter  {
     @Override
     public View getView(int i, View convertView, ViewGroup viewGroup) {
 
+
         View view = convertView;
         final ShortcutInfo shortcut = data.get(i);
         final ViewHolder holder;
@@ -202,8 +203,33 @@ public class ShortcutAdapter extends BaseAdapter  {
             holder = (ViewHolder) view.getTag();
         }
         if(shortcut instanceof WebPageInfo) {
+            final Target mTarget = new Target() {
+                @Override
+                public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                    Log.d("TAG", "LOADED");
+                    Bitmap combi = combineImages(bitmap, BitmapFactory.decodeResource(context.getResources(), R.drawable.browser));
+                    holder.icon.setImageBitmap(combi);
 
+                    //holder.notify();
+                    notifyDataSetChanged();
+                }
 
+                @Override
+                public void onBitmapFailed(final Drawable errorDrawable) {
+                    Log.d("TAG", "FAILED");
+                }
+
+                @Override
+                public void onPrepareLoad(final Drawable placeHolderDrawable) {
+                    Log.d("TAG", "Prepare Load");
+
+                    holder.icon.setImageResource(R.drawable.browser);
+                }
+
+            };
+            holder.icon.setTag(mTarget);
+            //2112312312123123123213
+            Log.e("dsdas","sadas");
 
             if (((WebPageInfo) shortcut).getPageUrl().toString().toLowerCase().contains("energysistem.com")) {
                     Log.e("watdafka", "entramos");
@@ -212,29 +238,8 @@ public class ShortcutAdapter extends BaseAdapter  {
                     URL url = null;
                     try {
                         url = new URL("http://www.google.com/s2/favicons?domain=" + ((WebPageInfo) shortcut).getPageUrl());
-                    Picasso.with(context).load(url.toString()).into(new Target() {
-                        @Override
-                        public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                            Bitmap combi = combineImages(bitmap, BitmapFactory.decodeResource(context.getResources(), R.drawable.browser));
-                            holder.icon.setImageBitmap(combi);
 
-                            //holder.notify();
-                            notifyDataSetChanged();
-                        }
-
-                        @Override
-                        public void onBitmapFailed(final Drawable errorDrawable) {
-                            Log.d("TAG", "FAILED");
-                        }
-
-                        @Override
-                        public void onPrepareLoad(final Drawable placeHolderDrawable) {
-                            Log.d("TAG", "Prepare Load");
-
-                            holder.icon.setImageResource(R.drawable.browser);
-                        }
-
-                    });
+                    Picasso.with(context).load(url.toString()).into(mTarget);
 
                 }catch(MalformedURLException e){
                     e.printStackTrace();
@@ -247,6 +252,24 @@ public class ShortcutAdapter extends BaseAdapter  {
 
 
         holder.title.setText(shortcut.getTitle());
+
+        view.setOnHoverListener(new View.OnHoverListener() {
+            @Override
+            public boolean onHover(View v, MotionEvent event) {
+                Log.e("onHover",event.getAction()+"");
+
+               if( event.getActionMasked()== MotionEvent.ACTION_HOVER_ENTER) {
+                   v.setBackgroundResource(R.drawable.shortcut_unselect_shape);
+               }
+               else if(event.getActionMasked()== MotionEvent.ACTION_HOVER_EXIT){
+                   v.setBackgroundResource(R.drawable.shortcut_select_shape);
+               }
+
+                return false;
+            }
+
+
+        });
 
         return view;
     }

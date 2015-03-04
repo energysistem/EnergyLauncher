@@ -25,6 +25,12 @@ import static android.app.PendingIntent.getActivity;
 
 
 public class SaveLoadAppsPreferences {
+    /*
+     * LISTA DE APLICACIONES INICIALES (En su orden, no meter aquí los bookmarks, solo app)
+     */
+    private static final String[] LISTA_APP_INICIO = {"com.amlogic.miracast","com.amlogic.PicturePlayer", "com.farcore.videoplayer", "org.geometerplus.zlibrary.ui.android",
+            "com.facebook.katana", "com.twitter.android", "com.android.vending", "com.google.android.youtube.googletv", "com.android.browser", "com.fb.FileBrower","com.amlogic.OOBE"};
+
 
     private static final String TAG = "SaveLoadPreferencias";
     private static final String FAVS_LIST_SIZE = "FavsListSize";
@@ -54,7 +60,23 @@ public class SaveLoadAppsPreferences {
     public SaveLoadAppsPreferences(Context context) {
         this.mContext = context;
         mSharedPrefs = context.getSharedPreferences(PREFS_LIST_APPS, 0);
+
         listaFavoritos = getListaFavsString();
+
+
+        if(mSharedPrefs.getBoolean("first_load",true)){
+            Log.e("SaveLoadAppsPreferences","First Load");
+
+            for(String app: LISTA_APP_INICIO) {
+                insertItemEnd(app);
+            }
+
+            SharedPreferences.Editor editor = mSharedPrefs.edit();
+            editor.putBoolean("first_load",false);
+            editor.commit();
+            listaFavoritos = getListaFavsString();
+        }
+
         listaWebF = getListaWebF();
 
         datasource = new BookmarkDAO(context);

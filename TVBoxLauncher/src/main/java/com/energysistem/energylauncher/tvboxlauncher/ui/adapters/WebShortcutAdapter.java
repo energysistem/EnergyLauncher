@@ -153,6 +153,26 @@ public class WebShortcutAdapter extends ArrayAdapter<WebPageInfo>{
                 onCkeckBoxClickListener.onClick(v);
             }
         });
+       final Target mTarget = new Target() {
+
+            @Override
+            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                Bitmap combi = combineImages(bitmap, BitmapFactory.decodeResource(mResources, R.drawable.browser));
+                holder.image.setImageBitmap(combi);
+                notifyDataSetChanged();
+            }
+
+            @Override
+            public void onBitmapFailed(final Drawable errorDrawable) {
+                Log.d("TAG", "FAILED");
+            }
+
+            @Override
+            public void onPrepareLoad(final Drawable placeHolderDrawable) {
+                holder.image.setImageResource(R.drawable.browser);
+            }
+        };
+        holder.image.setTag(mTarget);
 
         if (((WebPageInfo) info).getPageUrl().toString().toLowerCase().contains("energysistem.com")) {
             Log.e("watdafka", "entramos");
@@ -164,26 +184,10 @@ public class WebShortcutAdapter extends ArrayAdapter<WebPageInfo>{
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             }
-            Picasso.with(getContext()).load(url.toString()).into(new Target() {
 
-                @Override
-                public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                    Bitmap combi = combineImages(bitmap, BitmapFactory.decodeResource(mResources, R.drawable.browser));
-                    holder.image.setImageBitmap(combi);
-                    notifyDataSetChanged();
 
-                }
 
-                @Override
-                public void onBitmapFailed(final Drawable errorDrawable) {
-                    Log.d("TAG", "FAILED");
-                }
-
-                @Override
-                public void onPrepareLoad(final Drawable placeHolderDrawable) {
-                    holder.image.setImageResource(R.drawable.browser);
-                }
-            });
+            Picasso.with(getContext()).load(url.toString()).into(mTarget);
         }
 
         return view;

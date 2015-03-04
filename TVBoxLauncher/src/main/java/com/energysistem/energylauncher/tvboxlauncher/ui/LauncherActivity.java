@@ -88,6 +88,7 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
         setContentView(R.layout.activity_main);
         datasource = new BookmarkDAO(this);
 
+
         /*if (savedInstanceState == null) {
             //Drawer derecho
             mRightFragment = new RightFragment();
@@ -294,8 +295,7 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
                          toggleDrawer(notificationLayout);
                      } else if (desktopLayout.isShown()) {
                          //desktopLayout.setFocusable(false);
-                         focusProblems(false, 1);
-                         toggleDrawer(appLayout);
+                         //focusProblems(false, 1);
                          mDesktopFragment.onKeyRightAndLeft(KeyEvent.KEYCODE_DPAD_RIGHT);
                      }
                      break;
@@ -444,10 +444,8 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
 
 
     public void setFocusFragmentDerecha() {
-        if (mOptionsLauncherFragment.isVisible()) {
-            mOptionsLauncherFragment.setFocus();
-        } else if (mAppArrangeFragment.isVisible()) {
-            mAppArrangeFragment.setFocus();
+        if (mMenuListFragment.isVisible()) {
+            mMenuListFragment.setFocus();
         }
     }
 
@@ -731,7 +729,7 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
 
     public void reloadDesktop() {
         mDesktopFragment.setGridAdapter(preferencesListadoApps.getListaDesktop());
-        preferencesListadoApps.getListaDesktop().notify();
+        //preferencesListadoApps.getListaDesktop().notify();
     }
 
     public ShortcutAdapter getGridDesktop(){
