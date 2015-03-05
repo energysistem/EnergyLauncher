@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -233,7 +234,7 @@ public class ShortcutAdapter extends BaseAdapter  {
 
             if (((WebPageInfo) shortcut).getPageUrl().toString().toLowerCase().contains("energysistem.com")) {
                     Log.e("watdafka", "entramos");
-                    holder.icon.setImageResource(R.drawable.corazon);
+                    holder.icon.setImageResource(R.drawable.energyweb);
                 } else {
                     URL url = null;
                     try {
@@ -256,7 +257,6 @@ public class ShortcutAdapter extends BaseAdapter  {
         view.setOnHoverListener(new View.OnHoverListener() {
             @Override
             public boolean onHover(View v, MotionEvent event) {
-                Log.e("onHover",event.getAction()+"");
 
                if( event.getActionMasked()== MotionEvent.ACTION_HOVER_ENTER) {
                    v.setBackgroundResource(R.drawable.shortcut_unselect_shape);

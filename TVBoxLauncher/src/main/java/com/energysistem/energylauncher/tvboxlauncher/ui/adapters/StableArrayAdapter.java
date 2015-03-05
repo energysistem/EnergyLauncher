@@ -74,7 +74,7 @@ public class StableArrayAdapter extends ArrayAdapter<DraggableItemApp> {
 
             if (item.getPageUrl().toString().toLowerCase().contains("energysistem.com")) {
                 Log.e("watdafka", "entramos");
-                imageViewIcon.setImageResource(R.drawable.ic_launcher);
+                imageViewIcon.setImageResource(R.drawable.energyweb);
             } else {
                 URL url = null;
                 try {

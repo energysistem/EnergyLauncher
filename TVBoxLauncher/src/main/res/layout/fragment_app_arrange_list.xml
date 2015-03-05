@@ -29,6 +29,7 @@
         android:nextFocusUp="@id/btnGuardaCambios"
         android:verticalSpacing="@dimen/menu_list_vertical_spacing"
         android:dividerHeight="@dimen/menu_list_divider_height"
+        android:divider="@null"
         android:background="@color/black_grey"
         android:layout_below="@+id/btnGuardaCambios" />
 

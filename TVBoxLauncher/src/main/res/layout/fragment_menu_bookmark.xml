@@ -44,6 +44,8 @@
         android:id="@+id/listViewLinks"
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
+        android:dividerHeight="@dimen/menu_list_divider_height"
+        android:divider="@null"
         android:layout_gravity="center_horizontal"
         android:nextFocusDown="@+id/menuBookmarkList"
         android:nextFocusRight="@+id/listViewLinks" />

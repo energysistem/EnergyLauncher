@@ -176,7 +176,7 @@ public class WebShortcutAdapter extends ArrayAdapter<WebPageInfo>{
 
         if (((WebPageInfo) info).getPageUrl().toString().toLowerCase().contains("energysistem.com")) {
             Log.e("watdafka", "entramos");
-            holder.image.setImageResource(R.drawable.corazon);
+            holder.image.setImageResource(R.drawable.energyweb);
         } else {
             URL url = null;
             try {

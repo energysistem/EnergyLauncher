@@ -6,11 +6,11 @@
     <color name="white">#B3FFFFFF</color>
     <color name="desktop_icon_background">#AAFFFFFF</color>
     <color name="desktop_icon_background_selected">#96240718</color>
-    <color name="verdeCLARO">#99cc00</color>
-    <color name="verdeOSCURO">#669900</color>
-    <color name="grisOSCURO">#555555</color>
-    <color name="grisMEDIO">#777777</color>
-    <color name="grisCLARO">#aaaaaa</color>
+    <color name="verdeCLARO">#ced64f</color>
+    <color name="verdeOSCURO">#b0b945</color>
+    <color name="grisOSCURO">#2b2f30</color>
+    <color name="grisMEDIO">#4a4f51</color>
+    <color name="grisCLARO">#6d7579</color>
     <color name="grisCLAROTransparenteFondo">#129a9a9a</color>
     <color name="grisCLAROTransparente">#20eeeeee</color>
     <color name="rojo">#cc0000</color>
@@ -18,4 +18,6 @@
     <color name="blancoTransparente">#e5eeeeee</color>
     <color name="transparent">#00ffffff</color>
     <color name="translucent_white">#2affffff</color>
+    <color name="letra_gris">#eeeeee</color>
+
 </resources>
