@@ -171,6 +171,11 @@ public class DynamicDraggingListView extends ListView {
                             return true;
                         }
                         break;
+                    case KeyEvent.KEYCODE_DPAD_LEFT:
+                        clase.getActivity().onBackPressed();
+                        break;
+
+
                 }
             }
             return false;
@@ -295,6 +300,8 @@ public class DynamicDraggingListView extends ListView {
 
             this.dispatchTouchEvent(motionEvent);
             clase.aplicaCambios();
+
+
         }
 
 
@@ -303,6 +310,7 @@ public class DynamicDraggingListView extends ListView {
     private OnItemClickListener mOnItemClickListener = new OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int pos, long id) {
+            clase.cambiarTextoBoton();
             if (mCellIsMobile) {
                 mTotalOffset = 0;
                 LanzaMotionEvent(mDireccionMotionEvent.DOWN, MotionEvent.ACTION_UP);

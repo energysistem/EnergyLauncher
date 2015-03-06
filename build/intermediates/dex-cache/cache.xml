@@ -2,6 +2,20 @@
 <items version="2" >
 
     <item
+        jar="C:\Users\pgc\sdk\extras\android\m2repository\com\android\support\support-annotations\21.0.3\support-annotations-21.0.3.jar"
+        jumboMode="false"
+        revision="19.1.0"
+        sha1="4b74cefe1f0c1b819e7260c8627a14674e37fd35">
+        <dex dex="C:\Users\pgc\Android studioProjects\EnergyLauncher\TVBoxLauncher\build\intermediates\pre-dexed\debug\support-annotations-21.0.3-aa6361fd3a6aa5c42111031ac7b562fd8e82b5f4.jar" />
+    </item>
+    <item
+        jar="C:\Users\pgc\Android studioProjects\EnergyLauncher\TVBoxLauncher\build\intermediates\exploded-aar\com.android.support\support-v4\21.0.3\libs\internal_impl-21.0.3.jar"
+        jumboMode="false"
+        revision="19.1.0"
+        sha1="01ec05bfbafcc07646ba813000bf2ef11742dd03">
+        <dex dex="C:\Users\pgc\Android studioProjects\EnergyLauncher\TVBoxLauncher\build\intermediates\pre-dexed\debug\internal_impl-21.0.3-21b9f26bce597bc6d67864480cdf3cabc252076c.jar" />
+    </item>
+    <item
         jar="C:\Users\pgc\Android studioProjects\EnergyLauncher\TVBoxLauncher\build\intermediates\exploded-aar\com.android.support\appcompat-v7\19.1.0\classes.jar"
         jumboMode="false"
         revision="19.1.0"
@@ -16,11 +30,11 @@
         <dex dex="C:\Users\pgc\Android studioProjects\EnergyLauncher\TVBoxLauncher\build\intermediates\pre-dexed\debug\classes-90695f348c7b010b742af8c76f3e831795b8c831.jar" />
     </item>
     <item
-        jar="C:\Users\pgc\sdk\extras\android\m2repository\com\android\support\support-v4\19.1.0\support-v4-19.1.0.jar"
+        jar="C:\Users\pgc\Android studioProjects\EnergyLauncher\TVBoxLauncher\build\intermediates\exploded-aar\com.android.support\palette-v7\21.0.3\classes.jar"
         jumboMode="false"
         revision="19.1.0"
-        sha1="85f201b380937e61a9dce6ca90ccf6872abbfb67">
-        <dex dex="C:\Users\pgc\Android studioProjects\EnergyLauncher\TVBoxLauncher\build\intermediates\pre-dexed\debug\support-v4-19.1.0-452c31de0e675dc54969332876ef864886e33970.jar" />
+        sha1="926692214530f39eaed89159237d26cdc0ae6e48">
+        <dex dex="C:\Users\pgc\Android studioProjects\EnergyLauncher\TVBoxLauncher\build\intermediates\pre-dexed\debug\classes-b2a8d515a31ad204099a33ff86e782db42d43697.jar" />
     </item>
     <item
         jar="C:\Users\pgc\.gradle\caches\modules-2\files-2.1\com.squareup.picasso\picasso\2.5.0\7ff0e000d1e27e356567f56c92af3b8ab912636f\picasso-2.5.0.jar"
@@ -28,6 +42,13 @@
         revision="19.1.0"
         sha1="7ff0e000d1e27e356567f56c92af3b8ab912636f">
         <dex dex="C:\Users\pgc\Android studioProjects\EnergyLauncher\TVBoxLauncher\build\intermediates\pre-dexed\debug\picasso-2.5.0-869d0e811997a798efc3bb762af45f4575a61ea2.jar" />
+    </item>
+    <item
+        jar="C:\Users\pgc\Android studioProjects\EnergyLauncher\TVBoxLauncher\build\intermediates\exploded-aar\com.android.support\support-v4\21.0.3\classes.jar"
+        jumboMode="false"
+        revision="19.1.0"
+        sha1="2c91c949a45a21cdecf26e03951e46c7beec9ad8">
+        <dex dex="C:\Users\pgc\Android studioProjects\EnergyLauncher\TVBoxLauncher\build\intermediates\pre-dexed\debug\classes-cd9ad04990485376b081ff65e1d83e223410cf9b.jar" />
     </item>
 
 </items>

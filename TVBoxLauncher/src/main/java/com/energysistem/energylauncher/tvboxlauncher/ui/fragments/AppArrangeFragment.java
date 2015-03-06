@@ -40,6 +40,7 @@ public class AppArrangeFragment extends Fragment {
     private DynamicDraggingListView mListView;
     private Button mBtnGuardar;
     private StableArrayAdapter mAdapter;
+    public boolean cambiado = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -100,7 +101,17 @@ public class AppArrangeFragment extends Fragment {
     }
 
 
+    public void cambiarTextoBoton() {
+        if (!cambiado) {
+            Log.e("Cambiado","ArrangeFragment");
+            mBtnGuardar.setEnabled(true);
+            mBtnGuardar.setFocusable(true);
+            //mBtnGuardar.setFocusableInTouchMode(true);
+            mBtnGuardar.setText(getActivity().getString(R.string.arrange_list_mensajeFinal));
+            cambiado = true;
 
+        }
+    }
 
     private void CreaListaFiltradaOrdenada() {
 
@@ -140,6 +151,7 @@ public class AppArrangeFragment extends Fragment {
         resetFragment();
         mListView.requestFocus();
         mBtnGuardar.setText(getActivity().getString(R.string.arrange_list_mensajeInicial));
+        cambiado = false;
     }
 
 

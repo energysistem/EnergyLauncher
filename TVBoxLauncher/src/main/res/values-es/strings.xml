@@ -22,7 +22,7 @@
     <string name="reordena_button">Reordenar iconos"</string>
     <string name="bookmark_duplicado">"Marcador duplicado"</string>
     <string name="titulo_vacio">"Título Vacío"</string>
-    <string name="url_vacia">"Url vacia"</string>
+    <string name="url_vacia">"URL vacia"</string>
 
     <!-- Clock -->
     <string name="clock_default_time">"00:00am"</string>
@@ -40,7 +40,7 @@
     <!-- Bookmarks Panel -->
     <string name="save_button">"Guardar"</string>
     <string name="name_form_tag">"Nombre"</string>
-    <string name="url_form_tag">"Url"</string>
+    <string name="url_form_tag">"URL""</string>
     <string name="apply_changes">"Aplicar cambios"</string>
     <string name="Home">"Inicio"</string>
     <string name="launcherAppState_error">"LauncherAppState se inició antes de establecerse el context."</string>

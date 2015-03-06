@@ -29,10 +29,13 @@ import com.energysistem.energylauncher.tvboxlauncher.modelo.SaveLoadAppsPreferen
 import com.energysistem.energylauncher.tvboxlauncher.modelo.WebPageInfo;
 import com.energysistem.energylauncher.tvboxlauncher.ui.LauncherActivity;
 import com.energysistem.energylauncher.tvboxlauncher.ui.adapters.AppAdapter;
+import com.energysistem.energylauncher.tvboxlauncher.util.SortBasedOnName;
 
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -163,8 +166,13 @@ public class AppListFragment extends Fragment
         //Take out the favorites
         //appInfos = extractFavorites(appInfos);
 
+        Collections.sort(appInfos, new SortBasedOnName());
         mAppInfosList = appInfos;
+
         mAppAdapter = new AppAdapter(getActivity(), appInfos);
+
+
+
         mListViewApps.setAdapter(mAppAdapter);
 
         //Creamos el listener para el checkbox de dentro del item
@@ -279,6 +287,12 @@ public class AppListFragment extends Fragment
             updateView();
             mAppAdapter.notifyDataSetChanged();
         }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        desactivaModoCheckBox();
     }
 
     public void setFocus(){

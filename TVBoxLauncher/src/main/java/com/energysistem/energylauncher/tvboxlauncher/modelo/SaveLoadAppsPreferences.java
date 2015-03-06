@@ -29,7 +29,7 @@ public class SaveLoadAppsPreferences {
      * LISTA DE APLICACIONES INICIALES (En su orden, no meter aquí los bookmarks, solo app)
      */
     private static final String[] LISTA_APP_INICIO = {"com.amlogic.miracast","com.amlogic.PicturePlayer", "com.farcore.videoplayer", "org.geometerplus.zlibrary.ui.android",
-            "com.facebook.katana", "com.twitter.android", "com.android.vending", "com.google.android.youtube.googletv", "com.android.browser", "com.fb.FileBrower","com.amlogic.OOBE"};
+            "com.facebook.katana", "com.twitter.android", "com.android.vending", "com.google.android.youtube.googletv", "com.android.browser", "com.fb.FileBrower"};
 
 
     private static final String TAG = "SaveLoadPreferencias";
@@ -286,25 +286,7 @@ public class SaveLoadAppsPreferences {
      */
     int pos;
     public void addWebPageInfo(WebPageInfo info) {
-        if(listaWebF==null){ new ArrayList<WebPageInfo>(); pos=0;}else{pos=listaWebF.size();}
-        listaWebF.add(pos,info);
 
-        WebPageItem item;
-        item = new WebPageItem(info.getTitle(), info.getPageUrl().toString());
-        String itemString = getStringWebPagePreferencias(item);
-        listaFavoritos.add(getNombreFav(info));
-
-        SharedPreferences.Editor editor = mSharedPrefs.edit();
-
-        int size = mSharedPrefs.getInt(FAVS_LIST_SIZE, 0);
-        //El ultimo indice es el tamaño nuevo menos 1
-        editor.putString(HEADLISTFAVS + (size), itemString);
-        size = size + 1;
-        editor.putInt(FAVS_LIST_SIZE, size);
-
-        editor.commit();
-
-        Log.v(TAG, "Añadida a las preferencias la pagina: " + info.getTitle());
 
     }
 
@@ -316,16 +298,7 @@ public class SaveLoadAppsPreferences {
 
 
     private void removeWebPagesArray() {
-        SharedPreferences.Editor editor = mSharedPrefs.edit();
 
-        int size = mSharedPrefs.getInt(PREFS_LIST_APPS, 0);
-
-        for (int i = 0; i < size; i++) {
-            editor.remove(HEADLISTFAVS + i);
-        }
-
-        editor.putInt(PREFS_LIST_APPS, 0);
-        editor.commit();
     }
 
 

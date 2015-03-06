@@ -17,7 +17,8 @@
         android:nextFocusUp="@+id/tab2"
         android:textSize="@dimen/normal_text_size"
         android:singleLine="true"
-        android:textColor="@color/blanco"/>
+        android:textColor="@color/letra_gris"
+       android:textColorHint="@color/letra_gris_hint"/>
 
 
     <EditText
@@ -28,8 +29,9 @@
         android:nextFocusDown="@+id/menuBookmarkBtn"
         android:nextFocusUp="@+id/menuBookmarkTxtName"
         android:inputType="textWebEmailAddress"
-        android:textSize="22sp"
-        android:textColor="@color/blanco"/>
+        android:textSize="@dimen/normal_text_size"
+        android:textColor="@color/letra_gris"
+        android:textColorHint="@color/letra_gris_hint"/>
 
     <Button
         android:id="@+id/menuBookmarkBtn"
@@ -37,7 +39,10 @@
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/form_section_padding"
         android:layout_gravity="end"
+        android:fontFamily="sans-serif"
+        android:textColor="@color/letra_gris"
         android:nextFocusDown="@+id/listViewLinks"
+        android:nextFocusUp="@+id/menuBookmarkTxtUri"
         android:text="@string/save_button" />
 
     <ListView

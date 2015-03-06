@@ -20,7 +20,7 @@
                     android:layout_height="match_parent"
                     android:textSize="@dimen/right_panel_header_text_size"
                     android:fontFamily="sans-serif"
-                    android:textColor="@color/white"
+                    android:textColor="@color/letra_gris"
                     android:id="@+id/title_left"
                     android:layout_marginStart="@dimen/panel_header_margin_start"
                     android:text="@string/settings_panel_title"

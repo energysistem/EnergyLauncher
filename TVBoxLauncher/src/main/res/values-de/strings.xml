@@ -40,7 +40,7 @@
     <!-- Bookmarks Panel -->
     <string name="save_button">"Speichern"</string>
     <string name="name_form_tag">"Name"</string>
-    <string name="url_form_tag">"Url"</string>
+    <string name="url_form_tag">"URL"</string>
     <string name="apply_changes">"Änderungen übernehmen"</string>
     <string name="Home">"Home"</string>
     <string name="launcherAppState_error">"LauncherAppState gestartet bevor app context set."</string>

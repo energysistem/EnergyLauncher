@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.support.v7.graphics.Palette;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -15,6 +16,7 @@ import android.view.LayoutInflater;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.energysistem.energylauncher.tvboxlauncher.modelo.AppInfo;
@@ -41,6 +43,7 @@ public class ShortcutAdapter extends BaseAdapter  {
     public ShortcutAdapter(Context context) {
         this.data = new ArrayList<ShortcutInfo>();
         this.context = context;
+
     //if(context==null){context=getApplicationContext()}
         this.inflater = LayoutInflater.from(context);
     }
@@ -185,11 +188,20 @@ public class ShortcutAdapter extends BaseAdapter  {
         return 0;
     }
 
+    public float luminosidad = 0f;
+
     @Override
     public View getView(int i, View convertView, ViewGroup viewGroup) {
 
 
+
+        Bitmap bitmapWallpaper = ((BitmapDrawable)context.getWallpaper()).getBitmap();
         View view = convertView;
+
+
+
+
+
         final ShortcutInfo shortcut = data.get(i);
         final ViewHolder holder;
         if (view == null) {
@@ -253,16 +265,53 @@ public class ShortcutAdapter extends BaseAdapter  {
 
 
         holder.title.setText(shortcut.getTitle());
+        final View finalView = view;
+
+        Palette.generateAsync(bitmapWallpaper, 1, new Palette.PaletteAsyncListener() {
+            public void onGenerated(Palette palette) {
+                luminosidad =palette.getSwatches().get(0).getHsl()[2];
+                if (luminosidad > 0.5f) {
+                    Log.i("PAL", "entramos");
+                    finalView.setBackgroundResource(R.drawable.shorcut_background_transition_light);
+                    TextView tv = (TextView) finalView.findViewById(R.id.title);
+                    tv.setTextColor(context.getResources().getColorStateList(R.color.text_grid_selector_light));
+                } else {
+                    finalView.setBackgroundResource(R.drawable.shorcut_background_transition);
+                    TextView tv = (TextView) finalView.findViewById(R.id.title);
+                    tv.setTextColor(context.getResources().getColorStateList(R.color.text_grid_selector));
+                }
+            }
+        });
 
         view.setOnHoverListener(new View.OnHoverListener() {
             @Override
             public boolean onHover(View v, MotionEvent event) {
 
                if( event.getActionMasked()== MotionEvent.ACTION_HOVER_ENTER) {
-                   v.setBackgroundResource(R.drawable.shortcut_unselect_shape);
+                   if (luminosidad > 0.5f) {
+                       v.setBackgroundResource(R.drawable.shortcut_unselect_shape_light);
+                       TextView tv = (TextView) v.findViewById(R.id.title);
+                       tv.setTextColor(context.getResources().getColorStateList(R.color.text_grid_selector_light));
+                   }
+                   else
+                   {
+                       v.setBackgroundResource(R.drawable.shortcut_unselect_shape);
+                       TextView tv = (TextView) v.findViewById(R.id.title);
+                       tv.setTextColor(context.getResources().getColorStateList(R.color.text_grid_selector));
+                   }
                }
-               else if(event.getActionMasked()== MotionEvent.ACTION_HOVER_EXIT){
-                   v.setBackgroundResource(R.drawable.shortcut_select_shape);
+               else if(event.getActionMasked()== MotionEvent.ACTION_HOVER_EXIT) {
+                   if (luminosidad > 0.5f) {
+                       v.setBackgroundResource(R.drawable.shortcut_select_shape_light);
+                       TextView tv = (TextView) v.findViewById(R.id.title);
+                       tv.setTextColor(context.getResources().getColorStateList(R.color.text_grid_selector_light));
+                   } else
+                   {
+                       v.setBackgroundResource(R.drawable.shortcut_select_shape);
+                       TextView tv = (TextView) v.findViewById(R.id.title);
+                       tv.setTextColor(context.getResources().getColorStateList(R.color.text_grid_selector));
+
+                   }
                }
 
                 return false;
@@ -270,6 +319,8 @@ public class ShortcutAdapter extends BaseAdapter  {
 
 
         });
+
+
 
         return view;
     }

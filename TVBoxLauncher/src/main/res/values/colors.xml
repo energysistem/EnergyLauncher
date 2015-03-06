@@ -6,18 +6,28 @@
     <color name="white">#B3FFFFFF</color>
     <color name="desktop_icon_background">#AAFFFFFF</color>
     <color name="desktop_icon_background_selected">#96240718</color>
-    <color name="verdeCLARO">#ced64f</color>
-    <color name="verdeOSCURO">#b0b945</color>
+    <color name="verdeCLARO">#b0b945</color>
+    <color name="verdeOSCURO">#ff717a39</color>
     <color name="grisOSCURO">#2b2f30</color>
     <color name="grisMEDIO">#4a4f51</color>
     <color name="grisCLARO">#6d7579</color>
-    <color name="grisCLAROTransparenteFondo">#129a9a9a</color>
-    <color name="grisCLAROTransparente">#20eeeeee</color>
+
+    <color name="grisCLAROTransparenteFondo">#34fffaff</color>
+    <color name="negroFondoTexto">#a0a7a4a7</color>
+    <color name="blancoTransparente">#cefbffff</color>
+
+    <color name="grisCLAROTransparenteFondo_light">#5e434143</color>
+    <color name="blancoTransparente_light">#ff4f4f4f</color>
+
+    <color name="grisCLAROTransparente">#68eeeeee</color>
+
     <color name="rojo">#cc0000</color>
     <color name="blanco">#ffeeeeee</color>
-    <color name="blancoTransparente">#e5eeeeee</color>
+
     <color name="transparent">#00ffffff</color>
     <color name="translucent_white">#2affffff</color>
     <color name="letra_gris">#eeeeee</color>
+    <color name="letra_gris_hint">#ffb2b2b2</color>
+    <color name="PRUEBA">#ff0a2b31</color>
 
 </resources>

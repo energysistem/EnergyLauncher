@@ -30,7 +30,8 @@
             <TabWidget
                 android:id="@android:id/tabs"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" >
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif">
             </TabWidget>
 
                     <FrameLayout
@@ -49,6 +50,7 @@
 
                             <TextView
                                 android:id="@+id/textView11"
+
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
                                 android:paddingLeft="10dp"

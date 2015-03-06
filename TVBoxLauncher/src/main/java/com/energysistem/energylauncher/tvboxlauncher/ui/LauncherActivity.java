@@ -11,16 +11,21 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.graphics.Palette;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.GridView;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.energysistem.energylauncher.tvboxlauncher.LauncherAppState;
@@ -161,6 +166,7 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
 
 
 
+
         //carga el desktop guardado
         //Log.e("APPS SISTEMA",mRightFragment.mAppListFragment.getAppsInfos().size()+"");
 
@@ -232,8 +238,7 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
 
     @Override
     protected void onPause() {
-
-        unregisterReceiver(mAppMenuReceiver);
+        //unregisterReceiver(mAppMenuReceiver);
         unregisterReceiver(mSettingsMenuReceiver);
         desktopLayout.closeDrawers();
         super.onPause();
@@ -423,7 +428,7 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
         mRightFragment.resetTab3();
     }
 
-    public void ShowPickWallpaperFragment(){
+    public void ShowPickWallpaperFragment() {
 //        FragmentTransaction ft = getFragmentManager().beginTransaction();
 //        ImagePickerActivity wvf =  new ImagePickerActivity();
 //
@@ -436,6 +441,9 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
 
         Intent intent = new Intent(Intent.ACTION_SET_WALLPAPER);
         startActivity(Intent.createChooser(intent, "Select Wallpaper"));
+
+            restartApplication();
+
 
 //        Intent intent = new Intent(this, ImagePickerActivity.class);
 //        intent.putExtra(EXTRA_MESSAGE, message);

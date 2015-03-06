@@ -9,12 +9,14 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.TransitionDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.support.v7.graphics.Palette;
 import android.text.format.Time;
 import android.util.Log;
 import android.util.TypedValue;
@@ -30,6 +32,7 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.energysistem.energylauncher.tvboxlauncher.R;
@@ -316,11 +319,19 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
 
             super.onActivityCreated(savedInstanceState);
 
+
+
             Log.e("Creamos TikmeChangedReceiver","-----------------------------");
 
         }
 
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
+
+
+    }
 
     public BroadcastReceiver BR_TimeChangedreceiver = new BroadcastReceiver() {
 
@@ -465,7 +476,21 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
             return;
         /*TransitionDrawable transition = (TransitionDrawable) vista.getBackground();
         transition.reverseTransition(500);*/
-        vista.setBackgroundResource(R.drawable.shortcut_select_shape);
+
+        if(gridAdapter.luminosidad>0.5f)
+        {
+            vista.setBackgroundResource(R.drawable.shortcut_select_shape_light);
+
+            TextView tv = (TextView) vista.findViewById(R.id.title);
+            tv.setTextColor(getResources().getColorStateList(R.color.text_grid_selector_light));
+        }
+        else
+        {
+            TextView tv = (TextView) vista.findViewById(R.id.title);
+            tv.setTextColor(getResources().getColorStateList(R.color.text_grid_selector));
+
+            vista.setBackgroundResource(R.drawable.shortcut_select_shape);
+        }
         /*if(vista!=null) {
             final ObjectAnimator backgroundColorAnimator = ObjectAnimator.ofObject(vista,
                     "backgroundColor",
@@ -483,7 +508,22 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
             return;
         /*TransitionDrawable transition = (TransitionDrawable) vista.getBackground();
         transition.startTransition(150);*/
-        vista.setBackgroundResource(R.drawable.shortcut_unselect_shape);
+
+        if(gridAdapter.luminosidad>0.5f)
+        {
+            vista.setBackgroundResource(R.drawable.shortcut_unselect_shape_light);
+            TextView tv = (TextView) vista.findViewById(R.id.title);
+            tv.setTextColor(getResources().getColorStateList(R.color.text_grid_selector_light));
+        }
+        else
+        {
+            TextView tv = (TextView) vista.findViewById(R.id.title);
+            tv.setTextColor(getResources().getColorStateList(R.color.text_grid_selector));
+
+            vista.setBackgroundResource(R.drawable.shortcut_unselect_shape);
+        }
+
+
         /*if(vista!=null)
         {
             final ObjectAnimator backgroundColorAnimator = ObjectAnimator.ofObject(vista,

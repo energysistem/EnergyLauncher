@@ -33,7 +33,7 @@
 
     <string name="titulo_vacio">"Empty title"</string>
 
-    <string name="url_vacia">"Empty Url"</string>
+    <string name="url_vacia">"Empty URL"</string>
 
     <!-- Clock -->
 
@@ -66,7 +66,7 @@
 
     <string name="name_form_tag">"Name"</string>
 
-    <string name="url_form_tag">"Url"</string>
+    <string name="url_form_tag">"URL"</string>
 
     <string name="apply_changes">"Commit changes"</string>
 
