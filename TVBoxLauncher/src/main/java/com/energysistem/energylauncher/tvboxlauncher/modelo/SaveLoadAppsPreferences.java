@@ -28,8 +28,10 @@ public class SaveLoadAppsPreferences {
     /*
      * LISTA DE APLICACIONES INICIALES (En su orden, no meter aquí los bookmarks, solo app)
      */
-    private static final String[] LISTA_APP_INICIO = {"com.amlogic.miracast","com.amlogic.PicturePlayer", "com.farcore.videoplayer", "org.geometerplus.zlibrary.ui.android",
-            "com.facebook.katana", "com.twitter.android", "com.android.vending", "com.google.android.youtube.googletv", "com.android.browser", "com.fb.FileBrower"};
+    private static final String[] LISTA_APP_INICIO = {"com.amlogic.miracast","com.amlogic.PicturePlayer", "com.farcore.videoplayer",
+            "org.geometerplus.zlibrary.ui.android",
+            "com.facebook.katana", "com.twitter.android", "com.android.vending",
+            "com.google.android.youtube.googletv", "com.android.browser", "com.fb.FileBrower"};
 
 
     private static final String TAG = "SaveLoadPreferencias";

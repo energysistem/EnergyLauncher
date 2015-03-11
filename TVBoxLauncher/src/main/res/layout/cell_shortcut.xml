@@ -1,12 +1,27 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/cell_shortcut_container"
     android:layout_width="fill_parent"
-    android:padding="10dp"
-    android:paddingBottom="5dp"
+    android:layout_marginBottom="5dp"
     android:orientation="vertical"
+    android:scaleType="fitXY"
     android:background="@drawable/shorcut_background_transition"
     android:minHeight="@dimen/altura_desktop_icon"
     android:layout_height="@dimen/altura_desktop_icon">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/altura_desktop_icon"
+        android:scaleType="fitXY"
+        android:id="@+id/backgroundCell"/>
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/altura_desktop_icon"
+        android:scaleType="fitXY"
+        android:background="@drawable/tile_selected"
+        android:id="@+id/backgroundCellSelected"
+        android:visibility="invisible"/>
+
+
 
     <ImageView
         android:layout_width="@dimen/tamano_icono_fav"
@@ -14,26 +29,25 @@
         android:id="@+id/icon"
         android:layout_gravity="center"
         android:focusable="false"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="15dp" />
+        android:layout_marginStart="20dp"
+        android:layout_centerVertical="true"
+        android:layout_alignParentStart="true" />
 
     <TextView
         android:layout_width="wrap_content"
         android:gravity="center"
         android:layout_height="wrap_content"
-        android:textAlignment="center"
         android:singleLine="true"
-        android:text=""
-        android:padding="3dp"
-        android:textSize="16sp"
+        android:text="pruebaprueba"
+        android:layout_marginLeft="20dp"
+        android:textSize="18sp"
         android:id="@+id/title"
-        android:layout_alignParentBottom="true"
-        android:layout_gravity="start|bottom"
         android:focusable="false"
         android:fontFamily="sans-serif-light"
         android:textStyle="bold"
-        android:textColor="@color/text_grid_selector" />
+        android:textColor="@color/text_grid_selector"
+        android:layout_centerVertical="true"
+        android:layout_toEndOf="@+id/icon" />
 
 
 </RelativeLayout>

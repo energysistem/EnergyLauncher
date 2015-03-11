@@ -2,18 +2,18 @@
 <items version="2" >
 
     <item
-        jar="C:\Users\pgc\sdk\extras\android\m2repository\com\android\support\support-annotations\21.0.3\support-annotations-21.0.3.jar"
-        jumboMode="false"
-        revision="19.1.0"
-        sha1="4b74cefe1f0c1b819e7260c8627a14674e37fd35">
-        <dex dex="C:\Users\pgc\Android studioProjects\EnergyLauncher\TVBoxLauncher\build\intermediates\pre-dexed\debug\support-annotations-21.0.3-aa6361fd3a6aa5c42111031ac7b562fd8e82b5f4.jar" />
-    </item>
-    <item
         jar="C:\Users\pgc\Android studioProjects\EnergyLauncher\TVBoxLauncher\build\intermediates\exploded-aar\com.android.support\support-v4\21.0.3\libs\internal_impl-21.0.3.jar"
         jumboMode="false"
         revision="19.1.0"
         sha1="01ec05bfbafcc07646ba813000bf2ef11742dd03">
         <dex dex="C:\Users\pgc\Android studioProjects\EnergyLauncher\TVBoxLauncher\build\intermediates\pre-dexed\debug\internal_impl-21.0.3-21b9f26bce597bc6d67864480cdf3cabc252076c.jar" />
+    </item>
+    <item
+        jar="C:\Users\pgc\sdk\extras\android\m2repository\com\android\support\support-annotations\21.0.3\support-annotations-21.0.3.jar"
+        jumboMode="false"
+        revision="19.1.0"
+        sha1="4b74cefe1f0c1b819e7260c8627a14674e37fd35">
+        <dex dex="C:\Users\pgc\Android studioProjects\EnergyLauncher\TVBoxLauncher\build\intermediates\pre-dexed\debug\support-annotations-21.0.3-aa6361fd3a6aa5c42111031ac7b562fd8e82b5f4.jar" />
     </item>
     <item
         jar="C:\Users\pgc\Android studioProjects\EnergyLauncher\TVBoxLauncher\build\intermediates\exploded-aar\com.android.support\appcompat-v7\19.1.0\classes.jar"

@@ -5,7 +5,7 @@
     <dimen name="app_icon_size">75dp</dimen>
     <dimen name="collapsed_height">220dp</dimen>
     <dimen name="altura_desktop_icon">160dp</dimen>
-    <dimen name="desktop_grid_margins">18dp</dimen>
+    <dimen name="desktop_grid_margins">12dp</dimen>
 
     <!-- Clock -->
     <dimen name="clock_time_text_size">70sp</dimen>

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.v7.graphics.Palette;
@@ -191,7 +192,7 @@ public class ShortcutAdapter extends BaseAdapter  {
     public float luminosidad = 0f;
 
     @Override
-    public View getView(int i, View convertView, ViewGroup viewGroup) {
+    public View getView(int i, View convertView, final ViewGroup viewGroup) {
 
 
 
@@ -202,7 +203,7 @@ public class ShortcutAdapter extends BaseAdapter  {
 
 
 
-        final ShortcutInfo shortcut = data.get(i);
+        ShortcutInfo shortcut = data.get(i);
         final ViewHolder holder;
         if (view == null) {
             view = inflater.inflate(R.layout.cell_shortcut, null);
@@ -210,6 +211,7 @@ public class ShortcutAdapter extends BaseAdapter  {
 
             holder.icon = (ImageView) view.findViewById(R.id.icon);
             holder.title = (TextView) view.findViewById(R.id.title);
+
 
             view.setTag(holder);
         } else {
@@ -260,59 +262,109 @@ public class ShortcutAdapter extends BaseAdapter  {
             }
 
         }
-        else
+        else {
+            final View finalView = view;
             holder.icon.setImageBitmap(shortcut.getBitmap());
+            if(((AppInfo) shortcut).getPackageName().equals("com.facebook.katana"))
+            {
+                Log.e("FONDO", "facebook");
+                //view.setBackgroundResource(R.drawable.facebook_tile);
+                ImageView iv = (ImageView) view.findViewById(R.id.backgroundCell);
+                iv.setBackgroundResource(R.drawable.facebook_tile);
+                holder.icon.setVisibility(View.INVISIBLE);
+                holder.title.setVisibility(View.GONE);
+            }
+            else
+            {
+                if (((AppInfo) shortcut).getPackageName().equals("com.android.vending")) {
+                    Log.e("FONDO: " + i, ((AppInfo) shortcut).getPackageName());
+                    //view.setBackgroundResource(R.drawable.facebook_tile);
+                    ImageView iv = (ImageView) view.findViewById(R.id.backgroundCell);
+                    holder.icon.setVisibility(View.INVISIBLE);
+                    iv.setBackgroundResource(R.drawable.tile_googleplay);
+                }
+                else
+                {
+                    holder.icon.setVisibility(View.VISIBLE);
+                    Log.e("Palette",((AppInfo) shortcut).getPackageName());
+                    Palette.generateAsync(shortcut.getBitmap(), 10, new Palette.PaletteAsyncListener() {
+                        public void onGenerated(Palette palette) {
+                            //luminosidad =palette.getSwatches().get(0).getHsl()[2];
+                            Palette.Swatch color = palette.getDarkMutedSwatch();
+
+                            if (color == null) {
+                                color = palette.getDarkVibrantSwatch();
+                                if (color == null) {
+                                    color = palette.getVibrantSwatch();
+                                }
+                                if (color == null)
+                                    color = palette.getMutedSwatch();
+                            }
+
+                            String app = holder.title.getText().toString();
+                            if (color.getRgb() >= 16777215) {//Si el color es transparente
+                                ImageView iv = (ImageView) finalView.findViewById(R.id.backgroundCell);
+
+                                iv.setBackgroundResource(R.color.verdeOSCURO);//Ponemos un azul neutro
+                            } else {
+                                ImageView iv = (ImageView) finalView.findViewById(R.id.backgroundCell);
+                                iv.setBackgroundColor(color.getRgb());
+                            }
+
+
+
+                        }
+                    });
+
+                }
+            }
+
+        }
 
 
         holder.title.setText(shortcut.getTitle());
-        final View finalView = view;
 
-        Palette.generateAsync(bitmapWallpaper, 1, new Palette.PaletteAsyncListener() {
-            public void onGenerated(Palette palette) {
-                luminosidad =palette.getSwatches().get(0).getHsl()[2];
-                if (luminosidad > 0.5f) {
-                    Log.i("PAL", "entramos");
-                    finalView.setBackgroundResource(R.drawable.shorcut_background_transition_light);
-                    TextView tv = (TextView) finalView.findViewById(R.id.title);
-                    tv.setTextColor(context.getResources().getColorStateList(R.color.text_grid_selector_light));
-                } else {
-                    finalView.setBackgroundResource(R.drawable.shorcut_background_transition);
-                    TextView tv = (TextView) finalView.findViewById(R.id.title);
-                    tv.setTextColor(context.getResources().getColorStateList(R.color.text_grid_selector));
-                }
-            }
-        });
+
+
 
         view.setOnHoverListener(new View.OnHoverListener() {
             @Override
             public boolean onHover(View v, MotionEvent event) {
+                ImageView iv = (ImageView) v.findViewById(R.id.backgroundCellSelected);
 
-               if( event.getActionMasked()== MotionEvent.ACTION_HOVER_ENTER) {
-                   if (luminosidad > 0.5f) {
-                       v.setBackgroundResource(R.drawable.shortcut_unselect_shape_light);
-                       TextView tv = (TextView) v.findViewById(R.id.title);
-                       tv.setTextColor(context.getResources().getColorStateList(R.color.text_grid_selector_light));
-                   }
-                   else
-                   {
-                       v.setBackgroundResource(R.drawable.shortcut_unselect_shape);
-                       TextView tv = (TextView) v.findViewById(R.id.title);
-                       tv.setTextColor(context.getResources().getColorStateList(R.color.text_grid_selector));
-                   }
-               }
-               else if(event.getActionMasked()== MotionEvent.ACTION_HOVER_EXIT) {
-                   if (luminosidad > 0.5f) {
-                       v.setBackgroundResource(R.drawable.shortcut_select_shape_light);
-                       TextView tv = (TextView) v.findViewById(R.id.title);
-                       tv.setTextColor(context.getResources().getColorStateList(R.color.text_grid_selector_light));
-                   } else
-                   {
-                       v.setBackgroundResource(R.drawable.shortcut_select_shape);
-                       TextView tv = (TextView) v.findViewById(R.id.title);
-                       tv.setTextColor(context.getResources().getColorStateList(R.color.text_grid_selector));
 
-                   }
-               }
+                if (event.getActionMasked() == MotionEvent.ACTION_HOVER_ENTER) {
+                    iv.setVisibility(View.VISIBLE);
+                    v.setScaleX(1.15f);
+                    v.setScaleY(1.15f);
+
+
+                    /*if (luminosidad > 0.5f) {
+                        v.setBackgroundResource(R.drawable.shortcut_unselect_shape_light);
+                        TextView tv = (TextView) v.findViewById(R.id.title);
+                        tv.setTextColor(context.getResources().getColorStateList(R.color.text_grid_selector_light));
+                    } else {
+                        v.setBackgroundResource(R.drawable.shortcut_unselect_shape);
+                        TextView tv = (TextView) v.findViewById(R.id.title);
+                        tv.setTextColor(context.getResources().getColorStateList(R.color.text_grid_selector));
+                    }*/
+                } else if (event.getActionMasked() == MotionEvent.ACTION_HOVER_EXIT) {
+
+
+                    iv.setVisibility(View.GONE);
+                    v.setScaleX(1);
+                    v.setScaleY(1);
+                    /*if (luminosidad > 0.5f) {
+                        v.setBackgroundResource(R.drawable.shortcut_select_shape_light);
+                        TextView tv = (TextView) v.findViewById(R.id.title);
+                        tv.setTextColor(context.getResources().getColorStateList(R.color.text_grid_selector_light));
+                    } else {
+                        v.setBackgroundResource(R.drawable.shortcut_select_shape);
+                        TextView tv = (TextView) v.findViewById(R.id.title);
+                        tv.setTextColor(context.getResources().getColorStateList(R.color.text_grid_selector));
+
+                    }*/
+                }
 
                 return false;
             }

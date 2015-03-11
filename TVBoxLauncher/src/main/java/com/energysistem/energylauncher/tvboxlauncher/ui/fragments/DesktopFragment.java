@@ -378,6 +378,9 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
             super.onResume();
     }
 
+
+
+
     @Override
     public void onPause() {
 
@@ -470,26 +473,31 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
         }
     };
 
-    private void deseleccionarView(View vista)
+    private void deseleccionarView(View v)
     {
-        if(vista == null)
+        if(v == null)
             return;
         /*TransitionDrawable transition = (TransitionDrawable) vista.getBackground();
         transition.reverseTransition(500);*/
+        ImageView iv = (ImageView) v.findViewById(R.id.backgroundCellSelected);
+        iv.setVisibility(View.GONE);
+        v.setScaleX(1);
+        v.setScaleY(1);
+
 
         if(gridAdapter.luminosidad>0.5f)
         {
-            vista.setBackgroundResource(R.drawable.shortcut_select_shape_light);
+           /* vista.setBackgroundResource(R.drawable.shortcut_select_shape_light);
 
             TextView tv = (TextView) vista.findViewById(R.id.title);
-            tv.setTextColor(getResources().getColorStateList(R.color.text_grid_selector_light));
+            tv.setTextColor(getResources().getColorStateList(R.color.text_grid_selector_light));*/
         }
         else
         {
-            TextView tv = (TextView) vista.findViewById(R.id.title);
+            /*TextView tv = (TextView) vista.findViewById(R.id.title);
             tv.setTextColor(getResources().getColorStateList(R.color.text_grid_selector));
 
-            vista.setBackgroundResource(R.drawable.shortcut_select_shape);
+            vista.setBackgroundResource(R.drawable.shortcut_select_shape);*/
         }
         /*if(vista!=null) {
             final ObjectAnimator backgroundColorAnimator = ObjectAnimator.ofObject(vista,
@@ -502,25 +510,29 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
         }*/
     }
 
-    private void seleccionarView(View vista)
+    private void seleccionarView(View v)
     {
-        if(vista == null)
+        if(v == null)
             return;
         /*TransitionDrawable transition = (TransitionDrawable) vista.getBackground();
         transition.startTransition(150);*/
-
+        ImageView iv = (ImageView) v.findViewById(R.id.backgroundCellSelected);
+        iv.setVisibility(View.VISIBLE);
+        v.setScaleX(1.05f);
+        v.setScaleY(1.05f);
+        //zoomCell(v);
         if(gridAdapter.luminosidad>0.5f)
         {
-            vista.setBackgroundResource(R.drawable.shortcut_unselect_shape_light);
+            /*vista.setBackgroundResource(R.drawable.shortcut_unselect_shape_light);
             TextView tv = (TextView) vista.findViewById(R.id.title);
-            tv.setTextColor(getResources().getColorStateList(R.color.text_grid_selector_light));
+            tv.setTextColor(getResources().getColorStateList(R.color.text_grid_selector_light));*/
         }
         else
         {
-            TextView tv = (TextView) vista.findViewById(R.id.title);
+           /* TextView tv = (TextView) vista.findViewById(R.id.title);
             tv.setTextColor(getResources().getColorStateList(R.color.text_grid_selector));
 
-            vista.setBackgroundResource(R.drawable.shortcut_unselect_shape);
+            vista.setBackgroundResource(R.drawable.shortcut_unselect_shape);*/
         }
 
 
