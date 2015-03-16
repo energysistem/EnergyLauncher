@@ -9,23 +9,30 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.TransitionDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.support.v7.graphics.Palette;
 import android.text.format.Time;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.energysistem.energylauncher.tvboxlauncher.R;
@@ -76,6 +83,13 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
     private Time actualTime = new Time();
     private boolean primeraVez;
 
+    private ImageView lateralIzq;
+    private ImageView lateralDer;
+    private Animation outAnimationIzq;
+    private Animation outAnimationDer;
+    private float luminosidad;
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -107,25 +121,29 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
         mFavoritesGrid.setOnItemSelectedListener(itemSelected);
         mFavoritesGrid.setOnFocusChangeListener(onAppgridSelecctionchange);
 
-        appButton = (ImageView) view.findViewById(R.id.icon_drawer);
+
+        /*appButton = (ImageView) view.findViewById(R.id.icon_drawer);
         appButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 ((LauncherActivity) getActivity()).toggleDrawer(((LauncherActivity) getActivity()).getAppLayout());
             }
-        });
+        });*/
 
-        notificationButton = (ImageView) view.findViewById(R.id.icon_notification);
-        notificationButton.setOnClickListener(new View.OnClickListener() {
+        //notificationButton = (ImageView) view.findViewById(R.id.icon_notification);
+        /*notificationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 ((LauncherActivity) getActivity()).toggleDrawer(((LauncherActivity) getActivity()).getNotificationLayout());
             }
-        });
+        });*/
 
         currentLocale = getResources().getConfiguration().locale;
         timeTextView = (TextView) view.findViewById(R.id.clock);
         dateTextView = (TextView) view.findViewById(R.id.date);
+
+        lateralDer = (ImageView) view.findViewById(R.id.menu_der);
+        lateralIzq = (ImageView) view.findViewById(R.id.menu_izq);
 
         Clock clock = new Clock(getActivity());
         clock.AddClockTickListner(new Clock.OnClockTickListner() {
@@ -150,7 +168,117 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
         connectionIndicator = new ConnectionIndicator(getActivity(), wifiIcon, ethernetIcon);
 
 
+        lateralIzq.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((LauncherActivity) getActivity()).toggleDrawer(((LauncherActivity) getActivity()).getNotificationLayout());
+            }
+        });
+
+        lateralDer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((LauncherActivity) getActivity()).toggleDrawer(((LauncherActivity) getActivity()).getAppLayout());
+            }
+        });
+
+
+
         Log.d("-------------onCreateView() Desktop Fragment", Integer.toString((gridAdapter.getCount())));
+
+        outAnimationIzq = AnimationUtils.loadAnimation(getActivity(),
+                R.anim.left_end_animation);
+        outAnimationIzq.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                lateralIzq.setAlpha(0.0f);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+
+        outAnimationDer = AnimationUtils.loadAnimation(getActivity(),
+                R.anim.right_end_animation);
+        outAnimationDer.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                lateralDer.setAlpha(0.0f);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+
+        lateralIzq.setOnHoverListener(new View.OnHoverListener() {
+            @Override
+            public boolean onHover(View v, MotionEvent event) {
+                if( event.getActionMasked()== MotionEvent.ACTION_HOVER_ENTER) {
+                    v.setAlpha(1f);
+                    v.startAnimation(AnimationUtils.loadAnimation(getActivity(),
+                            R.anim.left_start_animation));
+                }
+                else if(event.getActionMasked()== MotionEvent.ACTION_HOVER_EXIT && gridAdapter.getCount()!=0){
+                    lateralIzq.startAnimation(outAnimationIzq);
+                }
+
+                return false;
+            }
+        });
+        //asdas
+
+        lateralDer.setOnHoverListener(new View.OnHoverListener() {
+            @Override
+            public boolean onHover(View v, MotionEvent event) {
+                if( event.getActionMasked()== MotionEvent.ACTION_HOVER_ENTER) {
+                    lateralDer.setAlpha(1f);
+                    lateralDer.startAnimation(AnimationUtils.loadAnimation(getActivity(),
+                            R.anim.right_start_animation));
+                }
+                else if(event.getActionMasked()== MotionEvent.ACTION_HOVER_EXIT && gridAdapter.getCount()!=0){
+                    lateralDer.startAnimation(outAnimationDer);
+                }
+
+                return false;
+            }
+        });
+        Bitmap bitmapWallpaper = ((BitmapDrawable)getActivity().getWallpaper()).getBitmap();
+
+        Palette.generateAsync(bitmapWallpaper, 1, new Palette.PaletteAsyncListener() {
+            public void onGenerated(Palette palette) {
+                luminosidad = palette.getSwatches().get(0).getHsl()[2];
+
+                if(luminosidad<0.5f) {
+                    lateralIzq.setImageResource(R.drawable.lateral_bar_settings_white);
+                    lateralDer.setImageResource(R.drawable.lateral_bar_menu_white);
+                }
+                else {
+                    lateralIzq.setImageResource(R.drawable.lateral_bar_settings_dark);
+                    lateralDer.setImageResource(R.drawable.lateral_bar_menu_dark);
+                }
+
+
+
+
+            }
+        });
+
+
+
         return view;
 
     }
@@ -214,9 +342,19 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
 
             super.onActivityCreated(savedInstanceState);
 
+
+
             Log.e("Creamos TikmeChangedReceiver","-----------------------------");
 
         }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+
+
+    }
 
     public BroadcastReceiver BR_TimeChangedreceiver = new BroadcastReceiver() {
 
@@ -263,6 +401,9 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
             super.onResume();
     }
 
+
+
+
     @Override
     public void onPause() {
 
@@ -285,6 +426,8 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
         ShortcutInfo shortcut = (ShortcutInfo) gridAdapter.getItem(i);
         startActivity(shortcut.getIntent());
     }
+    private boolean izqActiva = false;
+    private boolean derActiva = false;
 
 
     /*
@@ -299,6 +442,44 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
             if (mGridViewHeight == 0) {
                 mGridViewHeight = mFavoritesGrid.getHeight();
             }
+
+
+
+            Log.e("adapterDesktop","Selected: "+position);
+
+            if(position%(4)==0) {
+                if(!izqActiva) {
+                    lateralIzq.setAlpha(1f);
+                    lateralIzq.startAnimation(AnimationUtils.loadAnimation(getActivity(),
+                            R.anim.left_start_animation));
+                    izqActiva = true;
+                }
+            }
+            else {
+                if(izqActiva) {
+                    izqActiva=false;
+                    lateralIzq.startAnimation(outAnimationIzq);
+                }
+            }
+
+            if(((position+1)%4==0) || (position == gridAdapter.getCount()-1 && position<4)) {
+                if(!derActiva) {
+                    derActiva = true;
+                    lateralDer.setAlpha(1f);
+                    lateralDer.startAnimation(AnimationUtils.loadAnimation(getActivity(),
+                            R.anim.right_start_animation));
+                }
+            } else {
+                if(derActiva) {
+                    derActiva=false;
+
+                    lateralDer.startAnimation(outAnimationDer);
+                }
+            }
+
+
+
+
 
             deseleccionarView(vistaAnterior);
 
@@ -315,41 +496,33 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
         }
     };
 
-    private void deseleccionarView(View vista)
+    private void deseleccionarView(View v)
     {
-        if(vista == null)
+        if(v == null)
             return;
         /*TransitionDrawable transition = (TransitionDrawable) vista.getBackground();
         transition.reverseTransition(500);*/
-        vista.setBackgroundResource(R.drawable.shortcut_select_shape);
-        /*if(vista!=null) {
-            final ObjectAnimator backgroundColorAnimator = ObjectAnimator.ofObject(vista,
-                    "backgroundColor",
-                    new ArgbEvaluator(),
-                    getResources().getColor(R.color.desktop_icon_background),
-                    getResources().getDrawable(R.drawable.shortcut_unselect_shape));
-            backgroundColorAnimator.setDuration(500);
-            backgroundColorAnimator.start();
-        }*/
+        ImageView iv = (ImageView) v.findViewById(R.id.backgroundCellSelected);
+        iv.setVisibility(View.GONE);
+        v.setScaleX(1);
+        v.setScaleY(1);
+
+
+
     }
 
-    private void seleccionarView(View vista)
+    private void seleccionarView(View v)
     {
-        if(vista == null)
+        if(v == null)
             return;
         /*TransitionDrawable transition = (TransitionDrawable) vista.getBackground();
         transition.startTransition(150);*/
-        vista.setBackgroundResource(R.drawable.shortcut_unselect_shape);
-        /*if(vista!=null)
-        {
-            final ObjectAnimator backgroundColorAnimator = ObjectAnimator.ofObject(vista,
-                    "backgroundColor",
-                    new ArgbEvaluator(),
-                    getResources().getColor(R.color.desktop_icon_background),
-                    getResources().getColor(R.color.desktop_icon_background_selected));
-            backgroundColorAnimator.setDuration(500);
-            backgroundColorAnimator.start();
-        }*/
+        ImageView iv = (ImageView) v.findViewById(R.id.backgroundCellSelected);
+        iv.setVisibility(View.VISIBLE);
+        v.setScaleX(1.07f);
+        v.setScaleY(1.07f);
+        //zoomCell(v);
+
     }
 
     /***************************************/
@@ -437,11 +610,18 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
     public boolean onKeyRightAndLeft( int key){
         int itemSelected = mFavoritesGrid.getSelectedItemPosition();
         int columns = mFavoritesGrid.getNumColumns();
-
         switch (key){
             case KeyEvent.KEYCODE_DPAD_RIGHT:
-                if (((itemSelected + 1 ) % columns) == 0){
+                if (((itemSelected + 1 ) % columns) == 0 || (gridAdapter.getCount()==1 || gridAdapter.getCount()==0)){
                     ((LauncherActivity) getActivity()).toggleDrawer(((LauncherActivity) getActivity()).getAppLayout());
+                } else if (itemSelected == gridAdapter.getCount()-1 ) {
+                    if(itemSelected+1>4) {
+                        int newPosition = itemSelected - ((itemSelected+1)%4);
+                        mFavoritesGrid.setSelection(newPosition);
+                       // mFavoritesGrid.getSelectedView().requestFocus();
+                    }
+                    else
+                        ((LauncherActivity) getActivity()).toggleDrawer(((LauncherActivity) getActivity()).getAppLayout());
                 }
                 break;
             case KeyEvent.KEYCODE_DPAD_LEFT:
@@ -449,12 +629,10 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
                 if (((itemSelected) % columns) == 0 || itemSelected==-1){ 
 
                     ((LauncherActivity) getActivity()).toggleDrawer(((LauncherActivity) getActivity()).getNotificationLayout());
+                    ((LauncherActivity) getActivity()).getNotificationLayout().requestFocus();
                 }
                 break;
         }
-
-
-
 
 
 
@@ -492,7 +670,15 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
    public void updateClockWidget(Time dateTime) {
        Log.e("UpdateClockWidget",android.text.format.DateFormat.getTimeFormat(getActivity().getApplicationContext()).format(dateTime.toMillis(true)).toString());
         if (timeTextView != null) {
-            timeTextView.setText(android.text.format.DateFormat.getTimeFormat(getActivity().getApplicationContext()).format(dateTime.toMillis(true)).toString());
+            //timeTextView.setText(android.text.format.DateFormat.getTimeFormat(getActivity().getApplicationContext()).format(dateTime.toMillis(true)).toString());
+            int hour = Integer.parseInt(dateTime.format("%H"));
+            String minutes = dateTime.format("%M");
+            //Este código no me representa. Negaré su existencia
+            if (hour <= 9)
+                timeTextView.setText(" " + hour + ":" + minutes);
+
+            else
+                timeTextView.setText(hour+":"+minutes);
         }
 
         if (dateTextView != null) {

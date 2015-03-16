@@ -50,7 +50,7 @@
     </style>
 
     <style name="TabTextAppThemeVerde">
-        <item name="android:textColor">@drawable/tab_selector</item>
+        <item name="android:textColor">@drawable/tab_text_selector</item>
         <item name="android:textSize">@dimen/right_panel_header_text_size</item>
         <!-- v14 <item name="android:textAllCaps">true</item> -->
         <item name="android:ellipsize">marquee</item>

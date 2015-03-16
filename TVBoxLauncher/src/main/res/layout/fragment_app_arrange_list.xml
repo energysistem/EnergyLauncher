@@ -14,6 +14,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:background="@color/verdeOSCURO"
+        android:fontFamily="sans-serif-light"
         android:text="@string/arrange_list_mensajeInicial"
         android:id="@+id/btnGuardaCambios"
         android:enabled="false"
@@ -29,6 +30,7 @@
         android:nextFocusUp="@id/btnGuardaCambios"
         android:verticalSpacing="@dimen/menu_list_vertical_spacing"
         android:dividerHeight="@dimen/menu_list_divider_height"
+        android:divider="@null"
         android:background="@color/black_grey"
         android:layout_below="@+id/btnGuardaCambios" />
 

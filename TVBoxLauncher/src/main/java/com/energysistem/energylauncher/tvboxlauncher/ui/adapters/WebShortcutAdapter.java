@@ -153,21 +153,13 @@ public class WebShortcutAdapter extends ArrayAdapter<WebPageInfo>{
                 onCkeckBoxClickListener.onClick(v);
             }
         });
-
-        URL url = null;
-        try {
-            url = new URL("http://www.google.com/s2/favicons?domain="+((WebPageInfo) info).getPageUrl());
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-        Picasso.with(getContext()).load(url.toString()).into(new Target() {
+       final Target mTarget = new Target() {
 
             @Override
             public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
                 Bitmap combi = combineImages(bitmap, BitmapFactory.decodeResource(mResources, R.drawable.browser));
                 holder.image.setImageBitmap(combi);
                 notifyDataSetChanged();
-
             }
 
             @Override
@@ -179,7 +171,24 @@ public class WebShortcutAdapter extends ArrayAdapter<WebPageInfo>{
             public void onPrepareLoad(final Drawable placeHolderDrawable) {
                 holder.image.setImageResource(R.drawable.browser);
             }
-        });
+        };
+        holder.image.setTag(mTarget);
+
+        if (((WebPageInfo) info).getPageUrl().toString().toLowerCase().contains("energysistem.com")) {
+            Log.e("watdafka", "entramos");
+            holder.image.setImageResource(R.drawable.energyweb);
+        } else {
+            URL url = null;
+            try {
+                url = new URL("http://www.google.com/s2/favicons?domain="+((WebPageInfo) info).getPageUrl());
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
+
+
+
+            Picasso.with(getContext()).load(url.toString()).into(mTarget);
+        }
 
         return view;
     }

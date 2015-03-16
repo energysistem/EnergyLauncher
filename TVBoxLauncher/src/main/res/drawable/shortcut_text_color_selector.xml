@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:state_selected="true" android:color="@color/grey" />
-    <item android:state_hovered="true" android:color="@color/grey" />
-    <item android:state_activated="true" android:color="@color/grey" />
-    <item android:state_selected="false" android:color="@color/blanco" />
-    <item android:state_hovered="false" android:color="@color/blanco" />
-    <item android:state_activated="false" android:color="@color/blanco" />
-    <item android:color="@color/blanco" />
+    <item android:state_selected="true" android:color="@color/letra_gris" />
+    <item android:state_hovered="true" android:color="@color/letra_gris" />
+    <item android:state_activated="true" android:color="@color/letra_gris" />
+    <item android:state_selected="false" android:color="@color/letra_gris" />
+    <item android:state_hovered="false" android:color="@color/letra_gris" />
+    <item android:state_activated="false" android:color="@color/letra_gris" />
+    <item android:color="@color/letra_gris" />
 </selector>

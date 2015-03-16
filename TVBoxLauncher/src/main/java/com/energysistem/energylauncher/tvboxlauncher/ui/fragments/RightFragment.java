@@ -185,7 +185,9 @@ public View onCreateView(LayoutInflater inflater, ViewGroup container, final Bun
         mTabHost.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
 
             @Override
-            public void onViewDetachedFromWindow(View v) {}
+            public void onViewDetachedFromWindow(View v) {
+                Log.e("detached","wt");
+            }
 
             @Override
             public void onViewAttachedToWindow(View v) {
@@ -263,6 +265,7 @@ public View onCreateView(LayoutInflater inflater, ViewGroup container, final Bun
                         } else {
                            ((LauncherActivity) getActivity()).exitRightFragment();
                             mAppListFragment.clearFocus();
+                            mAppListFragment.desactivaModoCheckBox();
                         }
                         break;
 
@@ -271,6 +274,7 @@ public View onCreateView(LayoutInflater inflater, ViewGroup container, final Bun
                         }
                         else {
                            mTabHost.setCurrentTab(0);
+
                         }
                         break;
 
@@ -445,6 +449,8 @@ public View onCreateView(LayoutInflater inflater, ViewGroup container, final Bun
 
 
     public void setFocus(){
+
+        mTabHost.setCurrentTab(0);
         mAppListFragment.setFocus();
     }
 

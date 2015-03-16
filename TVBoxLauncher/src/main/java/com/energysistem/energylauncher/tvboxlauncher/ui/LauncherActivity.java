@@ -11,16 +11,21 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.graphics.Palette;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.GridView;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.energysistem.energylauncher.tvboxlauncher.LauncherAppState;
@@ -69,23 +74,27 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
 
     List<AppInfo> AppList;
 
+    private static final int EXTRA_APPMENU_ID = 288;
     private final String TAGFFRAGMENTRIGHT = "FRight";
     private final String TAGFFRAGMENTNOTIFICATIONS = "FNotifications";
     private final String TAGFFRAGMENTDESKTOP = "FDEsktop";
 
 
+    private FrameLayout notificationLayout;
     private DrawerLayout desktopLayout;
     private FrameLayout appLayout;
-    private FrameLayout notificationLayout;
 
     public final static String EXTRA_MESSAGE = "com.energysistem.energylauncher.MESSAGE";
 
     private ActionBarDrawerToggle drawerToggle;
+    private String memberFieldString;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        datasource = new BookmarkDAO(this);
+
 
         /*if (savedInstanceState == null) {
             //Drawer derecho
@@ -116,7 +125,6 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
                                                                 View decorView = getWindow().getDecorView();
                                                                 decorView.setSystemUiVisibility(uiOptions);*/
         desktopLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-
         appLayout = (FrameLayout) findViewById(R.id.right_drawer);
         notificationLayout = (FrameLayout) findViewById(R.id.left_drawer);
 
@@ -152,7 +160,17 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
         };
         desktopLayout.setDrawerListener(drawerToggle);
         LauncherAppState.setApplicationContext(getApplicationContext());
-        datasource = new BookmarkDAO(this);
+
+        getGridDesktop().notifyDataSetChanged();
+        reloadDesktop();
+
+
+
+
+
+
+
+
 
 
         //carga el desktop guardado
@@ -202,9 +220,17 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
     }
 
     @Override
+    protected void onNewIntent(Intent intent) {
+        Log.d("LauncherActivity", "onNewIntent is called!");
+
+        memberFieldString = intent.getStringExtra("ABRIR_MENU_APP");
+
+        super.onNewIntent(intent);
+    } // End of onNewIntent(Intent intent)
+
+    @Override
      protected void onResume() {
-        Log.e("onResume","LauncherActivity");
-        Log.e("localeChanged","reiniciamos  "+ localeChanged());
+        Log.e("OnResume","LauncherActivity: ");
         if(localeChanged()) {
             saveLocale();
             restartApplication();
@@ -212,23 +238,38 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
 
         }
 
+        if(memberFieldString!=null)
+        {
+            if(memberFieldString.equals("ABRIR_APP"))
+            {
+                desktopLayout.openDrawer(getAppLayout());
+            }
+        }
+
+
         IntentFilter filterSettingsMenu = new IntentFilter();
-        filterSettingsMenu.setPriority(2147483647);
+        filterSettingsMenu.setPriority(Integer.MAX_VALUE);
         filterSettingsMenu.addAction(SettingsMenuReceiver.INTENT);
         registerReceiver(mSettingsMenuReceiver, filterSettingsMenu);
+
         IntentFilter filterAppMenu = new IntentFilter();
         filterAppMenu.setPriority(2147483647);
         filterAppMenu.addAction(AppMenuReceiver.INTENT);
         registerReceiver(mAppMenuReceiver, filterAppMenu);
+
+
+
+
          super.onResume();
        // statusBarAdmin.HideStatusBar();
      }
 
     @Override
     protected void onPause() {
-
-        unregisterReceiver(mAppMenuReceiver);
+        //unregisterReceiver(mAppMenuReceiver);
         unregisterReceiver(mSettingsMenuReceiver);
+        unregisterReceiver(mAppMenuReceiver);
+
         desktopLayout.closeDrawers();
         super.onPause();
         //statusBarAdmin.ShowStatusBar();
@@ -289,8 +330,7 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
                          toggleDrawer(notificationLayout);
                      } else if (desktopLayout.isShown()) {
                          //desktopLayout.setFocusable(false);
-                         focusProblems(false, 1);
-                         toggleDrawer(appLayout);
+                         //focusProblems(false, 1);
                          mDesktopFragment.onKeyRightAndLeft(KeyEvent.KEYCODE_DPAD_RIGHT);
                      }
                      break;
@@ -328,10 +368,10 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
          public boolean onKeyUp(int keyCode, KeyEvent event) {
              switch (keyCode) {
                  case KeyEvent.KEYCODE_CAPTIONS:
-                     toggleDrawer(appLayout);
+
                      return true;
                  case KeyEvent.KEYCODE_SETTINGS:
-                     toggleDrawer(notificationLayout);
+
                      return true;
                  case KeyEvent.KEYCODE_TV:
                      Intent i;
@@ -418,7 +458,7 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
         mRightFragment.resetTab3();
     }
 
-    public void ShowPickWallpaperFragment(){
+    public void ShowPickWallpaperFragment() {
 //        FragmentTransaction ft = getFragmentManager().beginTransaction();
 //        ImagePickerActivity wvf =  new ImagePickerActivity();
 //
@@ -432,6 +472,9 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
         Intent intent = new Intent(Intent.ACTION_SET_WALLPAPER);
         startActivity(Intent.createChooser(intent, "Select Wallpaper"));
 
+            restartApplication();
+
+
 //        Intent intent = new Intent(this, ImagePickerActivity.class);
 //        intent.putExtra(EXTRA_MESSAGE, message);
 //        startActivity(intent);
@@ -439,10 +482,8 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
 
 
     public void setFocusFragmentDerecha() {
-        if (mOptionsLauncherFragment.isVisible()) {
-            mOptionsLauncherFragment.setFocus();
-        } else if (mAppArrangeFragment.isVisible()) {
-            mAppArrangeFragment.setFocus();
+        if (mMenuListFragment.isVisible()) {
+            mMenuListFragment.setFocus();
         }
     }
 
@@ -485,7 +526,7 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
                  */
                 //mNotificationFragent.setFocus();
             }
-            drawerLayout.requestFocus();
+
         }
     }
 
@@ -726,6 +767,7 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
 
     public void reloadDesktop() {
         mDesktopFragment.setGridAdapter(preferencesListadoApps.getListaDesktop());
+        //preferencesListadoApps.getListaDesktop().notify();
     }
 
     public ShortcutAdapter getGridDesktop(){
@@ -802,9 +844,11 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
 
         @Override
         public void onReceive(Context context, Intent intent) {
+            Log.e("onReceive","appMenuReceiver");
             toggleDrawer(appLayout);
             mRightFragment.setFocus();
             setResultData("Stop");
+
         }
     };
 

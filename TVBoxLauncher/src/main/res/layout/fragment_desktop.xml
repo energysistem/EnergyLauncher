@@ -2,76 +2,91 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <LinearLayout
-        android:orientation="vertical"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent">
 
-        <RelativeLayout
-            android:orientation="horizontal"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:focusable="false">
 
-            <include
-                android:layout_width="wrap_content"
+
+        <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+            android:paddingStart="@dimen/padding_launcher_centro"
+            android:paddingEnd="@dimen/padding_launcher_centro">
+
+            <RelativeLayout
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:descendantFocusability="blocksDescendants"
-                android:layout_marginTop="30dp"
-                android:focusable="false"
-                android:layout_centerHorizontal="true"
-                layout="@layout/clock_widget" />
+                android:focusable="false">
 
-            <ImageView
-                android:layout_width="@dimen/floating_settings_icon_width"
-                android:layout_height="@dimen/floating_settings_icon_width"
-                android:id="@+id/icon_drawer"
-                android:focusable="false"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentEnd="true"
-                android:src="@drawable/ic_app"
-                android:layout_marginStart="@dimen/floating_settings_icon_margin_end"
-                android:layout_marginEnd="@dimen/floating_settings_icon_margin_end"
-                android:layout_marginTop="@dimen/floating_settings_icon_margin_top" />
+                <include
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:descendantFocusability="blocksDescendants"
+                    android:layout_marginTop="30dp"
+                    android:focusable="false"
+                    android:layout_centerHorizontal="true"
+                    layout="@layout/clock_widget"
+                    android:id="@+id/include" />
 
-            <ImageView
-                android:layout_width="@dimen/floating_settings_icon_width"
-                android:layout_height="@dimen/floating_settings_icon_width"
-                android:id="@+id/icon_notification"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentStart="true"
-                android:src="@drawable/ic_settings"
-                android:focusable="false"
-                android:layout_marginStart="@dimen/floating_settings_icon_margin_end"
-                android:layout_marginEnd="@dimen/floating_settings_icon_margin_end"
-                android:layout_marginTop="@dimen/floating_settings_icon_margin_top" />
+                <!--<ImageView
+                    android:layout_width="@dimen/floating_settings_icon_width"
+                    android:layout_height="@dimen/floating_settings_icon_width"
+                    android:id="@+id/icon_drawer"
+                    android:focusable="false"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    android:src="@drawable/ic_menu"
+                    android:layout_marginStart="@dimen/floating_settings_icon_margin_end"
+                    android:layout_marginEnd="@dimen/floating_settings_icon_margin_end"
+                    android:layout_marginTop="@dimen/floating_settings_icon_margin_top" />
 
-        </RelativeLayout >
+                <ImageView
+                    android:layout_width="@dimen/floating_settings_icon_width"
+                    android:layout_height="@dimen/floating_settings_icon_width"
+                    android:id="@+id/icon_notification"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentStart="true"
+                    android:src="@drawable/ic_settings_opaque"
+                    android:focusable="false"
+                    android:layout_marginStart="@dimen/floating_settings_icon_margin_end"
+                    android:layout_marginEnd="@dimen/floating_settings_icon_margin_end"
+                    android:layout_marginTop="@dimen/floating_settings_icon_margin_top" />
+                -->
+
+
+            </RelativeLayout >
 
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent">
+            android:layout_height="fill_parent"
+            android:padding="20dp">
+
+
 
             <GridView
                 android:listSelector="#00000000"
                 android:id="@+id/app_grid"
-                android:layout_width="fill_parent"
+                android:layout_marginTop="10dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:numColumns="@integer/num_columns_desktop"
                 android:horizontalSpacing="@dimen/desktop_grid_margins"
-                android:verticalSpacing="@dimen/desktop_grid_margins"
+                android:verticalSpacing="6dp"
+                android:scrollbars="none"
                 android:paddingLeft="@dimen/desktop_grid_margins"
                 android:paddingRight="@dimen/desktop_grid_margins"
                 android:requiresFadingEdge="vertical"
                 android:fadingEdgeLength="50dp"
                 android:stretchMode="columnWidth"
                 android:gravity="center_horizontal"
-                android:paddingBottom="0dp"
+                android:layout_marginBottom="10dp"
                 android:overScrollMode="never"
                 android:smoothScrollbar="true"
                 android:focusable="true"
-
                 android:nextFocusUp="@+id/webcut_grid"/>
 
 
@@ -80,5 +95,27 @@
 
 
     </LinearLayout>
+
+        <ImageView
+            android:id="@+id/menu_izq"
+            android:alpha="0"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:src="@drawable/lateral_bar_menu_white"
+             />
+
+        <ImageView
+            android:alpha="0"
+            android:id="@+id/menu_der"
+            android:layout_width="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_height="match_parent"
+            android:src="@drawable/lateral_bar_settings_white"
+             />
+
+    </RelativeLayout>
+
+
 
 </FrameLayout>

@@ -29,6 +29,7 @@ public class BookmarkDAO {
 
     public BookmarkDAO(Context context) {
         dbHelper = new SqliteHelper(context);
+
     }
 
     public void open() throws SQLException {
