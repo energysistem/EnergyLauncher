@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/EnergyLauncher.iml" filepath="$PROJECT_DIR$/EnergyLauncher.iml" />
+      <module fileurl="file://$PROJECT_DIR$/TVBoxLauncher/TVBoxLauncher.iml" filepath="$PROJECT_DIR$/TVBoxLauncher/TVBoxLauncher.iml" />
     </modules>
   </component>
 </project>
