@@ -449,6 +449,8 @@ public View onCreateView(LayoutInflater inflater, ViewGroup container, final Bun
 
 
     public void setFocus(){
+
+        mTabHost.setCurrentTab(0);
         mAppListFragment.setFocus();
     }
 

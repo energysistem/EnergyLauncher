@@ -1,10 +1,10 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/cell_shortcut_container"
     android:layout_width="fill_parent"
-    android:layout_marginBottom="5dp"
+
     android:orientation="vertical"
+    android:padding="5dp"
     android:scaleType="fitXY"
-    android:background="@drawable/shorcut_background_transition"
     android:minHeight="@dimen/altura_desktop_icon"
     android:layout_height="@dimen/altura_desktop_icon">
 
@@ -29,25 +29,25 @@
         android:id="@+id/icon"
         android:layout_gravity="center"
         android:focusable="false"
-        android:layout_marginStart="20dp"
-        android:layout_centerVertical="true"
-        android:layout_alignParentStart="true" />
+        android:layout_marginTop="@dimen/margin_top_icon_cell"
+        android:layout_centerHorizontal="true" />
 
     <TextView
         android:layout_width="wrap_content"
-        android:gravity="center"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:singleLine="true"
         android:text="pruebaprueba"
-        android:layout_marginLeft="20dp"
         android:textSize="18sp"
         android:id="@+id/title"
         android:focusable="false"
         android:fontFamily="sans-serif-light"
         android:textStyle="bold"
         android:textColor="@color/text_grid_selector"
-        android:layout_centerVertical="true"
-        android:layout_toEndOf="@+id/icon" />
+        android:layout_alignBottom="@+id/backgroundCell"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/margin_bottom_text_cell"
+        android:textAlignment="center" />
 
 
 </RelativeLayout>

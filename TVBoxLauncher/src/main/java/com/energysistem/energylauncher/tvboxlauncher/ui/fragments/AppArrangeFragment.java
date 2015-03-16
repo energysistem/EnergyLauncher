@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -64,8 +65,10 @@ public class AppArrangeFragment extends Fragment {
 
         mListView.setAppsList(mListAppsDragablesOrdenada);
         mListView.setAdapter(mAdapter);
+
+
         mListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-        mListView.setClase(this);
+       // mListView.setClase(this);
 
 
         mListView.setOnListChangeListener(new DynamicDraggingListView.OnListChangeListener() {

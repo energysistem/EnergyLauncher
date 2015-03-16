@@ -4,8 +4,8 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="app_icon_size">75dp</dimen>
     <dimen name="collapsed_height">220dp</dimen>
-    <dimen name="altura_desktop_icon">160dp</dimen>
-    <dimen name="desktop_grid_margins">12dp</dimen>
+    <dimen name="altura_desktop_icon">150dp</dimen>
+    <dimen name="desktop_grid_margins">6dp</dimen>
 
     <!-- Clock -->
     <dimen name="clock_time_text_size">70sp</dimen>
@@ -25,17 +25,23 @@
     <dimen name="menu_list_vertical_spacing">16dp</dimen>
     <dimen name="menu_list_row_padding">10dp</dimen>
     <dimen name="menu_list_row_start_padding">10dp</dimen>
-    <dimen name="row_icon_width">42dp</dimen>
-    <dimen name="row_icon_Web_width">40dp</dimen>
+    <dimen name="row_icon_width">38dp</dimen>
+    <dimen name="row_icon_Web_width">38dp</dimen>
 
     <!-- TextSizes. -->
     <dimen name="small_text_size">10sp</dimen>
     <dimen name="normal_text_size">17sp</dimen>
     <dimen name="button_text_size">15sp</dimen>
     <dimen name="right_panel_header_text_size">19sp</dimen>
+
+
     <dimen name="text_shortcut_margin_left">15dp</dimen>
     <dimen name="ancho_barras_laterales">30dp</dimen>
     <dimen name="padding_launcher_centro">25dp</dimen>
-    <dimen name="tamano_icono_fav">70dp</dimen>
+    <dimen name="tamano_icono_fav">50dp</dimen>
+    <dimen name="margin_texto_cell_left">50dp</dimen>
+    <dimen name="margin_icono_cell_left">25dp</dimen>
+    <dimen name="margin_bottom_text_cell">10dp</dimen>
+    <dimen name="margin_top_icon_cell">35dp</dimen>
 
 </resources>

@@ -166,7 +166,9 @@ public class AppListFragment extends Fragment
         //Take out the favorites
         //appInfos = extractFavorites(appInfos);
 
-        Collections.sort(appInfos, new SortBasedOnName());
+       Log.e("NUEVA LISTA APPS",appInfos.toString());
+
+
         mAppInfosList = appInfos;
 
         mAppAdapter = new AppAdapter(getActivity(), appInfos);
@@ -195,7 +197,7 @@ public class AppListFragment extends Fragment
                 }
             }
         });
-
+        Collections.sort(appInfos, new SortBasedOnName());
         ((LauncherActivity) getActivity()).reloadDesktop();
 
         assert (getActivity()) != null;
@@ -280,6 +282,7 @@ public class AppListFragment extends Fragment
     }
 
     public void desactivaModoCheckBox() {
+
         if (mAppAdapter.getModeCheckBoxSelection()) {
             Log.d(TAG, "Desactivamos modo checkbox");
             mAppAdapter.setSelectedCheckBoxMode(false);
@@ -304,7 +307,10 @@ public class AppListFragment extends Fragment
     }
 
     public boolean appgetModeCheckBoxSelec(){
-      return   mAppAdapter.getModeCheckBoxSelection();
+        if(mAppAdapter==null)
+            return false;
+        else
+            return   mAppAdapter.getModeCheckBoxSelection();
     }
 
     /**

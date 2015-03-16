@@ -63,7 +63,7 @@
             android:orientation="vertical"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:layout_margin="20dp">
+            android:padding="20dp">
 
 
 
@@ -75,14 +75,15 @@
                 android:layout_height="wrap_content"
                 android:numColumns="@integer/num_columns_desktop"
                 android:horizontalSpacing="@dimen/desktop_grid_margins"
-                android:verticalSpacing="@dimen/desktop_grid_margins"
+                android:verticalSpacing="6dp"
+                android:scrollbars="none"
                 android:paddingLeft="@dimen/desktop_grid_margins"
                 android:paddingRight="@dimen/desktop_grid_margins"
                 android:requiresFadingEdge="vertical"
                 android:fadingEdgeLength="50dp"
                 android:stretchMode="columnWidth"
                 android:gravity="center_horizontal"
-                android:paddingBottom="0dp"
+                android:layout_marginBottom="10dp"
                 android:overScrollMode="never"
                 android:smoothScrollbar="true"
                 android:focusable="true"
@@ -101,7 +102,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentStart="true"
-            android:src="@drawable/settings_bar"
+            android:src="@drawable/lateral_bar_menu_white"
              />
 
         <ImageView
@@ -110,7 +111,7 @@
             android:layout_width="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_height="match_parent"
-            android:src="@drawable/menu_bar"
+            android:src="@drawable/lateral_bar_settings_white"
              />
 
     </RelativeLayout>

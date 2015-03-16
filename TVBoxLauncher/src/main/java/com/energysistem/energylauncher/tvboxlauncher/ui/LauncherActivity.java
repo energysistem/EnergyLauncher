@@ -74,6 +74,7 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
 
     List<AppInfo> AppList;
 
+    private static final int EXTRA_APPMENU_ID = 288;
     private final String TAGFFRAGMENTRIGHT = "FRight";
     private final String TAGFFRAGMENTNOTIFICATIONS = "FNotifications";
     private final String TAGFFRAGMENTDESKTOP = "FDEsktop";
@@ -86,6 +87,7 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
     public final static String EXTRA_MESSAGE = "com.energysistem.energylauncher.MESSAGE";
 
     private ActionBarDrawerToggle drawerToggle;
+    private String memberFieldString;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -167,6 +169,10 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
 
 
 
+
+
+
+
         //carga el desktop guardado
         //Log.e("APPS SISTEMA",mRightFragment.mAppListFragment.getAppsInfos().size()+"");
 
@@ -214,9 +220,17 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
     }
 
     @Override
+    protected void onNewIntent(Intent intent) {
+        Log.d("LauncherActivity", "onNewIntent is called!");
+
+        memberFieldString = intent.getStringExtra("ABRIR_MENU_APP");
+
+        super.onNewIntent(intent);
+    } // End of onNewIntent(Intent intent)
+
+    @Override
      protected void onResume() {
-        Log.e("onResume","LauncherActivity");
-        Log.e("localeChanged","reiniciamos  "+ localeChanged());
+        Log.e("OnResume","LauncherActivity: ");
         if(localeChanged()) {
             saveLocale();
             restartApplication();
@@ -224,14 +238,28 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
 
         }
 
+        if(memberFieldString!=null)
+        {
+            if(memberFieldString.equals("ABRIR_APP"))
+            {
+                desktopLayout.openDrawer(getAppLayout());
+            }
+        }
+
+
         IntentFilter filterSettingsMenu = new IntentFilter();
-        filterSettingsMenu.setPriority(2147483647);
+        filterSettingsMenu.setPriority(Integer.MAX_VALUE);
         filterSettingsMenu.addAction(SettingsMenuReceiver.INTENT);
         registerReceiver(mSettingsMenuReceiver, filterSettingsMenu);
+
         IntentFilter filterAppMenu = new IntentFilter();
         filterAppMenu.setPriority(2147483647);
         filterAppMenu.addAction(AppMenuReceiver.INTENT);
         registerReceiver(mAppMenuReceiver, filterAppMenu);
+
+
+
+
          super.onResume();
        // statusBarAdmin.HideStatusBar();
      }
@@ -240,6 +268,8 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
     protected void onPause() {
         //unregisterReceiver(mAppMenuReceiver);
         unregisterReceiver(mSettingsMenuReceiver);
+        unregisterReceiver(mAppMenuReceiver);
+
         desktopLayout.closeDrawers();
         super.onPause();
         //statusBarAdmin.ShowStatusBar();
@@ -338,10 +368,10 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
          public boolean onKeyUp(int keyCode, KeyEvent event) {
              switch (keyCode) {
                  case KeyEvent.KEYCODE_CAPTIONS:
-                     toggleDrawer(appLayout);
+
                      return true;
                  case KeyEvent.KEYCODE_SETTINGS:
-                     toggleDrawer(notificationLayout);
+
                      return true;
                  case KeyEvent.KEYCODE_TV:
                      Intent i;
@@ -496,7 +526,7 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
                  */
                 //mNotificationFragent.setFocus();
             }
-            drawerLayout.requestFocus();
+
         }
     }
 
@@ -814,9 +844,11 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
 
         @Override
         public void onReceive(Context context, Intent intent) {
+            Log.e("onReceive","appMenuReceiver");
             toggleDrawer(appLayout);
             mRightFragment.setFocus();
             setResultData("Stop");
+
         }
     };
 

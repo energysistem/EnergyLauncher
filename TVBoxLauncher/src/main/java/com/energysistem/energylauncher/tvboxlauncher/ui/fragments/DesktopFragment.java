@@ -87,6 +87,7 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
     private ImageView lateralDer;
     private Animation outAnimationIzq;
     private Animation outAnimationDer;
+    private float luminosidad;
 
 
     @Override
@@ -255,6 +256,28 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
                 return false;
             }
         });
+        Bitmap bitmapWallpaper = ((BitmapDrawable)getActivity().getWallpaper()).getBitmap();
+
+        Palette.generateAsync(bitmapWallpaper, 1, new Palette.PaletteAsyncListener() {
+            public void onGenerated(Palette palette) {
+                luminosidad = palette.getSwatches().get(0).getHsl()[2];
+
+                if(luminosidad<0.5f) {
+                    lateralIzq.setImageResource(R.drawable.lateral_bar_settings_white);
+                    lateralDer.setImageResource(R.drawable.lateral_bar_menu_white);
+                }
+                else {
+                    lateralIzq.setImageResource(R.drawable.lateral_bar_settings_dark);
+                    lateralDer.setImageResource(R.drawable.lateral_bar_menu_dark);
+                }
+
+
+
+
+            }
+        });
+
+
 
         return view;
 
@@ -485,29 +508,7 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
         v.setScaleY(1);
 
 
-        if(gridAdapter.luminosidad>0.5f)
-        {
-           /* vista.setBackgroundResource(R.drawable.shortcut_select_shape_light);
 
-            TextView tv = (TextView) vista.findViewById(R.id.title);
-            tv.setTextColor(getResources().getColorStateList(R.color.text_grid_selector_light));*/
-        }
-        else
-        {
-            /*TextView tv = (TextView) vista.findViewById(R.id.title);
-            tv.setTextColor(getResources().getColorStateList(R.color.text_grid_selector));
-
-            vista.setBackgroundResource(R.drawable.shortcut_select_shape);*/
-        }
-        /*if(vista!=null) {
-            final ObjectAnimator backgroundColorAnimator = ObjectAnimator.ofObject(vista,
-                    "backgroundColor",
-                    new ArgbEvaluator(),
-                    getResources().getColor(R.color.desktop_icon_background),
-                    getResources().getDrawable(R.drawable.shortcut_unselect_shape));
-            backgroundColorAnimator.setDuration(500);
-            backgroundColorAnimator.start();
-        }*/
     }
 
     private void seleccionarView(View v)
@@ -518,34 +519,10 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
         transition.startTransition(150);*/
         ImageView iv = (ImageView) v.findViewById(R.id.backgroundCellSelected);
         iv.setVisibility(View.VISIBLE);
-        v.setScaleX(1.05f);
-        v.setScaleY(1.05f);
+        v.setScaleX(1.07f);
+        v.setScaleY(1.07f);
         //zoomCell(v);
-        if(gridAdapter.luminosidad>0.5f)
-        {
-            /*vista.setBackgroundResource(R.drawable.shortcut_unselect_shape_light);
-            TextView tv = (TextView) vista.findViewById(R.id.title);
-            tv.setTextColor(getResources().getColorStateList(R.color.text_grid_selector_light));*/
-        }
-        else
-        {
-           /* TextView tv = (TextView) vista.findViewById(R.id.title);
-            tv.setTextColor(getResources().getColorStateList(R.color.text_grid_selector));
 
-            vista.setBackgroundResource(R.drawable.shortcut_unselect_shape);*/
-        }
-
-
-        /*if(vista!=null)
-        {
-            final ObjectAnimator backgroundColorAnimator = ObjectAnimator.ofObject(vista,
-                    "backgroundColor",
-                    new ArgbEvaluator(),
-                    getResources().getColor(R.color.desktop_icon_background),
-                    getResources().getColor(R.color.desktop_icon_background_selected));
-            backgroundColorAnimator.setDuration(500);
-            backgroundColorAnimator.start();
-        }*/
     }
 
     /***************************************/
@@ -652,6 +629,7 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
                 if (((itemSelected) % columns) == 0 || itemSelected==-1){ 
 
                     ((LauncherActivity) getActivity()).toggleDrawer(((LauncherActivity) getActivity()).getNotificationLayout());
+                    ((LauncherActivity) getActivity()).getNotificationLayout().requestFocus();
                 }
                 break;
         }
