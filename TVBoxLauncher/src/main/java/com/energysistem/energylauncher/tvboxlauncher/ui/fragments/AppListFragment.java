@@ -283,12 +283,14 @@ public class AppListFragment extends Fragment
 
     public void desactivaModoCheckBox() {
 
-        if (mAppAdapter.getModeCheckBoxSelection()) {
-            Log.d(TAG, "Desactivamos modo checkbox");
-            mAppAdapter.setSelectedCheckBoxMode(false);
-            mAppAdapter.setSelectedItem(mListViewApps.getSelectedItemPosition());
-            updateView();
-            mAppAdapter.notifyDataSetChanged();
+        if(mAppAdapter!=null) {
+            if (mAppAdapter.getModeCheckBoxSelection()) {
+                Log.d(TAG, "Desactivamos modo checkbox");
+                mAppAdapter.setSelectedCheckBoxMode(false);
+                mAppAdapter.setSelectedItem(mListViewApps.getSelectedItemPosition());
+                updateView();
+                mAppAdapter.notifyDataSetChanged();
+            }
         }
     }
 
