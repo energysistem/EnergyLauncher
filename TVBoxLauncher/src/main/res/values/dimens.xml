@@ -43,5 +43,7 @@
     <dimen name="margin_icono_cell_left">25dp</dimen>
     <dimen name="margin_bottom_text_cell">10dp</dimen>
     <dimen name="margin_top_icon_cell">35dp</dimen>
+    <dimen name="abc_action_bar_title_text_size">12sp</dimen>
+    <dimen name="abc_action_bar_subtitle_text_size">10sp</dimen>
 
 </resources>

@@ -259,12 +259,18 @@ public class ShortcutAdapter extends BaseAdapter {
 
                 @Override
                 public void onBitmapFailed(final Drawable errorDrawable) {
+                    holder.icon.setVisibility(View.GONE);
+                    ImageView iv = (ImageView) finalView.findViewById(R.id.backgroundCell);
+                    iv.setBackgroundResource(R.drawable.tile_explorer);
                     Log.d("TAG", "FAILED");
                 }
 
                 @Override
                 public void onPrepareLoad(final Drawable placeHolderDrawable) {
                     Log.d("TAG", "Prepare Load");
+                    holder.icon.setVisibility(View.GONE);
+                    ImageView iv = (ImageView) finalView.findViewById(R.id.backgroundCell);
+                    iv.setBackgroundResource(R.drawable.tile_explorer);
 
                     holder.icon.setImageResource(R.drawable.bookmark);
                 }
@@ -403,6 +409,7 @@ public class ShortcutAdapter extends BaseAdapter {
 
 
                         }
+
                     });
 
                 }
