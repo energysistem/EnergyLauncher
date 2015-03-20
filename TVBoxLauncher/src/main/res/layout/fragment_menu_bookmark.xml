@@ -7,42 +7,31 @@
     android:padding="10dp">
 
 
-    <TextView
-        android:id="@+id/menuBookmarkLblName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:focusable="false"
-        android:text="@string/name_form_tag"
-        android:textSize="@dimen/normal_text_size" />
-
     <EditText
         android:id="@+id/menuBookmarkTxtName"
         android:layout_width="match_parent"
+        android:hint="@string/name_form_tag"
+        android:maxLength="35"
         android:layout_height="wrap_content"
         android:nextFocusDown="@+id/menuBookmarkTxtUri"
         android:nextFocusUp="@+id/tab2"
         android:textSize="@dimen/normal_text_size"
-        android:textColor="@color/blanco"/>
+        android:singleLine="true"
+        android:textColor="@color/letra_gris"
+       android:textColorHint="@color/letra_gris_hint"/>
 
-    <TextView
-        android:id="@+id/menuBookmarklblUri"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingTop="@dimen/form_section_padding"
-        android:focusable="false"
-        android:text="@string/url_form_tag"
-        android:textSize="22sp" />
 
     <EditText
         android:id="@+id/menuBookmarkTxtUri"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textUri"
+        android:hint="@string/url_form_tag"
         android:nextFocusDown="@+id/menuBookmarkBtn"
         android:nextFocusUp="@+id/menuBookmarkTxtName"
-        android:text="http://"
-        android:textSize="22sp"
-        android:textColor="@color/blanco"/>
+        android:inputType="textWebEmailAddress"
+        android:textSize="@dimen/normal_text_size"
+        android:textColor="@color/letra_gris"
+        android:textColorHint="@color/letra_gris_hint"/>
 
     <Button
         android:id="@+id/menuBookmarkBtn"
@@ -50,13 +39,18 @@
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/form_section_padding"
         android:layout_gravity="end"
+        android:fontFamily="sans-serif"
+        android:textColor="@color/letra_gris"
         android:nextFocusDown="@+id/listViewLinks"
+        android:nextFocusUp="@+id/menuBookmarkTxtUri"
         android:text="@string/save_button" />
 
     <ListView
         android:id="@+id/listViewLinks"
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
+        android:dividerHeight="@dimen/menu_list_divider_height"
+        android:divider="@null"
         android:layout_gravity="center_horizontal"
         android:nextFocusDown="@+id/menuBookmarkList"
         android:nextFocusRight="@+id/listViewLinks" />

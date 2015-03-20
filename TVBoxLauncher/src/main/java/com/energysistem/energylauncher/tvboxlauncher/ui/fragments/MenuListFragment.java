@@ -7,11 +7,13 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.energysistem.energylauncher.tvboxlauncher.R;
 import com.energysistem.energylauncher.tvboxlauncher.broadcastreceiver.SettingsMenuReceiver;
@@ -34,9 +36,9 @@ public class MenuListFragment extends Fragment {
 
         mMenuList = (ListView) view.findViewById(R.id.menu_list);
         BasicImgText[] drawerItem = new BasicImgText[3];
-        drawerItem[0] = new BasicImgText(R.drawable.ic_launcher, getResources().getString(R.string.change_wallpaper_label));
-        drawerItem[1] = new BasicImgText(R.drawable.ic_launcher, getResources().getString(R.string.reordena_button));
-        drawerItem[2] = new BasicImgText(R.drawable.settings, getResources().getString(R.string.system_settings_label));
+        drawerItem[0] = new BasicImgText(R.drawable.ic_wallpaperchanger, getResources().getString(R.string.change_wallpaper_label));
+        drawerItem[1] = new BasicImgText(R.drawable.ic_dashboard_white_48dp, getResources().getString(R.string.reordena_button));
+        drawerItem[2] = new BasicImgText(R.drawable.ic_settings, getResources().getString(R.string.system_settings_label));
         mMenuList.setOnItemClickListener(new DrawerItemClickListener());
 
 
@@ -101,6 +103,8 @@ public class MenuListFragment extends Fragment {
                     ((LauncherActivity)getActivity()).ShowPickWallpaperFragment();
                     break;
                 case 1:
+
+
                     ((LauncherActivity)getActivity()).ShowReordenaDesktopAppsFragment();
                     break;
                 case 2:

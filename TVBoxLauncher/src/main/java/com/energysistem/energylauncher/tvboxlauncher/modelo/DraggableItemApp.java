@@ -1,6 +1,7 @@
 package com.energysistem.energylauncher.tvboxlauncher.modelo;
 
 import android.graphics.Bitmap;
+import android.net.Uri;
 
 /**
  * Created by emg on 02/05/2014.
@@ -11,6 +12,7 @@ public class DraggableItemApp{
     //String name;
     String title;
     Bitmap icono;
+    private Uri pageUrl;
 
     public void setPos(int pos) {
         this.pos = pos;
@@ -48,5 +50,13 @@ public class DraggableItemApp{
         this.title = title;
         //this.name = packageName;
         this.icono = icono;
+    }
+
+    public Uri getPageUrl() {
+        return pageUrl;
+    }
+
+    public void setPageUrl(Uri pageUrl) {
+        this.pageUrl = pageUrl;
     }
 }

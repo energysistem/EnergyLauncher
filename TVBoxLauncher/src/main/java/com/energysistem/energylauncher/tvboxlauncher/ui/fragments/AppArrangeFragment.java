@@ -5,10 +5,12 @@ import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.energysistem.energylauncher.tvboxlauncher.R;
@@ -39,6 +41,7 @@ public class AppArrangeFragment extends Fragment {
     private DynamicDraggingListView mListView;
     private Button mBtnGuardar;
     private StableArrayAdapter mAdapter;
+    public boolean cambiado = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -52,6 +55,8 @@ public class AppArrangeFragment extends Fragment {
 
         CreaListaFiltradaOrdenada();
 
+
+
         mAdapter = new StableArrayAdapter(view.getContext(),
                 R.layout.row_menu, mListAppsDragablesOrdenada);
         mListView = (DynamicDraggingListView) view.findViewById(R.id.draggable_listview);
@@ -60,15 +65,22 @@ public class AppArrangeFragment extends Fragment {
 
         mListView.setAppsList(mListAppsDragablesOrdenada);
         mListView.setAdapter(mAdapter);
+
+
         mListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+       // mListView.setClase(this);
+
 
         mListView.setOnListChangeListener(new DynamicDraggingListView.OnListChangeListener() {
             @Override
             public void onListChanged(View v, boolean cambiado) {
                 if (cambiado) {
+                    Log.e("Cambiado","ArrangeFragment");
                     mBtnGuardar.setEnabled(true);
                     mBtnGuardar.setFocusable(true);
-                    mBtnGuardar.setFocusableInTouchMode(true);
+                    //mBtnGuardar.setFocusableInTouchMode(true);
+                    mBtnGuardar.setText(getActivity().getString(R.string.arrange_list_mensajeFinal));
+
                 }
             }
         });
@@ -76,11 +88,12 @@ public class AppArrangeFragment extends Fragment {
         mBtnGuardar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                aplicaCambios();
+               // aplicaCambios();
             }
         });
 
         mListView.requestFocus();
+
 
         return view;
     }
@@ -90,6 +103,18 @@ public class AppArrangeFragment extends Fragment {
         mListView.requestFocus();
     }
 
+
+    public void cambiarTextoBoton() {
+        if (!cambiado) {
+            Log.e("Cambiado","ArrangeFragment");
+            mBtnGuardar.setEnabled(true);
+            mBtnGuardar.setFocusable(true);
+            //mBtnGuardar.setFocusableInTouchMode(true);
+            mBtnGuardar.setText(getActivity().getString(R.string.arrange_list_mensajeFinal));
+            cambiado = true;
+
+        }
+    }
 
     private void CreaListaFiltradaOrdenada() {
 
@@ -119,7 +144,7 @@ public class AppArrangeFragment extends Fragment {
     }
 
 
-    private void aplicaCambios() {
+    public void aplicaCambios() {
         assert (getActivity()) != null;
 
 
@@ -128,6 +153,8 @@ public class AppArrangeFragment extends Fragment {
         mListAppsDragablesOrdenada=getDraggableListActualizada();
         resetFragment();
         mListView.requestFocus();
+        mBtnGuardar.setText(getActivity().getString(R.string.arrange_list_mensajeInicial));
+        cambiado = false;
     }
 
 
@@ -154,6 +181,25 @@ public class AppArrangeFragment extends Fragment {
 
     public void setmListAppsDragablesOrdenada(ArrayList<DraggableItemApp> neo){
         mListAppsDragablesOrdenada=neo;
+    }
+
+    @Override
+    public void onStop() {
+        TextView text = (TextView) getActivity().findViewById(R.id.title_left);
+        text.setText(getResources().getString(R.string.settings_panel_title));
+        super.onStop();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    public void onResume() {
+        TextView text = (TextView) getActivity().findViewById(R.id.title_left);
+        text.setText(getResources().getString(R.string.reordena_button));
+        super.onResume();
     }
 
     /*

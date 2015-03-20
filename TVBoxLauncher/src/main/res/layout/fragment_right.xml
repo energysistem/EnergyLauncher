@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/tabLL"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+<LinearLayout
+    android:id="@+id/tabLLLLL"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:orientation="vertical">
 
     <TabHost
-        android:id="@+id/tabHost"
+        android:id="@+id/tabHost_right"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
 
@@ -17,16 +21,17 @@
 
 
         <LinearLayout
-            android:id="@+id/tabLL2"
+            android:id="@+id/tabLLLL2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/black_grey"
             android:orientation="vertical" >
 
             <TabWidget
-                style="AppThemeVerde.TabWidget"
                 android:id="@android:id/tabs"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" >
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif">
             </TabWidget>
 
                     <FrameLayout
@@ -35,41 +40,40 @@
                     android:layout_height="match_parent" >
 
                         <LinearLayout
-                            android:id="@+id/tab1"
+                            android:id="@+id/tab11"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:contentDescription="HOME"
-                            android:nextFocusUp="@+id/tab1"
+                            android:contentDescription="@string/Home"
+                            android:nextFocusUp="@+id/tab11"
                             android:nextFocusDown="@+id/app_grid"
                             android:nextFocusRight="@+id/tab2">
 
                             <TextView
-                                android:id="@+id/textView1"
+                                android:id="@+id/textView11"
+
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
                                 android:paddingLeft="10dp"
-                                android:text="TAB 1"
                                 android:visibility="gone" />
                             <requestFocus/>
                         </LinearLayout>
 
                         <LinearLayout
-                            android:id="@+id/tab2"
+                            android:id="@+id/tab22"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:contentDescription="HOME"
-                            android:nextFocusUp="@+id/tab2"
+                            android:contentDescription="@string/Home"
+                            android:nextFocusUp="@+id/tab22"
                             android:nextFocusDown="@+id/tabcontent"
                             android:nextFocusLeft="@+id/tab1"
                             android:nextFocusRight="@+id/tab2">
 
                             <TextView
-                                android:id="@+id/textView2"
+                                android:id="@+id/textView22"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:paddingLeft="1dp"
-                                android:visibility="gone"
-                                android:text="TAB 2"/>
+                                android:visibility="gone"/>
                         </LinearLayout>
 
                      </FrameLayout>
@@ -81,3 +85,5 @@
     </TabHost>
 
 </LinearLayout>
+
+    </FrameLayout>

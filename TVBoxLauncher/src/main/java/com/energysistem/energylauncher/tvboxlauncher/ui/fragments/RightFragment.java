@@ -12,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TabHost;
+import android.widget.TextView;
 
 import com.energysistem.energylauncher.tvboxlauncher.R;
 import com.energysistem.energylauncher.tvboxlauncher.modelo.AppInfo;
@@ -92,40 +93,64 @@ public View onCreateView(LayoutInflater inflater, ViewGroup container, final Bun
        /* vPager = (LinearLayout)findViewById(R.id.tabLL2);
         vPager.setAdapter(tAdapter);*/
 
+        mTabHost = (TabHost) v.findViewById(R.id.tabHost_right);
+        if(mTabHost==null)
+            Log.e("mTabHost","Soy Null");
+        mTabHost.setup();
+
+
+        return v;
+    }
+
+    public void onActivityCreated (Bundle savedInstanceState){
+        super.onActivityCreated(savedInstanceState);
+        //estadoVariables();
+
+
         tAdapter = new TabsAdapter();
 
         preferencesListadoApps = new SaveLoadAppsPreferences(getActivity());
 
         //aBar = getActivity().getActionBar();
 
-
-        mTabHost = (TabHost) v.findViewById(R.id.tabHost);
-        mTabHost.setup();
+//        mTabHost = (TabHost) getActivity().findViewById(R.id.tabHost_right);
+//        if(mTabHost==null)
+//            Log.e("mTabHost","Soy Null");
+//        mTabHost.setup();
 
 
         // *******Tab 1*******
-        TabHost.TabSpec spec1 = mTabHost.newTabSpec("APPS");
-        spec1.setContent(R.id.tab1);
-        spec1.setIndicator(getResources().getText(R.string.tab1));
+        TabHost.TabSpec spec1 = mTabHost.newTabSpec(getActivity().getString(R.string.tab_aplicaciones));
+        spec1.setContent(R.id.tab11);
+
+        View tab1Indicator = LayoutInflater.from(getActivity()).inflate(R.layout.appthemeverde_tab_indicator_holo, mTabHost.getTabWidget(), false);
+        TextView title1 = (TextView) tab1Indicator.findViewById(android.R.id.title); title1.setText(getResources().getText(R.string.tab_aplicaciones));
+        spec1.setIndicator(tab1Indicator);
 
         /*
         TabHost.TabSpec calculatorTab = tabs.newTabSpec("calculator");
         calculatorTab.setContent(R.id.calculator);
         calculatorTab.setIndicator("Calculator");
         tabs.addTab(calculatorTab);*/
+        //
 
         mAppListFragment = new AppListFragment();
-        getFragmentManager().beginTransaction().replace(R.id.tab1,
+        getFragmentManager().beginTransaction().replace(R.id.tab11,
                 mAppListFragment).commit();
 
 
         //********Tab 2*******
-        TabHost.TabSpec spec2 = mTabHost.newTabSpec("BOOKMARKS");
-        spec2.setContent(R.id.tab2);
-        spec2.setIndicator(getResources().getText(R.string.tab2));
+        TabHost.TabSpec spec2 = mTabHost.newTabSpec(getActivity().getString(R.string.tab_bookmarks));
+        spec2.setContent(R.id.tab22);
+
+        View tab2Indicator = LayoutInflater.from(getActivity()).inflate(R.layout.appthemeverde_tab_indicator_holo, mTabHost.getTabWidget(), false);
+        TextView title2 = (TextView) tab2Indicator.findViewById(android.R.id.title); title2.setText(getResources().getText(R.string.tab_bookmarks));
+        spec2.setIndicator(tab2Indicator);
+
+
 
         mMenuBookMarkFragment = new MenuBookMarkFragment();
-        getFragmentManager().beginTransaction().replace(R.id.tab2,
+        getFragmentManager().beginTransaction().replace(R.id.tab22,
                 mMenuBookMarkFragment).commit();
 
 
@@ -148,33 +173,45 @@ public View onCreateView(LayoutInflater inflater, ViewGroup container, final Bun
         menu=true;
 */
         //mTabHost.setOnTabChangedListener(tabChangeListener);
-    mTabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener(){
-        public void onTabChanged(String tabID) {
-            if(tabID.equals("BOOKMARKS")) {
-                mTabHost.setCurrentTab(1);
+        mTabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener(){
+            public void onTabChanged(String tabID) {
+                if(tabID.equals(getActivity().getString(R.string.tab_bookmarks))) {
+                    mTabHost.setCurrentTab(1);
+                }
+                fueraDeBookmarks = true;
             }
-            fueraDeBookmarks = true;
-        }
-    });
+        });
 
-    mTabHost.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
+        mTabHost.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
 
-        @Override
-        public void onViewDetachedFromWindow(View v) {}
+            @Override
+            public void onViewDetachedFromWindow(View v) {
+                Log.e("detached","wt");
+            }
 
-        @Override
-        public void onViewAttachedToWindow(View v) {
-            mTabHost.getViewTreeObserver().removeOnTouchModeChangeListener(mTabHost);
-        }
-    });
-        return v;
-    }
+            @Override
+            public void onViewAttachedToWindow(View v) {
+                mTabHost.getViewTreeObserver().removeOnTouchModeChangeListener(mTabHost);
+            }
+        });
 
-    public void onActivityCreated (Bundle savedInstanceState){
-        super.onActivityCreated(savedInstanceState);
-        //estadoVariables();
+
         mTabHost.setCurrentTab(0);
 
+
+       /* mTabHost.getTabWidget().setRightStripDrawable(R.drawable.appthemeverde_tab_indicator_holo);
+        mTabHost.getTabWidget().setLeftStripDrawable(R.drawable.appthemeverde_tab_indicator_holo);*/
+
+
+
+
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.e("onResume","RightFragment");
     }
 
     public void testFunction(Bundle savedInstanceState){
@@ -228,6 +265,7 @@ public View onCreateView(LayoutInflater inflater, ViewGroup container, final Bun
                         } else {
                            ((LauncherActivity) getActivity()).exitRightFragment();
                             mAppListFragment.clearFocus();
+                            mAppListFragment.desactivaModoCheckBox();
                         }
                         break;
 
@@ -236,6 +274,7 @@ public View onCreateView(LayoutInflater inflater, ViewGroup container, final Bun
                         }
                         else {
                            mTabHost.setCurrentTab(0);
+
                         }
                         break;
 
@@ -410,6 +449,8 @@ public View onCreateView(LayoutInflater inflater, ViewGroup container, final Bun
 
 
     public void setFocus(){
+
+        mTabHost.setCurrentTab(0);
         mAppListFragment.setFocus();
     }
 
@@ -444,11 +485,11 @@ public View onCreateView(LayoutInflater inflater, ViewGroup container, final Bun
         Log.d("Tab 1",String.valueOf(mTabHost.getCurrentTab()));
         mTabHost.setCurrentTab(2);
         Log.d("Tab 2",String.valueOf(mTabHost.getCurrentTab()));
-        mTabHost.setCurrentTabByTag("APPS");
+        mTabHost.setCurrentTabByTag(getActivity().getString(R.string.tab_aplicaciones));
         Log.d("Tab APPS (byTag)",String.valueOf(mTabHost.getCurrentTab()));
-        mTabHost.setCurrentTabByTag("BOOKMARKS");
+        mTabHost.setCurrentTabByTag(getActivity().getString(R.string.tab_bookmarks));
         Log.d("Tab BOOKMARKS (byTag)",String.valueOf(mTabHost.getCurrentTab()));
-        mTabHost.setCurrentTabByTag("SETTINGS");
+        mTabHost.setCurrentTabByTag(getActivity().getString(R.string.tab_settings));
         Log.d("Tab SETTINGS (byTag)",String.valueOf(mTabHost.getCurrentTab()));
         Log.d("Fin Pestañas","VARIABLES-----------------------------------");
         Log.d("Menu", String.valueOf(menu));

@@ -1,50 +1,61 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:background="@color/verdeCLARO"
-            android:layout_height="@dimen/altura_header_panel">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:textSize="@dimen/right_panel_header_text_size"
-                android:layout_marginStart="@dimen/panel_header_margin_start"
-                android:text="@string/settings_panel_title"
-                android:gravity="center_vertical" />
-        </LinearLayout>
-        <FrameLayout
-            android:id="@+id/menu_list_frame"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <ListView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:verticalSpacing="@dimen/menu_list_vertical_spacing"
-                    android:dividerHeight="@dimen/menu_list_divider_height"
-                    android:background="@color/black_grey"
-                    android:id="@+id/menu_list"/>
-            </LinearLayout>
-        </FrameLayout>
-    </LinearLayout>
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <ImageView
-            android:src="@drawable/ic_settings"
-            android:layout_alignParentEnd="true"
-            android:layout_marginTop="@dimen/floating_settings_icon_margin_top"
-            android:layout_marginEnd="@dimen/floating_settings_icon_margin_end"
-            android:layout_width="@dimen/floating_settings_icon_width"
-            android:layout_height="@dimen/floating_settings_icon_width"
-            android:contentDescription="@string/floating_settings_icon_description" />
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:background="@color/verdeCLARO"
+                android:layout_height="@dimen/altura_header_panel">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textSize="@dimen/right_panel_header_text_size"
+                    android:fontFamily="sans-serif"
+                    android:textColor="@color/letra_gris"
+                    android:id="@+id/title_left"
+                    android:layout_marginStart="@dimen/panel_header_margin_start"
+                    android:text="@string/settings_panel_title"
+                    android:gravity="center_vertical" />
+            </LinearLayout>
+            <FrameLayout
+                android:id="@+id/menu_list_frame"
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="fill_parent"
+                    android:background="@color/black_grey">
+                    <ListView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:verticalSpacing="@dimen/menu_list_vertical_spacing"
+                        android:dividerHeight="@dimen/menu_list_divider_height"
+                        android:divider="@null"
+                        android:id="@+id/menu_list"/>
+                </LinearLayout>
+            </FrameLayout>
+        </LinearLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:src="@drawable/ic_settingsbar"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="@dimen/floating_settings_icon_margin_top"
+                android:layout_marginEnd="@dimen/floating_settings_icon_margin_end"
+                android:layout_width="@dimen/floating_settings_icon_width"
+                android:layout_height="@dimen/floating_settings_icon_width"
+                android:contentDescription="@string/floating_settings_icon_description" />
+        </RelativeLayout>
     </RelativeLayout>
-</RelativeLayout>
+
+</FrameLayout>

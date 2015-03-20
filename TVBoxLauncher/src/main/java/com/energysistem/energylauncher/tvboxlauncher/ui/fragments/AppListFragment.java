@@ -29,9 +29,13 @@ import com.energysistem.energylauncher.tvboxlauncher.modelo.SaveLoadAppsPreferen
 import com.energysistem.energylauncher.tvboxlauncher.modelo.WebPageInfo;
 import com.energysistem.energylauncher.tvboxlauncher.ui.LauncherActivity;
 import com.energysistem.energylauncher.tvboxlauncher.ui.adapters.AppAdapter;
+import com.energysistem.energylauncher.tvboxlauncher.util.SortBasedOnName;
 
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -70,7 +74,7 @@ public class AppListFragment extends Fragment
         super.onCreateView(inflater, container, savedInstanceState);
         View v = inflater.inflate(R.layout.fragment_app_list, container, false);
 
-        mListViewApps = (ListView) v.findViewById(R.id.app_grid_list);
+        mListViewApps = (ListView) v.findViewById(R.id.app_grid_list_app);
         mListViewApps.setOnItemClickListener(this);
         mListViewApps.setOnItemLongClickListener(this);
 
@@ -86,11 +90,16 @@ public class AppListFragment extends Fragment
         if (mAppAdapter.getModeCheckBoxSelection()) {
             if (info.checked) {
                 assert (getActivity()) != null;
+                Log.i("Eliminamos app","");
                 ((LauncherActivity) getActivity()).removeShortcutApp(info);
                 info.checked = false;
             } else {
                 assert (getActivity()) != null;
-                ((LauncherActivity) getActivity()).addShortcutApp(info);
+                try {
+                    ((LauncherActivity) getActivity()).addShortcutApp(info);
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                }
                 info.checked = true;
             }
             mAppAdapter.notifyDataSetChanged();
@@ -109,7 +118,11 @@ public class AppListFragment extends Fragment
             info.checked = false;
         } else {
             assert (getActivity()) != null;
-            ((LauncherActivity) getActivity()).addShortcutApp(info);
+            try {
+                ((LauncherActivity) getActivity()).addShortcutApp(info);
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
             info.checked = true;
         }
         mAppAdapter.notifyDataSetChanged();
@@ -131,9 +144,10 @@ public class AppListFragment extends Fragment
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         if (!(activity instanceof Callbacks)) {
-            throw new IllegalArgumentException("Parent activity must implement Callbacks.");
+            throw new IllegalArgumentException(activity.getString(R.string.parent_callback_error));
         }
         mCallbacks = (Callbacks) activity;
+
     }
 
     @Override
@@ -152,8 +166,15 @@ public class AppListFragment extends Fragment
         //Take out the favorites
         //appInfos = extractFavorites(appInfos);
 
+       Log.e("NUEVA LISTA APPS",appInfos.toString());
+
+
         mAppInfosList = appInfos;
+
         mAppAdapter = new AppAdapter(getActivity(), appInfos);
+
+
+
         mListViewApps.setAdapter(mAppAdapter);
 
         //Creamos el listener para el checkbox de dentro del item
@@ -161,7 +182,6 @@ public class AppListFragment extends Fragment
             @Override
             public void onClick(View v) {
 
-                Log.i("Onclicklistener", "OncheckboxClickListener posicion: " + v.getId());
                 //La posicion está en el id del view
                 AppInfo info = mAppInfosList.get(v.getId());
 
@@ -177,14 +197,19 @@ public class AppListFragment extends Fragment
                 }
             }
         });
-
-        //((LauncherActivity) getActivity()).reloadDesktop();
+        Collections.sort(appInfos, new SortBasedOnName());
+        ((LauncherActivity) getActivity()).reloadDesktop();
 
         assert (getActivity()) != null;
         //((LauncherActivity)getActivity()).actualizaArrayAppsPreferencias();
 
-        Log.e("HUEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE?-.---------","HEMOS LLEGADOOOOOOOOOOO!");
-        //cargaListaApps();
+        try {
+            cargaListaApps();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+
     }
 
 
@@ -252,17 +277,28 @@ public class AppListFragment extends Fragment
             mAppAdapter.setSelectedItem(mListViewApps.getSelectedItemPosition());
             updateView();
             mAppAdapter.notifyDataSetChanged();
+            //asdasdas
         }
     }
 
     public void desactivaModoCheckBox() {
-        if (mAppAdapter.getModeCheckBoxSelection()) {
-            Log.d(TAG, "Desactivamos modo checkbox");
-            mAppAdapter.setSelectedCheckBoxMode(false);
-            mAppAdapter.setSelectedItem(mListViewApps.getSelectedItemPosition());
-            updateView();
-            mAppAdapter.notifyDataSetChanged();
-        }
+
+            if(mAppAdapter!=null) {
+                if (mAppAdapter.getModeCheckBoxSelection()) {
+                    Log.d(TAG, "Desactivamos modo checkbox");
+                    mAppAdapter.setSelectedCheckBoxMode(false);
+                    mAppAdapter.setSelectedItem(mListViewApps.getSelectedItemPosition());
+                    updateView();
+                    mAppAdapter.notifyDataSetChanged();
+                }
+            }
+
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        desactivaModoCheckBox();
     }
 
     public void setFocus(){
@@ -274,7 +310,10 @@ public class AppListFragment extends Fragment
     }
 
     public boolean appgetModeCheckBoxSelec(){
-      return   mAppAdapter.getModeCheckBoxSelection();
+        if(mAppAdapter==null)
+            return false;
+        else
+            return   mAppAdapter.getModeCheckBoxSelection();
     }
 
     /**
@@ -289,7 +328,6 @@ public class AppListFragment extends Fragment
         View viewOld = mListViewApps.getChildAt(mAppAdapter.getLastSelectedItem()- mListViewApps.getFirstVisiblePosition());
         if(viewOld!=null) {
             CheckBox frameOld = (CheckBox) viewOld.findViewById(R.id.frame_checkbox);
-            Log.e("-------------updateView()", "-----------listItem anterior---");
             frameOld.setChecked(mAppInfosList.get(mAppAdapter.getLastSelectedItem()).checked);
 
             //En caso que dejemos el modo seleccion colocamos el check como estaba
@@ -297,10 +335,10 @@ public class AppListFragment extends Fragment
                 View v = mListViewApps.getChildAt(mListViewApps.getSelectedItemPosition() - mListViewApps.getFirstVisiblePosition());
                 if (v != null) {
                     CheckBox frame = (CheckBox) v.findViewById(R.id.frame_checkbox);
-                    Log.e("-------------updateView()", "----------el check como estaba---");
+                    //Log.e("-------------updateView()", "----------el check como estaba---");
                     frame.setChecked(mAppInfosList.get(mAppAdapter.getSelectedItem()).checked);
                 } else {
-                    Log.d("entramos en view del fragment es NULL", "NULL");
+                    //Log.d("entramos en view del fragment es NULL", "NULL");
                 }
                 return;
             }
@@ -312,7 +350,7 @@ public class AppListFragment extends Fragment
                 return;
 
             CheckBox frame = (CheckBox) v.findViewById(R.id.frame_checkbox);
-            Log.e("-------------updateView()", "-----------ChekBox ACTUAL---");
+           // Log.e("-------------updateView()", "-----------ChekBox ACTUAL---");
             frame.setChecked(false);
         }
     }
@@ -339,10 +377,7 @@ public class AppListFragment extends Fragment
     }
 
 
-
-
-
-           public void cargaListaApps() {
+           public void cargaListaApps() throws MalformedURLException {
 
              //Limpiamos los shortcuts primero
 
@@ -352,14 +387,16 @@ public class AppListFragment extends Fragment
 
              ArrayList<WebPageInfo> liWeb = ((LauncherActivity) getActivity()).listaWebsDB;
 
-
+               // Log.i("Tamaño Lista app favoritas", mAppInfosList.size()+"");
              for (int i = 0; i< listaApps.size(); i++) {
                  String nombreApp = listaApps.get(i);
                  for (int j = 0; j < mAppInfosList.size(); j++) {
 
                      AppInfo appInfoTemp =  mAppInfosList.get(j);
                      if (SaveLoadAppsPreferences.ComparaNombreFavInfo(appInfoTemp.getPackageName(), nombreApp)){
+                         //Log.e("Entramos" +appInfoTemp.getPackageName(), nombreApp );
                          assert (getActivity()) != null;
+
                          ((LauncherActivity)getActivity()).addShortcutApp(appInfoTemp);
                          appInfoTemp.checked = true;
                          break;

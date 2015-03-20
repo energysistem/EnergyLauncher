@@ -1,39 +1,38 @@
 
 
-        package com.energysistem.energylauncher.tvboxlauncher.ui.views;
+package com.energysistem.energylauncher.tvboxlauncher.ui.views;
 
-        import android.animation.Animator;
-        import android.animation.AnimatorListenerAdapter;
-        import android.animation.ObjectAnimator;
-        import android.animation.TypeEvaluator;
-        import android.animation.ValueAnimator;
-        import android.content.Context;
-        import android.graphics.Bitmap;
-        import android.graphics.Canvas;
-        import android.graphics.Color;
-        import android.graphics.Paint;
-        import android.graphics.Rect;
-        import android.graphics.drawable.BitmapDrawable;
-        import android.inputmethodservice.KeyboardView;
-        import android.os.SystemClock;
-        import android.util.AttributeSet;
-        import android.util.DisplayMetrics;
-        import android.util.Log;
-        import android.view.KeyEvent;
-        import android.view.MotionEvent;
-        import android.view.View;
-        import android.view.ViewTreeObserver;
-        import android.widget.AbsListView;
-        import android.widget.AdapterView;
-        import android.widget.BaseAdapter;
-        import android.widget.ListView;
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ObjectAnimator;
+import android.animation.TypeEvaluator;
+import android.animation.ValueAnimator;
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Rect;
+import android.graphics.drawable.BitmapDrawable;
+import android.inputmethodservice.KeyboardView;
+import android.os.SystemClock;
+import android.util.AttributeSet;
+import android.util.DisplayMetrics;
+import android.util.Log;
+import android.view.KeyEvent;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewTreeObserver;
+import android.widget.AbsListView;
+import android.widget.AdapterView;
+import android.widget.BaseAdapter;
+import android.widget.ListView;
 
-        import com.energysistem.energylauncher.tvboxlauncher.R;
-        import com.energysistem.energylauncher.tvboxlauncher.modelo.DraggableItemApp;
-        import com.energysistem.energylauncher.tvboxlauncher.ui.adapters.StableArrayAdapter;
+import com.energysistem.energylauncher.tvboxlauncher.modelo.DraggableItemApp;
+import com.energysistem.energylauncher.tvboxlauncher.ui.adapters.StableArrayAdapter;
 
-        import java.util.ArrayList;
-        import java.util.List;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The dynamic listview is an extension of listview that supports cell dragging
@@ -394,7 +393,7 @@ public class DynamicDraggingListView extends ListView {
         Paint paint = new Paint();
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeWidth(LINE_THICKNESS);
-        paint.setColor(getResources().getColor(R.color.verdeCLARO));
+        paint.setColor(Color.BLACK);
 
         can.drawBitmap(bitmap, 0, 0, null);
         can.drawRect(rect, paint);
@@ -514,6 +513,7 @@ public class DynamicDraggingListView extends ListView {
 
                 mLastEventY = (int) event.getY(pointerIndex);
                 int deltaY = mLastEventY - mDownY;
+                Log.e("deltaY onTouch",deltaY+"");
 
                 if (mCellIsMobile) {
 
@@ -548,7 +548,7 @@ public class DynamicDraggingListView extends ListView {
                  * ends and the hover cell is animated to its corresponding position
                  * in the listview. */
                 pointerIndex = (event.getAction() & MotionEvent.ACTION_POINTER_INDEX_MASK) >>
-                        MotionEvent.ACTION_POINTER_INDEX_SHIFT;
+                               MotionEvent.ACTION_POINTER_INDEX_SHIFT;
                 final int pointerId = event.getPointerId(pointerIndex);
                 if (pointerId == mActivePointerId) {
                     touchEventsEnded();
@@ -580,11 +580,13 @@ public class DynamicDraggingListView extends ListView {
         View aboveView = getViewForID(mAboveItemId);
 
         if (mUltimaDireccion == mDireccionMotionEvent.UP){
-            deltaYTotal = aboveView.getTop() -1;
+            if(aboveView!=null)
+                deltaYTotal = aboveView.getTop() -1;
         }
         else
         {
-            deltaYTotal =  belowView.getTop() +1;
+            if(belowView!=null)
+                deltaYTotal =  belowView.getTop() +1;
         }
 
         boolean isBelow = (belowView != null) && (deltaYTotal > belowView.getTop());
@@ -793,7 +795,7 @@ public class DynamicDraggingListView extends ListView {
 
     public void setAppsList(List<DraggableItemApp> mlistaApps) {
         mListaApps = mlistaApps;
-       // Log.d("----setAppsList(Dynamic Dragging), tamaño nueva Lista Draggable: ",Integer.toString(listaApps.size()));
+        // Log.d("----setAppsList(Dynamic Dragging), tamaño nueva Lista Draggable: ",Integer.toString(listaApps.size()));
     }
 
     private int mPreviousFirstVisibleItem = -1;

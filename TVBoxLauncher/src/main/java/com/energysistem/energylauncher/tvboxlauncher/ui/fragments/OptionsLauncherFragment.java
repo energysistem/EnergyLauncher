@@ -7,6 +7,7 @@ import android.os.Build;
 import android.os.Bundle;
 
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -69,6 +70,7 @@ public class OptionsLauncherFragment extends Fragment {
 
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            Log.e("PGCMOLA ",position + "");
             selectItem(position);
         }
 
@@ -84,6 +86,8 @@ public class OptionsLauncherFragment extends Fragment {
                     break;
                 case 1:
                     ((LauncherActivity)getActivity()).ShowReordenaDesktopAppsFragment();
+
+
                     break;
                 default:
                     ((LauncherActivity)getActivity()).onBackPressed();

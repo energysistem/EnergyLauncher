@@ -9,6 +9,7 @@ import com.energysistem.energylauncher.tvboxlauncher.ui.LauncherActivity;
 import com.energysistem.energylauncher.tvboxlauncher.ui.adapters.ShortcutAdapter;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -24,6 +25,14 @@ import static android.app.PendingIntent.getActivity;
 
 
 public class SaveLoadAppsPreferences {
+    /*
+     * LISTA DE APLICACIONES INICIALES (En su orden, no meter aquí los bookmarks, solo app)
+     */
+    private static final String[] LISTA_APP_INICIO = {"com.amlogic.miracast","com.amlogic.PicturePlayer", "com.farcore.videoplayer",
+            "org.geometerplus.zlibrary.ui.android",
+            "com.facebook.katana", "com.twitter.android", "com.android.vending",
+            "com.google.android.youtube.googletv", "com.android.browser", "com.fb.FileBrower"};
+
 
     private static final String TAG = "SaveLoadPreferencias";
     private static final String FAVS_LIST_SIZE = "FavsListSize";
@@ -53,7 +62,23 @@ public class SaveLoadAppsPreferences {
     public SaveLoadAppsPreferences(Context context) {
         this.mContext = context;
         mSharedPrefs = context.getSharedPreferences(PREFS_LIST_APPS, 0);
+
         listaFavoritos = getListaFavsString();
+
+
+        if(mSharedPrefs.getBoolean("first_load",true)){
+            Log.e("SaveLoadAppsPreferences","First Load");
+
+            for(String app: LISTA_APP_INICIO) {
+                insertItemEnd(app);
+            }
+
+            SharedPreferences.Editor editor = mSharedPrefs.edit();
+            editor.putBoolean("first_load",false);
+            editor.commit();
+            listaFavoritos = getListaFavsString();
+        }
+
         listaWebF = getListaWebF();
 
         datasource = new BookmarkDAO(context);
@@ -152,16 +177,18 @@ public class SaveLoadAppsPreferences {
     }
 
     public boolean removeFavInfoByName(String nombre){
-
+        Log.e("Lista INICIAL",listaFavoritos.toString());
+        Log.i("Eliminamos AppInfo (Tamaño lista fav: "+listaFavoritos.size(),nombre);
         if (listaFavoritos.contains(nombre)) {
             //Pasando de gestionar los indices de la lista de las preferencias - jajajajaja
-
+            Log.i("Encontrada, borramos","");
             //Está la app. Borramos la lista entera y la volvemos a crear.
             removeAppsArray();
 
             //La qutamos de la lista global
             listaFavoritos.remove(nombre);
-            //Volvemos a alamacenar la lista
+            Log.e("Despues",listaFavoritos.toString());
+            //Volvemos a alamacenar la listaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
             guardaFavArray(listaFavoritos);
             return true;
         }
@@ -193,12 +220,13 @@ public class SaveLoadAppsPreferences {
             String appS = mSharedPrefs.getString(HEADLISTFAVS + i, "");
             listaStrings.add(appS);
         }
+        Log.e("getListaFavsString",listaStrings.toString());
         return listaStrings;
 
     }
 
 
-    private void insertItemEnd(String appName) {
+    public void insertItemEnd(String appName) {
         SharedPreferences.Editor editor = mSharedPrefs.edit();
 
         int size = mSharedPrefs.getInt(FAVS_LIST_SIZE, 0);
@@ -260,25 +288,7 @@ public class SaveLoadAppsPreferences {
      */
     int pos;
     public void addWebPageInfo(WebPageInfo info) {
-        if(listaWebF==null){ new ArrayList<WebPageInfo>(); pos=0;}else{pos=listaWebF.size();}
-        listaWebF.add(pos,info);
 
-        WebPageItem item;
-        item = new WebPageItem(info.getTitle(), info.getPageUrl().toString());
-        String itemString = getStringWebPagePreferencias(item);
-        listaFavoritos.add(getNombreFav(info));
-
-        SharedPreferences.Editor editor = mSharedPrefs.edit();
-
-        int size = mSharedPrefs.getInt(FAVS_LIST_SIZE, 0);
-        //El ultimo indice es el tamaño nuevo menos 1
-        editor.putString(HEADLISTFAVS + (size), itemString);
-        size = size + 1;
-        editor.putInt(FAVS_LIST_SIZE, size);
-
-        editor.commit();
-
-        Log.v(TAG, "Añadida a las preferencias la pagina: " + info.getTitle());
 
     }
 
@@ -290,16 +300,7 @@ public class SaveLoadAppsPreferences {
 
 
     private void removeWebPagesArray() {
-        SharedPreferences.Editor editor = mSharedPrefs.edit();
 
-        int size = mSharedPrefs.getInt(PREFS_LIST_APPS, 0);
-
-        for (int i = 0; i < size; i++) {
-            editor.remove(HEADLISTFAVS + i);
-        }
-
-        editor.putInt(PREFS_LIST_APPS, 0);
-        editor.commit();
     }
 
 
@@ -411,14 +412,19 @@ public class SaveLoadAppsPreferences {
 
     public void addInfoDesktop (ShortcutInfo info){
         if(listaDesktop==null){ listaDesktop = new ShortcutAdapter(mContext);}
-        listaDesktop.addItem(info);
+        try {
+            listaDesktop.addItem(info, mContext);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
         listaDesktop.notifyDataSetChanged();
     }
 
     public boolean addAppInfo(AppInfo app) {
         String nombre = getNombreFav(app);
-
+        Log.i("Tamaño ListaFavoritos",listaFavoritos.size()+"");
         if (listaFavoritos.contains(nombre)) {//
+            Log.e("Ya está metida","");
             //Ya está metida
             return false;
         } else {

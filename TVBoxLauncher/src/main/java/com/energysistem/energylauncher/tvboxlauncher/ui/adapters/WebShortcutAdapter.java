@@ -2,7 +2,11 @@ package com.energysistem.energylauncher.tvboxlauncher.ui.adapters;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +19,11 @@ import android.widget.TextView;
 
 import com.energysistem.energylauncher.tvboxlauncher.R;
 import com.energysistem.energylauncher.tvboxlauncher.modelo.WebPageInfo;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 
 /**
@@ -28,6 +36,7 @@ public class WebShortcutAdapter extends ArrayAdapter<WebPageInfo>{
     private Resources mResources;
     private View.OnClickListener onCkeckBoxClickListener;
     private boolean checkBoxSelected;
+    private Context mContext;
 
     /*
     private final Context context;
@@ -39,6 +48,7 @@ public class WebShortcutAdapter extends ArrayAdapter<WebPageInfo>{
         super(context, 0, objects);
        /* this.list = new ArrayList<WebPageInfo>();
         this.context = context;*/
+        mContext=context;
         this.mLayoutInflater = LayoutInflater.from(context);
         mResources = context.getResources();
     }
@@ -84,6 +94,10 @@ public class WebShortcutAdapter extends ArrayAdapter<WebPageInfo>{
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
 
+        final WebPageInfo info = getItem(position);
+
+
+
         View view = convertView;
         final ViewHolder holder;
         if (view == null) {
@@ -102,10 +116,12 @@ public class WebShortcutAdapter extends ArrayAdapter<WebPageInfo>{
             holder = (ViewHolder) view.getTag();
         }
 
-        final WebPageInfo info = getItem(position);
 
-        if (info.getBitmap() != null)
+
+
+        if (info.getBitmap() != null) {
             holder.image.setImageDrawable(new BitmapDrawable(mResources, info.getBitmap()));
+        }
         holder.title.setText(info.getTitle());
         holder.url.setText(info.getPageUrl().toString());
 
@@ -123,9 +139,9 @@ public class WebShortcutAdapter extends ArrayAdapter<WebPageInfo>{
         holder.checkBox.setChecked(info.checked);
 
 
-        holder.checkBox.setOnClickListener(this.onCkeckBoxClickListener);
+        //holder.checkBox.setOnClickListener(this.onCkeckBoxClickListener);
 
-        holder.checkBox.setOnClickListener(new View.OnClickListener() {
+        /*holder.checkBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.i("onclickListener", "framelayout " + position);
@@ -134,11 +150,84 @@ public class WebShortcutAdapter extends ArrayAdapter<WebPageInfo>{
                v.setBackgroundColor(getFrameCheckBoxView(info.checked));
 
                 v.setId(position);
-                onCkeckBoxClickListener.onClick(v);
+                //onCkeckBoxClickListener.onClick(v);
             }
-        });
+        });*/
+       final Target mTarget = new Target() {
+
+            @Override
+            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                Bitmap combi = combineImages(bitmap, BitmapFactory.decodeResource(mResources, R.drawable.browser));
+                holder.image.setImageBitmap(combi);
+                notifyDataSetChanged();
+            }
+
+            @Override
+            public void onBitmapFailed(final Drawable errorDrawable) {
+                Log.d("TAG", "FAILED");
+            }
+
+            @Override
+            public void onPrepareLoad(final Drawable placeHolderDrawable) {
+                holder.image.setImageResource(R.drawable.browser);
+            }
+        };
+        holder.image.setTag(mTarget);
+
+        if (((WebPageInfo) info).getPageUrl().toString().toLowerCase().contains("energysistem.com")) {
+            Log.e("watdafka", "entramos");
+            holder.image.setImageResource(R.drawable.energyweb);
+        } else {
+            URL url = null;
+            try {
+                url = new URL("http://www.google.com/s2/favicons?domain="+((WebPageInfo) info).getPageUrl());
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
+
+
+
+            Picasso.with(getContext()).load(url.toString()).into(mTarget);
+        }
 
         return view;
+    }
+
+    public Bitmap combineImages(Bitmap c, Bitmap browserBmp) { // can add a 3rd parameter 'String loc' if you want to save the new image - left some code to do that at the bottom
+        Bitmap cs = null;
+
+        int width, height = 0;
+
+       /* if(c.getWidth() > browserBmp.getWidth()) {
+            width = c.getWidth() + browserBmp.getWidth();
+            height = c.getHeight();
+        } else {
+            width = browserBmp.getWidth() + browserBmp.getWidth();
+            height = c.getHeight();
+        }*/
+
+        cs = Bitmap.createBitmap(browserBmp.getWidth(), browserBmp.getHeight(), Bitmap.Config.ARGB_8888);
+
+        Canvas comboImage = new Canvas(cs);
+        Bitmap favicon = Bitmap.createScaledBitmap(c,browserBmp.getWidth()/2, browserBmp.getHeight()/2, true);
+
+
+
+        comboImage.drawBitmap(browserBmp, 0f, 0f, null);
+        comboImage.drawBitmap(favicon, browserBmp.getWidth()/2, browserBmp.getHeight()/2, null);
+
+        // this is an extra bit I added, just incase you want to save the new image somewhere and then return the location
+    /*String tmpImg = String.valueOf(System.currentTimeMillis()) + ".png";
+
+    OutputStream os = null;
+    try {
+      os = new FileOutputStream(loc + tmpImg);
+      cs.compress(CompressFormat.PNG, 100, os);
+    } catch(IOException e) {
+      Log.e("combineImages", "problem combining images", e);
+    }*/
+        favicon.recycle();
+        return cs;
     }
 
 
@@ -179,6 +268,7 @@ public class WebShortcutAdapter extends ArrayAdapter<WebPageInfo>{
     }
 
     public void setOnCheckBoxClickListener(final View.OnClickListener onClickListener) {
+
         this.onCkeckBoxClickListener = onClickListener;
     }
 

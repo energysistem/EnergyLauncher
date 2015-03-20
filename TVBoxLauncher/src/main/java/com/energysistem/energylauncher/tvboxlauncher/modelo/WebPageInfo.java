@@ -41,7 +41,16 @@ public class WebPageInfo extends ShortcutInfo {
 
     @Override
     public boolean equals(Object o) {
-        return this.getTitle().equals(((WebPageInfo) o).getTitle());
+        if(!(o instanceof WebPageInfo))
+            return false;
+        else
+        {
+            //Log.e("Nombre:"+this.getName(),((WebPageInfo) o).getName());
+
+            //Compara ignorando mayus/minus
+            return this.getName().trim().equalsIgnoreCase(((WebPageInfo) o).getName().trim());
+        }
+
     }
 
     @Override
@@ -69,7 +78,13 @@ public class WebPageInfo extends ShortcutInfo {
     @Override
     public Intent getIntent() {
         Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setData(pageUrl);
+
+        String url = pageUrl.toString();
+        if (!url.startsWith("http://") && !url.startsWith("https://"))
+            url = "http://" + url;
+
+        Log.e("GetIntent",url);
+        intent.setData(Uri.parse(url));
         return intent;
     }
 
@@ -79,7 +94,7 @@ public class WebPageInfo extends ShortcutInfo {
 
 
     public String getName() {
-        return String.valueOf(pageUrl);
+        return String.valueOf(getTitle());
     }
 
     public int getId() {

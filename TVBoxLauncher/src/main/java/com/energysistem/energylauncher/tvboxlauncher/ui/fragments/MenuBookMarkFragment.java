@@ -1,11 +1,16 @@
 package com.energysistem.energylauncher.tvboxlauncher.ui.fragments;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.LoaderManager;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.Loader;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Patterns;
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +22,7 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.energysistem.energylauncher.tvboxlauncher.R;
 import com.energysistem.energylauncher.tvboxlauncher.database.BookmarkDAO;
@@ -58,7 +64,7 @@ public class MenuBookMarkFragment  extends Fragment
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, final Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_menu_bookmark, container, false);
 
@@ -96,33 +102,38 @@ public class MenuBookMarkFragment  extends Fragment
                         mTxtUri.requestFocus(); //Ponemos el marcador donde debe
                         mTxtUri.setError(getActivity().getString(R.string.url_vacia));
                     }
+                    else if (!Patterns.WEB_URL.matcher(mTxtUri.getText().toString()).matches()) {
+                        mTxtUri.requestFocus(); //Ponemos el marcador donde debe
+                        mTxtUri.setError(getActivity().getString(R.string.url_not_valid_error));
+                    }
                     else {
                         info = new WebPageInfo(((LauncherActivity) getActivity()).getlistaWeb().size(),mTxtUri.getText().toString());
                         info.setTitle(mTxtName.getText().toString());
+                            //((LauncherActivity) getActivity()).addShortcutApp(info);
+                            if (info != null) {
+                                // if(mListWebPage!=null){Log.d("mListWebPage", "NO NULL");}else{Log.d("mListWebPage", "NULLACO");}
+                                if (mListWebPage.contains((WebPageInfo) info)) {
+                                    mTxtName.requestFocus(); //Ponemos el marcador donde debe
+                                    mTxtName.setError(getActivity().getString(R.string.bookmark_duplicado));
+                                } else {
+                                    mListWebPage.add(mListWebPage.size(), info);
+                                    ((LauncherActivity) getActivity()).setlistaWeb(mListWebPage);
+                                    //guardamos en base de datos, por defecto fav false
+                                    datasource.open();
+                                    datasource.createBookmark(info);
+                                    datasource.close();
+                                    mTxtName.setText("");
+                                    mTxtUri.setText("");
+                                    //mListWebPage.add(info);
+                                }
 
-                        //((LauncherActivity) getActivity()).addShortcutApp(info);
-                        if(info!=null){
-                           // if(mListWebPage!=null){Log.d("mListWebPage", "NO NULL");}else{Log.d("mListWebPage", "NULLACO");}
-                            if(mListWebPage.contains((WebPageInfo)info)) {
-                                mTxtName.requestFocus(); //Ponemos el marcador donde debe
-                                mTxtName.setError(getActivity().getString(R.string.bookmark_duplicado));
                             }
-                            else {
-                                mListWebPage.add(mListWebPage.size(), info);
-                                ((LauncherActivity) getActivity()).setlistaWeb(mListWebPage);
-                                //guardamos en base de datos, por defecto fav false
-                                datasource.open();
-                                datasource.createBookmark(info);
-                                datasource.close();
-                                //mListWebPage.add(info);
-                            }
-    
-                            }
-                        mAdapter.notifyDataSetChanged();
-                    }
+                            mAdapter.notifyDataSetChanged();
+                            mlistViewWebshorts.requestFocus();
+                            mAdapter.setSelectedItem(mAdapter.getCount()-1);
+                        }
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
-                    //TODO
                 }
 
                 InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(
@@ -164,7 +175,7 @@ public class MenuBookMarkFragment  extends Fragment
         super.onActivityCreated(savedInstanceState);
 
         if (savedInstanceState == null) {
-            getLoaderManager().restartLoader(0, null, this);
+            //getLoaderManager().restartLoader(0, null, this);
         }
         setFocus();
     }
@@ -201,6 +212,8 @@ public class MenuBookMarkFragment  extends Fragment
 
         //Colocamos el listItem anterior como estaba
         View viewOld = mlistViewWebshorts.getChildAt(mAdapter.getLastSelectedItem()- mlistViewWebshorts.getFirstVisiblePosition());
+        if(viewOld==null)
+            return;
         CheckBox frameOld = (CheckBox) viewOld.findViewById(R.id.frame_checkboxWeb);
         Log.e("-------------updateView()", "-----------listItem anterior---");
 
@@ -215,7 +228,10 @@ public class MenuBookMarkFragment  extends Fragment
 
         //En caso que dejemos el modo seleccion colocamos el check como estaba
         if (!mAdapter.getModeCheckBoxSelection()){
+
             View v = mlistViewWebshorts.getChildAt(mlistViewWebshorts.getSelectedItemPosition() - mlistViewWebshorts.getFirstVisiblePosition());
+            if(v==null)
+                return;
             CheckBox frame = (CheckBox) v.findViewById(R.id.frame_checkboxWeb);
             Log.e("-------------updateView()", "----------el check como estaba---");
             frame.setChecked(mListWebPage.get(mAdapter.getSelectedItem()).checked);
@@ -273,16 +289,24 @@ public class MenuBookMarkFragment  extends Fragment
                 info.setFav(1);
                 info.setPosi(((LauncherActivity) getActivity()).getGridDesktop().getCount()+1);
                 datasource.updateBookmark(info);
-                ((LauncherActivity) getActivity()).addShortcutApp(info);
+                try {
+                    ((LauncherActivity) getActivity()).addShortcutApp(info);
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                }
             }
             mAdapter.notifyDataSetChanged();
             datasource.close();
         } else {
-            startActivity(info.getIntent());
+            openAlert(info, position);
+            //getActivity().startActivity(info.getIntent());
         }
 
 
     }
+
+
+
 
     @Override
     public Loader<List<WebPageInfo>> onCreateLoader(int id, Bundle bundle) {
@@ -316,7 +340,11 @@ public class MenuBookMarkFragment  extends Fragment
                     Log.e("Entramos fav = 1","onLoadFinished");
 
 
-                    ((LauncherActivity) getActivity()).addShortcutApp(info);
+                    try {
+                        ((LauncherActivity) getActivity()).addShortcutApp(info);
+                    } catch (MalformedURLException e) {
+                        e.printStackTrace();
+                    }
 
                 }
                 else
@@ -336,6 +364,39 @@ public class MenuBookMarkFragment  extends Fragment
         assert (getActivity()) != null;
 
 
+    }
+
+    private void openAlert(final WebPageInfo info, final int position) {
+        ContextThemeWrapper themedContext = new ContextThemeWrapper( getActivity(), android.R.style.Theme_Holo_Light );
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(themedContext);
+
+        alertDialogBuilder.setTitle(info.getTitle());
+        // set positive button: Yes message
+        alertDialogBuilder.setPositiveButton(themedContext.getString(R.string.bookmark_button_delete),new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog,int id) {
+                mListWebPage.remove(position);
+
+                datasource.open();
+                datasource.deleteBookmark(info);
+                datasource.close();
+                ((LauncherActivity) getActivity()).removeShortcutApp(info);
+                mAdapter.notifyDataSetChanged();
+
+            }
+        });
+        // set negative button: No message
+        alertDialogBuilder.setNegativeButton(themedContext.getString(R.string.bookmark_button_go),new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog,int id) {
+                getActivity().startActivity(info.getIntent());
+                //
+
+
+            }
+        });
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        // show alert
+        alertDialog.show();
     }
 
 
