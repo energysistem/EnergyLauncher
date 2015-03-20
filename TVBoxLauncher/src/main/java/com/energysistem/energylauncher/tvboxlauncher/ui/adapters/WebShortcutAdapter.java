@@ -139,9 +139,9 @@ public class WebShortcutAdapter extends ArrayAdapter<WebPageInfo>{
         holder.checkBox.setChecked(info.checked);
 
 
-        holder.checkBox.setOnClickListener(this.onCkeckBoxClickListener);
+        //holder.checkBox.setOnClickListener(this.onCkeckBoxClickListener);
 
-        holder.checkBox.setOnClickListener(new View.OnClickListener() {
+        /*holder.checkBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.i("onclickListener", "framelayout " + position);
@@ -150,9 +150,9 @@ public class WebShortcutAdapter extends ArrayAdapter<WebPageInfo>{
                v.setBackgroundColor(getFrameCheckBoxView(info.checked));
 
                 v.setId(position);
-                onCkeckBoxClickListener.onClick(v);
+                //onCkeckBoxClickListener.onClick(v);
             }
-        });
+        });*/
        final Target mTarget = new Target() {
 
             @Override
@@ -268,6 +268,7 @@ public class WebShortcutAdapter extends ArrayAdapter<WebPageInfo>{
     }
 
     public void setOnCheckBoxClickListener(final View.OnClickListener onClickListener) {
+
         this.onCkeckBoxClickListener = onClickListener;
     }
 

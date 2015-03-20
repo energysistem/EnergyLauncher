@@ -78,7 +78,7 @@ public class AppAdapter extends ArrayAdapter<AppInfo> {
         holder.checkBox.setChecked(info.checked);
 
 
-        holder.checkBox.setOnClickListener(this.onCkeckBoxClickListener);
+       /* holder.checkBox.setOnClickListener(this.onCkeckBoxClickListener);
 
         holder.checkBox.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,7 +90,7 @@ public class AppAdapter extends ArrayAdapter<AppInfo> {
                 v.setId(position);
                 onCkeckBoxClickListener.onClick(v);
             }
-        });
+        });*/
 
         return view;
     }

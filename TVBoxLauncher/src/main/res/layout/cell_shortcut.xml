@@ -44,7 +44,7 @@
         android:fontFamily="sans-serif-light"
         android:textStyle="bold"
         android:textColor="@color/text_grid_selector"
-        android:layout_alignBottom="@+id/backgroundCell"
+        android:layout_alignBottom="@id/backgroundCell"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="@dimen/margin_bottom_text_cell"
         android:textAlignment="center" />
