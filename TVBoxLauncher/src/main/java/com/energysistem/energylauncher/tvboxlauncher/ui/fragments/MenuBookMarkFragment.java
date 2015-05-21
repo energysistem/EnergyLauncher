@@ -62,7 +62,6 @@ public class MenuBookMarkFragment  extends Fragment
     private BookmarkDAO datasource;
 
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, final Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
@@ -86,8 +85,6 @@ public class MenuBookMarkFragment  extends Fragment
         datasource = new BookmarkDAO(getActivity());
 
         mListWebPage = ((LauncherActivity) getActivity()).listaWebsDB;
-
-
 
 
         mBtnSave.setOnClickListener(new View.OnClickListener() {
@@ -215,7 +212,7 @@ public class MenuBookMarkFragment  extends Fragment
         if(viewOld==null)
             return;
         CheckBox frameOld = (CheckBox) viewOld.findViewById(R.id.frame_checkboxWeb);
-        Log.e("-------------updateView()", "-----------listItem anterior---");
+        Log.e("updateView()", "-----------listItem anterior---");
 
         if(mListWebPage.get(mAdapter.getLastSelectedItem()).checked){Log.e("IF 1", "----------TRUE---");}else{Log.e("IF 1", "----------FALSE---");}
 
@@ -233,7 +230,7 @@ public class MenuBookMarkFragment  extends Fragment
             if(v==null)
                 return;
             CheckBox frame = (CheckBox) v.findViewById(R.id.frame_checkboxWeb);
-            Log.e("-------------updateView()", "----------el check como estaba---");
+            Log.e("updateView()", "----------el check como estaba---");
             frame.setChecked(mListWebPage.get(mAdapter.getSelectedItem()).checked);
             return;
         }
@@ -245,7 +242,7 @@ public class MenuBookMarkFragment  extends Fragment
             return;
 
         CheckBox frame = (CheckBox) v.findViewById(R.id.frame_checkboxWeb);
-        Log.e("-------------updateView()", "-----------ChekBox ACTUAL---");
+        Log.e("-updateView()", "-----------ChekBox ACTUAL---");
         frame.setChecked(false);
 
     }
@@ -269,7 +266,7 @@ public class MenuBookMarkFragment  extends Fragment
     @Override
     public void onItemClick(AdapterView adapter, View v, int position, long arg) {
           final WebPageInfo info = mAdapter.getItem(position);
-        Log.e("Numero elementos en grid", ((LauncherActivity) getActivity()).getGridDesktop().getCount() +"");
+        Log.e("Numero elementos", ((LauncherActivity) getActivity()).getGridDesktop().getCount() +"");
         if (mAdapter.getModeCheckBoxSelection()) {
             datasource.open();
             if (info.checked) {

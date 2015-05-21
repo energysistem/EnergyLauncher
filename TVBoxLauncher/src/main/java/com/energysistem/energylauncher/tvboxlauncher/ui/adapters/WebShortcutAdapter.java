@@ -185,8 +185,6 @@ public class WebShortcutAdapter extends ArrayAdapter<WebPageInfo>{
                 e.printStackTrace();
             }
 
-
-
             Picasso.with(getContext()).load(url.toString()).into(mTarget);
         }
 

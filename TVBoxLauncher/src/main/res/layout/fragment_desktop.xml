@@ -10,7 +10,7 @@
 
         <LinearLayout
         android:orientation="vertical"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
             android:paddingStart="@dimen/padding_launcher_centro"
             android:paddingEnd="@dimen/padding_launcher_centro">
@@ -19,7 +19,8 @@
                 android:orientation="horizontal"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:focusable="false">
+                android:focusable="false"
+                android:id="@+id/yiequepasa">
 
                 <include
                     android:layout_width="wrap_content"
@@ -31,8 +32,19 @@
                     layout="@layout/clock_widget"
                     android:id="@+id/include" />
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="Dev Version 19 "
+                    android:id="@+id/textViewadasd"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"/>
+
+
                 <!--<ImageView
-                    android:layout_width="@dimen/floating_settings_icon_width"
+                    android:-layout_width="@dimen/floating_settings_icon_width"
                     android:layout_height="@dimen/floating_settings_icon_width"
                     android:id="@+id/icon_drawer"
                     android:focusable="false"
@@ -71,8 +83,8 @@
                 android:listSelector="#00000000"
                 android:id="@+id/app_grid"
                 android:layout_marginTop="10dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:numColumns="@integer/num_columns_desktop"
                 android:horizontalSpacing="@dimen/desktop_grid_margins"
                 android:verticalSpacing="6dp"

@@ -10,23 +10,15 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.graphics.Palette;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.GridView;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.energysistem.energylauncher.tvboxlauncher.LauncherAppState;
 import com.energysistem.energylauncher.tvboxlauncher.R;
@@ -45,11 +37,8 @@ import com.energysistem.energylauncher.tvboxlauncher.ui.fragments.DesktopFragmen
 import com.energysistem.energylauncher.tvboxlauncher.ui.fragments.MenuListFragment;
 import com.energysistem.energylauncher.tvboxlauncher.ui.fragments.OptionsLauncherFragment;
 import com.energysistem.energylauncher.tvboxlauncher.ui.fragments.RightFragment;
-import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 
 import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -515,9 +504,11 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
             }
             desktopLayout.closeDrawers();
             mDesktopFragment.focusAppGrid();
+            Log.e("Cerramos","Es posible");
         } else {
             desktopLayout.closeDrawers();
             desktopLayout.openDrawer(drawerLayout);
+            Log.e("Abrimos","Es posible");
             if (drawerLayout.getLayerType() == appLayout.getLayerType()){
                 mRightFragment.setFocus();
             }else{
