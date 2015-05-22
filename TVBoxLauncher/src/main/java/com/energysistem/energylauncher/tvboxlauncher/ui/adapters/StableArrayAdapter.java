@@ -22,7 +22,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,7 +31,6 @@ import android.widget.TextView;
 
 import com.energysistem.energylauncher.tvboxlauncher.R;
 import com.energysistem.energylauncher.tvboxlauncher.modelo.DraggableItemApp;
-import com.energysistem.energylauncher.tvboxlauncher.modelo.WebPageInfo;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
@@ -73,7 +71,6 @@ public class StableArrayAdapter extends ArrayAdapter<DraggableItemApp> {
         if(item.getIcono()==null) {
 
             if (item.getPageUrl().toString().toLowerCase().contains("energysistem.com")) {
-                Log.e("watdafka", "entramos");
                 imageViewIcon.setImageResource(R.drawable.energyweb);
             } else {
                 URL url = null;
@@ -95,7 +92,6 @@ public class StableArrayAdapter extends ArrayAdapter<DraggableItemApp> {
 
                     @Override
                     public void onBitmapFailed(final Drawable errorDrawable) {
-                        Log.d("TAG", "FAILED");
                     }
 
                     @Override

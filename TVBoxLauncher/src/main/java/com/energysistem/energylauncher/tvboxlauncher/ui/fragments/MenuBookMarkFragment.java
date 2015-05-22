@@ -5,7 +5,6 @@ import android.app.Fragment;
 import android.app.LoaderManager;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.Loader;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,24 +18,18 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.energysistem.energylauncher.tvboxlauncher.R;
 import com.energysistem.energylauncher.tvboxlauncher.database.BookmarkDAO;
-import com.energysistem.energylauncher.tvboxlauncher.modelo.AppInfo;
-import com.energysistem.energylauncher.tvboxlauncher.modelo.SaveLoadAppsPreferences;
 import com.energysistem.energylauncher.tvboxlauncher.modelo.WebPageInfo;
 import com.energysistem.energylauncher.tvboxlauncher.ui.LauncherActivity;
-import com.energysistem.energylauncher.tvboxlauncher.ui.adapters.AppAdapter;
 import com.energysistem.energylauncher.tvboxlauncher.ui.adapters.WebShortcutAdapter;
 
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
-import static android.widget.AdapterView.OnItemClickListener;
 
 /**
  * Created by MFC on 14/04/2014.
@@ -184,7 +177,6 @@ public class MenuBookMarkFragment  extends Fragment
    ----*/
    public void activaModoCheckBox(){
         if (mlistViewWebshorts.hasFocus()){
-            Log.d(TAG, "Activamos modo checkbox WEBSHORTCUT");
             mAdapter.setSelectedCheckBoxMode(true);
             mAdapter.setSelectedItem(mlistViewWebshorts.getSelectedItemPosition());
             updateView();
@@ -212,13 +204,9 @@ public class MenuBookMarkFragment  extends Fragment
         if(viewOld==null)
             return;
         CheckBox frameOld = (CheckBox) viewOld.findViewById(R.id.frame_checkboxWeb);
-        Log.e("updateView()", "-----------listItem anterior---");
 
         if(mListWebPage.get(mAdapter.getLastSelectedItem()).checked){Log.e("IF 1", "----------TRUE---");}else{Log.e("IF 1", "----------FALSE---");}
 
-        Log.e("Color black", Integer.toString(R.color.black_overlay));
-        Log.e("Color blue", Integer.toString(R.color.blue));
-        Log.e("Color capturado",Integer.toString(mAdapter.getFrameCheckBoxView(mListWebPage.get(mAdapter.getLastSelectedItem()).checked)));
         if(mAdapter.getFrameCheckBoxView(mListWebPage.get(mAdapter.getLastSelectedItem()).checked)==R.color.black_overlay){Log.e("IF 2", "----------TRUE- colorblacK--");}else{Log.e("IF 1", "----------FALSE---"+mAdapter.getFrameCheckBoxView(mListWebPage.get(mAdapter.getLastSelectedItem()).checked));}
 
         frameOld.setChecked(mListWebPage.get(mAdapter.getLastSelectedItem()).checked);
@@ -230,7 +218,6 @@ public class MenuBookMarkFragment  extends Fragment
             if(v==null)
                 return;
             CheckBox frame = (CheckBox) v.findViewById(R.id.frame_checkboxWeb);
-            Log.e("updateView()", "----------el check como estaba---");
             frame.setChecked(mListWebPage.get(mAdapter.getSelectedItem()).checked);
             return;
         }
@@ -242,7 +229,6 @@ public class MenuBookMarkFragment  extends Fragment
             return;
 
         CheckBox frame = (CheckBox) v.findViewById(R.id.frame_checkboxWeb);
-        Log.e("-updateView()", "-----------ChekBox ACTUAL---");
         frame.setChecked(false);
 
     }
@@ -266,7 +252,6 @@ public class MenuBookMarkFragment  extends Fragment
     @Override
     public void onItemClick(AdapterView adapter, View v, int position, long arg) {
           final WebPageInfo info = mAdapter.getItem(position);
-        Log.e("Numero elementos", ((LauncherActivity) getActivity()).getGridDesktop().getCount() +"");
         if (mAdapter.getModeCheckBoxSelection()) {
             datasource.open();
             if (info.checked) {
@@ -296,7 +281,6 @@ public class MenuBookMarkFragment  extends Fragment
             datasource.close();
         } else {
             openAlert(info, position);
-            //getActivity().startActivity(info.getIntent());
         }
 
 
@@ -325,18 +309,13 @@ public class MenuBookMarkFragment  extends Fragment
             @Override
             public void onClick(View v) {
 
-                Log.i("Onclicklistener", "OncheckboxClickListener posicion: " + v.getId());
                 //La posicion está en el id del view
                 WebPageInfo info = mListWebPage.get(v.getId());
                 //guardamos en base de datos, por defecto fav false
 
-                Log.e("-------ANTES------",info.toString());
 
                 if (info.getFav()==1) {
                     assert (getActivity()) != null;
-                    Log.e("Entramos fav = 1","onLoadFinished");
-
-
                     try {
                         ((LauncherActivity) getActivity()).addShortcutApp(info);
                     } catch (MalformedURLException e) {
@@ -347,7 +326,6 @@ public class MenuBookMarkFragment  extends Fragment
                 else
                 {
                     assert (getActivity()) != null;
-                    Log.e("Entramos fav = 0","onLoadFinished");
                     ((LauncherActivity) getActivity()).removeShortcutApp(info);
 
                 }

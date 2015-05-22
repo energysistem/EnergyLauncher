@@ -1,30 +1,22 @@
 package com.energysistem.energylauncher.tvboxlauncher.ui.fragments;
 
 import android.app.Fragment;
-import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.energysistem.energylauncher.tvboxlauncher.R;
-import com.energysistem.energylauncher.tvboxlauncher.modelo.AppInfo;
 import com.energysistem.energylauncher.tvboxlauncher.modelo.DraggableItemApp;
-import com.energysistem.energylauncher.tvboxlauncher.modelo.SaveLoadAppsPreferences;
-import com.energysistem.energylauncher.tvboxlauncher.modelo.ShortcutInfo;
-import com.energysistem.energylauncher.tvboxlauncher.modelo.WebPageInfo;
 import com.energysistem.energylauncher.tvboxlauncher.ui.LauncherActivity;
 import com.energysistem.energylauncher.tvboxlauncher.ui.adapters.StableArrayAdapter;
 import com.energysistem.energylauncher.tvboxlauncher.ui.views.DynamicDraggingListView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by emg on 02/05/2014.
@@ -42,6 +34,12 @@ public class AppArrangeFragment extends Fragment {
     private Button mBtnGuardar;
     private StableArrayAdapter mAdapter;
     public boolean cambiado = false;
+
+
+
+
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -65,6 +63,7 @@ public class AppArrangeFragment extends Fragment {
 
         mListView.setAppsList(mListAppsDragablesOrdenada);
         mListView.setAdapter(mAdapter);
+        mListView.setThisFragment(this);
 
 
         mListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
@@ -84,6 +83,10 @@ public class AppArrangeFragment extends Fragment {
                 }
             }
         });
+
+
+
+
 
         mBtnGuardar.setOnClickListener(new View.OnClickListener() {
             @Override

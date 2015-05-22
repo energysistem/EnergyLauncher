@@ -104,11 +104,9 @@ public class ShortcutAdapter extends BaseAdapter {
                     Log.i((data.get(i)).getTitle(), (app).getTitle());
                     if (((AppInfo) data.get(i)).getPackageName().equals(((AppInfo) app).getPackageName())) {
                         contiene = true;
-                        Log.e("ContieneEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE", "");
                     }
                 }
             }
-            Log.e("metemos", app.toString());
             if (!contiene)
                 data.add(app);
 
@@ -188,7 +186,7 @@ public class ShortcutAdapter extends BaseAdapter {
 
 
 
-        ShortcutInfo shortcut = data.get(i);
+        final ShortcutInfo shortcut = data.get(i);
         final ViewHolder holder;
 
         if (convertView == null) {
@@ -207,7 +205,6 @@ public class ShortcutAdapter extends BaseAdapter {
         holder.title.setVisibility(View.VISIBLE);
         holder.icon.setVisibility(View.VISIBLE);
         if (shortcut instanceof WebPageInfo) {
-            Log.e("WebPageInfo","Soy");
 
             final Target mTarget = new Target() {
                 @Override
@@ -216,21 +213,20 @@ public class ShortcutAdapter extends BaseAdapter {
                     final ImageView iv = (ImageView) finalView.findViewById(R.id.backgroundCell);
 
                     iv.destroyDrawingCache();
+                    iv.setImageDrawable(null);
 
                     Log.d("TAG", "LOADED" + from.toString());
                     Bitmap combi = combineImages(bitmap, BitmapFactory.decodeResource(context.getResources(), R.drawable.bookmark));
                     holder.icon.setImageBitmap(combi);
-
                     holder.icon.setVisibility(View.VISIBLE);
-                    Palette.generateAsync(combi, 5, new Palette.PaletteAsyncListener() {
+
+                    Palette.generateAsync(combi, 15, new Palette.PaletteAsyncListener() {
                         public void onGenerated(Palette palette) {
-
-                            Palette.Swatch color = palette.getDarkMutedSwatch();
-
+                            Palette.Swatch color = palette.getDarkVibrantSwatch();
                             if (color == null) {
-                                color = palette.getDarkVibrantSwatch();
+                                color = palette.getVibrantSwatch();
                                 if (color == null) {
-                                    color = palette.getVibrantSwatch();
+                                    color = palette.getDarkMutedSwatch();
                                 }
                                 if (color == null) {
                                     color = palette.getMutedSwatch();
@@ -247,12 +243,10 @@ public class ShortcutAdapter extends BaseAdapter {
                             }
                             if (color != null) {
                                 if (color.getRgb() >= 16777215) {//Si el color es transparente
-
-
                                     iv.setBackgroundResource(R.color.verdeOSCURO);//Ponemos un azul neutro
                                 } else {
 
-                                    iv.setBackgroundColor(color.getRgb());
+                                    iv.setBackgroundColor(color.getRgb()+256);
                                 }
                             }
 
@@ -269,17 +263,14 @@ public class ShortcutAdapter extends BaseAdapter {
                     holder.icon.setVisibility(View.GONE);
                     ImageView iv = (ImageView) finalView.findViewById(R.id.backgroundCell);
                     iv.setBackgroundResource(R.drawable.tile_explorer);
-                    Log.d("TAG", "FAILED");
                 }
 
                 @Override
                 public void onPrepareLoad(final Drawable placeHolderDrawable) {
-                    Log.d("TAG", "Prepare Load");
                     holder.icon.setVisibility(View.GONE);
                     ImageView iv = (ImageView) finalView.findViewById(R.id.backgroundCell);
                     iv.setBackgroundResource(R.drawable.tile_explorer);
 
-                    holder.icon.setImageResource(R.drawable.bookmark);
                 }
 
             };
@@ -304,7 +295,6 @@ public class ShortcutAdapter extends BaseAdapter {
             } else {
                 URL url = null;
                 try {
-                    ImageView iv = (ImageView) convertView.findViewById(R.id.backgroundCell);
                     url = new URL("http://www.google.com/s2/favicons?domain=" + ((WebPageInfo) shortcut).getPageUrl());
                     Picasso.with(context).load(url.toString()).into(mTarget);
 
@@ -315,11 +305,10 @@ public class ShortcutAdapter extends BaseAdapter {
 
 
         } else {
-            Log.e("No soy WebPageInfo","Soy");
+
 
             holder.icon.setImageBitmap(shortcut.getBitmap());
             if (((AppInfo) shortcut).getPackageName().equals("com.facebook.katana")) {
-                Log.e("Facebook",((AppInfo) shortcut).getPackageName());
 
                 //view.setBackgroundResource(R.drawable.facebook_tile);
                 ImageView iv = (ImageView) convertView.findViewById(R.id.backgroundCell);
@@ -400,11 +389,11 @@ public class ShortcutAdapter extends BaseAdapter {
                 } else {
                     holder.icon.setVisibility(View.VISIBLE);
                     holder.title.setVisibility(View.VISIBLE);
-                    Palette.generateAsync(shortcut.getBitmap(), 5, new Palette.PaletteAsyncListener() {
+                    Palette.generateAsync(shortcut.getBitmap(), 15, new Palette.PaletteAsyncListener() {
                         public void onGenerated(Palette palette) {
 //                            Log.e("Palette APP",holder.title.getText().toString());
 
-                            Palette.Swatch color = palette.getLightMutedSwatch();
+                            Palette.Swatch color = palette.getVibrantSwatch();
 
                             if (color == null) {
                                 color = palette.getDarkVibrantSwatch();
@@ -420,8 +409,13 @@ public class ShortcutAdapter extends BaseAdapter {
                                 iv.destroyDrawingCache();
                             } else {
                                 ImageView iv = (ImageView) finalView.findViewById(R.id.backgroundCell);
+
                                 iv.setImageDrawable(null);
-                                iv.setBackgroundColor(color.getRgb());
+                                Log.e(shortcut.getTitle(),"Hue: "+color.getHsl()[0]+" - Saturacion: "+color.getHsl()[1]+" - Brillo:"+color.getHsl()[2]);
+                                if(color.getRgb() > 14474460)
+                                    iv.setImageResource(R.color.verdeOSCURO);
+                                else
+                                    iv.setBackgroundColor(color.getRgb());
                                 iv.destroyDrawingCache();
 
                             }

@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.util.Log;
 
 import com.energysistem.energylauncher.tvboxlauncher.util.IconCache;
 
@@ -70,7 +69,6 @@ public class AppInfo extends ShortcutInfo {
             flags = initFlags(pi);
             firstInstallTime = initFirstInstallTime(pi);
         } catch (PackageManager.NameNotFoundException e) {
-            Log.d(TAG, "PackageManager.getApplicationInfo failed for " + packageName);
         }
 
         iconCache.getTitleAndIcon(this, info, labelCache);

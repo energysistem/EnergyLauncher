@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -85,8 +86,6 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
 
         //Para detectar el primer boot del sistema
         primeraVez = true;
-        Log.e("primeraVez","true");
-
         //Margins
         mMarginDesktopIcons = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, getResources().getDimension(R.dimen.desktop_grid_margins), getResources().getDisplayMetrics());
         mDesktopIconHeight = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, getResources().getDimension(R.dimen.altura_desktop_icon), getResources().getDisplayMetrics());
@@ -171,8 +170,12 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
         });
 
 
-
-        Log.d("-------------onCreateView() Desktop Fragment", Integer.toString((gridAdapter.getCount())));
+        TextView devText = (TextView) view.findViewById(R.id.versionDev);
+        try {
+            devText.setText("Dev Version "+getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(), 0).versionCode);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
 
         outAnimationIzq = AnimationUtils.loadAnimation(getActivity(),
                 R.anim.left_end_animation);
@@ -332,8 +335,6 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
 
 
 
-            Log.e("Creamos TikmeChangedReceiver","-----------------------------");
-
         }
 
     @Override
@@ -349,7 +350,6 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
         @Override
         public void onReceive(Context context, Intent intent) {
             actualTime.setToNow();
-            Log.e("Maquepatxa",actualTime.toString());
             updateClockWidget(actualTime);
         }
     };
@@ -362,14 +362,12 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
             time.setToNow();
             updateClockWidget(time);
             connectionIndicator.update();
-            Log.e("WIFI","onReciver");
         }
     };
 
         @Override
         public void onResume() {
 
-            Log.e("onResume","DesktopFragment");
 
             actualTime.setToNow();
         updateClockWidget(actualTime);
@@ -401,7 +399,6 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
         super.onPause();
     }
 
-    /*******************************/
 
 
     /*
@@ -431,7 +428,6 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
 
 
 
-            Log.e("adapterDesktop","Selected: "+position);
 
             if(position%(4)==0) {
                 if(!izqActiva) {
@@ -511,7 +507,6 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
 
     }
 
-    /***************************************/
 
     /*
     Maneja accesos directos AÑADIR-QUITAR
@@ -539,7 +534,6 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
 
                 @Override
                 public void onPrepareLoad(final Drawable placeHolderDrawable) {
-                    Log.d("TAG", "Prepare Load");
                 }
             });
 
@@ -611,8 +605,7 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
                 }
                 break;
             case KeyEvent.KEYCODE_DPAD_LEFT:
-                Log.e("LEFT TOCADO","itemSelected: "+itemSelected+" - columns: "+columns);
-                if (((itemSelected) % columns) == 0 || itemSelected==-1){ 
+                if (((itemSelected) % columns) == 0 || itemSelected==-1){
 
                     ((LauncherActivity) getActivity()).toggleDrawer(((LauncherActivity) getActivity()).getNotificationLayout());
                     ((LauncherActivity) getActivity()).getNotificationLayout().requestFocus();
@@ -634,7 +627,6 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
 
     public void setGridAdapter(ShortcutAdapter gridAda){
        // gridAdapter = new ShortcutAdapter(getActivity());
-        Log.d("----setGridAdapter() DESKTOP: ",Integer.toString(gridAda.getCount()));
         if(this.gridAdapter!=null){
             this.gridAdapter.clearItems();
             //gridAdapter.setListInfo(((LauncherActivity) getActivity()).getGridDesktop().getListInfo());
@@ -647,14 +639,12 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
            // gridAdapter.getCount();
             this.gridAdapter.notifyDataSetChanged();
         }
-        Log.d("-------------setGridAdapter() Desktop Fragment", Integer.toString((this.gridAdapter.getCount())));
     }
 
    /*
     Wichet reloj
      */
    public void updateClockWidget(Time dateTime) {
-       Log.e("UpdateClockWidget",android.text.format.DateFormat.getTimeFormat(getActivity().getApplicationContext()).format(dateTime.toMillis(true)).toString());
         if (timeTextView != null) {
             //timeTextView.setText(android.text.format.DateFormat.getTimeFormat(getActivity().getApplicationContext()).format(dateTime.toMillis(true)).toString());
             int hour = Integer.parseInt(dateTime.format("%H"));

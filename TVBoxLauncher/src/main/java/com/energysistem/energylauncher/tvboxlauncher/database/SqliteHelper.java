@@ -6,9 +6,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import com.energysistem.energylauncher.tvboxlauncher.modelo.SaveLoadAppsPreferences;
-import com.energysistem.energylauncher.tvboxlauncher.ui.LauncherActivity;
-
 public class SqliteHelper extends SQLiteOpenHelper {
 
     public static final String TABLE_BOOKMARKS = "bookmarks";
@@ -57,7 +54,6 @@ public class SqliteHelper extends SQLiteOpenHelper {
 
         size = size + 1;
         editor.putInt(FAVS_LIST_SIZE, size);
-        Log.e("insertamos AppFav",appName);
 
         editor.commit();
     }

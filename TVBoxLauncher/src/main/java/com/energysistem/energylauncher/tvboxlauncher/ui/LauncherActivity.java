@@ -84,27 +84,6 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
         setContentView(R.layout.activity_main);
         datasource = new BookmarkDAO(this);
 
-
-        /*if (savedInstanceState == null) {
-            //Drawer derecho
-            mRightFragment = new RightFragment();
-            getFragmentManager().beginTransaction()
-                   .add(R.id.right_drawer, mRightFragment, TAGFFRAGMENTRIGHT)
-                   .commit();
-
-            mDesktopFragment = new DesktopFragment();
-            getFragmentManager().beginTransaction()
-                    .add(R.id.content_frame, mDesktopFragment, TAGFFRAGMENTDESKTOP)
-                    .commit();
-
-
-            //Drawer Izquierdo
-            mMenuListFragment = new MenuListFragment() ;
-            getFragmentManager().beginTransaction()
-                    .add(R.id.left_drawer, mMenuListFragment, TAGFFRAGMENTNOTIFICATIONS)
-                    .commit();
-        } else */
-
             mDesktopFragment = (DesktopFragment) getFragmentManager().findFragmentById(R.id.content_frame);
             mRightFragment = (RightFragment) getFragmentManager().findFragmentById(R.id.right_drawer);
             mMenuListFragment = (MenuListFragment) getFragmentManager().findFragmentById(R.id.left_drawer);
@@ -151,6 +130,7 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
         LauncherAppState.setApplicationContext(getApplicationContext());
 
         getGridDesktop().notifyDataSetChanged();
+        desktopLayout.requestFocus();
         reloadDesktop();
 
 
@@ -172,7 +152,6 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
      */
     public void saveLocale()
     {
-        Log.e("entramos","guardamosLocale   "+Locale.getDefault().toString());
         SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString(getString(R.string.tag_sharedPreferences_locale), Locale.getDefault().toString());
@@ -186,7 +165,6 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
     {
         SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
         String localeGuardado = sharedPref.getString(getString(R.string.tag_sharedPreferences_locale), "");
-        Log.e("entramos","localeChanged Actual:"+ Locale.getDefault().toString()+" Guardada: "+localeGuardado+(!localeGuardado.equals(Locale.getDefault().toString())));
         if(localeGuardado.isEmpty())
             return false;
         else
@@ -195,7 +173,6 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
-        Log.e("entramos","OnConfigurationChanged");
         restartApplication();
         super.onConfigurationChanged(newConfig);
 
@@ -210,7 +187,6 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
 
     @Override
     protected void onNewIntent(Intent intent) {
-        Log.d("LauncherActivity", "onNewIntent is called!");
 
         memberFieldString = intent.getStringExtra("ABRIR_MENU_APP");
 
@@ -219,7 +195,6 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
 
     @Override
      protected void onResume() {
-        Log.e("OnResume","LauncherActivity: ");
         if(localeChanged()) {
             saveLocale();
             restartApplication();
@@ -431,10 +406,7 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
         mAppArrangeFragment =  new AppArrangeFragment();
 
         desktopLayout.setFocusable(false);
-
-
         ft.replace(R.id.menu_list_frame, mAppArrangeFragment);
-
 
 
         ft.addToBackStack("AppArrangeFragment");
@@ -504,11 +476,9 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
             }
             desktopLayout.closeDrawers();
             mDesktopFragment.focusAppGrid();
-            Log.e("Cerramos","Es posible");
         } else {
             desktopLayout.closeDrawers();
             desktopLayout.openDrawer(drawerLayout);
-            Log.e("Abrimos","Es posible");
             if (drawerLayout.getLayerType() == appLayout.getLayerType()){
                 mRightFragment.setFocus();
             }else{

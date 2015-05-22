@@ -1,24 +1,9 @@
 package com.energysistem.energylauncher.tvboxlauncher.modelo;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.util.Log;
 
-import com.energysistem.energylauncher.tvboxlauncher.R;
-
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
-import java.net.URL;
 
 /**
  * Created by emg on 09/04/2014.
@@ -83,7 +68,6 @@ public class WebPageInfo extends ShortcutInfo {
         if (!url.startsWith("http://") && !url.startsWith("https://"))
             url = "http://" + url;
 
-        Log.e("GetIntent",url);
         intent.setData(Uri.parse(url));
         return intent;
     }

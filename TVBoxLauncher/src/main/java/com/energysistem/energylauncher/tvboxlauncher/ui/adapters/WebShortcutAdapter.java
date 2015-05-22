@@ -135,7 +135,6 @@ public class WebShortcutAdapter extends ArrayAdapter<WebPageInfo>{
             holder.arrow2.setVisibility(View.INVISIBLE);
         }
 
-        Log.e("-------------AppAdapter", "----holder Time-----");
         holder.checkBox.setChecked(info.checked);
 
 
@@ -175,7 +174,6 @@ public class WebShortcutAdapter extends ArrayAdapter<WebPageInfo>{
         holder.image.setTag(mTarget);
 
         if (((WebPageInfo) info).getPageUrl().toString().toLowerCase().contains("energysistem.com")) {
-            Log.e("watdafka", "entramos");
             holder.image.setImageResource(R.drawable.energyweb);
         } else {
             URL url = null;
@@ -257,7 +255,6 @@ public class WebShortcutAdapter extends ArrayAdapter<WebPageInfo>{
     }
 
     public void setSelectedCheckBoxMode(boolean valor){
-        Log.d("onclickListener", "Seleccionados checkBoxes WEBSHORTCUT");
         checkBoxSelected = valor;
     }
 

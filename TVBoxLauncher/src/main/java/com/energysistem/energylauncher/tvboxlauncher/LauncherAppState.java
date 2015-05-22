@@ -1,7 +1,6 @@
 package com.energysistem.energylauncher.tvboxlauncher;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.energysistem.energylauncher.tvboxlauncher.util.IconCache;
 
@@ -30,8 +29,6 @@ public class LauncherAppState {
 
     public static void setApplicationContext(Context context) {
         if (sContext != null) {
-            Log.w("Launcher",
-                    "setApplicationContext called twice! old=" + sContext + " new=" + context);
         }
         sContext = context.getApplicationContext();
     }

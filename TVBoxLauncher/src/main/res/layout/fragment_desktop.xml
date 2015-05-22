@@ -37,7 +37,7 @@
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:text="Dev Version 19 "
-                    android:id="@+id/textViewadasd"
+                    android:id="@+id/versionDev"
                     android:layout_centerVertical="true"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"/>
