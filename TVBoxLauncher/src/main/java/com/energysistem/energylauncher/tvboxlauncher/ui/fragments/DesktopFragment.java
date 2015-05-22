@@ -262,11 +262,12 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
                     lateralDer.setImageResource(R.drawable.lateral_bar_menu_dark);
                 }
 
-
-
-
             }
         });
+
+        Log.e("DesktopFragment","OnCreate()");
+        mFavoritesGrid.requestFocus();
+
 
 
 
@@ -582,16 +583,20 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
 
     public void focusAppGrid() {
         if(mFavoritesGrid!=null){
-            mFavoritesGrid.requestFocus();}
+            mFavoritesGrid.requestFocus();
+            mFavoritesGrid.setFocusable(true);
+        }
         View v = mFavoritesGrid.getSelectedView();
         if (v != null) v.requestFocus();
     }
 
     public boolean onKeyRightAndLeft( int key){
+
         int itemSelected = mFavoritesGrid.getSelectedItemPosition();
         int columns = mFavoritesGrid.getNumColumns();
         switch (key){
             case KeyEvent.KEYCODE_DPAD_RIGHT:
+                Log.e("DPAD_RIGHT","Right "+mFavoritesGrid.getSelectedItemPosition());
                 if (((itemSelected + 1 ) % columns) == 0 || (gridAdapter.getCount()==1 || gridAdapter.getCount()==0)){
                     ((LauncherActivity) getActivity()).toggleDrawer(((LauncherActivity) getActivity()).getAppLayout());
                 } else if (itemSelected == gridAdapter.getCount()-1 ) {

@@ -130,14 +130,13 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
         LauncherAppState.setApplicationContext(getApplicationContext());
 
         getGridDesktop().notifyDataSetChanged();
-        desktopLayout.requestFocus();
+
         reloadDesktop();
+        //desktopLayout.requestFocus();
+        //exitRightFragment();
+        mDesktopFragment.focusAppGrid();
 
-
-
-
-
-
+        Log.e("LauncherActivity","OnCreate()");
 
 
 
@@ -175,8 +174,6 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
     public void onConfigurationChanged(Configuration newConfig) {
         restartApplication();
         super.onConfigurationChanged(newConfig);
-
-
     }
 
     @Override
@@ -220,8 +217,6 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
         filterAppMenu.setPriority(2147483647);
         filterAppMenu.addAction(AppMenuReceiver.INTENT);
         registerReceiver(mAppMenuReceiver, filterAppMenu);
-
-
 
 
          super.onResume();
@@ -281,20 +276,24 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
 
     @Override
          public boolean onKeyDown(int keyCode, KeyEvent event) {
+        Log.e("Estamos entrando",event.toString());
 
              switch (keyCode) {
                  case KeyEvent.KEYCODE_DPAD_RIGHT:
                      if (appLayout.isShown()) {
+                         Log.e("appLayout.isShown()",event.toString());
                          desktopLayout.setFocusable(false);
                          notificationLayout.setFocusable(false);
                          mRightFragment.onKeyRightD();
                      } else if (notificationLayout.isShown()) {
+                         Log.e("notificationLayout.isShown()",event.toString());
                          //mOptionsLauncherFragment.onKeyRightAndLeft();
 
                          toggleDrawer(notificationLayout);
                      } else if (desktopLayout.isShown()) {
                          //desktopLayout.setFocusable(false);
                          //focusProblems(false, 1);
+                         Log.e("desktopLayout.isShown()",event.toString());
                          mDesktopFragment.onKeyRightAndLeft(KeyEvent.KEYCODE_DPAD_RIGHT);
                      }
                      break;
@@ -519,17 +518,11 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
         //preferencesListadoApps.addInfoDesktop(shortcutInfo);
         if (shortcutInfo instanceof AppInfo) {
             boolean contiene = false;
-            Log.i("Tamaño lista preferencesListadoApps:",preferencesListadoApps.getListaApp().size()+"");
-            Log.e("Lista FavsStrings", preferencesListadoApps.getListaFavsString().toString());
-            Log.e("Lista ListaApp", preferencesListadoApps.getListaApp().toString());
             for(int i=0;i < preferencesListadoApps.getListaFavsString().size();i++)
             {
-                Log.d("Comparamos","");
-                Log.d(preferencesListadoApps.getListaFavsString()+ "HUEHUHHEHEHUEHUEHUEHUEHUEHUE",((AppInfo) shortcutInfo).getPackageName());
                 contiene = preferencesListadoApps.getListaFavsString().get(i)==((AppInfo) shortcutInfo).getPackageName();
             }
             if(!contiene) {
-                Log.e("Entramos aquí","as");
                 mDesktopFragment.addShortcut(shortcutInfo); //ESTO ES LO QUE FINALMENTE METE EL SHORTCUT
                 //mDesktopFragment.notifyAll();
 
@@ -540,7 +533,6 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
             }
            // reloadDesktop();
         } else if (shortcutInfo instanceof WebPageInfo) {
-            Log.e("VAMO A VER KE HENTRA",((WebPageInfo) shortcutInfo).getName());
             mDesktopFragment.addShortcut(shortcutInfo);
             preferencesListadoApps.addWebPageInfo((WebPageInfo) shortcutInfo); //NOHACENADA
 

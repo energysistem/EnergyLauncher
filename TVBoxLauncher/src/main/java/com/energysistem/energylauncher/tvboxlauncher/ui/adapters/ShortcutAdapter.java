@@ -183,9 +183,6 @@ public class ShortcutAdapter extends BaseAdapter {
     @Override
     public View getView(int i, View convertView, final ViewGroup viewGroup) {
 
-
-
-
         final ShortcutInfo shortcut = data.get(i);
         final ViewHolder holder;
 
