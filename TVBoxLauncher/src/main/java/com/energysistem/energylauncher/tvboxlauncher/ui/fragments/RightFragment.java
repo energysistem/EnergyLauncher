@@ -211,7 +211,6 @@ public View onCreateView(LayoutInflater inflater, ViewGroup container, final Bun
     @Override
     public void onResume() {
         super.onResume();
-        Log.e("onResume","RightFragment");
     }
 
     public void testFunction(Bundle savedInstanceState){
@@ -257,7 +256,7 @@ public View onCreateView(LayoutInflater inflater, ViewGroup container, final Bun
         Log.e("CurrentTAB:",mTabHost.getCurrentTab()+"");
        switch (mTabHost.getCurrentTab())
        {
-           case 0:      Log.d("TAG", "Estamos en app_grid");
+           case 0:
                         if (mAppListFragment.appgetModeCheckBoxSelec()) {
                            mAppListFragment.desactivaModoCheckBox();
 
@@ -279,7 +278,7 @@ public View onCreateView(LayoutInflater inflater, ViewGroup container, final Bun
                         break;
 
            case 2:      mTabHost.setCurrentTab(1);
-                        Log.d("lansandooooIII", "mMenuBookMarkFragment.setFocus()");
+
                         resetTab3();
                         //mMenuBookMarkFragment.setFocus();
                         break;
@@ -297,9 +296,9 @@ public View onCreateView(LayoutInflater inflater, ViewGroup container, final Bun
                             mAppListFragment.activaModoCheckBox();
                         }
                         else{
-                            Log.d("lansandooooDDD", "mMenuBookMarkFragment.setFocus()");
-                            //mTabHost.setCurrentTab(1);
-                            //mMenuBookMarkFragment.setFocus();
+                            mTabHost.setCurrentTab(1);
+                            mMenuBookMarkFragment.setFocus();
+                            mAppListFragment.desactivaModoCheckBox();
                         }
                             break;
 
@@ -308,7 +307,6 @@ public View onCreateView(LayoutInflater inflater, ViewGroup container, final Bun
                             mMenuBookMarkFragment.activaModoCheckBox();
                         }
                         else{
-                            Log.e("-KeyRighD--", "---------CheckBoxMode Activado ya--");
                         }
                         break;
 
@@ -402,7 +400,7 @@ public View onCreateView(LayoutInflater inflater, ViewGroup container, final Bun
 
         switch (mTabHost.getCurrentTab())
         {
-            case 0:     Log.d("Entramos en case 03131231213123","0");
+            case 0:
 
                         break;
 
@@ -414,7 +412,7 @@ public View onCreateView(LayoutInflater inflater, ViewGroup container, final Bun
                         }
                         break;
 
-            case 2:     Log.d("Entramos en case 2","2");
+            case 2:
                         fueraDeBookmarks = true;
                         break;
 
@@ -426,7 +424,6 @@ public View onCreateView(LayoutInflater inflater, ViewGroup container, final Bun
     }
 
     public void onKeyUpU() {
-        Log.d("Current Tab-->",String.valueOf(mTabHost.getCurrentTab()));
 
     }
 
@@ -450,8 +447,8 @@ public View onCreateView(LayoutInflater inflater, ViewGroup container, final Bun
 
     public void setFocus(){
 
-        mTabHost.setCurrentTab(0);
-        mAppListFragment.setFocus();
+        //mTabHost.setCurrentTab(0);
+        //mAppListFragment.setFocus();
     }
 
 
@@ -477,22 +474,12 @@ public View onCreateView(LayoutInflater inflater, ViewGroup container, final Bun
 
 
     public void estadoVariables(){
-        Log.d("Estado Inicial","VARIABLES-----------------------------------");
-        Log.d("Tab Inicial",String.valueOf(mTabHost.getCurrentTab()));
         mTabHost.setCurrentTab(0);
-        Log.d("Tab 0",String.valueOf(mTabHost.getCurrentTab()));
         mTabHost.setCurrentTab(1);
-        Log.d("Tab 1",String.valueOf(mTabHost.getCurrentTab()));
         mTabHost.setCurrentTab(2);
-        Log.d("Tab 2",String.valueOf(mTabHost.getCurrentTab()));
         mTabHost.setCurrentTabByTag(getActivity().getString(R.string.tab_aplicaciones));
-        Log.d("Tab APPS (byTag)",String.valueOf(mTabHost.getCurrentTab()));
         mTabHost.setCurrentTabByTag(getActivity().getString(R.string.tab_bookmarks));
-        Log.d("Tab BOOKMARKS (byTag)",String.valueOf(mTabHost.getCurrentTab()));
         mTabHost.setCurrentTabByTag(getActivity().getString(R.string.tab_settings));
-        Log.d("Tab SETTINGS (byTag)",String.valueOf(mTabHost.getCurrentTab()));
-        Log.d("Fin Pestañas","VARIABLES-----------------------------------");
-        Log.d("Menu", String.valueOf(menu));
 
     }
 
@@ -517,14 +504,4 @@ public View onCreateView(LayoutInflater inflater, ViewGroup container, final Bun
         return mMenuBookMarkFragment.getListWebPage();
     }
 
-/*
-    public void tabChange(Fragment newFragment int simpleFragment){
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.replace(simpleFragment, newFragment);
-        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-        ft.addToBackStack(null);
-        ft.commit();
-        R.id.
-
-    }*/
 }

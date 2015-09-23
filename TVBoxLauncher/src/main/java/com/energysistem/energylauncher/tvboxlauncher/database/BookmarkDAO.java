@@ -9,15 +9,11 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 import com.energysistem.energylauncher.tvboxlauncher.modelo.WebPageInfo;
 
-import org.w3c.dom.Comment;
-
 import java.net.MalformedURLException;
 import java.util.ArrayList;
-import java.util.List;
 
 public class BookmarkDAO {
         //COMMIT PABL
@@ -85,7 +81,6 @@ public class BookmarkDAO {
 
     public void deleteBookmark(WebPageInfo bookmark) {
         long id = bookmark.getId();
-        System.out.println("Bookmark deleted with id: " + id);
         database.delete(SqliteHelper.TABLE_BOOKMARKS, SqliteHelper.COLUMN_ID
                 + " = " + id, null);
     }
@@ -128,7 +123,6 @@ public class BookmarkDAO {
     public void updateBookmark(WebPageInfo info) {
         String strFilter = "id=" + info.getId();
         ContentValues args = new ContentValues();
-        Log.e("favorito:",info.getFav()+"");
         args.put(SqliteHelper.COLUMN_POSI, info.getPosi());
         args.put(SqliteHelper.COLUMN_FAVORITO, info.getFav());
 

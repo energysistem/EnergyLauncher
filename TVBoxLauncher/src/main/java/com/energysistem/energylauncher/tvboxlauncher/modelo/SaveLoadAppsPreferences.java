@@ -5,19 +5,11 @@ import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.energysistem.energylauncher.tvboxlauncher.database.BookmarkDAO;
-import com.energysistem.energylauncher.tvboxlauncher.ui.LauncherActivity;
 import com.energysistem.energylauncher.tvboxlauncher.ui.adapters.ShortcutAdapter;
 
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
-
-import static android.app.PendingIntent.getActivities;
-import static android.app.PendingIntent.getActivity;
 
 /**
  * Created by emg on 15/04/2014.
@@ -67,7 +59,6 @@ public class SaveLoadAppsPreferences {
 
 
         if(mSharedPrefs.getBoolean("first_load",true)){
-            Log.e("SaveLoadAppsPreferences","First Load");
 
             for(String app: LISTA_APP_INICIO) {
                 insertItemEnd(app);
@@ -105,19 +96,15 @@ public class SaveLoadAppsPreferences {
 
     public void ActualizaListaApps(List<ShortcutInfo> listaFavInfos) {
         ArrayList<String> listFavsString = new ArrayList<String>();
-        Log.e("----LISTA FAVORITOOOOOS---",listaFavoritos.size()+"");
         //Bucles para comprobar si ya están metidas las apps en preferencias y conservar el orden de introduccion
         for (int i = 0; i < listaFavoritos.size(); i++) {
             String nombreFav = listaFavoritos.get(i);
-            Log.e("----FAVORITOOOO---",nombreFav);
             for (int j = 0; j < listaFavInfos.size(); j++) {
                 ShortcutInfo favTemp = listaFavInfos.get(j);
-                Log.e("Primer COMPARE",((AppInfo) favTemp).getPackageName());
                 if (ComparaNombreFavInfo(((AppInfo) favTemp).getPackageName(), nombreFav) && chek(favTemp)){
 
                     //Miramos si ya está metida en la lista
                     if (!listaFavoritos.contains(nombreFav)) {
-                        Log.e("----NOMBRE FAVORITO---",nombreFav);
                         listaFavoritos.add(nombreFav);
                     }
                     break;
@@ -177,17 +164,13 @@ public class SaveLoadAppsPreferences {
     }
 
     public boolean removeFavInfoByName(String nombre){
-        Log.e("Lista INICIAL",listaFavoritos.toString());
-        Log.i("Eliminamos AppInfo (Tamaño lista fav: "+listaFavoritos.size(),nombre);
         if (listaFavoritos.contains(nombre)) {
             //Pasando de gestionar los indices de la lista de las preferencias - jajajajaja
-            Log.i("Encontrada, borramos","");
             //Está la app. Borramos la lista entera y la volvemos a crear.
             removeAppsArray();
 
             //La qutamos de la lista global
             listaFavoritos.remove(nombre);
-            Log.e("Despues",listaFavoritos.toString());
             //Volvemos a alamacenar la listaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
             guardaFavArray(listaFavoritos);
             return true;
@@ -220,7 +203,6 @@ public class SaveLoadAppsPreferences {
             String appS = mSharedPrefs.getString(HEADLISTFAVS + i, "");
             listaStrings.add(appS);
         }
-        Log.e("getListaFavsString",listaStrings.toString());
         return listaStrings;
 
     }
@@ -269,10 +251,8 @@ public class SaveLoadAppsPreferences {
 
     private static String getNombreFav(ShortcutInfo fav) {
         if (fav instanceof AppInfo) {
-            Log.e("entramos en appinfo","huhu");
             return ((AppInfo) fav).getPackageName();
         } else if (fav instanceof WebPageInfo) {
-            Log.e("entramos en webinfo","huhu");
             return ((WebPageInfo) fav).getName();
         }
         else{
@@ -422,13 +402,11 @@ public class SaveLoadAppsPreferences {
 
     public boolean addAppInfo(AppInfo app) {
         String nombre = getNombreFav(app);
-        Log.i("Tamaño ListaFavoritos",listaFavoritos.size()+"");
         if (listaFavoritos.contains(nombre)) {//
             Log.e("Ya está metida","");
             //Ya está metida
             return false;
         } else {
-            Log.v(TAG, "Añadida a las preferencias la app: " + getNombreFav(app));
             listaFavoritos.add(nombre);
             insertItemEnd(nombre);
             if(listaApp==null){listaApp = new ArrayList<AppInfo>();}

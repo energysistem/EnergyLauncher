@@ -70,7 +70,7 @@ public class ShortcutAdapter extends BaseAdapter {
     }
 
     public void addItem(final ShortcutInfo app, final Context context) throws MalformedURLException {
-        Log.e("Entramos en addItem", "ShortcutAdapter");
+//        Log.e("Entramos en addItem", "ShortcutAdapter");
         //
         if (app instanceof WebPageInfo) {
             boolean contiene = false;
@@ -78,18 +78,18 @@ public class ShortcutAdapter extends BaseAdapter {
                 Log.i((data.get(i)).getTitle(), (app).getTitle());
                 if ((data.get(i)).getTitle().equals((app).getTitle())) {
                     contiene = true;
-                    Log.e("ContieneEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE", "");
+//                    Log.e("ContieneEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE", "");
                 }
             }
 
             if (!contiene) {
                 int num;
                 if (data.size() < ((WebPageInfo) app).getPosi() - 1) {
-                    Log.e("TAG", "ENTRAMOS->" + ((WebPageInfo) app).getPageUrl());
+//                    Log.e("TAG", "ENTRAMOS->" + ((WebPageInfo) app).getPageUrl());
                     num = data.size() + 1;
                     data.add(app);
                 } else {
-                    Log.e("TAG", "ENTRAMOS->" + ((WebPageInfo) app).getPageUrl());
+//                    Log.e("TAG", "ENTRAMOS->" + ((WebPageInfo) app).getPageUrl());
                     num = data.size() + 1;
                     if (((WebPageInfo) app).getPosi() - 1 < 0)
                         ((WebPageInfo) app).setPosi(1);
@@ -104,11 +104,9 @@ public class ShortcutAdapter extends BaseAdapter {
                     Log.i((data.get(i)).getTitle(), (app).getTitle());
                     if (((AppInfo) data.get(i)).getPackageName().equals(((AppInfo) app).getPackageName())) {
                         contiene = true;
-                        Log.e("ContieneEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE", "");
                     }
                 }
             }
-            Log.e("metemos", app.toString());
             if (!contiene)
                 data.add(app);
 
@@ -180,29 +178,27 @@ public class ShortcutAdapter extends BaseAdapter {
     }
 
 
+
+
     @Override
     public View getView(int i, View convertView, final ViewGroup viewGroup) {
 
-
-        View view = convertView;
-
-
-        ShortcutInfo shortcut = data.get(i);
+        final ShortcutInfo shortcut = data.get(i);
         final ViewHolder holder;
 
-        if (view == null) {
-            view = inflater.inflate(R.layout.cell_shortcut, null);
+        if (convertView == null) {
+            convertView = inflater.inflate(R.layout.cell_shortcut, null);
             holder = new ViewHolder();
 
-            holder.icon = (ImageView) view.findViewById(R.id.icon);
-            holder.title = (TextView) view.findViewById(R.id.title);
+            holder.icon = (ImageView) convertView.findViewById(R.id.icon);
+            holder.title = (TextView) convertView.findViewById(R.id.title);
 
 
-            view.setTag(holder);
+            convertView.setTag(holder);
         } else {
-            holder = (ViewHolder) view.getTag();
+            holder = (ViewHolder) convertView.getTag();
         }
-        final View finalView = view;
+        final View finalView = convertView;
         holder.title.setVisibility(View.VISIBLE);
         holder.icon.setVisibility(View.VISIBLE);
         if (shortcut instanceof WebPageInfo) {
@@ -210,20 +206,24 @@ public class ShortcutAdapter extends BaseAdapter {
             final Target mTarget = new Target() {
                 @Override
                 public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                    Log.d("TAG", "LOADED");
+
+                    final ImageView iv = (ImageView) finalView.findViewById(R.id.backgroundCell);
+
+                    iv.destroyDrawingCache();
+                    iv.setImageDrawable(null);
+
+                    Log.d("TAG", "LOADED" + from.toString());
                     Bitmap combi = combineImages(bitmap, BitmapFactory.decodeResource(context.getResources(), R.drawable.bookmark));
                     holder.icon.setImageBitmap(combi);
-
                     holder.icon.setVisibility(View.VISIBLE);
-                    Palette.generateAsync(combi, 5, new Palette.PaletteAsyncListener() {
+
+                    Palette.generateAsync(combi, 15, new Palette.PaletteAsyncListener() {
                         public void onGenerated(Palette palette) {
-
-                            Palette.Swatch color = palette.getDarkMutedSwatch();
-
+                            Palette.Swatch color = palette.getDarkVibrantSwatch();
                             if (color == null) {
-                                color = palette.getDarkVibrantSwatch();
+                                color = palette.getVibrantSwatch();
                                 if (color == null) {
-                                    color = palette.getVibrantSwatch();
+                                    color = palette.getDarkMutedSwatch();
                                 }
                                 if (color == null) {
                                     color = palette.getMutedSwatch();
@@ -240,12 +240,10 @@ public class ShortcutAdapter extends BaseAdapter {
                             }
                             if (color != null) {
                                 if (color.getRgb() >= 16777215) {//Si el color es transparente
-                                    ImageView iv = (ImageView) finalView.findViewById(R.id.backgroundCell);
-
                                     iv.setBackgroundResource(R.color.verdeOSCURO);//Ponemos un azul neutro
                                 } else {
-                                    ImageView iv = (ImageView) finalView.findViewById(R.id.backgroundCell);
-                                    iv.setBackgroundColor(color.getRgb());
+
+                                    iv.setBackgroundColor(color.getRgb()+256);
                                 }
                             }
 
@@ -254,7 +252,7 @@ public class ShortcutAdapter extends BaseAdapter {
                     });
 
                     //holder.notify();
-                    notifyDataSetChanged();
+                    //notifyDataSetChanged();
                 }
 
                 @Override
@@ -262,37 +260,39 @@ public class ShortcutAdapter extends BaseAdapter {
                     holder.icon.setVisibility(View.GONE);
                     ImageView iv = (ImageView) finalView.findViewById(R.id.backgroundCell);
                     iv.setBackgroundResource(R.drawable.tile_explorer);
-                    Log.d("TAG", "FAILED");
                 }
 
                 @Override
                 public void onPrepareLoad(final Drawable placeHolderDrawable) {
-                    Log.d("TAG", "Prepare Load");
                     holder.icon.setVisibility(View.GONE);
                     ImageView iv = (ImageView) finalView.findViewById(R.id.backgroundCell);
                     iv.setBackgroundResource(R.drawable.tile_explorer);
 
-                    holder.icon.setImageResource(R.drawable.bookmark);
                 }
 
             };
             holder.icon.setTag(mTarget);
             //2112312312123123123213
-            Log.e("dsdas", "sadas");
+//            Log.e("dsdas", "sadas");
 
             if (((WebPageInfo) shortcut).getPageUrl().toString().toLowerCase().contains("energysistem.com")) {
-                Log.e("watdafka", "entramos");
+//                Log.e("watdafka", "entramos");
                 holder.icon.setVisibility(View.GONE);
                 holder.title.setVisibility(View.GONE);
 
-                ImageView iv = (ImageView) view.findViewById(R.id.backgroundCell);
-                iv.setBackgroundResource(R.drawable.tile_web);
+                ImageView iv = (ImageView) convertView.findViewById(R.id.backgroundCell);
+
+
+                    Picasso.with(context)
+                            .load("http://static.energysistem.com/images/tile_web.png")
+                            .placeholder(context.getResources().getDrawable(R.drawable.tile_web))
+                            .error(R.drawable.tile_web)
+                            .into(iv);
 
             } else {
                 URL url = null;
                 try {
                     url = new URL("http://www.google.com/s2/favicons?domain=" + ((WebPageInfo) shortcut).getPageUrl());
-
                     Picasso.with(context).load(url.toString()).into(mTarget);
 
                 } catch (MalformedURLException e) {
@@ -303,108 +303,118 @@ public class ShortcutAdapter extends BaseAdapter {
 
         } else {
 
+
             holder.icon.setImageBitmap(shortcut.getBitmap());
             if (((AppInfo) shortcut).getPackageName().equals("com.facebook.katana")) {
 
                 //view.setBackgroundResource(R.drawable.facebook_tile);
-                ImageView iv = (ImageView) view.findViewById(R.id.backgroundCell);
-                iv.setBackgroundResource(R.drawable.facebook_tile);
+                ImageView iv = (ImageView) convertView.findViewById(R.id.backgroundCell);
+                iv.setImageResource(R.drawable.facebook_tile);
                 holder.icon.setVisibility(View.GONE);
-                holder.title.setVisibility(View.GONE);
+               holder.title.setVisibility(View.GONE);
             } else {
                 if (((AppInfo) shortcut).getPackageName().equals("com.android.vending")) {
 
                     //view.setBackgroundResource(R.drawable.facebook_tile);
-                    ImageView iv = (ImageView) view.findViewById(R.id.backgroundCell);
+                    ImageView iv = (ImageView) convertView.findViewById(R.id.backgroundCell);
                     holder.icon.setVisibility(View.GONE);
 
-                    iv.setBackgroundResource(R.drawable.tile_googleplay);
+                    iv.setImageResource(R.drawable.tile_googleplay);
                 } else if (((AppInfo) shortcut).getPackageName().equals("com.amlogic.miracast")) {
                     //view.setBackgroundResource(R.drawable.facebook_tile);
-                    ImageView iv = (ImageView) view.findViewById(R.id.backgroundCell);
+                    ImageView iv = (ImageView) convertView.findViewById(R.id.backgroundCell);
                     holder.icon.setVisibility(View.GONE);
 
-                    iv.setBackgroundResource(R.drawable.tile_miracast);
+                    iv.setImageResource(R.drawable.tile_miracast);
                 } else if (((AppInfo) shortcut).getPackageName().equals("com.amlogic.PicturePlayer")) {
                     //view.setBackgroundResource(R.drawable.facebook_tile);
-                    ImageView iv = (ImageView) view.findViewById(R.id.backgroundCell);
+                    ImageView iv = (ImageView) convertView.findViewById(R.id.backgroundCell);
                     holder.icon.setVisibility(View.GONE);
 
-                    iv.setBackgroundResource(R.drawable.tile_gallery);
+                    iv.setImageResource(R.drawable.tile_gallery);
                 } else if (((AppInfo) shortcut).getPackageName().equals("com.farcore.videoplayer")) {
                     //view.setBackgroundResource(R.drawable.facebook_tile);
-                    ImageView iv = (ImageView) view.findViewById(R.id.backgroundCell);
+                    ImageView iv = (ImageView) convertView.findViewById(R.id.backgroundCell);
                     holder.icon.setVisibility(View.GONE);
 
-                    iv.setBackgroundResource(R.drawable.tile_video);
+                    iv.setImageResource(R.drawable.tile_video);
                 } else if (((AppInfo) shortcut).getPackageName().equals("org.geometerplus.zlibrary.ui.android")) {
                     //view.setBackgroundResource(R.drawable.facebook_tile);
-                    ImageView iv = (ImageView) view.findViewById(R.id.backgroundCell);
+                    ImageView iv = (ImageView) convertView.findViewById(R.id.backgroundCell);
                     holder.icon.setVisibility(View.GONE);
 
-                    iv.setBackgroundResource(R.drawable.tile_music);
+                    iv.setImageResource(R.drawable.tile_music);
                 } else if (((AppInfo) shortcut).getPackageName().equals("com.twitter.android")) {
                     //view.setBackgroundResource(R.drawable.facebook_tile);
-                    ImageView iv = (ImageView) view.findViewById(R.id.backgroundCell);
+                    ImageView iv = (ImageView) convertView.findViewById(R.id.backgroundCell);
                     holder.icon.setVisibility(View.GONE);
 
                     holder.title.setVisibility(View.GONE);
-                    iv.setBackgroundResource(R.drawable.tile_twitter);
+                    iv.setImageResource(R.drawable.tile_twitter);
                 } else if (((AppInfo) shortcut).getPackageName().equals("com.google.android.youtube.googletv")) {
                     //view.setBackgroundResource(R.drawable.facebook_tile);
-                    ImageView iv = (ImageView) view.findViewById(R.id.backgroundCell);
+                    ImageView iv = (ImageView) convertView.findViewById(R.id.backgroundCell);
                     holder.icon.setVisibility(View.GONE);
-                    holder.title.setVisibility(View.GONE);
+                    //holder.title.setVisibility(View.GONE);
 
-                    iv.setBackgroundResource(R.drawable.tile_youtube);
+                    iv.setImageResource(R.drawable.tile_youtube);
                 } else if (((AppInfo) shortcut).getPackageName().equals("com.google.android.youtube")) {
                     //view.setBackgroundResource(R.drawable.facebook_tile);
-                    ImageView iv = (ImageView) view.findViewById(R.id.backgroundCell);
+                    ImageView iv = (ImageView) convertView.findViewById(R.id.backgroundCell);
                     holder.icon.setVisibility(View.GONE);
                     holder.title.setVisibility(View.GONE);
-                    iv.setBackgroundResource(R.drawable.tile_youtube);
+                    iv.setImageResource(R.drawable.tile_youtube);
                 } else if (((AppInfo) shortcut).getPackageName().equals("com.android.browser")) {
                     //view.setBackgroundResource(R.drawable.facebook_tile);
-                    ImageView iv = (ImageView) view.findViewById(R.id.backgroundCell);
+                    ImageView iv = (ImageView) convertView.findViewById(R.id.backgroundCell);
                     holder.icon.setVisibility(View.GONE);
 
 
-                    iv.setBackgroundResource(R.drawable.tile_explorer);
+                    iv.setImageResource(R.drawable.tile_explorer);
                 } else if (((AppInfo) shortcut).getPackageName().equals("com.fb.FileBrower")) {
                     //view.setBackgroundResource(R.drawable.facebook_tile);
-                    ImageView iv = (ImageView) view.findViewById(R.id.backgroundCell);
+                    ImageView iv = (ImageView) convertView.findViewById(R.id.backgroundCell);
                     holder.icon.setVisibility(View.GONE);
 
-                    iv.setBackgroundResource(R.drawable.tile_browser);
+                    iv.setImageResource(R.drawable.tile_browser);
                 } else if (((AppInfo) shortcut).getPackageName().equals("com.amlogic.OOBE")) {
                     //view.setBackgroundResource(R.drawable.facebook_tile);
-                    ImageView iv = (ImageView) view.findViewById(R.id.backgroundCell);
+                    ImageView iv = (ImageView) convertView.findViewById(R.id.backgroundCell);
                     holder.icon.setVisibility(View.GONE);
 
-                    iv.setBackgroundResource(R.drawable.tile_setupwizard);
+                    iv.setImageResource(R.drawable.tile_setupwizard);
                 } else {
                     holder.icon.setVisibility(View.VISIBLE);
                     holder.title.setVisibility(View.VISIBLE);
-                    Palette.generateAsync(shortcut.getBitmap(), 5, new Palette.PaletteAsyncListener() {
+                    Palette.generateAsync(shortcut.getBitmap(), 15, new Palette.PaletteAsyncListener() {
                         public void onGenerated(Palette palette) {
+//                            Log.e("Palette APP",holder.title.getText().toString());
 
-                            Palette.Swatch color = palette.getDarkMutedSwatch();
+                            Palette.Swatch color = palette.getVibrantSwatch();
 
                             if (color == null) {
                                 color = palette.getDarkVibrantSwatch();
                                 if (color == null) {
-                                    color = palette.getVibrantSwatch();
+                                    color = palette.getDarkMutedSwatch();
                                 }
                                 if (color == null)
                                     color = palette.getMutedSwatch();
                             }
                             if (color.getRgb() >= 16777215) {//Si el color es transparente
                                 ImageView iv = (ImageView) finalView.findViewById(R.id.backgroundCell);
-
-                                iv.setBackgroundResource(R.color.verdeOSCURO);//Ponemos un azul neutro
+                                iv.setImageResource(R.color.verdeOSCURO);
+                                iv.destroyDrawingCache();
                             } else {
                                 ImageView iv = (ImageView) finalView.findViewById(R.id.backgroundCell);
-                                iv.setBackgroundColor(color.getRgb());
+
+                                iv.setImageDrawable(null);
+                                Log.e(shortcut.getTitle(),"Hue: "+color.getHsl()[0]+" - Saturacion: "+color.getHsl()[1]+" - Brillo:"+color.getHsl()[2]);
+                                if(color.getRgb() > 14474460)
+                                    iv.setImageResource(R.color.verdeOSCURO);
+                                else
+                                    iv.setBackgroundColor(color.getRgb());
+                                iv.destroyDrawingCache();
+
                             }
 
 
@@ -421,7 +431,7 @@ public class ShortcutAdapter extends BaseAdapter {
         holder.title.setText(shortcut.getTitle());
 
 
-        view.setOnHoverListener(new View.OnHoverListener() {
+        convertView.setOnHoverListener(new View.OnHoverListener() {
             @Override
             public boolean onHover(View v, MotionEvent event) {
                 ImageView iv = (ImageView) v.findViewById(R.id.backgroundCellSelected);
@@ -467,7 +477,7 @@ public class ShortcutAdapter extends BaseAdapter {
         });
 
 
-        return view;
+        return convertView;
     }
 
 

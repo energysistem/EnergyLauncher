@@ -8,17 +8,14 @@ import android.content.Loader;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.TabHost;
 import android.widget.TextView;
 
 import com.energysistem.energylauncher.tvboxlauncher.LauncherAppState;
@@ -35,7 +32,6 @@ import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -90,7 +86,6 @@ public class AppListFragment extends Fragment
         if (mAppAdapter.getModeCheckBoxSelection()) {
             if (info.checked) {
                 assert (getActivity()) != null;
-                Log.i("Eliminamos app","");
                 ((LauncherActivity) getActivity()).removeShortcutApp(info);
                 info.checked = false;
             } else {
@@ -272,7 +267,6 @@ public class AppListFragment extends Fragment
 
     public void activaModoCheckBox(){
         if (mListViewApps.hasFocus()){
-            Log.d(TAG, "Activamos modo checkbox");
             mAppAdapter.setSelectedCheckBoxMode(true);
             mAppAdapter.setSelectedItem(mListViewApps.getSelectedItemPosition());
             updateView();
@@ -285,7 +279,6 @@ public class AppListFragment extends Fragment
 
             if(mAppAdapter!=null) {
                 if (mAppAdapter.getModeCheckBoxSelection()) {
-                    Log.d(TAG, "Desactivamos modo checkbox");
                     mAppAdapter.setSelectedCheckBoxMode(false);
                     mAppAdapter.setSelectedItem(mListViewApps.getSelectedItemPosition());
                     updateView();
@@ -410,7 +403,7 @@ public class AppListFragment extends Fragment
                     ((LauncherActivity) getActivity()).addShortcutApp(liWeb.get(f));
                }
 
-             ((LauncherActivity)getActivity()).focusAppGrid();
+             //((LauncherActivity)getActivity()).focusAppGrid();
          }
 
 

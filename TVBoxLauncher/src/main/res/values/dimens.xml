@@ -38,11 +38,11 @@
     <dimen name="text_shortcut_margin_left">15dp</dimen>
     <dimen name="ancho_barras_laterales">30dp</dimen>
     <dimen name="padding_launcher_centro">25dp</dimen>
-    <dimen name="tamano_icono_fav">50dp</dimen>
+    <dimen name="tamano_icono_fav">70dp</dimen>
     <dimen name="margin_texto_cell_left">50dp</dimen>
     <dimen name="margin_icono_cell_left">25dp</dimen>
-    <dimen name="margin_bottom_text_cell">10dp</dimen>
-    <dimen name="margin_top_icon_cell">35dp</dimen>
+    <dimen name="margin_bottom_text_cell">15dp</dimen>
+    <dimen name="margin_top_icon_cell">30dp</dimen>
     <dimen name="abc_action_bar_title_text_size">12sp</dimen>
     <dimen name="abc_action_bar_subtitle_text_size">10sp</dimen>
 
