@@ -1,19 +1,15 @@
 package com.energysistem.energylauncher.tvboxlauncher.ui.fragments;
 
-import android.animation.ArgbEvaluator;
-import android.animation.ObjectAnimator;
 import android.app.Fragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.TransitionDrawable;
 import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.v7.graphics.Palette;
@@ -27,16 +23,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.energysistem.energylauncher.tvboxlauncher.R;
-import com.energysistem.energylauncher.tvboxlauncher.broadcastreceiver.SettingsMenuReceiver;
 import com.energysistem.energylauncher.tvboxlauncher.broadcastreceiver.TimeChangedReceiver;
 import com.energysistem.energylauncher.tvboxlauncher.modelo.ShortcutInfo;
 import com.energysistem.energylauncher.tvboxlauncher.modelo.WebPageInfo;
@@ -47,9 +39,6 @@ import com.energysistem.energylauncher.tvboxlauncher.util.ConnectionIndicator;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
@@ -97,8 +86,6 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
 
         //Para detectar el primer boot del sistema
         primeraVez = true;
-        Log.e("primeraVez","true");
-
         //Margins
         mMarginDesktopIcons = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, getResources().getDimension(R.dimen.desktop_grid_margins), getResources().getDisplayMetrics());
         mDesktopIconHeight = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, getResources().getDimension(R.dimen.altura_desktop_icon), getResources().getDisplayMetrics());
@@ -183,8 +170,12 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
         });
 
 
-
-        Log.d("-------------onCreateView() Desktop Fragment", Integer.toString((gridAdapter.getCount())));
+        TextView devText = (TextView) view.findViewById(R.id.versionDev);
+        try {
+            devText.setText("Dev Version "+getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(), 0).versionCode);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
 
         outAnimationIzq = AnimationUtils.loadAnimation(getActivity(),
                 R.anim.left_end_animation);
@@ -271,11 +262,12 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
                     lateralDer.setImageResource(R.drawable.lateral_bar_menu_dark);
                 }
 
-
-
-
             }
         });
+
+        Log.e("DesktopFragment","OnCreate()");
+        mFavoritesGrid.requestFocus();
+
 
 
 
@@ -344,8 +336,6 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
 
 
 
-            Log.e("Creamos TikmeChangedReceiver","-----------------------------");
-
         }
 
     @Override
@@ -360,11 +350,8 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
 
         @Override
         public void onReceive(Context context, Intent intent) {
-
             actualTime.setToNow();
-            Log.e("Maquepatxa",actualTime.toString());
             updateClockWidget(actualTime);
-
         }
     };
 
@@ -376,14 +363,12 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
             time.setToNow();
             updateClockWidget(time);
             connectionIndicator.update();
-            Log.e("WIFI","onReciver");
         }
     };
 
         @Override
         public void onResume() {
 
-            Log.e("onResume","DesktopFragment");
 
             actualTime.setToNow();
         updateClockWidget(actualTime);
@@ -415,7 +400,6 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
         super.onPause();
     }
 
-    /*******************************/
 
 
     /*
@@ -445,7 +429,6 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
 
 
 
-            Log.e("adapterDesktop","Selected: "+position);
 
             if(position%(4)==0) {
                 if(!izqActiva) {
@@ -525,7 +508,6 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
 
     }
 
-    /***************************************/
 
     /*
     Maneja accesos directos AÑADIR-QUITAR
@@ -553,7 +535,6 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
 
                 @Override
                 public void onPrepareLoad(final Drawable placeHolderDrawable) {
-                    Log.d("TAG", "Prepare Load");
                 }
             });
 
@@ -602,16 +583,20 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
 
     public void focusAppGrid() {
         if(mFavoritesGrid!=null){
-            mFavoritesGrid.requestFocus();}
+            mFavoritesGrid.requestFocus();
+            mFavoritesGrid.setFocusable(true);
+        }
         View v = mFavoritesGrid.getSelectedView();
         if (v != null) v.requestFocus();
     }
 
     public boolean onKeyRightAndLeft( int key){
+
         int itemSelected = mFavoritesGrid.getSelectedItemPosition();
         int columns = mFavoritesGrid.getNumColumns();
         switch (key){
             case KeyEvent.KEYCODE_DPAD_RIGHT:
+                Log.e("DPAD_RIGHT","Right "+mFavoritesGrid.getSelectedItemPosition());
                 if (((itemSelected + 1 ) % columns) == 0 || (gridAdapter.getCount()==1 || gridAdapter.getCount()==0)){
                     ((LauncherActivity) getActivity()).toggleDrawer(((LauncherActivity) getActivity()).getAppLayout());
                 } else if (itemSelected == gridAdapter.getCount()-1 ) {
@@ -625,8 +610,7 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
                 }
                 break;
             case KeyEvent.KEYCODE_DPAD_LEFT:
-                Log.e("LEFT TOCADO","itemSelected: "+itemSelected+" - columns: "+columns);
-                if (((itemSelected) % columns) == 0 || itemSelected==-1){ 
+                if (((itemSelected) % columns) == 0 || itemSelected==-1){
 
                     ((LauncherActivity) getActivity()).toggleDrawer(((LauncherActivity) getActivity()).getNotificationLayout());
                     ((LauncherActivity) getActivity()).getNotificationLayout().requestFocus();
@@ -648,7 +632,6 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
 
     public void setGridAdapter(ShortcutAdapter gridAda){
        // gridAdapter = new ShortcutAdapter(getActivity());
-        Log.d("----setGridAdapter() DESKTOP: ",Integer.toString(gridAda.getCount()));
         if(this.gridAdapter!=null){
             this.gridAdapter.clearItems();
             //gridAdapter.setListInfo(((LauncherActivity) getActivity()).getGridDesktop().getListInfo());
@@ -661,14 +644,12 @@ public class DesktopFragment extends Fragment implements AdapterView.OnItemClick
            // gridAdapter.getCount();
             this.gridAdapter.notifyDataSetChanged();
         }
-        Log.d("-------------setGridAdapter() Desktop Fragment", Integer.toString((this.gridAdapter.getCount())));
     }
 
    /*
     Wichet reloj
      */
    public void updateClockWidget(Time dateTime) {
-       Log.e("UpdateClockWidget",android.text.format.DateFormat.getTimeFormat(getActivity().getApplicationContext()).format(dateTime.toMillis(true)).toString());
         if (timeTextView != null) {
             //timeTextView.setText(android.text.format.DateFormat.getTimeFormat(getActivity().getApplicationContext()).format(dateTime.toMillis(true)).toString());
             int hour = Integer.parseInt(dateTime.format("%H"));

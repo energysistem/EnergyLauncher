@@ -27,6 +27,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
+import android.widget.Toast;
 
 import com.energysistem.energylauncher.tvboxlauncher.modelo.AppInfo;
 import java.util.HashMap;
@@ -72,6 +73,9 @@ public class IconCache {
     public Drawable getFullResIcon(Resources resources, int iconId) {
         Drawable d;
         try {
+            mIconDpi=320;
+           // Toast.makeText(mContext,"yequepasa",Toast.LENGTH_SHORT).show();
+
             d = resources.getDrawableForDensity(iconId, mIconDpi);
         } catch (Resources.NotFoundException e) {
             d = null;
@@ -152,11 +156,16 @@ public class IconCache {
      */
     public void getTitleAndIcon(AppInfo application, ResolveInfo info,
             HashMap<Object, CharSequence> labelCache) {
+
+
+
         synchronized (mCache) {
             CacheEntry entry = cacheLocked(application.getComponentName(), info, labelCache);
 
             application.setTitle(entry.title);
-            application.setBitmap(entry.icon);
+            application.setBitmap(Utilities.createIconBitmap(
+                    getFullResIcon(info), mContext));
+            //application.setBitmap(entry.icon);
         }
     }
 

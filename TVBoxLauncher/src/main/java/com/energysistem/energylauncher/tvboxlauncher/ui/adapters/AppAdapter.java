@@ -3,7 +3,6 @@ package com.energysistem.energylauncher.tvboxlauncher.ui.adapters;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.drawable.BitmapDrawable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -78,19 +77,6 @@ public class AppAdapter extends ArrayAdapter<AppInfo> {
         holder.checkBox.setChecked(info.checked);
 
 
-       /* holder.checkBox.setOnClickListener(this.onCkeckBoxClickListener);
-
-        holder.checkBox.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-               // Log.i("onclickListener", "framelayout " + position);
-                info.checked = !info.checked;
-               // Log.e("-------------AppAdapter", "----ClikListener-----");
-                v.setBackgroundColor(getFrameCheckBoxView(info.checked));
-                v.setId(position);
-                onCkeckBoxClickListener.onClick(v);
-            }
-        });*/
 
         return view;
     }

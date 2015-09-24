@@ -1,7 +1,6 @@
 package com.energysistem.energylauncher.tvboxlauncher.ui.views;
 
 import android.os.Build;
-import android.util.Log;
 
 import java.io.IOException;
 
@@ -15,7 +14,6 @@ public class StatusBarAdmin {
         try {
             proc = Runtime.getRuntime().exec(new String[] { "su", "-c", "am startservice -n com.android.systemui/.SystemUIService" });
         } catch (IOException e) {
-            Log.d("TAG", "Failed to kill task bar (1).");
             e.printStackTrace();
         }
 
@@ -24,7 +22,6 @@ public class StatusBarAdmin {
                 proc.waitFor();
             }
         } catch (InterruptedException e) {
-            Log.d("TAG", "Failed to show task bar (2).");
             e.printStackTrace();
         }
     }
@@ -41,7 +38,6 @@ public class StatusBarAdmin {
         try {
             proc = Runtime.getRuntime().exec(new String[]{"su", "-c", "service call activity " + ProcID + " s16 com.android.systemui"});
         } catch (IOException e) {
-            Log.d("TAG", "Failed to kill task bar (1).");
             e.printStackTrace();
         }
 
@@ -50,7 +46,6 @@ public class StatusBarAdmin {
                 proc.waitFor();
             }
         } catch (InterruptedException e) {
-            Log.d("TAG", "Failed to kill task bar (2).");
             e.printStackTrace();
         }
     }

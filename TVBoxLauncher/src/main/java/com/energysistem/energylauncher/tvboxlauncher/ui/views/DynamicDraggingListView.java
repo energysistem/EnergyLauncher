@@ -14,7 +14,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
-import android.inputmethodservice.KeyboardView;
 import android.os.SystemClock;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
@@ -30,8 +29,8 @@ import android.widget.ListView;
 
 import com.energysistem.energylauncher.tvboxlauncher.modelo.DraggableItemApp;
 import com.energysistem.energylauncher.tvboxlauncher.ui.adapters.StableArrayAdapter;
+import com.energysistem.energylauncher.tvboxlauncher.ui.fragments.AppArrangeFragment;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -59,6 +58,14 @@ import java.util.List;
 
 
 public class DynamicDraggingListView extends ListView {
+
+    public AppArrangeFragment getThisFragment() {
+        return thisFragment;
+    }
+
+    public void setThisFragment(AppArrangeFragment thisFragment) {
+        this.thisFragment = thisFragment;
+    }
 
     public interface OnListChangeListener {
         void onListChanged(View v, boolean cambiado);
@@ -110,14 +117,19 @@ public class DynamicDraggingListView extends ListView {
 
     private final int INVALID_POINTER_ID = -1;
     private int mActivePointerId = INVALID_POINTER_ID;
+    private AppArrangeFragment thisFragment;
 
     private boolean mIsWaitingForScrollFinish = false;
     private int mScrollState = OnScrollListener.SCROLL_STATE_IDLE;
 
     public DynamicDraggingListView(Context context) {
         super(context);
+
         init(context);
     }
+
+
+
 
     public DynamicDraggingListView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
@@ -294,9 +306,12 @@ public class DynamicDraggingListView extends ListView {
     private OnItemClickListener mOnItemClickListener = new OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int pos, long id) {
+            Log.e("Click","Lista Ordenable "+mCellIsMobile);
+
             if (mCellIsMobile) {
                 mTotalOffset = 0;
                 LanzaMotionEvent(mDireccionMotionEvent.DOWN, MotionEvent.ACTION_UP);
+                getThisFragment().aplicaCambios();
             } else {
                 int position = pos;
                 //int position = pointToPosition(mDownX, mDownY);
@@ -311,9 +326,7 @@ public class DynamicDraggingListView extends ListView {
                 selectedView.setVisibility(INVISIBLE);
 
                 LanzaMotionEvent(mDireccionMotionEvent.DOWN, MotionEvent.ACTION_DOWN);
-
                 mCellIsMobile = true;
-
                 updateNeighborViewsForID(mMobileItemId);
             }
         }

@@ -10,23 +10,15 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.graphics.Palette;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.GridView;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.energysistem.energylauncher.tvboxlauncher.LauncherAppState;
 import com.energysistem.energylauncher.tvboxlauncher.R;
@@ -45,11 +37,8 @@ import com.energysistem.energylauncher.tvboxlauncher.ui.fragments.DesktopFragmen
 import com.energysistem.energylauncher.tvboxlauncher.ui.fragments.MenuListFragment;
 import com.energysistem.energylauncher.tvboxlauncher.ui.fragments.OptionsLauncherFragment;
 import com.energysistem.energylauncher.tvboxlauncher.ui.fragments.RightFragment;
-import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 
 import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -94,27 +83,6 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         datasource = new BookmarkDAO(this);
-
-
-        /*if (savedInstanceState == null) {
-            //Drawer derecho
-            mRightFragment = new RightFragment();
-            getFragmentManager().beginTransaction()
-                   .add(R.id.right_drawer, mRightFragment, TAGFFRAGMENTRIGHT)
-                   .commit();
-
-            mDesktopFragment = new DesktopFragment();
-            getFragmentManager().beginTransaction()
-                    .add(R.id.content_frame, mDesktopFragment, TAGFFRAGMENTDESKTOP)
-                    .commit();
-
-
-            //Drawer Izquierdo
-            mMenuListFragment = new MenuListFragment() ;
-            getFragmentManager().beginTransaction()
-                    .add(R.id.left_drawer, mMenuListFragment, TAGFFRAGMENTNOTIFICATIONS)
-                    .commit();
-        } else */
 
             mDesktopFragment = (DesktopFragment) getFragmentManager().findFragmentById(R.id.content_frame);
             mRightFragment = (RightFragment) getFragmentManager().findFragmentById(R.id.right_drawer);
@@ -162,13 +130,13 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
         LauncherAppState.setApplicationContext(getApplicationContext());
 
         getGridDesktop().notifyDataSetChanged();
+
         reloadDesktop();
+        //desktopLayout.requestFocus();
+        //exitRightFragment();
+        mDesktopFragment.focusAppGrid();
 
-
-
-
-
-
+        Log.e("LauncherActivity","OnCreate()");
 
 
 
@@ -183,7 +151,6 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
      */
     public void saveLocale()
     {
-        Log.e("entramos","guardamosLocale   "+Locale.getDefault().toString());
         SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString(getString(R.string.tag_sharedPreferences_locale), Locale.getDefault().toString());
@@ -197,7 +164,6 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
     {
         SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
         String localeGuardado = sharedPref.getString(getString(R.string.tag_sharedPreferences_locale), "");
-        Log.e("entramos","localeChanged Actual:"+ Locale.getDefault().toString()+" Guardada: "+localeGuardado+(!localeGuardado.equals(Locale.getDefault().toString())));
         if(localeGuardado.isEmpty())
             return false;
         else
@@ -206,11 +172,8 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
-        Log.e("entramos","OnConfigurationChanged");
         restartApplication();
         super.onConfigurationChanged(newConfig);
-
-
     }
 
     @Override
@@ -221,7 +184,6 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
 
     @Override
     protected void onNewIntent(Intent intent) {
-        Log.d("LauncherActivity", "onNewIntent is called!");
 
         memberFieldString = intent.getStringExtra("ABRIR_MENU_APP");
 
@@ -230,7 +192,6 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
 
     @Override
      protected void onResume() {
-        Log.e("OnResume","LauncherActivity: ");
         if(localeChanged()) {
             saveLocale();
             restartApplication();
@@ -256,8 +217,6 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
         filterAppMenu.setPriority(2147483647);
         filterAppMenu.addAction(AppMenuReceiver.INTENT);
         registerReceiver(mAppMenuReceiver, filterAppMenu);
-
-
 
 
          super.onResume();
@@ -317,20 +276,24 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
 
     @Override
          public boolean onKeyDown(int keyCode, KeyEvent event) {
+        Log.e("Estamos entrando",event.toString());
 
              switch (keyCode) {
                  case KeyEvent.KEYCODE_DPAD_RIGHT:
                      if (appLayout.isShown()) {
+                         Log.e("appLayout.isShown()",event.toString());
                          desktopLayout.setFocusable(false);
                          notificationLayout.setFocusable(false);
                          mRightFragment.onKeyRightD();
                      } else if (notificationLayout.isShown()) {
+                         Log.e("notificationLayout.isShown()",event.toString());
                          //mOptionsLauncherFragment.onKeyRightAndLeft();
 
                          toggleDrawer(notificationLayout);
                      } else if (desktopLayout.isShown()) {
                          //desktopLayout.setFocusable(false);
                          //focusProblems(false, 1);
+                         Log.e("desktopLayout.isShown()",event.toString());
                          mDesktopFragment.onKeyRightAndLeft(KeyEvent.KEYCODE_DPAD_RIGHT);
                      }
                      break;
@@ -442,10 +405,7 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
         mAppArrangeFragment =  new AppArrangeFragment();
 
         desktopLayout.setFocusable(false);
-
-
         ft.replace(R.id.menu_list_frame, mAppArrangeFragment);
-
 
 
         ft.addToBackStack("AppArrangeFragment");
@@ -558,17 +518,11 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
         //preferencesListadoApps.addInfoDesktop(shortcutInfo);
         if (shortcutInfo instanceof AppInfo) {
             boolean contiene = false;
-            Log.i("Tamaño lista preferencesListadoApps:",preferencesListadoApps.getListaApp().size()+"");
-            Log.e("Lista FavsStrings", preferencesListadoApps.getListaFavsString().toString());
-            Log.e("Lista ListaApp", preferencesListadoApps.getListaApp().toString());
             for(int i=0;i < preferencesListadoApps.getListaFavsString().size();i++)
             {
-                Log.d("Comparamos","");
-                Log.d(preferencesListadoApps.getListaFavsString()+ "HUEHUHHEHEHUEHUEHUEHUEHUEHUE",((AppInfo) shortcutInfo).getPackageName());
                 contiene = preferencesListadoApps.getListaFavsString().get(i)==((AppInfo) shortcutInfo).getPackageName();
             }
             if(!contiene) {
-                Log.e("Entramos aquí","as");
                 mDesktopFragment.addShortcut(shortcutInfo); //ESTO ES LO QUE FINALMENTE METE EL SHORTCUT
                 //mDesktopFragment.notifyAll();
 
@@ -579,7 +533,6 @@ public class LauncherActivity extends Activity implements AppListFragment.Callba
             }
            // reloadDesktop();
         } else if (shortcutInfo instanceof WebPageInfo) {
-            Log.e("VAMO A VER KE HENTRA",((WebPageInfo) shortcutInfo).getName());
             mDesktopFragment.addShortcut(shortcutInfo);
             preferencesListadoApps.addWebPageInfo((WebPageInfo) shortcutInfo); //NOHACENADA
 
